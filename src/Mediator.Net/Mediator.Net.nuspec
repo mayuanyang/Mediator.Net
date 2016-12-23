@@ -1,13 +1,12 @@
 <?xml version="1.0"?>
 <package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
   <metadata>
-    <id>$id$</id>
-    <version>$version$</version>
-    <authors>$author$</authors>
-    <owners>$author$</owners>
+    <id>Mediator.Net</id>
+    <version>1</version>
+    <authors>Yuan(Eddy) Ma</authors>
+    <owners>Yuan(Eddy) Ma</owners>
     <licenseUrl>https://github.com/mayuanyang/Mediator.Net</licenseUrl>
     <projectUrl>https://github.com/mayuanyang/Mediator.Net/</projectUrl>
-    <iconUrl></iconUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>A mediator for .NET</description>
     <tags>.NET Mediator</tags>
