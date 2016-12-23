@@ -2,13 +2,14 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
   <metadata>
     <id>Mediator.Net</id>
+	<title>A simple .NET mediator</title>
     <version>1</version>
     <authors>Yuan(Eddy) Ma</authors>
     <owners>Yuan(Eddy) Ma</owners>
     <licenseUrl>https://github.com/mayuanyang/Mediator.Net</licenseUrl>
     <projectUrl>https://github.com/mayuanyang/Mediator.Net/</projectUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
-    <description>A mediator for .NET</description>
+    <description>Decouple does matter</description>
     <tags>.NET Mediator</tags>
     <dependencies>
     </dependencies>
