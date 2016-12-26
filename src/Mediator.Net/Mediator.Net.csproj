@@ -40,6 +40,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Binding\MessageBinding.cs" />
+    <Compile Include="Binding\MessageHandlerRegistry.cs" />
+    <Compile Include="Context\ReceiveContext.cs" />
     <Compile Include="Contracts\IMessage.cs" />
     <Compile Include="Context\IContext.cs" />
     <Compile Include="IMediator.cs" />
@@ -53,10 +56,14 @@
     <Compile Include="Context\IReceiveContext.cs" />
     <Compile Include="Context\ISendContext.cs" />
     <Compile Include="Mediator.cs" />
+    <Compile Include="MediatorBuilder.cs" />
     <Compile Include="Pipeline\IPipe.cs" />
     <Compile Include="Pipeline\IPublishPipe.cs" />
     <Compile Include="Pipeline\ISendPipe.cs" />
     <Compile Include="Pipeline\IReceivePipe.cs" />
+    <Compile Include="Pipeline\MoreThanOneCommandHandlerException.cs" />
+    <Compile Include="Pipeline\NoHandlerFoundException.cs" />
+    <Compile Include="Pipeline\ReceivePipe.cs" />
     <Compile Include="Pipeline\SendPipe.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Context\SendContext.cs" />

@@ -1,8 +1,11 @@
 ﻿using Mediator.Net.Context;
+using Mediator.Net.Contracts;
 
 namespace Mediator.Net.Pipeline
 {
-    public interface ISendPipe : IPipe<ISendContext> 
+    public interface ISendPipe<TMessage, in TContext> : IPipe<TMessage, TContext>
+        where TMessage : ICommand
+        where TContext : IContext<TMessage>
     {
         
     }

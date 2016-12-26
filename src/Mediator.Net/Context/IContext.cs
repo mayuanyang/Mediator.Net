@@ -2,11 +2,8 @@
 
 namespace Mediator.Net.Context
 {
-    public interface IContext
-    {
-        
-    }
-    public interface IContext<out TMessage> : IContext where TMessage : IMessage
+ 
+    public interface IContext<out TMessage> where TMessage : IMessage
     {
         TMessage Message { get; }
     }

@@ -53,6 +53,9 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CommandHandlers\TestBaseCommandHandler.cs" />
+    <Compile Include="CommandShouldBeSendToItsHandler.cs" />
+    <Compile Include="Messages\TestBaseCommand.cs" />
     <Compile Include="TestTheProjectIsWorking.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
