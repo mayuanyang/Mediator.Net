@@ -4,13 +4,13 @@ using Mediator.Net.Contracts;
 
 namespace Mediator.Net.Pipeline
 {
-    public class SendPipe<TMessage, TContext> : ISendPipe<TMessage, TContext>
+    public class SendPipe<TContext, TMessage> : ISendPipe<TContext, TMessage>
         where TMessage : ICommand
         where TContext : IContext<TMessage>
     {
-        private readonly IPipe<TMessage, TContext> _pipe;
+        private readonly IPipe<TContext, TMessage> _pipe;
 
-        public SendPipe(IPipe<TMessage, TContext> next)
+        public SendPipe(IPipe<TContext, TMessage> next)
         {
             _pipe = next;
         }

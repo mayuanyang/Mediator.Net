@@ -9,13 +9,13 @@ using Mediator.Net.Contracts;
 
 namespace Mediator.Net.Pipeline
 {
-    public class ReceivePipe<TMessage, TContext> : IReceivePipe<TMessage, TContext>
+    public class ReceivePipe<TContext, TMessage> : IReceivePipe<TContext, TMessage>
         where TMessage : IMessage
         where TContext : IContext<TMessage>
     {
-        private readonly IPipe<TMessage, TContext> _next;
+        private readonly IPipe<TContext, TMessage> _next;
 
-        public ReceivePipe(IPipe<TMessage, TContext> next)
+        public ReceivePipe(IPipe<TContext, TMessage> next)
         {
             _next = next;
         }
@@ -30,7 +30,7 @@ namespace Mediator.Net.Pipeline
             var handlers = MessageHandlerRegistry.Bindings.Where(x => x.Key.GetTypeInfo() == context.Message.GetType()).ToList();
             if (!handlers.Any())
                 throw new NoHandlerFoundException(context.Message.GetType());
-            if (handlers.GetType().GenericTypeArguments.First() is ICommand && handlers.Count() > 1)
+            if (handlers.Count() > 1)
             {
                 throw new MoreThanOneCommandHandlerException(context.Message.GetType());
             }

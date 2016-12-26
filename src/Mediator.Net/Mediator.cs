@@ -8,10 +8,10 @@ namespace Mediator.Net
 {
     public class Mediator : IMediator
     {
-        private readonly IReceivePipe<IMessage, IReceiveContext<IMessage>> _receivePipe;
-        private readonly ISendPipe<ICommand, ISendContext<ICommand>>  _sendPipe;
+        private readonly IReceivePipe<IReceiveContext<IMessage>, IMessage> _receivePipe;
+        private readonly ISendPipe<ISendContext<ICommand>, ICommand>  _sendPipe;
 
-        public Mediator(IReceivePipe<IMessage, IReceiveContext<IMessage>>  receivePipe, ISendPipe<ICommand, ISendContext<ICommand>> sendPipe)
+        public Mediator(IReceivePipe<IReceiveContext<IMessage>, IMessage>  receivePipe, ISendPipe<ISendContext<ICommand>, ICommand> sendPipe)
         {
             _receivePipe = receivePipe;
             _sendPipe = sendPipe;

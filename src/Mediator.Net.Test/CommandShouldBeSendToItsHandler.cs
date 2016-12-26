@@ -19,7 +19,7 @@ namespace Mediator.Net.Test
         {
             var builder = new MediatorBuilder();
             builder.RegisterHandlersFor(this.GetType().Assembly);
-            var receivePipe = new ReceivePipe<IMessage, IReceiveContext<IMessage>>(null);
+            var receivePipe = new ReceivePipe<IReceiveContext<IMessage>, IMessage>(null);
             _mediator = new Mediator(receivePipe, null);
         }
 

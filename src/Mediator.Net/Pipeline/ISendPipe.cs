@@ -3,7 +3,7 @@ using Mediator.Net.Contracts;
 
 namespace Mediator.Net.Pipeline
 {
-    public interface ISendPipe<TMessage, in TContext> : IPipe<TMessage, TContext>
+    public interface ISendPipe<in TContext, TMessage> : IPipe<TContext, TMessage>
         where TMessage : ICommand
         where TContext : IContext<TMessage>
     {

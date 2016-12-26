@@ -3,9 +3,9 @@ using Mediator.Net.Contracts;
 
 namespace Mediator.Net.Pipeline
 {
-    public interface IPublishPipe<in TContext, TMessage> :IPipe<TContext, TMessage>
-        where TMessage : IEvent
+    public interface IPipeSpecification<TContext, TMessage>
         where TContext : IContext<TMessage>
+        where TMessage : IMessage
     {
     }
 }

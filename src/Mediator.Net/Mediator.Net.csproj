@@ -50,13 +50,14 @@
     <Compile Include="Contracts\ICommandHandler.cs" />
     <Compile Include="Contracts\IEvent.cs" />
     <Compile Include="Contracts\IEventHandler.cs" />
-    <Compile Include="IPipeConfigurator.cs" />
-    <Compile Include="IPipeSpecification.cs" />
+    <Compile Include="Pipeline\IPipeConfigurator.cs" />
+    <Compile Include="Pipeline\IPipeSpecification.cs" />
     <Compile Include="Context\IPublishContext.cs" />
     <Compile Include="Context\IReceiveContext.cs" />
     <Compile Include="Context\ISendContext.cs" />
     <Compile Include="Mediator.cs" />
     <Compile Include="MediatorBuilder.cs" />
+    <Compile Include="Pipeline\PipeConfigurator.cs" />
     <Compile Include="Pipeline\IPipe.cs" />
     <Compile Include="Pipeline\IPublishPipe.cs" />
     <Compile Include="Pipeline\ISendPipe.cs" />
