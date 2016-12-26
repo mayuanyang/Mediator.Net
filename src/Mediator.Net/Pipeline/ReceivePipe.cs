@@ -36,23 +36,27 @@ namespace Mediator.Net.Pipeline
             }
             handlers.ForEach(x =>
             {
-                var type = x.Value.GetTypeInfo();
+                var handlerType = x.Value.GetTypeInfo();
                 var messageType = context.Message.GetType();
 
-                var handleMethods = type.GetRuntimeMethods().Where(m => m.Name == "Handle");
+                var handleMethods = handlerType.GetRuntimeMethods().Where(m => m.Name == "Handle");
                 var handleMethod = handleMethods.Single(y => {
-                    var parameterTypeIsCorrect = y.GetParameters().Single().ParameterType.GenericTypeArguments.First().GetTypeInfo().IsAssignableFrom(messageType.GetTypeInfo());
+                    var parameterTypeIsCorrect = y.GetParameters().Single()
+                    .ParameterType.GenericTypeArguments.First()
+                    .GetTypeInfo()
+                    .IsAssignableFrom(messageType.GetTypeInfo());
+
                     return parameterTypeIsCorrect
                            && y.IsPublic
                            && ((y.CallingConvention & CallingConventions.HasThis) != 0);
                 });
 
-                var handler = Activator.CreateInstance(type);
+                var handler = Activator.CreateInstance(handlerType);
                 var objectTask = handleMethod.Invoke(handler, new object[] { context });
 
                 if (objectTask == null)
                 {
-                    throw new NullReferenceException(string.Format("Handler for message of type '{0}' returned null.{1}To Resolve you can try{1} 1) Return a task instead", messageType, Environment.NewLine));
+                    throw new NullReferenceException($"Handler for message of type {messageType} returned null.");
                 }
 
 
