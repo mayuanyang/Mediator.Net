@@ -58,7 +58,7 @@
     <Compile Include="Context\ISendContext.cs" />
     <Compile Include="Mediator.cs" />
     <Compile Include="MediatorBuilder.cs" />
-    <Compile Include="Pipeline\PipeConfigurator.cs" />
+    <Compile Include="Pipeline\ReceivePipeConfigurator.cs" />
     <Compile Include="Pipeline\IPipe.cs" />
     <Compile Include="Pipeline\IPublishPipe.cs" />
     <Compile Include="Pipeline\ISendPipe.cs" />

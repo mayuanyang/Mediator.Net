@@ -20,7 +20,7 @@ namespace Mediator.Net.Test
         {
             var builder = new MediatorBuilder();
             var receivePipe = builder.RegisterHandlersFor(this.GetType().Assembly)
-                .BuildReceivePipe<IReceiveContext<IMessage>, IMessage>(x =>
+                .BuildReceivePipe(x =>
             {
                 x.UseConsoleLogger1();
                 x.UseConsoleLogger2();

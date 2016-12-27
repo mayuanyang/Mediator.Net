@@ -31,44 +31,49 @@ namespace Mediator.Net.Pipeline
             }
             else
             {
-                var handlers = MessageHandlerRegistry.Bindings.Where(x => x.Key.GetTypeInfo() == context.Message.GetType()).ToList();
-                if (!handlers.Any())
-                    throw new NoHandlerFoundException(context.Message.GetType());
-                if (handlers.Count() > 1)
-                {
-                    throw new MoreThanOneCommandHandlerException(context.Message.GetType());
-                }
-                handlers.ForEach(x =>
-                {
-                    var handlerType = x.Value.GetTypeInfo();
-                    var messageType = context.Message.GetType();
-
-                    var handleMethods = handlerType.GetRuntimeMethods().Where(m => m.Name == "Handle");
-                    var handleMethod = handleMethods.Single(y =>
-                    {
-                        var parameterTypeIsCorrect = y.GetParameters().Single()
-                        .ParameterType.GenericTypeArguments.First()
-                        .GetTypeInfo()
-                        .IsAssignableFrom(messageType.GetTypeInfo());
-
-                        return parameterTypeIsCorrect
-                               && y.IsPublic
-                               && ((y.CallingConvention & CallingConventions.HasThis) != 0);
-                    });
-
-                    var handler = Activator.CreateInstance(handlerType);
-                    var objectTask = handleMethod.Invoke(handler, new object[] { context });
-
-                    if (objectTask == null)
-                    {
-                        throw new NullReferenceException($"Handler for message of type {messageType} returned null.");
-                    }
-
-
-                });
+                ConnectToHandler(context);
             }
 
             await _specification.ExecuteAfterConnect(context);
+        }
+
+        private static void ConnectToHandler(TContext context)
+        {
+            var handlers = MessageHandlerRegistry.Bindings.Where(x => x.Key.GetTypeInfo() == context.Message.GetType()).ToList();
+            if (!handlers.Any())
+                throw new NoHandlerFoundException(context.Message.GetType());
+            if (handlers.Count() > 1)
+            {
+                throw new MoreThanOneCommandHandlerException(context.Message.GetType());
+            }
+            handlers.ForEach(x =>
+            {
+                var handlerType = x.Value.GetTypeInfo();
+                var messageType = context.Message.GetType();
+
+                var handleMethods = handlerType.GetRuntimeMethods().Where(m => m.Name == "Handle");
+                var handleMethod = handleMethods.Single(y =>
+                {
+                    var parameterTypeIsCorrect = y.GetParameters().Single()
+                    .ParameterType.GenericTypeArguments.First()
+                    .GetTypeInfo()
+                    .IsAssignableFrom(messageType.GetTypeInfo());
+
+                    return parameterTypeIsCorrect
+                           && y.IsPublic
+                           && ((y.CallingConvention & CallingConventions.HasThis) != 0);
+                });
+
+                var handler = Activator.CreateInstance(handlerType);
+                var objectTask = handleMethod.Invoke(handler, new object[] { context });
+
+                if (objectTask == null)
+                {
+                    throw new NullReferenceException($"Handler for message of type {messageType} returned null.");
+                }
+
+
+            });
         }
     }
 }

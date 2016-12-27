@@ -27,7 +27,7 @@ namespace Mediator.Net.Test.Middlewares
         public Task ExecuteBeforeConnect(TContext context)
         {
             if (ShouldExecute(context))
-                Console.WriteLine("Before 1");
+                Console.WriteLine($"Before 1: {context.Message}");
             return Task.FromResult(0);
 
         }
@@ -35,7 +35,7 @@ namespace Mediator.Net.Test.Middlewares
         public Task ExecuteAfterConnect(TContext context)
         {
             if (ShouldExecute(context))
-                Console.WriteLine("After 1");
+                Console.WriteLine($"After 1: {context.Message}");
             return Task.FromResult(0);
         }
     }

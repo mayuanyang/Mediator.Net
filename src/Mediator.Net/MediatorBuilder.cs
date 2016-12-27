@@ -23,11 +23,9 @@ namespace Mediator.Net
             return this;
         }
 
-        public PipeConfigurator<TContext, TMessage> BuildReceivePipe<TContext, TMessage>(Action<IPipeConfigurator<TContext, TMessage>> configurator)
-            where TContext : IReceiveContext<TMessage> 
-            where TMessage : IMessage
+        public ReceivePipeConfigurator BuildReceivePipe(Action<IPipeConfigurator<IReceiveContext<IMessage>, IMessage>> configurator)
         {
-            var pipeConfigurator = new PipeConfigurator<TContext, TMessage>();
+            var pipeConfigurator = new ReceivePipeConfigurator();
             configurator.Invoke(pipeConfigurator);
             return pipeConfigurator;
         }
