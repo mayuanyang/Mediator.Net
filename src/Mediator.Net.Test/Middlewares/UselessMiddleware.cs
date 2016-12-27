@@ -6,28 +6,28 @@ using Mediator.Net.Pipeline;
 
 namespace Mediator.Net.Test.Middlewares
 {
-    static class ConsoleLog2
+    static class UselessMiddleware
     {
-        public static void UseConsoleLogger2<TContext, TMessage>(this IPipeConfigurator<TContext, TMessage> configurator)
+        public static void UseUselessMiddleware<TContext, TMessage>(this IPipeConfigurator<TContext, TMessage> configurator)
             where TContext : IContext<TMessage>
             where TMessage : IMessage
         {
-            configurator.AddPipeSpecification(new ConsoleLogSpecification2<TContext, TMessage>());
+            configurator.AddPipeSpecification(new ConsoleLogSpecification1<TContext, TMessage>());
         }
     }
 
-    class ConsoleLogSpecification2<TContext, TMessage> : IPipeSpecification<TContext, TMessage> where TMessage : IMessage where TContext : IContext<TMessage>
+    class UselessMiddlewareSpecification<TContext, TMessage> : IPipeSpecification<TContext, TMessage> where TMessage : IMessage where TContext : IContext<TMessage>
     {
         public bool ShouldExecute(TContext context)
         {
-            return true;
+            return false;
 
         }
 
         public Task ExecuteBeforeConnect(TContext context)
         {
             if (ShouldExecute(context))
-                Console.WriteLine("Before 2");
+                Console.WriteLine($"you should never see me: {nameof(ExecuteBeforeConnect)}");
             return Task.FromResult(0);
 
         }
@@ -35,7 +35,7 @@ namespace Mediator.Net.Test.Middlewares
         public Task ExecuteAfterConnect(TContext context)
         {
             if (ShouldExecute(context))
-                Console.WriteLine("After 2");
+                Console.WriteLine($"you should never see me: {nameof(ExecuteAfterConnect)}");
             return Task.FromResult(0);
         }
     }

@@ -54,14 +54,14 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CommandHandlers\TestBaseCommandHandler.cs" />
+    <Compile Include="UselessMiddlewareShouldNotBeExecuted.cs" />
     <Compile Include="MiddlewaresShouldBeExecutedInReverseOrder.cs" />
     <Compile Include="MiddlewaresShouldBeExecutedInOrder.cs" />
     <Compile Include="CommandShouldBeSendToItsHandler.cs" />
     <Compile Include="Messages\TestBaseCommand.cs" />
     <Compile Include="Middlewares\ConsoleLog2.cs" />
     <Compile Include="Middlewares\ConsoleLog1.cs" />
-    <Compile Include="Middlewares\ConsoleLogSpecification2.cs" />
-    <Compile Include="Middlewares\ConsoleLogSpecification1.cs" />
+    <Compile Include="Middlewares\UselessMiddleware.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TestBase.cs" />
   </ItemGroup>

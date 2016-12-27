@@ -3,7 +3,7 @@ using NUnit.Framework;
 
 namespace Mediator.Net.Test
 {
-    [TestFixture]
+   
     class TestBase
     {
         [TestFixtureTearDown]
