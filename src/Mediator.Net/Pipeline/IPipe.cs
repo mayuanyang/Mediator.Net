@@ -9,6 +9,6 @@ namespace Mediator.Net.Pipeline
         where TContext : IContext<TMessage> 
         where TMessage : IMessage
     {
-        Task Send(TContext context);
+        Task Connect(TContext context);
     }
 }

@@ -13,15 +13,21 @@ using TestStack.BDDfy;
 
 namespace Mediator.Net.Test
 {
-    class CommandShouldBeSendToItsHandler : TestBase
+    class MiddlewaresShouldBeExecutedInOrder : TestBase
     {
         private IMediator _mediator;
         public void GivenAMediator()
         {
             var builder = new MediatorBuilder();
-            builder.RegisterHandlersFor(this.GetType().Assembly);
+            var receivePipe = builder.RegisterHandlersFor(this.GetType().Assembly)
+                .BuildReceivePipe<IReceiveContext<IMessage>, IMessage>(x =>
+            {
+                x.UseConsoleLogger1();
+                x.UseConsoleLogger2();
+            })
+            .Build();
             
-            _mediator = new Mediator(new ReceivePipe<IReceiveContext<IMessage>, IMessage>(new EmptyPipeSpecification<IReceiveContext<IMessage>, IMessage>(), null), null);
+            _mediator = new Mediator(receivePipe, null);
         }
 
         public async Task WhenACommandIsSent()

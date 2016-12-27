@@ -15,9 +15,9 @@ namespace Mediator.Net.Pipeline
             _pipe = next;
         }
   
-        public Task Send(TContext context)
+        public Task Connect(TContext context)
         {
-            return _pipe.Send(context);
+            return _pipe.Connect(context);
         }
     }
 }

@@ -3,7 +3,12 @@ using Mediator.Net.Contracts;
 
 namespace Mediator.Net.Pipeline
 {
-    public interface IPipeConfigurator<TMessage, TContext>
+    public interface IPipeConfigurator
+    {
+        
+    }
+
+    public interface IPipeConfigurator<TContext, TMessage> : IPipeConfigurator
         where TContext : IContext<TMessage>
         where TMessage : IMessage
     {

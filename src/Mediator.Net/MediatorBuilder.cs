@@ -2,7 +2,9 @@
 using System.Linq;
 using System.Reflection;
 using Mediator.Net.Binding;
+using Mediator.Net.Context;
 using Mediator.Net.Contracts;
+using Mediator.Net.Pipeline;
 
 namespace Mediator.Net
 {
@@ -19,6 +21,15 @@ namespace Mediator.Net
                 });
             }
             return this;
+        }
+
+        public PipeConfigurator<TContext, TMessage> BuildReceivePipe<TContext, TMessage>(Action<IPipeConfigurator<TContext, TMessage>> configurator)
+            where TContext : IReceiveContext<TMessage> 
+            where TMessage : IMessage
+        {
+            var pipeConfigurator = new PipeConfigurator<TContext, TMessage>();
+            configurator.Invoke(pipeConfigurator);
+            return pipeConfigurator;
         }
 
         private bool IsAssignableToGenericType(Type givenType, Type genericType)

@@ -6,16 +6,16 @@ using Mediator.Net.Contracts;
 
 namespace Mediator.Net.Pipeline
 {
-    public class ReceivePipeConfigurator<TMessage, TContext> : IPipeConfigurator<TMessage, TContext> 
+    public class PipeConfigurator<TContext, TMessage> : IPipeConfigurator<TContext, TMessage>
         where TContext : IReceiveContext<TMessage>
         where TMessage : IMessage
     {
         private readonly IList<IPipeSpecification<TContext, TMessage>> _specifications;
-        public ReceivePipeConfigurator()
+        public PipeConfigurator()
         {
             _specifications = new List<IPipeSpecification<TContext, TMessage>>();
         }
-  
+
 
         public void AddPipeSpecification(IPipeSpecification<TContext, TMessage> specification)
         {
@@ -24,7 +24,27 @@ namespace Mediator.Net.Pipeline
 
         public IPipe<TContext, TMessage> Build()
         {
-            throw new System.NotImplementedException();
+            dynamic current = null;
+            for (int i = _specifications.Count - 1; i >= 0; i--)
+            {
+                if (i == _specifications.Count - 1)
+                {
+                    var thisPipe =
+                        new ReceivePipe<IReceiveContext<IMessage>, IMessage>(
+                            (IPipeSpecification<IReceiveContext<IMessage>, IMessage>) _specifications[i], null);
+                    current = thisPipe;
+                }
+                else
+                {
+                    var thisPipe =
+                        new ReceivePipe<IReceiveContext<IMessage>, IMessage>(
+                            (IPipeSpecification<IReceiveContext<IMessage>, IMessage>)_specifications[i], current);
+                    current = thisPipe;
+                }
+                 
+                
+            }
+            return current;
         }
     }
 }

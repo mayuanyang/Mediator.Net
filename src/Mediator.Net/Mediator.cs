@@ -8,10 +8,10 @@ namespace Mediator.Net
 {
     public class Mediator : IMediator
     {
-        private readonly IReceivePipe<IReceiveContext<IMessage>, IMessage> _receivePipe;
+        private readonly IPipe<IReceiveContext<IMessage>, IMessage> _receivePipe;
         private readonly ISendPipe<ISendContext<ICommand>, ICommand>  _sendPipe;
 
-        public Mediator(IReceivePipe<IReceiveContext<IMessage>, IMessage>  receivePipe, ISendPipe<ISendContext<ICommand>, ICommand> sendPipe)
+        public Mediator(IPipe<IReceiveContext<IMessage>, IMessage>  receivePipe, ISendPipe<ISendContext<ICommand>, ICommand> sendPipe)
         {
             _receivePipe = receivePipe;
             _sendPipe = sendPipe;
@@ -21,8 +21,7 @@ namespace Mediator.Net
         public Task SendAsync<TMessage>(TMessage cmd) where TMessage : ICommand
         {
             var receiveContext = (IReceiveContext<TMessage>)Activator.CreateInstance(typeof(ReceiveContext<>).MakeGenericType(cmd.GetType()), cmd);
-            var sendMethod = _receivePipe.GetType().GetMethod("Send");
-            //var genericMethod = sendMethod.MakeGenericMethod(receiveContext.GetType());
+            var sendMethod = _receivePipe.GetType().GetMethod("Connect");
             return (Task)sendMethod.Invoke(_receivePipe, new object[] { receiveContext } );
         }
 
