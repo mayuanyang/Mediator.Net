@@ -7,13 +7,14 @@ using Mediator.Net.Context;
 using Mediator.Net.Contracts;
 
 
+
 namespace Mediator.Net.Pipeline
 {
     public class ReceivePipe<TContext> : IReceivePipe<TContext>
         where TContext : IContext<IMessage>
     {
         private readonly IPipeSpecification<TContext> _specification;
-     
+        
 
         public ReceivePipe(IPipeSpecification<TContext> specification, IPipe<TContext> next)
         {
@@ -38,7 +39,7 @@ namespace Mediator.Net.Pipeline
 
         public IPipe<TContext> Next { get; internal set; }
 
-        private static void ConnectToHandler(TContext context)
+        private void ConnectToHandler(TContext context)
         {
             var handlers = MessageHandlerRegistry.Bindings.Where(x => x.Key.GetTypeInfo() == context.Message.GetType()).ToList();
             if (!handlers.Any())

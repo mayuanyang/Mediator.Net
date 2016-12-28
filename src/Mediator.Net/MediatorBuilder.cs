@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using Mediator.Net.Binding;
@@ -10,7 +11,7 @@ namespace Mediator.Net
 {
     public class MediatorBuilder
     {
-        public MediatorBuilder RegisterHandlersFor(params Assembly[] assemblies)
+        public MediatorBuilder RegisterHandlers(params Assembly[] assemblies)
         {
             foreach (var assembly in assemblies)
             {
@@ -20,6 +21,12 @@ namespace Mediator.Net
                     MessageHandlerRegistry.Bindings.Add(x.GetInterfaces().First().GenericTypeArguments[0].GetTypeInfo(), x.GetTypeInfo());
                 });
             }
+            return this;
+        }
+
+        public MediatorBuilder RegisterHandlers(IDictionary<Type, Type> messageHandlerPairs)
+        {
+            MessageHandlerRegistry.Bindings = messageHandlerPairs;
             return this;
         }
 

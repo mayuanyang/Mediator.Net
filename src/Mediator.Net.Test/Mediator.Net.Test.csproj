@@ -30,6 +30,14 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Castle.Core, Version=3.3.0.0, Culture=neutral, PublicKeyToken=407dd0808d44fbdc, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Castle.Core.3.3.3\lib\net45\Castle.Core.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Moq, Version=4.5.29.0, Culture=neutral, PublicKeyToken=69f491c39445e920, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Moq.4.5.29\lib\net45\Moq.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="nunit.framework, Version=2.6.4.14350, Culture=neutral, PublicKeyToken=96d09a1eb7f44a77, processorArchitecture=MSIL">
       <HintPath>..\..\packages\NUnit.2.6.4\lib\nunit.framework.dll</HintPath>
       <Private>True</Private>
@@ -53,7 +61,11 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CommandHandlers\DerivedTestBaseCommandHandler.cs" />
     <Compile Include="CommandHandlers\TestBaseCommandHandler.cs" />
+    <Compile Include="MoreDeviredMessageShouldGetExecutedOnce.cs" />
+    <Compile Include="NoHandlerForMessageShouldThrow.cs" />
+    <Compile Include="Messages\DerivedTestBaseCommand.cs" />
     <Compile Include="Middlewares\ConsoleLog3.cs" />
     <Compile Include="UselessMiddlewareShouldNotBeExecuted.cs" />
     <Compile Include="MiddlewaresShouldBeExecutedInReverseOrder.cs" />

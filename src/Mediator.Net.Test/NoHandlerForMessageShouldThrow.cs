@@ -13,14 +13,19 @@ using Shouldly;
 
 namespace Mediator.Net.Test
 {
-    class CommandShouldBeSendToItsHandler : TestBase
+    class NoHandlerForMessageShouldThrow : TestBase
     {
         private IMediator _mediator;
         private Task _task;
         public void GivenAMediator()
         {
           
-            var binding = new Dictionary<Type, Type> {{typeof(TestBaseCommand), typeof(TestBaseCommandHandler)}};
+            var binding = new Dictionary<Type, Type>
+            {
+                {typeof(TestBaseCommand), typeof(TestBaseCommandHandler)},
+                
+                
+            };
             var builder = new MediatorBuilder();
             builder.RegisterHandlers(binding);
             var receivePipe =
@@ -31,12 +36,12 @@ namespace Mediator.Net.Test
 
         public void WhenACommandIsSent()
         {
-            _task = _mediator.SendAsync(new TestBaseCommand(Guid.NewGuid()));
+            _task = _mediator.SendAsync(new DerivedTestBaseCommand(Guid.NewGuid()));
         }
 
         public void ThenItShouldReachTheRightHandler()
         {
-            _task.Status.ShouldBe(TaskStatus.RanToCompletion);
+            _task.ShouldThrow<NoHandlerFoundException>();
         }
 
         [Test]
