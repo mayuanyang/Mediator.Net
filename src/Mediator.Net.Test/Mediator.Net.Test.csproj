@@ -55,8 +55,6 @@
   <ItemGroup>
     <Compile Include="CommandHandlers\TestBaseCommandHandler.cs" />
     <Compile Include="Middlewares\ConsoleLog3.cs" />
-    <Compile Include="SendPipeIndependantlyConnectedToReceivePipe.cs" />
-    <Compile Include="SendPipeInterConnectedToReceivePipe.cs" />
     <Compile Include="UselessMiddlewareShouldNotBeExecuted.cs" />
     <Compile Include="MiddlewaresShouldBeExecutedInReverseOrder.cs" />
     <Compile Include="MiddlewaresShouldBeExecutedInOrder.cs" />

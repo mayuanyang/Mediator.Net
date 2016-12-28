@@ -23,7 +23,7 @@ namespace Mediator.Net.Test
             var receivePipe =
                 new ReceivePipe<IContext<IMessage>>(
                     new EmptyPipeSpecification<IContext<IMessage>>(), null);
-            _mediator = new Mediator(receivePipe, null, null, ConnectionMode.InterConnect);
+            _mediator = new Mediator(receivePipe, null);
         }
 
         public async Task WhenACommandIsSent()
