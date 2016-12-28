@@ -1,11 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
-using Mediator.Net.Context;
-using Mediator.Net.Contracts;
-using Mediator.Net.Pipeline;
 using Mediator.Net.Test.Messages;
 using Mediator.Net.Test.Middlewares;
 using NUnit.Framework;
@@ -27,7 +21,7 @@ namespace Mediator.Net.Test
             })
             .Build();
             
-            _mediator = new Mediator(receivePipe, null);
+            _mediator = new Mediator(receivePipe, null, null);
         }
 
         public async Task WhenACommandIsSent()

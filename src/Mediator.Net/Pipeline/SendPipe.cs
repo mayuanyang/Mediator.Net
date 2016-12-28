@@ -8,16 +8,24 @@ namespace Mediator.Net.Pipeline
         where TMessage : ICommand
         where TContext : IContext<TMessage>
     {
-        private readonly IPipe<TContext, TMessage> _pipe;
+        private readonly IPipeSpecification<TContext, TMessage> _specification;
+        private readonly IPipe<TContext, TMessage> _next;
 
-        public SendPipe(IPipe<TContext, TMessage> next)
+        public SendPipe(IPipeSpecification<TContext, TMessage> specification, IPipe<TContext, TMessage> next)
         {
-            _pipe = next;
+            _specification = specification;
+            _next = next;
         }
   
-        public Task Connect(TContext context)
+        public async Task Connect(TContext context)
         {
-            return _pipe.Connect(context);
+            await _specification.ExecuteBeforeConnect(context);
+            if (_next != null)
+            {
+                await _next.Connect(context);
+            }
+          
+            await _specification.ExecuteAfterConnect(context);
         }
     }
 }

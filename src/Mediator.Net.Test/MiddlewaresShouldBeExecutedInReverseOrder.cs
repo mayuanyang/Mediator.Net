@@ -23,7 +23,7 @@ namespace Mediator.Net.Test
             })
             .Build();
             
-            _mediator = new Mediator(receivePipe, null);
+            _mediator = new Mediator(receivePipe, null, null);
         }
 
         public async Task WhenACommandIsSent()

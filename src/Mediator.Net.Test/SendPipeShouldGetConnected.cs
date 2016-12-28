@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Threading.Tasks;
-using Mediator.Net.Context;
-using Mediator.Net.Contracts;
 using Mediator.Net.Test.Messages;
 using Mediator.Net.Test.Middlewares;
 using NUnit.Framework;
@@ -9,7 +7,7 @@ using TestStack.BDDfy;
 
 namespace Mediator.Net.Test
 {
-    class UselessMiddlewareShouldNotBeExecuted : TestBase
+    class SendPipeShouldGetConnected : TestBase
     {
         private IMediator _mediator;
         public void GivenAMediator()
@@ -18,13 +16,19 @@ namespace Mediator.Net.Test
             var receivePipe = builder.RegisterHandlersFor(this.GetType().Assembly)
                 .BuildReceivePipe(x =>
             {
-                x.UseConsoleLogger2();
                 x.UseConsoleLogger1();
-                x.UseUselessMiddleware();
+                x.UseConsoleLogger2();
             })
             .Build();
-            
-            _mediator = new Mediator(receivePipe, null, null);
+
+            var sendPipe = builder.BuildSendPipe(x =>
+                {
+                    x.UseConsoleLogger1();
+                    x.UseConsoleLogger2();
+                })
+            .Build();
+
+            _mediator = new Mediator(receivePipe, null, sendPipe);
         }
 
         public async Task WhenACommandIsSent()

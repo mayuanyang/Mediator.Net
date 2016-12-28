@@ -10,7 +10,7 @@ namespace Mediator.Net.Context
             Message = message;
         }
         public TMessasge Message { get; }
-        public Task Publish(IEvent message)
+        public Task PublishAsync(IEvent message)
         {
             throw new System.NotImplementedException();
         }

@@ -7,6 +7,6 @@ namespace Mediator.Net.Context
         IContext<TMessage> 
         where TMessage : IMessage
     {
-        Task Publish(IEvent message);
+        Task PublishAsync(IEvent message);
     }
 }

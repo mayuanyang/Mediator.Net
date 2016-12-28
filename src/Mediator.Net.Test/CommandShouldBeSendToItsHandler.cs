@@ -20,8 +20,10 @@ namespace Mediator.Net.Test
         {
             var builder = new MediatorBuilder();
             builder.RegisterHandlersFor(this.GetType().Assembly);
-            
-            _mediator = new Mediator(new ReceivePipe<IReceiveContext<IMessage>, IMessage>(new EmptyPipeSpecification<IReceiveContext<IMessage>, IMessage>(), null), null);
+            var receivePipe =
+                new ReceivePipe<IReceiveContext<IMessage>, IMessage>(
+                    new EmptyPipeSpecification<IReceiveContext<IMessage>, IMessage>(), null);
+            _mediator = new Mediator(receivePipe, null, null);
         }
 
         public async Task WhenACommandIsSent()
