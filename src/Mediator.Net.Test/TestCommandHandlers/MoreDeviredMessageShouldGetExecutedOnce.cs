@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Mediator.Net.Binding;
 using Mediator.Net.Context;
 using Mediator.Net.Contracts;
 using Mediator.Net.Pipeline;
@@ -13,14 +14,20 @@ using Shouldly;
 
 namespace Mediator.Net.Test
 {
-    class CommandShouldBeSendToItsHandler : TestBase
+    class MoreDeviredMessageShouldGetExecutedOnce : TestBase
     {
         private IMediator _mediator;
         private Task _task;
         public void GivenAMediator()
         {
           
-            var binding = new Dictionary<Type, Type> {{typeof(TestBaseCommand), typeof(TestBaseCommandHandler)}};
+            var binding = new List<MessageBinding>()
+            {
+                new MessageBinding(typeof(TestBaseCommand), typeof(TestBaseCommandHandler)),
+                new MessageBinding(typeof(DerivedTestBaseCommand), typeof(DerivedTestBaseCommandHandler)),
+                
+                
+            };
             var builder = new MediatorBuilder();
             builder.RegisterHandlers(binding);
             var receivePipe =
@@ -31,12 +38,13 @@ namespace Mediator.Net.Test
 
         public void WhenACommandIsSent()
         {
-            _task = _mediator.SendAsync(new TestBaseCommand(Guid.NewGuid()));
+             _task = _mediator.SendAsync(new DerivedTestBaseCommand(Guid.NewGuid()));
         }
 
         public void ThenItShouldReachTheRightHandler()
         {
             _task.Status.ShouldBe(TaskStatus.RanToCompletion);
+          
         }
 
         [Test]

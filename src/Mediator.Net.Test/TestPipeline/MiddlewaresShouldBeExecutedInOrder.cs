@@ -1,8 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using Mediator.Net.Context;
-using Mediator.Net.Contracts;
+using Mediator.Net.Binding;
 using Mediator.Net.Pipeline;
 using Mediator.Net.Test.CommandHandlers;
 using Mediator.Net.Test.Messages;
@@ -12,19 +11,18 @@ using TestStack.BDDfy;
 
 namespace Mediator.Net.Test
 {
-    class UselessMiddlewareShouldNotBeExecuted : TestBase
+    class MiddlewaresShouldBeExecutedInOrder : TestBase
     {
         private IMediator _mediator;
         public void GivenAMediator()
         {
-            var binding = new Dictionary<Type, Type> { { typeof(TestBaseCommand), typeof(TestBaseCommandHandler) } };
+            var binding = new List<MessageBinding>() { new MessageBinding( typeof(TestBaseCommand), typeof(TestBaseCommandHandler) )};
             var builder = new MediatorBuilder();
             var receivePipe = builder.RegisterHandlers(binding)
                 .BuildPipe(x =>
             {
-                x.UseConsoleLogger2();
                 x.UseConsoleLogger1();
-                x.UseUselessMiddleware();
+                x.UseConsoleLogger2();
             })
             .Build();
             

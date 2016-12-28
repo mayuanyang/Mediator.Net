@@ -9,7 +9,7 @@ namespace Mediator.Net.Test
         [TestFixtureTearDown]
         public void Teardown()
         {
-            MessageHandlerRegistry.Bindings.Clear();
+            MessageHandlerRegistry.MessageBindings.Clear();
         }
     }
 }

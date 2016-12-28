@@ -1,47 +1,45 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Mediator.Net.Binding;
 using Mediator.Net.Context;
 using Mediator.Net.Contracts;
 using Mediator.Net.Pipeline;
 using Mediator.Net.Test.CommandHandlers;
 using Mediator.Net.Test.Messages;
+using Mediator.Net.Test.Middlewares;
 using NUnit.Framework;
 using TestStack.BDDfy;
-using Moq;
-using Shouldly;
 
 namespace Mediator.Net.Test
 {
-    class NoHandlerForMessageShouldThrow : TestBase
+    class UselessMiddlewareShouldNotBeExecuted : TestBase
     {
         private IMediator _mediator;
-        private Task _task;
         public void GivenAMediator()
         {
-          
-            var binding = new Dictionary<Type, Type>
-            {
-                {typeof(TestBaseCommand), typeof(TestBaseCommandHandler)},
-                
-                
-            };
+            var binding = new List<MessageBinding>() { new MessageBinding( typeof(TestBaseCommand), typeof(TestBaseCommandHandler) ) };
             var builder = new MediatorBuilder();
-            builder.RegisterHandlers(binding);
-            var receivePipe =
-                new ReceivePipe<IContext<IMessage>>(
-                    new EmptyPipeSpecification<IContext<IMessage>>(), null);
+            var receivePipe = builder.RegisterHandlers(binding)
+                .BuildPipe(x =>
+            {
+                x.UseConsoleLogger2();
+                x.UseConsoleLogger1();
+                x.UseUselessMiddleware();
+            })
+            .Build();
+            
             _mediator = new Mediator(receivePipe, null);
         }
 
-        public void WhenACommandIsSent()
+        public async Task WhenACommandIsSent()
         {
-            _task = _mediator.SendAsync(new DerivedTestBaseCommand(Guid.NewGuid()));
+            await _mediator.SendAsync(new TestBaseCommand(Guid.NewGuid()));
         }
 
         public void ThenItShouldReachTheRightHandler()
         {
-            _task.ShouldThrow<NoHandlerFoundException>();
+            
         }
 
         [Test]

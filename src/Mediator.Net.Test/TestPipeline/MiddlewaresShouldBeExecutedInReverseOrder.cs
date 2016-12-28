@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Mediator.Net.Binding;
 using Mediator.Net.Context;
 using Mediator.Net.Contracts;
 using Mediator.Net.Pipeline;
@@ -17,7 +18,7 @@ namespace Mediator.Net.Test
         private IMediator _mediator;
         public void GivenAMediator()
         {
-            var binding = new Dictionary<Type, Type> { { typeof(TestBaseCommand), typeof(TestBaseCommandHandler) } };
+            var binding = new List<MessageBinding>() { new MessageBinding( typeof(TestBaseCommand), typeof(TestBaseCommandHandler) ) };
             var builder = new MediatorBuilder();
             var receivePipe = builder.RegisterHandlers(binding)
                 .BuildPipe(x =>

@@ -41,7 +41,7 @@ namespace Mediator.Net.Pipeline
 
         private void ConnectToHandler(TContext context)
         {
-            var handlers = MessageHandlerRegistry.Bindings.Where(x => x.Key.GetTypeInfo() == context.Message.GetType()).ToList();
+            var handlers = MessageHandlerRegistry.MessageBindings.Where(x => x.MessageType.GetTypeInfo() == context.Message.GetType()).ToList();
             if (!handlers.Any())
                 throw new NoHandlerFoundException(context.Message.GetType());
             if (handlers.Count() > 1)
@@ -50,7 +50,7 @@ namespace Mediator.Net.Pipeline
             }
             handlers.ForEach(x =>
             {
-                var handlerType = x.Value.GetTypeInfo();
+                var handlerType = x.HandlerType.GetTypeInfo();
                 var messageType = context.Message.GetType();
 
                 var handleMethods = handlerType.GetRuntimeMethods().Where(m => m.Name == "Handle");

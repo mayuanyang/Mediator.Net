@@ -18,15 +18,15 @@ namespace Mediator.Net
                 var commandHandlers = assembly.GetTypes().Where(x => IsAssignableToGenericType(x, typeof(ICommandHandler<>))).ToList();
                 commandHandlers.ForEach(x =>
                 {
-                    MessageHandlerRegistry.Bindings.Add(x.GetInterfaces().First().GenericTypeArguments[0].GetTypeInfo(), x.GetTypeInfo());
+                    MessageHandlerRegistry.MessageBindings.Add(new MessageBinding(x.GetInterfaces().First().GenericTypeArguments[0].GetTypeInfo(), x.GetTypeInfo()));
                 });
             }
             return this;
         }
 
-        public MediatorBuilder RegisterHandlers(IDictionary<Type, Type> messageHandlerPairs)
+        public MediatorBuilder RegisterHandlers(IList<MessageBinding> messageHandlerPairs)
         {
-            MessageHandlerRegistry.Bindings = messageHandlerPairs;
+            MessageHandlerRegistry.MessageBindings = messageHandlerPairs;
             return this;
         }
 
