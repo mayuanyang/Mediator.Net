@@ -23,20 +23,14 @@ namespace Mediator.Net
             return this;
         }
 
-        public ReceivePipeConfigurator BuildReceivePipe(Action<IPipeConfigurator<IReceiveContext<IMessage>, IMessage>> configurator)
+        public ReceivePipeConfigurator BuildPipe(Action<IPipeConfigurator<IContext<IMessage>>> configurator)
         {
             var pipeConfigurator = new ReceivePipeConfigurator();
             configurator.Invoke(pipeConfigurator);
             return pipeConfigurator;
         }
 
-        public SendPipeConfigurator BuildSendPipe(Action<IPipeConfigurator<ISendContext<ICommand>, ICommand>> configurator)
-        {
-            var pipeConfigurator = new SendPipeConfigurator();
-            configurator.Invoke(pipeConfigurator);
-            return pipeConfigurator;
-        }
-
+  
         private bool IsAssignableToGenericType(Type givenType, Type genericType)
         {
             var interfaceTypes = givenType.GetInterfaces();

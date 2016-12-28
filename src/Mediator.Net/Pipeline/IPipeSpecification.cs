@@ -4,9 +4,8 @@ using Mediator.Net.Contracts;
 
 namespace Mediator.Net.Pipeline
 {
-    public interface IPipeSpecification<TContext, TMessage>
-        where TContext : IContext<TMessage>
-        where TMessage : IMessage
+    public interface IPipeSpecification<TContext>
+        where TContext : IContext<IMessage>
     {
         bool ShouldExecute(TContext context);
 

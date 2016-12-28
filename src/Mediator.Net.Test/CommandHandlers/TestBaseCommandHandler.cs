@@ -18,11 +18,11 @@ namespace Mediator.Net.Test.CommandHandlers
         {
             _id = id;
         }
-        public async Task Handle(ReceiveContext<TestBaseCommand> context)
-        {
-            await Console.Out.WriteLineAsync(context.Message.Id.ToString());
 
-           
+        public Task Handle(ReceiveContext<TestBaseCommand> context)
+        {
+            Console.WriteLine(context.Message.Id);
+            return Task.FromResult(0);
         }
     }
 }

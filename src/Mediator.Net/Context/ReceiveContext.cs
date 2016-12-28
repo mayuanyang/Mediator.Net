@@ -3,7 +3,8 @@ using Mediator.Net.Contracts;
 
 namespace Mediator.Net.Context
 {
-    public class ReceiveContext<TMessasge> : IReceiveContext<TMessasge>, IMessage where TMessasge : IMessage
+    public class ReceiveContext<TMessasge> : IReceiveContext<TMessasge>
+        where TMessasge : IMessage
     {
         public ReceiveContext(TMessasge message)
         {

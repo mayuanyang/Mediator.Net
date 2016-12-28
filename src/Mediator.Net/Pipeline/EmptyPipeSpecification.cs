@@ -5,9 +5,8 @@ using Mediator.Net.Contracts;
 
 namespace Mediator.Net.Pipeline
 {
-    public class EmptyPipeSpecification<TContext, TMessage> : IPipeSpecification<TContext, TMessage> 
-        where TContext : IContext<TMessage> 
-        where TMessage : IMessage
+    public class EmptyPipeSpecification<TContext> : IPipeSpecification<TContext> 
+        where TContext : IContext<IMessage> 
     {
         public bool ShouldExecute(TContext context)
         {

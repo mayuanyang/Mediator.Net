@@ -4,28 +4,29 @@ using Mediator.Net.Contracts;
 
 namespace Mediator.Net.Pipeline
 {
-    public class SendPipe<TContext, TMessage> : ISendPipe<TContext, TMessage>
-        where TMessage : ICommand
-        where TContext : IContext<TMessage>
+    public class SendPipe<TContext> : ISendPipe<TContext>
+        where TContext : IContext<ICommand>
     {
-        private readonly IPipeSpecification<TContext, TMessage> _specification;
-        private readonly IPipe<TContext, TMessage> _next;
+        private readonly IPipeSpecification<TContext> _specification;
+   
 
-        public SendPipe(IPipeSpecification<TContext, TMessage> specification, IPipe<TContext, TMessage> next)
+        public SendPipe(IPipeSpecification<TContext> specification, IPipe<TContext> next)
         {
+            Next = next;
             _specification = specification;
-            _next = next;
         }
   
         public async Task Connect(TContext context)
         {
             await _specification.ExecuteBeforeConnect(context);
-            if (_next != null)
+            if (Next != null)
             {
-                await _next.Connect(context);
+                await Next.Connect(context);
             }
           
             await _specification.ExecuteAfterConnect(context);
         }
+
+        public IPipe<TContext> Next { get; internal set; }
     }
 }

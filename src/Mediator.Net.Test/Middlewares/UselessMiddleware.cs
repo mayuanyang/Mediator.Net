@@ -8,15 +8,15 @@ namespace Mediator.Net.Test.Middlewares
 {
     static class UselessMiddleware
     {
-        public static void UseUselessMiddleware<TContext, TMessage>(this IPipeConfigurator<TContext, TMessage> configurator)
-            where TContext : IContext<TMessage>
-            where TMessage : IMessage
+        public static void UseUselessMiddleware<TContext>(this IPipeConfigurator<TContext> configurator)
+            where TContext : IContext<IMessage>
         {
-            configurator.AddPipeSpecification(new ConsoleLogSpecification1<TContext, TMessage>());
+            configurator.AddPipeSpecification(new ConsoleLogSpecification1<TContext>());
         }
     }
 
-    class UselessMiddlewareSpecification<TContext, TMessage> : IPipeSpecification<TContext, TMessage> where TMessage : IMessage where TContext : IContext<TMessage>
+    class UselessMiddlewareSpecification<TContext> : IPipeSpecification<TContext> 
+        where TContext : IContext<IMessage>
     {
         public bool ShouldExecute(TContext context)
         {

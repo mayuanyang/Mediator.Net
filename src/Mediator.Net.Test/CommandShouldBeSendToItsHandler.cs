@@ -21,9 +21,9 @@ namespace Mediator.Net.Test
             var builder = new MediatorBuilder();
             builder.RegisterHandlersFor(this.GetType().Assembly);
             var receivePipe =
-                new ReceivePipe<IReceiveContext<IMessage>, IMessage>(
-                    new EmptyPipeSpecification<IReceiveContext<IMessage>, IMessage>(), null);
-            _mediator = new Mediator(receivePipe, null, null);
+                new ReceivePipe<IContext<IMessage>>(
+                    new EmptyPipeSpecification<IContext<IMessage>>(), null);
+            _mediator = new Mediator(receivePipe, null, null, ConnectionMode.InterConnect);
         }
 
         public async Task WhenACommandIsSent()

@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 using Mediator.Net.Context;
 using Mediator.Net.Contracts;
+using Mediator.Net.Pipeline;
 using Mediator.Net.Test.Messages;
 using Mediator.Net.Test.Middlewares;
 using NUnit.Framework;
@@ -16,14 +17,14 @@ namespace Mediator.Net.Test
         {
             var builder = new MediatorBuilder();
             var receivePipe = builder.RegisterHandlersFor(this.GetType().Assembly)
-                .BuildReceivePipe(x =>
+                .BuildPipe(x =>
             {
                 x.UseConsoleLogger2();
                 x.UseConsoleLogger1();
             })
             .Build();
             
-            _mediator = new Mediator(receivePipe, null, null);
+            _mediator = new Mediator(receivePipe, null, null, ConnectionMode.InterConnect);
         }
 
         public async Task WhenACommandIsSent()

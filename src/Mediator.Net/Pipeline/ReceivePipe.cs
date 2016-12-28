@@ -9,25 +9,24 @@ using Mediator.Net.Contracts;
 
 namespace Mediator.Net.Pipeline
 {
-    public class ReceivePipe<TContext, TMessage> : IReceivePipe<TContext, TMessage>
-        where TMessage : IMessage
-        where TContext : IContext<TMessage>
+    public class ReceivePipe<TContext> : IReceivePipe<TContext>
+        where TContext : IContext<IMessage>
     {
-        private readonly IPipeSpecification<TContext, TMessage> _specification;
-        private readonly IPipe<TContext, TMessage> _next;
+        private readonly IPipeSpecification<TContext> _specification;
+     
 
-        public ReceivePipe(IPipeSpecification<TContext, TMessage> specification,IPipe<TContext, TMessage> next)
+        public ReceivePipe(IPipeSpecification<TContext> specification, IPipe<TContext> next)
         {
             _specification = specification;
-            _next = next;
+            Next = next;
         }
 
         public async Task Connect(TContext context)
         {
             await _specification.ExecuteBeforeConnect(context);
-            if (_next != null)
+            if (Next != null)
             {
-                await _next.Connect(context);
+                await Next.Connect(context);
             }
             else
             {
@@ -36,6 +35,8 @@ namespace Mediator.Net.Pipeline
 
             await _specification.ExecuteAfterConnect(context);
         }
+
+        public IPipe<TContext> Next { get; internal set; }
 
         private static void ConnectToHandler(TContext context)
         {

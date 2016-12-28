@@ -4,12 +4,11 @@ using Mediator.Net.Contracts;
 namespace Mediator.Net.Pipeline
 {
    
-    public interface IPipeConfigurator<TContext, TMessage>
-        where TContext : IContext<TMessage>
-        where TMessage : IMessage
+    public interface IPipeConfigurator<TContext>
+        where TContext : IContext<IMessage>
     {
-        void AddPipeSpecification(IPipeSpecification<TContext, TMessage> specification);
+        void AddPipeSpecification(IPipeSpecification<TContext> specification);
 
-        IPipe<TContext, TMessage> Build();
+        IPipe<TContext> Build();
     }
 }
