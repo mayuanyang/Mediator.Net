@@ -8,11 +8,10 @@ using Mediator.Net.Pipeline;
 using Mediator.Net.Test.CommandHandlers;
 using Mediator.Net.Test.Messages;
 using NUnit.Framework;
-using TestStack.BDDfy;
-using Moq;
 using Shouldly;
+using TestStack.BDDfy;
 
-namespace Mediator.Net.Test
+namespace Mediator.Net.Test.TestCommandHandlers
 {
     class CommandShouldBeSendToItsHandler : TestBase
     {
@@ -20,10 +19,13 @@ namespace Mediator.Net.Test
         private Task _task;
         public void GivenAMediator()
         {
-          
-            var binding = new List<MessageBinding>{new MessageBinding(typeof(TestBaseCommand), typeof(TestBaseCommandHandler))};
+                     
             var builder = new MediatorBuilder();
-            builder.RegisterHandlers(binding);
+            builder.RegisterHandlers(() =>
+            {
+                var binding = new List<MessageBinding> { new MessageBinding(typeof(TestBaseCommand), typeof(TestBaseCommandHandler)) };
+                return binding;
+            });
             var receivePipe =
                 new ReceivePipe<IContext<IMessage>>(
                     new EmptyPipeSpecification<IContext<IMessage>>(), null);

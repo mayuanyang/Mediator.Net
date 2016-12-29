@@ -14,7 +14,7 @@ namespace Mediator.Net.Test
     class MiddlewaresShouldBeExecutedInOrder : TestBase
     {
         private IMediator _mediator;
-        public void GivenAMediator()
+        public void GivenAMediatorAndTwoMiddlewares()
         {
             var binding = new List<MessageBinding>() { new MessageBinding( typeof(TestBaseCommand), typeof(TestBaseCommandHandler) )};
             var builder = new MediatorBuilder();
@@ -34,7 +34,7 @@ namespace Mediator.Net.Test
             await _mediator.SendAsync(new TestBaseCommand(Guid.NewGuid()));
         }
 
-        public void ThenItShouldReachTheRightHandler()
+        public void ThenTheMiddlewaresShouldBeExecutedInOrder()
         {
             
         }

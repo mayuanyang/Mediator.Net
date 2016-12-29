@@ -64,6 +64,7 @@
     <Compile Include="CommandHandlers\DerivedTestBaseCommandHandler.cs" />
     <Compile Include="CommandHandlers\TestBaseCommandHandler.cs" />
     <Compile Include="TestCommandHandlers\MoreDeviredMessageShouldGetExecutedOnce.cs" />
+    <Compile Include="TestCommandHandlers\OneCommandMultiHandleresShouldThrowException.cs" />
     <Compile Include="TestCommandHandlers\NoHandlerForMessageShouldThrow.cs" />
     <Compile Include="Messages\DerivedTestBaseCommand.cs" />
     <Compile Include="Middlewares\ConsoleLog3.cs" />

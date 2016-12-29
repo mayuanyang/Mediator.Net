@@ -30,6 +30,13 @@ namespace Mediator.Net
             return this;
         }
 
+        public MediatorBuilder RegisterHandlers(Func<IList<MessageBinding>> setupBindings)
+        {
+            var result = setupBindings.Invoke();
+            MessageHandlerRegistry.MessageBindings = (IList<MessageBinding>) result;
+            return this;
+        }
+
         public ReceivePipeConfigurator BuildPipe(Action<IPipeConfigurator<IContext<IMessage>>> configurator)
         {
             var pipeConfigurator = new ReceivePipeConfigurator();

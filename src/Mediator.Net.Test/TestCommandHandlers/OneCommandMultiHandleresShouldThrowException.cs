@@ -13,21 +13,25 @@ using TestStack.BDDfy;
 
 namespace Mediator.Net.Test.TestCommandHandlers
 {
-    class MoreDeviredMessageShouldGetExecutedOnce : TestBase
+    class OneCommandMultiHandleresShouldThrowException : TestBase
     {
         private IMediator _mediator;
         private Task _task;
-        public void GivenAMediator()
+        private MediatorBuilder _builder;
+        public void GivenAMediatorBuilder()
         {
+            _builder = new MediatorBuilder();
+        }
 
-
-            var builder = new MediatorBuilder();
-            builder.RegisterHandlers(() =>
+        public void AndGivenABindingWithOneCommandMultipleHandlers()
+        {
+            _builder.RegisterHandlers(() =>
             {
                 var binding = new List<MessageBinding>()
                 {
                     new MessageBinding(typeof(TestBaseCommand), typeof(TestBaseCommandHandler)),
-                    new MessageBinding(typeof(DerivedTestBaseCommand), typeof(DerivedTestBaseCommandHandler)),
+                    new MessageBinding(typeof(TestBaseCommand), typeof(TestBaseCommandHandler)),
+
                 };
                 return binding;
             });
@@ -37,15 +41,14 @@ namespace Mediator.Net.Test.TestCommandHandlers
             _mediator = new Mediator(receivePipe, null);
         }
 
-        public void WhenAMoreDerivedCommandIsSent()
+        public void WhenACommandIsSent()
         {
-            _task = _mediator.SendAsync(new DerivedTestBaseCommand(Guid.NewGuid()));
+            _task = _mediator.SendAsync(new TestBaseCommand(Guid.NewGuid()));
         }
 
-        public void ThenItShouldReachTheRightHandler()
+        public void ThenItShouldThrowNoHandlerFoundException()
         {
-            _task.Status.ShouldBe(TaskStatus.RanToCompletion);
-
+            _task.ShouldThrow<MoreThanOneCommandHandlerException>();
         }
 
         [Test]

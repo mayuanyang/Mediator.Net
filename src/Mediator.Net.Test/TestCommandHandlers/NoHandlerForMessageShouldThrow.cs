@@ -8,11 +8,10 @@ using Mediator.Net.Pipeline;
 using Mediator.Net.Test.CommandHandlers;
 using Mediator.Net.Test.Messages;
 using NUnit.Framework;
-using TestStack.BDDfy;
-using Moq;
 using Shouldly;
+using TestStack.BDDfy;
 
-namespace Mediator.Net.Test
+namespace Mediator.Net.Test.TestCommandHandlers
 {
     class NoHandlerForMessageShouldThrow : TestBase
     {
@@ -21,14 +20,17 @@ namespace Mediator.Net.Test
         public void GivenAMediator()
         {
           
-            var binding = new List<MessageBinding>()
-            {
-                new MessageBinding(typeof(TestBaseCommand), typeof(TestBaseCommandHandler)),
-                
-                
-            };
+            
             var builder = new MediatorBuilder();
-            builder.RegisterHandlers(binding);
+            builder.RegisterHandlers(() =>
+            {
+                var binding = new List<MessageBinding>()
+                {
+                    new MessageBinding(typeof(TestBaseCommand), typeof(TestBaseCommandHandler)),
+                
+                };
+                return binding;
+            });
             var receivePipe =
                 new ReceivePipe<IContext<IMessage>>(
                     new EmptyPipeSpecification<IContext<IMessage>>(), null);
@@ -40,7 +42,7 @@ namespace Mediator.Net.Test
             _task = _mediator.SendAsync(new DerivedTestBaseCommand(Guid.NewGuid()));
         }
 
-        public void ThenItShouldReachTheRightHandler()
+        public void ThenItShouldThrowNoHandlerFoundException()
         {
             _task.ShouldThrow<NoHandlerFoundException>();
         }
