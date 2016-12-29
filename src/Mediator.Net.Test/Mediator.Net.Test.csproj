@@ -63,11 +63,16 @@
   <ItemGroup>
     <Compile Include="CommandHandlers\DerivedTestBaseCommandHandler.cs" />
     <Compile Include="CommandHandlers\TestBaseCommandHandler.cs" />
+    <Compile Include="EventHandlers\TestEventHandler2.cs" />
+    <Compile Include="EventHandlers\TestEventHandler.cs" />
+    <Compile Include="Messages\TestEvent.cs" />
     <Compile Include="TestCommandHandlers\MoreDeviredMessageShouldGetExecutedOnce.cs" />
     <Compile Include="TestCommandHandlers\OneCommandMultiHandleresShouldThrowException.cs" />
     <Compile Include="TestCommandHandlers\NoHandlerForMessageShouldThrow.cs" />
     <Compile Include="Messages\DerivedTestBaseCommand.cs" />
     <Compile Include="Middlewares\ConsoleLog3.cs" />
+    <Compile Include="TestEventHandlers\EventCanBePublishToMultipleHandlers.cs" />
+    <Compile Include="TestEventHandlers\EventShouldBePublishToSingleHandler.cs" />
     <Compile Include="TestPipeline\UselessMiddlewareShouldNotBeExecuted.cs" />
     <Compile Include="TestPipeline\MiddlewaresShouldBeExecutedInReverseOrder.cs" />
     <Compile Include="TestPipeline\MiddlewaresShouldBeExecutedInOrder.cs" />

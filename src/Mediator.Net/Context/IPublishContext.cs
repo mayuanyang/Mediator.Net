@@ -3,9 +3,8 @@
 namespace Mediator.Net.Context
 {
 
-    public interface IPublishContext<out TMessage> : 
-        IContext<TMessage> 
-        where TMessage : IEvent
+    public interface IPublishContext : 
+        IContext<IEvent> 
     {
     }
 }

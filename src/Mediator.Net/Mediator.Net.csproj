@@ -42,6 +42,7 @@
   <ItemGroup>
     <Compile Include="Binding\MessageBinding.cs" />
     <Compile Include="Binding\MessageHandlerRegistry.cs" />
+    <Compile Include="Context\PublishContext.cs" />
     <Compile Include="Context\ReceiveContext.cs" />
     <Compile Include="Contracts\IMessage.cs" />
     <Compile Include="Context\IContext.cs" />
@@ -57,6 +58,7 @@
     <Compile Include="Context\IReceiveContext.cs" />
     <Compile Include="Mediator.cs" />
     <Compile Include="MediatorBuilder.cs" />
+    <Compile Include="Pipeline\PublishPipe.cs" />
     <Compile Include="Pipeline\ReceivePipeConfigurator.cs" />
     <Compile Include="Pipeline\IPipe.cs" />
     <Compile Include="Pipeline\IPublishPipe.cs" />

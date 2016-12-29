@@ -6,22 +6,17 @@ using Mediator.Net.Binding;
 using Mediator.Net.Context;
 using Mediator.Net.Contracts;
 
-
-
 namespace Mediator.Net.Pipeline
 {
-    public class ReceivePipe<TContext> : IReceivePipe<TContext>
-        where TContext : IContext<IMessage>
+    class PublishPipe<TContext> : IPublishPipe<TContext> where TContext : IContext<IEvent>
     {
         private readonly IPipeSpecification<TContext> _specification;
 
-
-        public ReceivePipe(IPipeSpecification<TContext> specification, IPipe<TContext> next)
+        public PublishPipe(IPipeSpecification<TContext> specification, IPipe<TContext> next)
         {
-            _specification = specification;
             Next = next;
+            _specification = specification;
         }
-
         public async Task Connect(TContext context)
         {
             await _specification.ExecuteBeforeConnect(context);
@@ -44,13 +39,6 @@ namespace Mediator.Net.Pipeline
             var handlers = MessageHandlerRegistry.MessageBindings.Where(x => x.MessageType.GetTypeInfo() == context.Message.GetType()).ToList();
             if (!handlers.Any())
                 throw new NoHandlerFoundException(context.Message.GetType());
-            if (typeof(ICommand).IsAssignableFrom(context.GetType().GenericTypeArguments[0]))
-            {
-                if (handlers.Count() > 1)
-                {
-                    throw new MoreThanOneCommandHandlerException(context.Message.GetType());
-                }
-            }
             
             handlers.ForEach(x =>
             {
@@ -77,8 +65,7 @@ namespace Mediator.Net.Pipeline
                 {
                     throw new NullReferenceException($"Handler for message of type {messageType} returned null.");
                 }
-
-
+                
             });
         }
     }

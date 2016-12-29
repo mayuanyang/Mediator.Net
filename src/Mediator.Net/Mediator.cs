@@ -9,10 +9,10 @@ namespace Mediator.Net
     public class Mediator : IMediator
     {
         private readonly IPipe<IContext<IMessage>> _receivePipe;
-        private readonly IPublishPipe<IPublishContext<IEvent>> _publishPipe;
+        private readonly IPublishPipe<IPublishContext> _publishPipe;
 
         public Mediator(IPipe<IContext<IMessage>> receivePipe,
-            IPublishPipe<IPublishContext<IEvent>> publishPipe)
+            IPublishPipe<IPublishContext> publishPipe)
         {
             _receivePipe = receivePipe;
             _publishPipe = publishPipe;
@@ -21,17 +21,21 @@ namespace Mediator.Net
 
         public async Task SendAsync<TMessage>(TMessage cmd) where TMessage : ICommand
         {
-            var receiveContext = (IReceiveContext<TMessage>)Activator.CreateInstance(typeof(ReceiveContext<>).MakeGenericType(cmd.GetType()), cmd);
-            var sendMethodInReceivePipe = _receivePipe.GetType().GetMethod("Connect");
-            await (Task)sendMethodInReceivePipe.Invoke(_receivePipe, new object[] { receiveContext });
-            
+            await SendMessage(cmd);
         }
 
 
 
-        public Task PublishAsync(IEvent evt)
+        public async Task PublishAsync<TMessage>(TMessage evt) where TMessage : IEvent
         {
-            throw new System.NotImplementedException();
+            await SendMessage(evt);
+        }
+
+        private async Task SendMessage<TMessage>(TMessage msg) where TMessage : IMessage
+        {
+            var receiveContext = (IReceiveContext<TMessage>)Activator.CreateInstance(typeof(ReceiveContext<>).MakeGenericType(msg.GetType()), msg);
+            var sendMethodInReceivePipe = _receivePipe.GetType().GetMethod("Connect");
+            await (Task)sendMethodInReceivePipe.Invoke(_receivePipe, new object[] { receiveContext });
         }
 
         

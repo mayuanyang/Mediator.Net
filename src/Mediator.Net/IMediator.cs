@@ -6,6 +6,6 @@ namespace Mediator.Net
     public interface IMediator
     {
         Task SendAsync<TMessage>(TMessage cmd) where TMessage : ICommand;
-        Task PublishAsync(IEvent evt);
+        Task PublishAsync<TMessage>(TMessage evt) where TMessage : IEvent;
     }
 }
