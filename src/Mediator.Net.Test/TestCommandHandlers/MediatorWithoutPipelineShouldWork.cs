@@ -13,7 +13,7 @@ using TestStack.BDDfy;
 
 namespace Mediator.Net.Test.TestCommandHandlers
 {
-    class CommandShouldBeSendToItsHandler : TestBase
+    class MediatorWithoutPipelineShouldWork : TestBase
     {
         private IMediator _mediator;
         private Task _task;
@@ -23,21 +23,19 @@ namespace Mediator.Net.Test.TestCommandHandlers
             var builder = new MediatorBuilder();
             _mediator = builder.RegisterHandlers(() =>
             {
-                var binding = new List<MessageBinding> { new MessageBinding(typeof(TestBaseCommand), typeof(TestBaseCommandHandler)) };
+                var binding = new List<MessageBinding> { new MessageBinding(typeof(TestBaseCommand), typeof(AsyncTestBaseCommandHandler)) };
                 return binding;
             }).Build();
-           
+            
         }
 
         public void WhenACommandIsSent()
         {
             _task = _mediator.SendAsync(new TestBaseCommand(Guid.NewGuid()));
-            
         }
 
-        public async Task ThenItShouldReachTheRightHandler()
+        public void ThenItShouldReachTheRightHandler()
         {
-            await _task;
             _task.Status.ShouldBe(TaskStatus.RanToCompletion);
         }
 

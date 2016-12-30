@@ -16,7 +16,7 @@ namespace Mediator.Net.Test.TestRequestHandlers
     class SendRequestShouldGetResponse
     {
         private IMediator _mediator;
-        private object _result;
+        private GetGuidResponse _result;
         private readonly Guid _guid = Guid.NewGuid();
         public void GivenAMediatorAndTwoMiddlewares()
         {
@@ -46,12 +46,12 @@ namespace Mediator.Net.Test.TestRequestHandlers
 
         public async Task WhenARequestIsSent()
         {
-            _result = await _mediator.RequestAsync<GetGuidRequest>(new GetGuidRequest(_guid));
+            _result = await _mediator.RequestAsync<GetGuidRequest, GetGuidResponse>(new GetGuidRequest(_guid));
         }
 
         public void ThenTheResultShouldBeReturn()
         {
-            ((GetGuidResponse)_result).Id.ShouldBe(_guid);
+            _result.Id.ShouldBe(_guid);
         }
 
         [Test]

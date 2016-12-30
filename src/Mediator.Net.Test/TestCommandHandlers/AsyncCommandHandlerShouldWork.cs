@@ -21,15 +21,13 @@ namespace Mediator.Net.Test.TestCommandHandlers
         {
                      
             var builder = new MediatorBuilder();
-            builder.RegisterHandlers(() =>
+            _mediator = builder.RegisterHandlers(() =>
             {
                 var binding = new List<MessageBinding> { new MessageBinding(typeof(TestBaseCommand), typeof(AsyncTestBaseCommandHandler)) };
                 return binding;
-            });
-            var receivePipe =
-                new ReceivePipe<IContext<IMessage>>(
-                    new EmptyPipeSpecification<IContext<IMessage>>(), null);
-            _mediator = new Mediator(receivePipe, null);
+            })
+            .Build();
+           
         }
 
         public void WhenACommandIsSent()

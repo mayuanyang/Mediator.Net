@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using Mediator.Net.Context;
 using Mediator.Net.Contracts;
 
@@ -21,23 +22,32 @@ namespace Mediator.Net.Pipeline
         public IRequestPipe<TContext> Build()
         {
             IRequestPipe<TContext> current = null;
-            for (int i = _specifications.Count - 1; i >= 0; i--)
+            if (_specifications.Any())
             {
-                if (i == _specifications.Count - 1)
+                for (int i = _specifications.Count - 1; i >= 0; i--)
                 {
-                    var thisPipe =
-                        new RequestPipe<TContext>(_specifications[i], null);
-                    current = thisPipe;
-                }
-                else
-                {
-                    var thisPipe =
-                        new RequestPipe<TContext>(_specifications[i], current);
-                    current = thisPipe;
-                }
+                    if (i == _specifications.Count - 1)
+                    {
+                        var thisPipe =
+                            new RequestPipe<TContext>(_specifications[i], null);
+                        current = thisPipe;
+                    }
+                    else
+                    {
+                        var thisPipe =
+                            new RequestPipe<TContext>(_specifications[i], current);
+                        current = thisPipe;
+                    }
 
 
+                }
+                
             }
+            else
+            {
+                current = new RequestPipe<TContext>(new EmptyPipeSpecification<TContext>(), null);
+            }
+
             return current;
         }
 

@@ -34,18 +34,18 @@ namespace Mediator.Net
             return task;
         }
 
-        public Task<object> RequestAsync<TRequest>(TRequest request)
+        public async Task<TResponse> RequestAsync<TRequest, TResponse>(TRequest request)
             where TRequest : IRequest
-
+            where TResponse : IResponse
         {
             var receiveContext =
                 (IReceiveContext<TRequest>)
                 Activator.CreateInstance(typeof(ReceiveContext<>).MakeGenericType(request.GetType()), request);
 
             var sendMethodInRequestPipe = _requestPipe.GetType().GetMethod("Connect");
-            var value = (Task<object>)sendMethodInRequestPipe.Invoke(_requestPipe, new object[] { receiveContext });
-            // task.ConfigureAwait(false);
-            return value;
+            var result = await ((Task<object>)sendMethodInRequestPipe.Invoke(_requestPipe, new object[] { receiveContext })).ConfigureAwait(false);
+            
+            return (TResponse)result;
 
         }
 

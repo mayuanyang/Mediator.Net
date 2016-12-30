@@ -25,7 +25,7 @@ namespace Mediator.Net.Test.TestCommandHandlers
 
         public void AndGivenABindingWithOneCommandMultipleHandlers()
         {
-            _builder.RegisterHandlers(() =>
+            _mediator = _builder.RegisterHandlers(() =>
             {
                 var binding = new List<MessageBinding>()
                 {
@@ -34,11 +34,8 @@ namespace Mediator.Net.Test.TestCommandHandlers
 
                 };
                 return binding;
-            });
-            var receivePipe =
-                new ReceivePipe<IContext<IMessage>>(
-                    new EmptyPipeSpecification<IContext<IMessage>>(), null);
-            _mediator = new Mediator(receivePipe, null);
+            }).Build();
+            
         }
 
         public void WhenACommandIsSent()

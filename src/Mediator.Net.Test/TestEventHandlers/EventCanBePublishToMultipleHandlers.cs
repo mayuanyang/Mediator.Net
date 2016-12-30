@@ -21,7 +21,7 @@ namespace Mediator.Net.Test.TestEventHandlers
         {
 
             var builder = new MediatorBuilder();
-            builder.RegisterHandlers(() =>
+            _mediator = builder.RegisterHandlers(() =>
             {
                 var binding = new List<MessageBinding>
                 {
@@ -29,11 +29,9 @@ namespace Mediator.Net.Test.TestEventHandlers
                     new MessageBinding(typeof(TestEvent), typeof(TestEventHandler2)),
                 };
                 return binding;
-            });
-            var receivePipe =
-                new ReceivePipe<IContext<IMessage>>(
-                    new EmptyPipeSpecification<IContext<IMessage>>(), null);
-            _mediator = new Mediator(receivePipe, null);
+            })
+            .Build();
+            
         }
 
         public async Task WhenAEventIsSent()

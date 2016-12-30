@@ -59,6 +59,9 @@ namespace Mediator.Net
 
         public IMediator Build()
         {
+            if(_receivePipe == null)
+                ConfigureReceivePipe(x => {});
+            
             return new Mediator(_receivePipe, _requestPipe);
         }
   

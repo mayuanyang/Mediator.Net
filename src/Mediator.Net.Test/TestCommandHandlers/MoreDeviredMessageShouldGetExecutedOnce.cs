@@ -22,7 +22,7 @@ namespace Mediator.Net.Test.TestCommandHandlers
 
 
             var builder = new MediatorBuilder();
-            builder.RegisterHandlers(() =>
+            _mediator = builder.RegisterHandlers(() =>
             {
                 var binding = new List<MessageBinding>()
                 {
@@ -30,11 +30,8 @@ namespace Mediator.Net.Test.TestCommandHandlers
                     new MessageBinding(typeof(DerivedTestBaseCommand), typeof(DerivedTestBaseCommandHandler)),
                 };
                 return binding;
-            });
-            var receivePipe =
-                new ReceivePipe<IContext<IMessage>>(
-                    new EmptyPipeSpecification<IContext<IMessage>>(), null);
-            _mediator = new Mediator(receivePipe, null);
+            }).Build();
+            
         }
 
         public async Task WhenAMoreDerivedCommandIsSent()

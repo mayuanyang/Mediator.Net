@@ -70,6 +70,7 @@
     <Compile Include="Messages\GetGuidRequest.cs" />
     <Compile Include="Messages\TestEvent.cs" />
     <Compile Include="RequestHandlers\GetGuidRequestHandler.cs" />
+    <Compile Include="TestCommandHandlers\MediatorWithoutPipelineShouldWork.cs" />
     <Compile Include="TestCommandHandlers\AsyncCommandHandlerShouldWork.cs" />
     <Compile Include="TestCommandHandlers\MoreDeviredMessageShouldGetExecutedOnce.cs" />
     <Compile Include="TestCommandHandlers\OneCommandMultiHandleresShouldThrowException.cs" />

@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using Mediator.Net.Context;
 using Mediator.Net.Contracts;
 
@@ -16,7 +17,7 @@ namespace Mediator.Net.Pipeline
         }
 
 
-  
+
         public void AddPipeSpecification(IPipeSpecification<IReceiveContext<IMessage>> specification)
         {
             _specifications.Add(specification);
@@ -24,24 +25,32 @@ namespace Mediator.Net.Pipeline
 
         public IReceivePipe<IReceiveContext<IMessage>> Build()
         {
-            dynamic current = null;
-            for (int i = _specifications.Count - 1; i >= 0; i--)
+            IReceivePipe<IReceiveContext<IMessage>> current = null;
+            if (_specifications.Any())
             {
-                if (i == _specifications.Count - 1)
+                for (int i = _specifications.Count - 1; i >= 0; i--)
                 {
-                    var thisPipe =
-                        new ReceivePipe<IReceiveContext<IMessage>>(_specifications[i], null);
-                    current = thisPipe;
-                }
-                else
-                {
-                    var thisPipe =
-                        new ReceivePipe<IReceiveContext<IMessage>>(_specifications[i], current);
-                    current = thisPipe;
-                }
+                    if (i == _specifications.Count - 1)
+                    {
+                        var thisPipe =
+                            new ReceivePipe<IReceiveContext<IMessage>>(_specifications[i], null);
+                        current = thisPipe;
+                    }
+                    else
+                    {
+                        var thisPipe =
+                            new ReceivePipe<IReceiveContext<IMessage>>(_specifications[i], current);
+                        current = thisPipe;
+                    }
 
 
+                }
             }
+            else
+            {
+                current = new ReceivePipe<IReceiveContext<IMessage>>(new EmptyPipeSpecification<IReceiveContext<IMessage>>(), null);
+            }
+
             return current;
         }
     }
