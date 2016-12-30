@@ -11,6 +11,8 @@ namespace Mediator.Net
 {
     public class MediatorBuilder
     {
+        private IReceivePipe<IReceiveContext<IMessage>> _receivePipe;
+        private IRequestPipe<IReceiveContext<IRequest>, IResponse> _requestPipe;
         public MediatorBuilder RegisterHandlers(params Assembly[] assemblies)
         {
             foreach (var assembly in assemblies)
@@ -37,13 +39,26 @@ namespace Mediator.Net
             return this;
         }
 
-        public ReceivePipeConfigurator BuildPipe(Action<IPipeConfigurator<IContext<IMessage>>> configurator)
+        public MediatorBuilder ConfigureReceivePipe(Action<IReceivePipeConfigurator> configurator)
         {
             var pipeConfigurator = new ReceivePipeConfigurator();
-            configurator.Invoke(pipeConfigurator);
-            return pipeConfigurator;
+            configurator(pipeConfigurator);
+            _receivePipe = pipeConfigurator.Build();
+            return this;
         }
 
+        public MediatorBuilder ConfigureRequestPipe(Action<IRequestPipeConfigurator> configurator)
+        {
+            var pipeConfigurator = new RequestPipeConfigurator();
+            configurator(pipeConfigurator);
+            _requestPipe = pipeConfigurator.Build();
+            return this;
+        }
+
+        public IMediator Build()
+        {
+            return new Mediator(_receivePipe, _requestPipe);
+        }
   
         private bool IsAssignableToGenericType(Type givenType, Type genericType)
         {

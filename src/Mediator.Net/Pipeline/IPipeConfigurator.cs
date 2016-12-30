@@ -9,6 +9,6 @@ namespace Mediator.Net.Pipeline
     {
         void AddPipeSpecification(IPipeSpecification<TContext> specification);
 
-        IPipe<TContext> Build();
+        
     }
 }

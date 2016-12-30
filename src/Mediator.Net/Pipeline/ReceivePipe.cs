@@ -31,7 +31,7 @@ namespace Mediator.Net.Pipeline
             }
             else
             {
-                ConnectToHandler(context);
+                await ConnectToHandler(context);
             }
 
             await _specification.ExecuteAfterConnect(context);
@@ -39,7 +39,7 @@ namespace Mediator.Net.Pipeline
 
         public IPipe<TContext> Next { get; }
 
-        private void ConnectToHandler(TContext context)
+        private async Task ConnectToHandler(TContext context)
         {
             var handlers = MessageHandlerRegistry.MessageBindings.Where(x => x.MessageType.GetTypeInfo() == context.Message.GetType()).ToList();
             if (!handlers.Any())
@@ -48,11 +48,11 @@ namespace Mediator.Net.Pipeline
             {
                 if (handlers.Count() > 1)
                 {
-                    throw new MoreThanOneCommandHandlerException(context.Message.GetType());
+                    throw new MoreThanOneHandlerException(context.Message.GetType());
                 }
-            }
+            } 
             
-            handlers.ForEach(x =>
+            handlers.ForEach(async x =>
             {
                 var handlerType = x.HandlerType.GetTypeInfo();
                 var messageType = context.Message.GetType();
@@ -71,15 +71,11 @@ namespace Mediator.Net.Pipeline
                 });
 
                 var handler = Activator.CreateInstance(handlerType);
-                var objectTask = handleMethod.Invoke(handler, new object[] { context });
-
-                if (objectTask == null)
-                {
-                    throw new NullReferenceException($"Handler for message of type {messageType} returned null.");
-                }
-
+                await (Task)handleMethod.Invoke(handler, new object[] { context });
 
             });
+
+            await Task.FromResult(0);
         }
     }
 }

@@ -62,10 +62,15 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CommandHandlers\DerivedTestBaseCommandHandler.cs" />
+    <Compile Include="CommandHandlers\AsyncTestBaseCommandHandler.cs" />
     <Compile Include="CommandHandlers\TestBaseCommandHandler.cs" />
     <Compile Include="EventHandlers\TestEventHandler2.cs" />
     <Compile Include="EventHandlers\TestEventHandler.cs" />
+    <Compile Include="Messages\GetGuidResponse.cs" />
+    <Compile Include="Messages\GetGuidRequest.cs" />
     <Compile Include="Messages\TestEvent.cs" />
+    <Compile Include="RequestHandlers\GetGuidRequestHandler.cs" />
+    <Compile Include="TestCommandHandlers\AsyncCommandHandlerShouldWork.cs" />
     <Compile Include="TestCommandHandlers\MoreDeviredMessageShouldGetExecutedOnce.cs" />
     <Compile Include="TestCommandHandlers\OneCommandMultiHandleresShouldThrowException.cs" />
     <Compile Include="TestCommandHandlers\NoHandlerForMessageShouldThrow.cs" />
@@ -83,6 +88,7 @@
     <Compile Include="Middlewares\UselessMiddleware.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TestBase.cs" />
+    <Compile Include="TestRequestHandlers\SendRequestShouldGetResponse.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Mediator.Net\Mediator.Net.csproj">
@@ -93,6 +99,7 @@
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

@@ -48,7 +48,7 @@ namespace Mediator.Net.Test.TestCommandHandlers
 
         public void ThenItShouldThrowNoHandlerFoundException()
         {
-            _task.ShouldThrow<MoreThanOneCommandHandlerException>();
+            _task.ShouldThrow<MoreThanOneHandlerException>();
         }
 
         [Test]

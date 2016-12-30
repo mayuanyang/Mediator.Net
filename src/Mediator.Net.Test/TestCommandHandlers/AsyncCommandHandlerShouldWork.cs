@@ -13,22 +13,17 @@ using TestStack.BDDfy;
 
 namespace Mediator.Net.Test.TestCommandHandlers
 {
-    class MoreDeviredMessageShouldGetExecutedOnce : TestBase
+    class AsyncCommandHandlerShouldWork : TestBase
     {
         private IMediator _mediator;
         private Task _task;
         public void GivenAMediator()
         {
-
-
+                     
             var builder = new MediatorBuilder();
             builder.RegisterHandlers(() =>
             {
-                var binding = new List<MessageBinding>()
-                {
-                    new MessageBinding(typeof(TestBaseCommand), typeof(TestBaseCommandHandler)),
-                    new MessageBinding(typeof(DerivedTestBaseCommand), typeof(DerivedTestBaseCommandHandler)),
-                };
+                var binding = new List<MessageBinding> { new MessageBinding(typeof(TestBaseCommand), typeof(AsyncTestBaseCommandHandler)) };
                 return binding;
             });
             var receivePipe =
@@ -37,16 +32,14 @@ namespace Mediator.Net.Test.TestCommandHandlers
             _mediator = new Mediator(receivePipe, null);
         }
 
-        public async Task WhenAMoreDerivedCommandIsSent()
+        public void WhenACommandIsSent()
         {
-            _task = _mediator.SendAsync(new DerivedTestBaseCommand(Guid.NewGuid()));
-            await _task;
+            _task = _mediator.SendAsync(new TestBaseCommand(Guid.NewGuid()));
         }
 
         public void ThenItShouldReachTheRightHandler()
         {
             _task.Status.ShouldBe(TaskStatus.RanToCompletion);
-
         }
 
         [Test]

@@ -46,6 +46,9 @@
     <Compile Include="Context\ReceiveContext.cs" />
     <Compile Include="Contracts\IMessage.cs" />
     <Compile Include="Context\IContext.cs" />
+    <Compile Include="Contracts\IRequest.cs" />
+    <Compile Include="Contracts\IRequestHandler.cs" />
+    <Compile Include="Contracts\IResponse.cs" />
     <Compile Include="IMediator.cs" />
     <Compile Include="Contracts\ICommand.cs" />
     <Compile Include="Contracts\ICommandHandler.cs" />
@@ -58,14 +61,19 @@
     <Compile Include="Context\IReceiveContext.cs" />
     <Compile Include="Mediator.cs" />
     <Compile Include="MediatorBuilder.cs" />
+    <Compile Include="Pipeline\IRequestPipeConfigurator.cs" />
+    <Compile Include="Pipeline\IReceivePipeConfigurator.cs" />
+    <Compile Include="Pipeline\IRequestPipe.cs" />
     <Compile Include="Pipeline\PublishPipe.cs" />
+    <Compile Include="Pipeline\RequestPipeConfigurator.cs" />
     <Compile Include="Pipeline\ReceivePipeConfigurator.cs" />
     <Compile Include="Pipeline\IPipe.cs" />
     <Compile Include="Pipeline\IPublishPipe.cs" />
     <Compile Include="Pipeline\IReceivePipe.cs" />
-    <Compile Include="Pipeline\MoreThanOneCommandHandlerException.cs" />
+    <Compile Include="Pipeline\MoreThanOneHandlerException.cs" />
     <Compile Include="Pipeline\NoHandlerFoundException.cs" />
     <Compile Include="Pipeline\ReceivePipe.cs" />
+    <Compile Include="Pipeline\RequestPipe.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup />

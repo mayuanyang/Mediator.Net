@@ -6,23 +6,22 @@ using Mediator.Net.Contracts;
 
 namespace Mediator.Net.Pipeline
 {
-    public class ReceivePipeConfigurator : IReceivePipeConfigurator
+    public class RequestPipeConfigurator : IRequestPipeConfigurator
     {
-        private readonly IList<IPipeSpecification<IReceiveContext<IMessage>>> _specifications;
+        private readonly IList<IPipeSpecification<IReceiveContext<IRequest>>> _specifications;
 
-        public ReceivePipeConfigurator()
+        public RequestPipeConfigurator()
         {
-            _specifications = new List<IPipeSpecification<IReceiveContext<IMessage>>>();
+            _specifications = new List<IPipeSpecification<IReceiveContext<IRequest>>>();
         }
 
 
-  
-        public void AddPipeSpecification(IPipeSpecification<IReceiveContext<IMessage>> specification)
+        public void AddPipeSpecification(IPipeSpecification<IReceiveContext<IRequest>> specification)
         {
             _specifications.Add(specification);
         }
 
-        public IReceivePipe<IReceiveContext<IMessage>> Build()
+        public IRequestPipe<IReceiveContext<IRequest>, IResponse> Build()
         {
             dynamic current = null;
             for (int i = _specifications.Count - 1; i >= 0; i--)
@@ -30,13 +29,13 @@ namespace Mediator.Net.Pipeline
                 if (i == _specifications.Count - 1)
                 {
                     var thisPipe =
-                        new ReceivePipe<IReceiveContext<IMessage>>(_specifications[i], null);
+                        new RequestPipe<IReceiveContext<IRequest>, IResponse>(_specifications[i], null);
                     current = thisPipe;
                 }
                 else
                 {
                     var thisPipe =
-                        new ReceivePipe<IReceiveContext<IMessage>>(_specifications[i], current);
+                        new RequestPipe<IReceiveContext<IRequest>, IResponse>(_specifications[i], current);
                     current = thisPipe;
                 }
 
@@ -44,5 +43,7 @@ namespace Mediator.Net.Pipeline
             }
             return current;
         }
+
+    
     }
 }

@@ -35,10 +35,12 @@ namespace Mediator.Net.Test.TestCommandHandlers
         public void WhenACommandIsSent()
         {
             _task = _mediator.SendAsync(new TestBaseCommand(Guid.NewGuid()));
+            
         }
 
-        public void ThenItShouldReachTheRightHandler()
+        public async Task ThenItShouldReachTheRightHandler()
         {
+            await _task;
             _task.Status.ShouldBe(TaskStatus.RanToCompletion);
         }
 

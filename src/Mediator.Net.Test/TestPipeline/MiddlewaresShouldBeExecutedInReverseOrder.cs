@@ -17,15 +17,14 @@ namespace Mediator.Net.Test.TestPipeline
         {
             var binding = new List<MessageBinding>() { new MessageBinding( typeof(TestBaseCommand), typeof(TestBaseCommandHandler) ) };
             var builder = new MediatorBuilder();
-            var receivePipe = builder.RegisterHandlers(binding)
-                .BuildPipe(x =>
+            _mediator = builder.RegisterHandlers(binding)
+                .ConfigureReceivePipe(x =>
             {
                 x.UseConsoleLogger2();
                 x.UseConsoleLogger1();
             })
             .Build();
-            
-            _mediator = new Mediator(receivePipe, null);
+ 
         }
 
         public async Task WhenACommandIsSent()
