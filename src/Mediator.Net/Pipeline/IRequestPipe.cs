@@ -4,10 +4,9 @@ using Mediator.Net.Contracts;
 
 namespace Mediator.Net.Pipeline
 {
-    public interface IRequestPipe<TContext, TResponse> : IPipe<TContext>
+    public interface IRequestPipe<TContext> : IPipe<TContext>
         where TContext : IContext<IRequest>
-        where TResponse : IResponse
     {
-        new Task<TResponse> Connect(TContext context);
+        new Task<object> Connect(TContext context);
     }
 }

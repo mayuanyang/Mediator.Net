@@ -3,8 +3,9 @@ using Mediator.Net.Contracts;
 
 namespace Mediator.Net.Pipeline
 {
-    public interface IRequestPipeConfigurator : IPipeConfigurator<IReceiveContext<IRequest>>
+    public interface IRequestPipeConfigurator<TContext> : IPipeConfigurator<TContext>
+        where TContext : IReceiveContext<IRequest>
     {
-        IRequestPipe<IReceiveContext<IRequest>, IResponse> Build();
+        IRequestPipe<TContext> Build();
     }
 }

@@ -6,36 +6,33 @@ using Mediator.Net.Contracts;
 
 namespace Mediator.Net.Pipeline
 {
-    public class RequestPipeConfigurator : IRequestPipeConfigurator
+    public class RequestPipeConfigurator<TContext> : IRequestPipeConfigurator<TContext>
+        where TContext : IReceiveContext<IRequest>
     {
-        private readonly IList<IPipeSpecification<IReceiveContext<IRequest>>> _specifications;
+        private readonly IList<IPipeSpecification<TContext>> _specifications;
 
         public RequestPipeConfigurator()
         {
-            _specifications = new List<IPipeSpecification<IReceiveContext<IRequest>>>();
+            _specifications = new List<IPipeSpecification<TContext>>();
         }
 
 
-        public void AddPipeSpecification(IPipeSpecification<IReceiveContext<IRequest>> specification)
-        {
-            _specifications.Add(specification);
-        }
 
-        public IRequestPipe<IReceiveContext<IRequest>, IResponse> Build()
+        public IRequestPipe<TContext> Build()
         {
-            dynamic current = null;
+            IRequestPipe<TContext> current = null;
             for (int i = _specifications.Count - 1; i >= 0; i--)
             {
                 if (i == _specifications.Count - 1)
                 {
                     var thisPipe =
-                        new RequestPipe<IReceiveContext<IRequest>, IResponse>(_specifications[i], null);
+                        new RequestPipe<TContext>(_specifications[i], null);
                     current = thisPipe;
                 }
                 else
                 {
                     var thisPipe =
-                        new RequestPipe<IReceiveContext<IRequest>, IResponse>(_specifications[i], current);
+                        new RequestPipe<TContext>(_specifications[i], current);
                     current = thisPipe;
                 }
 
@@ -44,6 +41,10 @@ namespace Mediator.Net.Pipeline
             return current;
         }
 
-    
+
+        public void AddPipeSpecification(IPipeSpecification<TContext> specification)
+        {
+            _specifications.Add(specification);
+        }
     }
 }

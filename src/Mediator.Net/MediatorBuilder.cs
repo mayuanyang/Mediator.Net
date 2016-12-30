@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Reflection;
 using Mediator.Net.Binding;
 using Mediator.Net.Context;
@@ -12,7 +13,7 @@ namespace Mediator.Net
     public class MediatorBuilder
     {
         private IReceivePipe<IReceiveContext<IMessage>> _receivePipe;
-        private IRequestPipe<IReceiveContext<IRequest>, IResponse> _requestPipe;
+        private IRequestPipe<IReceiveContext<IRequest>> _requestPipe;
         public MediatorBuilder RegisterHandlers(params Assembly[] assemblies)
         {
             foreach (var assembly in assemblies)
@@ -47,11 +48,12 @@ namespace Mediator.Net
             return this;
         }
 
-        public MediatorBuilder ConfigureRequestPipe(Action<IRequestPipeConfigurator> configurator)
+        public MediatorBuilder ConfigureRequestPipe<TContext, TResponse>(Action<IRequestPipeConfigurator<TContext>> configurator)
+            where TContext : IReceiveContext<IRequest>
         {
-            var pipeConfigurator = new RequestPipeConfigurator();
+            var pipeConfigurator = new RequestPipeConfigurator<TContext>();
             configurator(pipeConfigurator);
-            _requestPipe = pipeConfigurator.Build();
+            _requestPipe = pipeConfigurator.Build() as IRequestPipe<IReceiveContext<IRequest>>;
             return this;
         }
 

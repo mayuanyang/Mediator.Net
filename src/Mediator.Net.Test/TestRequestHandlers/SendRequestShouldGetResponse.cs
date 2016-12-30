@@ -1,10 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using Mediator.Net.Binding;
-using Mediator.Net.Test.CommandHandlers;
+using Mediator.Net.Context;
+using Mediator.Net.Contracts;
 using Mediator.Net.Test.Messages;
 using Mediator.Net.Test.Middlewares;
 using Mediator.Net.Test.RequestHandlers;
@@ -17,7 +16,7 @@ namespace Mediator.Net.Test.TestRequestHandlers
     class SendRequestShouldGetResponse
     {
         private IMediator _mediator;
-        private GetGuidResponse _result;
+        private object _result;
         private readonly Guid _guid = Guid.NewGuid();
         public void GivenAMediatorAndTwoMiddlewares()
         {
@@ -36,7 +35,7 @@ namespace Mediator.Net.Test.TestRequestHandlers
                     x.UseConsoleLogger1();
                     x.UseConsoleLogger2();
                 })
-                .ConfigureRequestPipe(x =>
+                .ConfigureRequestPipe<IReceiveContext<IRequest>, GetGuidResponse>(x =>
                 {
                     x.UseConsoleLogger3();
                 })
@@ -47,12 +46,12 @@ namespace Mediator.Net.Test.TestRequestHandlers
 
         public async Task WhenARequestIsSent()
         {
-            _result = await _mediator.RequestAsync<GetGuidRequest, GetGuidResponse>(new GetGuidRequest(_guid));
+            _result = await _mediator.RequestAsync<GetGuidRequest>(new GetGuidRequest(_guid));
         }
 
         public void ThenTheResultShouldBeReturn()
         {
-            _result.Id.ShouldBe(_guid);
+            ((GetGuidResponse)_result).Id.ShouldBe(_guid);
         }
 
         [Test]

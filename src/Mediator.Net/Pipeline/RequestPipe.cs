@@ -8,9 +8,8 @@ using Mediator.Net.Contracts;
 
 namespace Mediator.Net.Pipeline
 {
-    class RequestPipe<TContext, TResponse> : IRequestPipe<TContext, TResponse>
+    class RequestPipe<TContext> : IRequestPipe<TContext>
         where TContext : IReceiveContext<IRequest>
-        where TResponse : class, IResponse
     {
         private readonly IPipeSpecification<TContext> _specification;
 
@@ -20,9 +19,9 @@ namespace Mediator.Net.Pipeline
             _specification = specification;
         }
 
-        public async Task<TResponse> Connect(TContext context)
+        public async Task<object> Connect(TContext context)
         {
-            TResponse result = null;
+            object result = null;
             await _specification.ExecuteBeforeConnect(context).ConfigureAwait(false);
             if (Next != null)
             {
@@ -37,7 +36,7 @@ namespace Mediator.Net.Pipeline
             return result;
         }
 
-        private Task<TResponse> ConnectToHandler(TContext context)
+        private Task<object> ConnectToHandler(TContext context)
         {
 
             var handlers =
@@ -70,20 +69,9 @@ namespace Mediator.Net.Pipeline
             });
 
             var handler = Activator.CreateInstance(handlerType);
-            object result = handleMethod.Invoke(handler, new object[] {context});
-            
-            try
-            {
-var a = (Task<IResponse>) result;
-            }
-            catch (Exception ex)
-            {
-                
-                throw ex;
-            }
-            
+            var result = (Task<object>)handleMethod.Invoke(handler, new object[] {context});
 
-            return null;
+            return result;
 
         }
 

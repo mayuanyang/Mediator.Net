@@ -10,10 +10,10 @@ namespace Mediator.Net
     public class Mediator : IMediator
     {
         private readonly IReceivePipe<IReceiveContext<IMessage>> _receivePipe;
-        private readonly IRequestPipe<IReceiveContext<IRequest>, IResponse> _requestPipe;
+        private readonly IRequestPipe<IReceiveContext<IRequest>> _requestPipe;
 
         public Mediator(IReceivePipe<IReceiveContext<IMessage>> receivePipe,
-            IRequestPipe<IReceiveContext<IRequest>, IResponse> requestPipe)
+            IRequestPipe<IReceiveContext<IRequest>> requestPipe)
         {
             _receivePipe = receivePipe;
             _requestPipe = requestPipe;
@@ -34,18 +34,18 @@ namespace Mediator.Net
             return task;
         }
 
-        public Task<TResponse> RequestAsync<TRequest, TResponse>(TRequest request)
+        public Task<object> RequestAsync<TRequest>(TRequest request)
             where TRequest : IRequest
-            where TResponse : IResponse
+
         {
             var receiveContext =
                 (IReceiveContext<TRequest>)
                 Activator.CreateInstance(typeof(ReceiveContext<>).MakeGenericType(request.GetType()), request);
 
             var sendMethodInRequestPipe = _requestPipe.GetType().GetMethod("Connect");
-            var value = (TResponse)sendMethodInRequestPipe.Invoke(_requestPipe, new object[] { receiveContext });
+            var value = (Task<object>)sendMethodInRequestPipe.Invoke(_requestPipe, new object[] { receiveContext });
             // task.ConfigureAwait(false);
-            return Task.FromResult(value);
+            return value;
 
         }
 
