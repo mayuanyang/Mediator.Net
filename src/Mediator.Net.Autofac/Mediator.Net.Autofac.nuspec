@@ -1,16 +1,16 @@
 <?xml version="1.0"?>
 <package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
   <metadata>
-    <id>Mediator.Net</id>
-	<title>A simple .NET mediator</title>
+    <id>Mediator.Net.Autofac</id>
+    <title>Autofac integration for Mediator.Net</title>
     <version>1</version>
     <authors>Yuan(Eddy) Ma</authors>
     <owners>Yuan(Eddy) Ma</owners>
     <licenseUrl>https://github.com/mayuanyang/Mediator.Net</licenseUrl>
     <projectUrl>https://github.com/mayuanyang/Mediator.Net/</projectUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
-    <description>Decouple does matter</description>
-    <tags>.NET Mediator Cqrs DDD</tags>
+    <description>Use Autofac as the IoC container for Mediator.Net</description>
+    <tags>.NET Mediator Autofac</tags>
     <dependencies>
     </dependencies>
   </metadata>
