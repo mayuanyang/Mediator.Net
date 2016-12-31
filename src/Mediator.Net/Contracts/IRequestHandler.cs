@@ -3,9 +3,10 @@ using Mediator.Net.Context;
 
 namespace Mediator.Net.Contracts
 {
-    public interface IRequestHandler<TRequest>
+    public interface IRequestHandler<TRequest,TResponse>
         where TRequest : class, IRequest
+        where TResponse : class , IResponse
     {
-        Task<object> Handle(ReceiveContext<TRequest> context);
+        Task<TResponse> Handle(ReceiveContext<TRequest> context);
     }
 }

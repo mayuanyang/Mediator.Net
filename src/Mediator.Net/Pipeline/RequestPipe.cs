@@ -70,10 +70,16 @@ namespace Mediator.Net.Pipeline
                        && ((y.CallingConvention & CallingConventions.HasThis) != 0);
             });
 
-             var handler = (_resolver == null) ? Activator.CreateInstance(handlerType) : _resolver.Resolve(handlerType);
-            var result = (Task<object>)handleMethod.Invoke(handler, new object[] {context});
+            var handler = (_resolver == null) ? Activator.CreateInstance(handlerType) : _resolver.Resolve(handlerType);
+            var task = (Task)handleMethod.Invoke(handler, new object[] { context });
 
-            return result;
+            var taskType = task.GetType();
+            var typeInfo = taskType.GetTypeInfo();
+            
+            var resultProperty = typeInfo.GetDeclaredProperty("Result").GetMethod;
+            var result = resultProperty.Invoke(task, new object[] { });
+
+            return Task.FromResult(result);
 
         }
 

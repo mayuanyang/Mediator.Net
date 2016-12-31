@@ -6,12 +6,12 @@ using Mediator.Net.Test.Messages;
 
 namespace Mediator.Net.Test.RequestHandlers
 {
-    class GetGuidRequestHandler : IRequestHandler<GetGuidRequest>
+    class GetGuidRequestHandler : IRequestHandler<GetGuidRequest, GetGuidResponse>
     {
-        public Task<object> Handle(ReceiveContext<GetGuidRequest> context)
+        public Task<GetGuidResponse> Handle(ReceiveContext<GetGuidRequest> context)
         {
             Console.WriteLine(context.Message.Id);
-            object response = new GetGuidResponse(context.Message.Id);
+            var response = new GetGuidResponse(context.Message.Id);
             return Task.FromResult(response);
         }
     }
