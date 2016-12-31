@@ -48,7 +48,7 @@ namespace Mediator.Net
             return this;
         }
 
-        public MediatorBuilder ConfigureRequestPipe<TContext, TResponse>(Action<IRequestPipeConfigurator<TContext>> configurator)
+        public MediatorBuilder ConfigureRequestPipe<TContext>(Action<IRequestPipeConfigurator<TContext>> configurator)
             where TContext : IReceiveContext<IRequest>
         {
             var pipeConfigurator = new RequestPipeConfigurator<TContext>();

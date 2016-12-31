@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using Mediator.Net.Binding;
 using Mediator.Net.Context;
 using Mediator.Net.Contracts;
+using Mediator.Net.Pipeline;
 using Mediator.Net.Test.Messages;
 using Mediator.Net.Test.Middlewares;
 using Mediator.Net.Test.RequestHandlers;
@@ -13,10 +14,10 @@ using TestStack.BDDfy;
 
 namespace Mediator.Net.Test.TestRequestHandlers
 {
-    class SendRequestShouldGetResponse
+    class OneRequestShouldNotHaveMultipleHandlers
     {
         private IMediator _mediator;
-        private GetGuidResponse _result;
+        private Task _task;
         private readonly Guid _guid = Guid.NewGuid();
         public void GivenAMediatorAndTwoMiddlewares()
         {
@@ -26,7 +27,8 @@ namespace Mediator.Net.Test.TestRequestHandlers
                 {
                     var binding = new List<MessageBinding>()
                     {
-                        new MessageBinding(typeof(GetGuidRequest), typeof(GetGuidRequestHandler))
+                        new MessageBinding(typeof(GetGuidRequest), typeof(GetGuidRequestHandler)),
+                        new MessageBinding(typeof(GetGuidRequest), typeof(GetGuidRequestHandler2))
                     };
                     return binding;
                 })
@@ -44,14 +46,14 @@ namespace Mediator.Net.Test.TestRequestHandlers
 
         }
 
-        public async Task WhenARequestIsSent()
+        public void WhenARequestIsSent()
         {
-            _result = await _mediator.RequestAsync<GetGuidRequest, GetGuidResponse>(new GetGuidRequest(_guid));
+            _task = _mediator.RequestAsync<GetGuidRequest, GetGuidResponse>(new GetGuidRequest(_guid));
         }
 
         public void ThenTheResultShouldBeReturn()
         {
-            _result.Id.ShouldBe(_guid);
+            _task.ShouldThrow<MoreThanOneHandlerException>();
         }
 
         [Test]

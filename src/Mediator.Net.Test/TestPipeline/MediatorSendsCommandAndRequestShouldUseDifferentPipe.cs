@@ -1,9 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
 using Mediator.Net.Binding;
 using Mediator.Net.Context;
 using Mediator.Net.Contracts;
+using Mediator.Net.Test.CommandHandlers;
 using Mediator.Net.Test.Messages;
 using Mediator.Net.Test.Middlewares;
 using Mediator.Net.Test.RequestHandlers;
@@ -11,21 +14,22 @@ using NUnit.Framework;
 using Shouldly;
 using TestStack.BDDfy;
 
-namespace Mediator.Net.Test.TestRequestHandlers
+namespace Mediator.Net.Test.TestPipeline
 {
-    class SendRequestShouldGetResponse
+    class MediatorSendsCommandAndRequestShouldUseDifferentPipe
     {
         private IMediator _mediator;
         private GetGuidResponse _result;
-        private readonly Guid _guid = Guid.NewGuid();
+        private Task _commandTask;
+        private Guid _id = Guid.NewGuid();
         public void GivenAMediatorAndTwoMiddlewares()
         {
-            
-            var builder = new MediatorBuilder();
+           var builder = new MediatorBuilder();
             _mediator = builder.RegisterHandlers(() =>
                 {
                     var binding = new List<MessageBinding>()
                     {
+                        new MessageBinding(typeof(TestBaseCommand), typeof(TestBaseCommandHandler)),
                         new MessageBinding(typeof(GetGuidRequest), typeof(GetGuidRequestHandler))
                     };
                     return binding;
@@ -44,14 +48,20 @@ namespace Mediator.Net.Test.TestRequestHandlers
 
         }
 
-        public async Task WhenARequestIsSent()
+        public async Task WhenACommandAndARequestAreSent()
         {
-            _result = await _mediator.RequestAsync<GetGuidRequest, GetGuidResponse>(new GetGuidRequest(_guid));
+            _commandTask = _mediator.SendAsync(new TestBaseCommand(Guid.NewGuid()));
+            _result = await _mediator.RequestAsync<GetGuidRequest, GetGuidResponse>(new GetGuidRequest(_id));
         }
 
-        public void ThenTheResultShouldBeReturn()
+        public void ThenTheCommandShouldBeHandled()
         {
-            _result.Id.ShouldBe(_guid);
+            _commandTask.Status.ShouldBe(TaskStatus.RanToCompletion);
+        }
+
+        public void AndTheRequestShouldBeHandled()
+        {
+            _result.Id.ShouldBe(_id);
         }
 
         [Test]

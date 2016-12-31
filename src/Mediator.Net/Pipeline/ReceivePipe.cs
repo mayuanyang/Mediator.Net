@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
@@ -39,7 +41,7 @@ namespace Mediator.Net.Pipeline
 
         public IPipe<TContext> Next { get; }
 
-        private async Task ConnectToHandler(TContext context)
+        private Task ConnectToHandler(TContext context)
         {
             var handlers = MessageHandlerRegistry.MessageBindings.Where(x => x.MessageType.GetTypeInfo() == context.Message.GetType()).ToList();
             if (!handlers.Any())
@@ -50,14 +52,20 @@ namespace Mediator.Net.Pipeline
                 {
                     throw new MoreThanOneHandlerException(context.Message.GetType());
                 }
-            } 
-            
-            handlers.ForEach(async x =>
+            }
+            Task task = null;
+            handlers.ForEach( x =>
             {
                 var handlerType = x.HandlerType.GetTypeInfo();
                 var messageType = context.Message.GetType();
-
-                var handleMethods = handlerType.GetRuntimeMethods().Where(m => m.Name == "Handle");
+              
+                var handleMethods = handlerType.GetRuntimeMethods().Where(m =>
+                {
+                    var result = m.Name == "Handle" && m.IsPublic && m.GetParameters().Any()
+                    && (m.GetParameters()[0].ParameterType.GetGenericArguments().Contains(messageType) || m.GetParameters()[0].ParameterType.GetGenericArguments().First().GetTypeInfo().IsAssignableFrom(messageType));
+                    return result;
+                }).ToList();
+             
                 var handleMethod = handleMethods.Single(y =>
                 {
                     var parameterTypeIsCorrect = y.GetParameters().Single()
@@ -71,11 +79,11 @@ namespace Mediator.Net.Pipeline
                 });
 
                 var handler = Activator.CreateInstance(handlerType);
-                await (Task)handleMethod.Invoke(handler, new object[] { context });
+                task = (Task)handleMethod.Invoke(handler, new object[] { context });
 
             });
 
-            await Task.FromResult(0);
+            return task;
         }
     }
 }

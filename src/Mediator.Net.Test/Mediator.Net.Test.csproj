@@ -63,13 +63,19 @@
   <ItemGroup>
     <Compile Include="CommandHandlers\DerivedTestBaseCommandHandler.cs" />
     <Compile Include="CommandHandlers\AsyncTestBaseCommandHandler.cs" />
+    <Compile Include="CommandHandlers\MultiCommandsHandler.cs" />
     <Compile Include="CommandHandlers\TestBaseCommandHandler.cs" />
+    <Compile Include="EventHandlers\DerivedEventHandler.cs" />
     <Compile Include="EventHandlers\TestEventHandler2.cs" />
     <Compile Include="EventHandlers\TestEventHandler.cs" />
+    <Compile Include="Messages\AnotherCommand.cs" />
+    <Compile Include="Messages\DerivedEvent.cs" />
     <Compile Include="Messages\GetGuidResponse.cs" />
     <Compile Include="Messages\GetGuidRequest.cs" />
     <Compile Include="Messages\TestEvent.cs" />
+    <Compile Include="RequestHandlers\GetGuidRequestHandler2.cs" />
     <Compile Include="RequestHandlers\GetGuidRequestHandler.cs" />
+    <Compile Include="TestCommandHandlers\MediatorSendMultipleCommandShouldWork.cs" />
     <Compile Include="TestCommandHandlers\MediatorWithoutPipelineShouldWork.cs" />
     <Compile Include="TestCommandHandlers\AsyncCommandHandlerShouldWork.cs" />
     <Compile Include="TestCommandHandlers\MoreDeviredMessageShouldGetExecutedOnce.cs" />
@@ -77,8 +83,12 @@
     <Compile Include="TestCommandHandlers\NoHandlerForMessageShouldThrow.cs" />
     <Compile Include="Messages\DerivedTestBaseCommand.cs" />
     <Compile Include="Middlewares\ConsoleLog3.cs" />
+    <Compile Include="TestCommandHandlers\OneHandlerToHandleMultipleCommandsShouldWork.cs" />
     <Compile Include="TestEventHandlers\EventCanBePublishToMultipleHandlers.cs" />
     <Compile Include="TestEventHandlers\EventShouldBePublishToSingleHandler.cs" />
+    <Compile Include="TestEventHandlers\PublishDerivedEventShouldBeHandledByBaseHandler.cs" />
+    <Compile Include="TestEventHandlers\PublishDerivedEventShouldBeHandled.cs" />
+    <Compile Include="TestPipeline\MediatorSendsCommandAndRequestShouldUseDifferentPipe.cs" />
     <Compile Include="TestPipeline\UselessMiddlewareShouldNotBeExecuted.cs" />
     <Compile Include="TestPipeline\MiddlewaresShouldBeExecutedInReverseOrder.cs" />
     <Compile Include="TestPipeline\MiddlewaresShouldBeExecutedInOrder.cs" />
@@ -89,6 +99,7 @@
     <Compile Include="Middlewares\UselessMiddleware.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TestBase.cs" />
+    <Compile Include="TestRequestHandlers\OneRequestShouldNotHaveMultipleHandlers.cs" />
     <Compile Include="TestRequestHandlers\SendRequestShouldGetResponse.cs" />
   </ItemGroup>
   <ItemGroup>

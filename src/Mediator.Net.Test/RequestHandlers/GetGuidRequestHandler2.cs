@@ -6,7 +6,7 @@ using Mediator.Net.Test.Messages;
 
 namespace Mediator.Net.Test.RequestHandlers
 {
-    class GetGuidRequestHandler : IRequestHandler<GetGuidRequest>
+    class GetGuidRequestHandler2 : IRequestHandler<GetGuidRequest>
     {
         public Task<object> Handle(ReceiveContext<GetGuidRequest> context)
         {
