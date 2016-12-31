@@ -7,21 +7,18 @@ using Mediator.Net.Contracts;
 
 namespace Mediator.Net.Pipeline
 {
-    public class RequestPipeConfigurator<TContext> : IRequestPipeConfigurator<TContext>
-        where TContext : IReceiveContext<IRequest>
-    {
-        private readonly IList<IPipeSpecification<TContext>> _specifications;
+    public class RequestPipeConfigurator : IRequestPipeConfigurator<IReceiveContext<IRequest>>
+        {
+        private readonly IList<IPipeSpecification<IReceiveContext<IRequest>>> _specifications;
 
         public RequestPipeConfigurator()
         {
-            _specifications = new List<IPipeSpecification<TContext>>();
+            _specifications = new List<IPipeSpecification<IReceiveContext<IRequest>>>();
         }
-
-
-
-        public IRequestPipe<TContext> Build()
+        
+        public IRequestPipe<IReceiveContext<IRequest>> Build()
         {
-            IRequestPipe<TContext> current = null;
+            IRequestPipe<IReceiveContext<IRequest>> current = null;
             if (_specifications.Any())
             {
                 for (int i = _specifications.Count - 1; i >= 0; i--)
@@ -29,13 +26,13 @@ namespace Mediator.Net.Pipeline
                     if (i == _specifications.Count - 1)
                     {
                         var thisPipe =
-                            new RequestPipe<TContext>(_specifications[i], null);
+                            new RequestPipe<IReceiveContext<IRequest>>(_specifications[i], null);
                         current = thisPipe;
                     }
                     else
                     {
                         var thisPipe =
-                            new RequestPipe<TContext>(_specifications[i], current);
+                            new RequestPipe<IReceiveContext<IRequest>>(_specifications[i], current);
                         current = thisPipe;
                     }
 
@@ -45,14 +42,14 @@ namespace Mediator.Net.Pipeline
             }
             else
             {
-                current = new RequestPipe<TContext>(new EmptyPipeSpecification<TContext>(), null);
+                current = new RequestPipe<IReceiveContext<IRequest>>(new EmptyPipeSpecification<IReceiveContext<IRequest>>(), null);
             }
 
             return current;
         }
 
 
-        public void AddPipeSpecification(IPipeSpecification<TContext> specification)
+        public void AddPipeSpecification(IPipeSpecification<IReceiveContext<IRequest>> specification)
         {
             _specifications.Add(specification);
         }

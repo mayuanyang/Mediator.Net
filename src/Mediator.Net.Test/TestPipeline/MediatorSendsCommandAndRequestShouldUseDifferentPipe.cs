@@ -39,7 +39,7 @@ namespace Mediator.Net.Test.TestPipeline
                     x.UseConsoleLogger1();
                     x.UseConsoleLogger2();
                 })
-                .ConfigureRequestPipe<IReceiveContext<IRequest>>(x =>
+                .ConfigureRequestPipe(x =>
                 {
                     x.UseConsoleLogger3();
                 })

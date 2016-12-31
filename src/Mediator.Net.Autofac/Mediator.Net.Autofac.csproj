@@ -4,11 +4,11 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{86EE3C98-8FC5-42CA-B13D-A18E6A5FC30B}</ProjectGuid>
+    <ProjectGuid>{46673510-A868-47C6-8469-DC6A9F22EF00}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Mediator.Net</RootNamespace>
-    <AssemblyName>Mediator.Net</AssemblyName>
+    <RootNamespace>Mediator.Net.Autofac</RootNamespace>
+    <AssemblyName>Mediator.Net.Autofac</AssemblyName>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -30,6 +30,10 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Autofac, Version=4.2.1.0, Culture=neutral, PublicKeyToken=17863af14b0044da, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Autofac.4.2.1\lib\net45\Autofac.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -40,44 +44,18 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Binding\MessageBinding.cs" />
-    <Compile Include="Binding\MessageHandlerRegistry.cs" />
-    <Compile Include="Context\PublishContext.cs" />
-    <Compile Include="Context\ReceiveContext.cs" />
-    <Compile Include="Contracts\IMessage.cs" />
-    <Compile Include="Context\IContext.cs" />
-    <Compile Include="Contracts\IRequest.cs" />
-    <Compile Include="Contracts\IRequestHandler.cs" />
-    <Compile Include="Contracts\IResponse.cs" />
-    <Compile Include="IMediator.cs" />
-    <Compile Include="Contracts\ICommand.cs" />
-    <Compile Include="Contracts\ICommandHandler.cs" />
-    <Compile Include="Contracts\IEvent.cs" />
-    <Compile Include="Contracts\IEventHandler.cs" />
-    <Compile Include="IResolver.cs" />
-    <Compile Include="Pipeline\EmptyPipeSpecification.cs" />
-    <Compile Include="Pipeline\IPipeConfigurator.cs" />
-    <Compile Include="Pipeline\IPipeSpecification.cs" />
-    <Compile Include="Context\IPublishContext.cs" />
-    <Compile Include="Context\IReceiveContext.cs" />
-    <Compile Include="Mediator.cs" />
-    <Compile Include="MediatorBuilder.cs" />
-    <Compile Include="Pipeline\IRequestPipeConfigurator.cs" />
-    <Compile Include="Pipeline\IReceivePipeConfigurator.cs" />
-    <Compile Include="Pipeline\IRequestPipe.cs" />
-    <Compile Include="Pipeline\PublishPipe.cs" />
-    <Compile Include="Pipeline\RequestPipeConfigurator.cs" />
-    <Compile Include="Pipeline\ReceivePipeConfigurator.cs" />
-    <Compile Include="Pipeline\IPipe.cs" />
-    <Compile Include="Pipeline\IPublishPipe.cs" />
-    <Compile Include="Pipeline\IReceivePipe.cs" />
-    <Compile Include="Pipeline\MoreThanOneHandlerException.cs" />
-    <Compile Include="Pipeline\NoHandlerFoundException.cs" />
-    <Compile Include="Pipeline\ReceivePipe.cs" />
-    <Compile Include="Pipeline\RequestPipe.cs" />
+    <Compile Include="ContainerBuilderExtensions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Mediator.Net\Mediator.Net.csproj">
+      <Project>{86ee3c98-8fc5-42ca-b13d-a18e6a5fc30b}</Project>
+      <Name>Mediator.Net</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

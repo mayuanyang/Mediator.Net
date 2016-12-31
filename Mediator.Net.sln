@@ -7,6 +7,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mediator.Net", "src\Mediato
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mediator.Net.Test", "src\Mediator.Net.Test\Mediator.Net.Test.csproj", "{BD539065-0DB3-425A-B941-2D23863AACCA}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mediator.Net.Autofac", "src\Mediator.Net.Autofac\Mediator.Net.Autofac.csproj", "{46673510-A868-47C6-8469-DC6A9F22EF00}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mediator.Net.Autofac.Test", "src\Mediator.Net.Autofac.Test\Mediator.Net.Autofac.Test.csproj", "{EE95512B-98E8-41DF-92FE-3BC0B1EFE493}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +25,14 @@ Global
 		{BD539065-0DB3-425A-B941-2D23863AACCA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BD539065-0DB3-425A-B941-2D23863AACCA}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{BD539065-0DB3-425A-B941-2D23863AACCA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{46673510-A868-47C6-8469-DC6A9F22EF00}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{46673510-A868-47C6-8469-DC6A9F22EF00}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{46673510-A868-47C6-8469-DC6A9F22EF00}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{46673510-A868-47C6-8469-DC6A9F22EF00}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EE95512B-98E8-41DF-92FE-3BC0B1EFE493}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EE95512B-98E8-41DF-92FE-3BC0B1EFE493}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EE95512B-98E8-41DF-92FE-3BC0B1EFE493}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EE95512B-98E8-41DF-92FE-3BC0B1EFE493}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

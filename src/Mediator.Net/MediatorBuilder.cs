@@ -12,8 +12,10 @@ namespace Mediator.Net
 {
     public class MediatorBuilder
     {
-        private IReceivePipe<IReceiveContext<IMessage>> _receivePipe;
-        private IRequestPipe<IReceiveContext<IRequest>> _requestPipe;
+        
+        private bool _isUsingDependancyInjection = false;
+        private Action<IReceivePipeConfigurator> _receivePipeConfiguratorAction;
+        private Action<IRequestPipeConfigurator<IReceiveContext<IRequest>>> _requestPipeConfiguratorAction;
         public MediatorBuilder RegisterHandlers(params Assembly[] assemblies)
         {
             foreach (var assembly in assemblies)
@@ -42,27 +44,50 @@ namespace Mediator.Net
 
         public MediatorBuilder ConfigureReceivePipe(Action<IReceivePipeConfigurator> configurator)
         {
-            var pipeConfigurator = new ReceivePipeConfigurator();
-            configurator(pipeConfigurator);
-            _receivePipe = pipeConfigurator.Build();
+            _receivePipeConfiguratorAction = configurator;
             return this;
         }
 
-        public MediatorBuilder ConfigureRequestPipe<TContext>(Action<IRequestPipeConfigurator<TContext>> configurator)
-            where TContext : IReceiveContext<IRequest>
+        public MediatorBuilder ConfigureRequestPipe(Action<IRequestPipeConfigurator<IReceiveContext<IRequest>>> configurator)
         {
-            var pipeConfigurator = new RequestPipeConfigurator<TContext>();
-            configurator(pipeConfigurator);
-            _requestPipe = pipeConfigurator.Build() as IRequestPipe<IReceiveContext<IRequest>>;
+            _requestPipeConfiguratorAction = configurator;
+            return this;
+        }
+
+        public MediatorBuilder UseDependancyInjection()
+        {
+            _isUsingDependancyInjection = true;
             return this;
         }
 
         public IMediator Build()
         {
-            if(_receivePipe == null)
-                ConfigureReceivePipe(x => {});
+            IReceivePipe<IReceiveContext<IMessage>> receivePipe;
+            IRequestPipe<IReceiveContext<IRequest>> requestPipe;
+
+            var receivePipeConfigurator = new ReceivePipeConfigurator();
+            if (_receivePipeConfiguratorAction == null)
+            {
+                receivePipe = receivePipeConfigurator.Build();
+            }
+            else
+            {
+                _receivePipeConfiguratorAction(receivePipeConfigurator);
+                receivePipe = receivePipeConfigurator.Build();
+            }
             
-            return new Mediator(_receivePipe, _requestPipe);
+            var requestPipeConfigurator = new RequestPipeConfigurator();
+            if (_requestPipeConfiguratorAction == null)
+            {
+                requestPipe = requestPipeConfigurator.Build();
+            }
+            else
+            {
+                _requestPipeConfiguratorAction(requestPipeConfigurator);
+                requestPipe = requestPipeConfigurator.Build();
+            }
+
+            return new Mediator(receivePipe, requestPipe);
         }
   
         private bool IsAssignableToGenericType(Type givenType, Type genericType)
