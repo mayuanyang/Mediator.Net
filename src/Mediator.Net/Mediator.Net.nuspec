@@ -13,6 +13,10 @@
     <tags>.NET Mediator Cqrs DDD</tags>
     <dependencies>
       <group targetFramework=".NETFramework4.5" />
+      <group targetFramework=".NETFramework4.5" />
+      <group targetFramework=".NETFramework4.0" />
+      <group targetFramework=".NETFramework4.5.1" />
+      <group targetFramework=".NETFramework4.5.2" />
     </dependencies>
   </metadata>
 </package>
