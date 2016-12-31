@@ -9,10 +9,12 @@ namespace Mediator.Net.Pipeline
 {
     public class ReceivePipeConfigurator : IReceivePipeConfigurator
     {
+        private readonly IDependancyScope _resolver;
         private readonly IList<IPipeSpecification<IReceiveContext<IMessage>>> _specifications;
 
-        public ReceivePipeConfigurator()
+        public ReceivePipeConfigurator(IDependancyScope resolver = null)
         {
+            _resolver = resolver;
             _specifications = new List<IPipeSpecification<IReceiveContext<IMessage>>>();
         }
 
@@ -33,13 +35,13 @@ namespace Mediator.Net.Pipeline
                     if (i == _specifications.Count - 1)
                     {
                         var thisPipe =
-                            new ReceivePipe<IReceiveContext<IMessage>>(_specifications[i], null);
+                            new ReceivePipe<IReceiveContext<IMessage>>(_specifications[i], null, _resolver);
                         current = thisPipe;
                     }
                     else
                     {
                         var thisPipe =
-                            new ReceivePipe<IReceiveContext<IMessage>>(_specifications[i], current);
+                            new ReceivePipe<IReceiveContext<IMessage>>(_specifications[i], current, _resolver);
                         current = thisPipe;
                     }
 
@@ -48,7 +50,7 @@ namespace Mediator.Net.Pipeline
             }
             else
             {
-                current = new ReceivePipe<IReceiveContext<IMessage>>(new EmptyPipeSpecification<IReceiveContext<IMessage>>(), null);
+                current = new ReceivePipe<IReceiveContext<IMessage>>(new EmptyPipeSpecification<IReceiveContext<IMessage>>(), null, _resolver);
             }
 
             return current;

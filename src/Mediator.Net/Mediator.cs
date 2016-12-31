@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Reflection;
 using System.Threading.Tasks;
 using Mediator.Net.Context;
 using Mediator.Net.Contracts;
@@ -11,12 +10,14 @@ namespace Mediator.Net
     {
         private readonly IReceivePipe<IReceiveContext<IMessage>> _receivePipe;
         private readonly IRequestPipe<IReceiveContext<IRequest>> _requestPipe;
+        private readonly IDependancyScope _scope;
 
         public Mediator(IReceivePipe<IReceiveContext<IMessage>> receivePipe,
-            IRequestPipe<IReceiveContext<IRequest>> requestPipe)
+            IRequestPipe<IReceiveContext<IRequest>> requestPipe, IDependancyScope scope = null)
         {
             _receivePipe = receivePipe;
             _requestPipe = requestPipe;
+            _scope = scope;
         }
 
 
@@ -57,6 +58,11 @@ namespace Mediator.Net
             var task = (Task)sendMethodInReceivePipe.Invoke(_receivePipe, new object[] { receiveContext });
             task.ConfigureAwait(false);
             return task;
+        }
+
+        public void Dispose()
+        {
+            _scope?.Dispose();
         }
     }
 }

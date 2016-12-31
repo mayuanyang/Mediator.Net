@@ -8,9 +8,14 @@ namespace Mediator.Net.Autofac
     {
         public static ContainerBuilder RegisterMediator(this ContainerBuilder containerBuilder, MediatorBuilder mediatorBuilder)
         {
-            mediatorBuilder.UseDependancyInjection();
             containerBuilder.RegisterInstance(mediatorBuilder).AsSelf().AsImplementedInterfaces().SingleInstance();
-            containerBuilder.Register(x => mediatorBuilder.Build()).AsSelf().AsImplementedInterfaces().InstancePerLifetimeScope();
+            containerBuilder.RegisterType<AutofacDependancyScope>().AsImplementedInterfaces();
+            containerBuilder.Register(x =>
+            {
+                var resolver = x.Resolve<IDependancyScope>().BeginScope();
+                return mediatorBuilder.Build(resolver);
+                
+            }).AsSelf().AsImplementedInterfaces().InstancePerLifetimeScope();
             
             RegisterHandlers(containerBuilder);
             

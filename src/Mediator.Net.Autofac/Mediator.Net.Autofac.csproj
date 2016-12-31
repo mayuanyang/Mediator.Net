@@ -44,10 +44,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AutofacDependancyScope.cs" />
     <Compile Include="ContainerBuilderExtensions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Mediator.Net.Autofac.nuspec" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>

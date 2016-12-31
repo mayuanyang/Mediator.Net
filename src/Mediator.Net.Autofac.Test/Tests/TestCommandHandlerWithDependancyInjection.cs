@@ -1,24 +1,23 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using Autofac;
+using Mediator.Net.Autofac.Test.Messages;
 using Mediator.Net.Autofac.Test.Middlewares;
+using Mediator.Net.Autofac.Test.Services;
 using NUnit.Framework;
-using Mediator.Net;
 using Shouldly;
 using TestStack.BDDfy;
 
-namespace Mediator.Net.Autofac.Test
+namespace Mediator.Net.Autofac.Test.Tests
 {
    
-    class TestContainer
+    class TestCommandHandlerWithDependancyInjection : TestBase
     {
         private IContainer _container = null;
         private IMediator _mediator;
-        [TestFixtureSetUp]
-        public void Setup()
+        private Task _task;
+ 
+        public void GivenAContainer()
         {
             var mediaBuilder = new MediatorBuilder();
             mediaBuilder.RegisterHandlers(typeof(TestContainer).Assembly)
@@ -27,23 +26,21 @@ namespace Mediator.Net.Autofac.Test
                     x.UseSimpleMiddleware();
                 });
             var containerBuilder = new ContainerBuilder();
+            containerBuilder.RegisterType<SimpleService>().AsSelf();
+            containerBuilder.RegisterType<AnotherSimpleService>().AsSelf();
             containerBuilder.RegisterMediator(mediaBuilder);
             _container = containerBuilder.Build();
         }
 
-        public void GivenAContainer()
-        {
-            
-        }
-
-        public void WhenTryToResolveTheInterfaceType()
+        public void WhenACommandIsSent()
         {
             _mediator = _container.Resolve<IMediator>();
+            _task = _mediator.SendAsync(new SimpleCommand(Guid.NewGuid()));
         }
 
-        public void ThenInterfaceTypeShouldBeResolved()
+        public void ThenTheCommandShouldReachItsHandler()
         {
-            _mediator.ShouldNotBeNull();
+            _task.Status.ShouldBe(TaskStatus.RanToCompletion);
             
         }
 

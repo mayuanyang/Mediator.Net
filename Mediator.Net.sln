@@ -11,6 +11,12 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mediator.Net.Autofac", "src
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mediator.Net.Autofac.Test", "src\Mediator.Net.Autofac.Test\Mediator.Net.Autofac.Test.csproj", "{EE95512B-98E8-41DF-92FE-3BC0B1EFE493}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "IoC", "IoC", "{9679C957-E490-4F90-9E5C-360B2C1B9A24}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Core", "Core", "{0096B862-187D-4FF8-9FD6-7DF491ADF2BE}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Test", "Test", "{9EF16702-297F-4E25-BF9C-E1E47065A444}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -36,5 +42,11 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{86EE3C98-8FC5-42CA-B13D-A18E6A5FC30B} = {0096B862-187D-4FF8-9FD6-7DF491ADF2BE}
+		{BD539065-0DB3-425A-B941-2D23863AACCA} = {9EF16702-297F-4E25-BF9C-E1E47065A444}
+		{46673510-A868-47C6-8469-DC6A9F22EF00} = {9679C957-E490-4F90-9E5C-360B2C1B9A24}
+		{EE95512B-98E8-41DF-92FE-3BC0B1EFE493} = {9679C957-E490-4F90-9E5C-360B2C1B9A24}
 	EndGlobalSection
 EndGlobal

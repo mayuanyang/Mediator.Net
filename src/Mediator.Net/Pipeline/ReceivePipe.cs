@@ -16,11 +16,13 @@ namespace Mediator.Net.Pipeline
         where TContext : IContext<IMessage>
     {
         private readonly IPipeSpecification<TContext> _specification;
+        private readonly IDependancyScope _resolver;
 
 
-        public ReceivePipe(IPipeSpecification<TContext> specification, IPipe<TContext> next)
+        public ReceivePipe(IPipeSpecification<TContext> specification, IPipe<TContext> next, IDependancyScope resolver = null)
         {
             _specification = specification;
+            _resolver = resolver;
             Next = next;
         }
 
@@ -78,7 +80,7 @@ namespace Mediator.Net.Pipeline
                            && ((y.CallingConvention & CallingConventions.HasThis) != 0);
                 });
 
-                var handler = Activator.CreateInstance(handlerType);
+                var handler = (_resolver == null) ? Activator.CreateInstance(handlerType) : _resolver.Resolve(handlerType);
                 task = (Task)handleMethod.Invoke(handler, new object[] { context });
 
             });

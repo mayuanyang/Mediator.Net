@@ -2,9 +2,9 @@
 
 namespace Mediator.Net
 {
-    public interface IResolver
+    public interface IDependancyScope : IDisposable
     {
-        T Resolve<T>(Type t);
+        T Resolve<T>();
         object Resolve(Type t);
         IDependancyScope BeginScope();
     }

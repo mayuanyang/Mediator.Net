@@ -49,12 +49,12 @@
     <Compile Include="Contracts\IRequest.cs" />
     <Compile Include="Contracts\IRequestHandler.cs" />
     <Compile Include="Contracts\IResponse.cs" />
+    <Compile Include="IDependancyScope.cs" />
     <Compile Include="IMediator.cs" />
     <Compile Include="Contracts\ICommand.cs" />
     <Compile Include="Contracts\ICommandHandler.cs" />
     <Compile Include="Contracts\IEvent.cs" />
     <Compile Include="Contracts\IEventHandler.cs" />
-    <Compile Include="IResolver.cs" />
     <Compile Include="Pipeline\EmptyPipeSpecification.cs" />
     <Compile Include="Pipeline\IPipeConfigurator.cs" />
     <Compile Include="Pipeline\IPipeSpecification.cs" />

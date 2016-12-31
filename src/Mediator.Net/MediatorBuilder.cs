@@ -13,7 +13,6 @@ namespace Mediator.Net
     public class MediatorBuilder
     {
         
-        private bool _isUsingDependancyInjection = false;
         private Action<IReceivePipeConfigurator> _receivePipeConfiguratorAction;
         private Action<IRequestPipeConfigurator<IReceiveContext<IRequest>>> _requestPipeConfiguratorAction;
         public MediatorBuilder RegisterHandlers(params Assembly[] assemblies)
@@ -54,12 +53,7 @@ namespace Mediator.Net
             return this;
         }
 
-        public MediatorBuilder UseDependancyInjection()
-        {
-            _isUsingDependancyInjection = true;
-            return this;
-        }
-
+        
         public IMediator Build()
         {
             IReceivePipe<IReceiveContext<IMessage>> receivePipe;
@@ -88,6 +82,36 @@ namespace Mediator.Net
             }
 
             return new Mediator(receivePipe, requestPipe);
+        }
+
+        public IMediator Build(IDependancyScope scope)
+        {
+            IReceivePipe<IReceiveContext<IMessage>> receivePipe;
+            IRequestPipe<IReceiveContext<IRequest>> requestPipe;
+
+            var receivePipeConfigurator = new ReceivePipeConfigurator(scope);
+            if (_receivePipeConfiguratorAction == null)
+            {
+                receivePipe = receivePipeConfigurator.Build();
+            }
+            else
+            {
+                _receivePipeConfiguratorAction(receivePipeConfigurator);
+                receivePipe = receivePipeConfigurator.Build();
+            }
+
+            var requestPipeConfigurator = new RequestPipeConfigurator(scope);
+            if (_requestPipeConfiguratorAction == null)
+            {
+                requestPipe = requestPipeConfigurator.Build();
+            }
+            else
+            {
+                _requestPipeConfiguratorAction(requestPipeConfigurator);
+                requestPipe = requestPipeConfigurator.Build();
+            }
+
+            return new Mediator(receivePipe, requestPipe, scope);
         }
   
         private bool IsAssignableToGenericType(Type givenType, Type genericType)

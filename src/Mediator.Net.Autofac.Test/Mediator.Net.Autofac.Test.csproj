@@ -58,9 +58,15 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Class1.cs" />
+    <Compile Include="Handlers\SimpleCommandHandler.cs" />
+    <Compile Include="Messages\SimpleCommand.cs" />
     <Compile Include="Middlewares\SimpleMiddleware.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="TestContainer.cs" />
+    <Compile Include="Services\AnotherSimpleService.cs" />
+    <Compile Include="Services\SimpleService.cs" />
+    <Compile Include="TestBase.cs" />
+    <Compile Include="Tests\TestCommandHandlerWithDependancyInjection.cs" />
+    <Compile Include="Tests\TestContainer.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Mediator.Net.Autofac\Mediator.Net.Autofac.csproj">
@@ -75,9 +81,7 @@
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Handlers\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
