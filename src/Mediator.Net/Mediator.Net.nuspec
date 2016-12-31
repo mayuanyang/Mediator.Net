@@ -12,6 +12,7 @@
     <description>Decouple does matter</description>
     <tags>.NET Mediator Cqrs DDD</tags>
     <dependencies>
+      <group targetFramework=".NETFramework4.5" />
     </dependencies>
   </metadata>
 </package>

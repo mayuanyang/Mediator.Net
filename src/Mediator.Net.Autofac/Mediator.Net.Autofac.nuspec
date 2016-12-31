@@ -12,6 +12,10 @@
     <description>Use Autofac as the IoC container for Mediator.Net</description>
     <tags>.NET Mediator Autofac</tags>
     <dependencies>
+      <group targetFramework=".NETFramework4.5" />
+      <group targetFramework=".NETFramework4.0" />
+      <group targetFramework=".NETFramework4.5.1" />
+      <group targetFramework=".NETFramework4.5.2" />
     </dependencies>
   </metadata>
 </package>
