@@ -60,12 +60,19 @@
   <ItemGroup>
     <Compile Include="Class1.cs" />
     <Compile Include="Handlers\SimpleCommandHandler.cs" />
+    <Compile Include="Handlers\SimpleEventHandler.cs" />
+    <Compile Include="Handlers\SimpleRequestHandler.cs" />
     <Compile Include="Messages\SimpleCommand.cs" />
+    <Compile Include="Messages\SimpleEvent.cs" />
+    <Compile Include="Messages\SimpleResponse.cs" />
+    <Compile Include="Messages\SimpleRequest.cs" />
     <Compile Include="Middlewares\SimpleMiddleware.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\AnotherSimpleService.cs" />
     <Compile Include="Services\SimpleService.cs" />
     <Compile Include="TestBase.cs" />
+    <Compile Include="Tests\TestEventHandlerWithDependancyInjection.cs" />
+    <Compile Include="Tests\TestRequestHandlerWithDependancyInjection.cs" />
     <Compile Include="Tests\TestCommandHandlerWithDependancyInjection.cs" />
     <Compile Include="Tests\TestContainer.cs" />
   </ItemGroup>

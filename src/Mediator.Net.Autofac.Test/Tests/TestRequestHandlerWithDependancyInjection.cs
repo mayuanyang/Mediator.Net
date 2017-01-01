@@ -1,5 +1,9 @@
-﻿using Autofac;
+﻿using System;
+using System.Threading.Tasks;
+using Autofac;
+using Mediator.Net.Autofac.Test.Messages;
 using Mediator.Net.Autofac.Test.Middlewares;
+using Mediator.Net.Autofac.Test.Services;
 using NUnit.Framework;
 using Shouldly;
 using TestStack.BDDfy;
@@ -7,10 +11,11 @@ using TestStack.BDDfy;
 namespace Mediator.Net.Autofac.Test.Tests
 {
    
-    class TestContainer : TestBase
+    class TestRequestHandlerWithDependancyInjection : TestBase
     {
         private IContainer _container = null;
         private IMediator _mediator;
+        private Task _task;
  
         public void GivenAContainer()
         {
@@ -21,18 +26,21 @@ namespace Mediator.Net.Autofac.Test.Tests
                     x.UseSimpleMiddleware();
                 });
             var containerBuilder = new ContainerBuilder();
+            containerBuilder.RegisterType<SimpleService>().AsSelf();
+            containerBuilder.RegisterType<AnotherSimpleService>().AsSelf();
             containerBuilder.RegisterMediator(mediaBuilder);
             _container = containerBuilder.Build();
         }
 
-        public void WhenTryToResolveTheInterfaceType()
+        public void WhenARequestIsSent()
         {
             _mediator = _container.Resolve<IMediator>();
+            _task = _mediator.RequestAsync<SimpleRequest, SimpleResponse>(new SimpleRequest());
         }
 
-        public void ThenInterfaceTypeShouldBeResolved()
+        public void ThenTheRequestShouldReachItsHandler()
         {
-            _mediator.ShouldNotBeNull();
+            _task.Status.ShouldBe(TaskStatus.RanToCompletion);
             
         }
 

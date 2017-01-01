@@ -24,6 +24,19 @@ namespace Mediator.Net
                 {
                     MessageHandlerRegistry.MessageBindings.Add(new MessageBinding(x.GetInterfaces().First().GenericTypeArguments[0].GetTypeInfo(), x.GetTypeInfo()));
                 });
+
+                var eventHandlers = assembly.GetTypes().Where(x => IsAssignableToGenericType(x, typeof(IEventHandler<>))).ToList();
+                eventHandlers.ForEach(x =>
+                {
+                    MessageHandlerRegistry.MessageBindings.Add(new MessageBinding(x.GetInterfaces().First().GenericTypeArguments[0].GetTypeInfo(), x.GetTypeInfo()));
+                });
+
+                var requestHandlers = assembly.GetTypes().Where(x => IsAssignableToGenericType(x, typeof(IRequestHandler<,>))).ToList();
+                requestHandlers.ForEach(x =>
+                {
+                    MessageHandlerRegistry.MessageBindings.Add(new MessageBinding(x.GetInterfaces().First().GenericTypeArguments[0].GetTypeInfo(), x.GetTypeInfo()));
+                });
+
             }
             return this;
         }
