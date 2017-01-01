@@ -64,6 +64,7 @@
     <Compile Include="CommandHandlers\DerivedTestBaseCommandHandler.cs" />
     <Compile Include="CommandHandlers\AsyncTestBaseCommandHandler.cs" />
     <Compile Include="CommandHandlers\MultiCommandsHandler.cs" />
+    <Compile Include="CommandHandlers\TestBaseCommandHandlerRaiseEvent.cs" />
     <Compile Include="CommandHandlers\TestBaseCommandHandler.cs" />
     <Compile Include="EventHandlers\DerivedEventHandler.cs" />
     <Compile Include="EventHandlers\TestEventHandler2.cs" />
@@ -73,8 +74,10 @@
     <Compile Include="Messages\GetGuidResponse.cs" />
     <Compile Include="Messages\GetGuidRequest.cs" />
     <Compile Include="Messages\TestEvent.cs" />
+    <Compile Include="Middlewares\DummySave.cs" />
     <Compile Include="RequestHandlers\GetGuidRequestHandler2.cs" />
     <Compile Include="RequestHandlers\GetGuidRequestHandler.cs" />
+    <Compile Include="TestCommandHandlers\CommandHandlerRaiseEventShouldBeHandled.cs" />
     <Compile Include="TestCommandHandlers\MediatorSendMultipleCommandShouldWork.cs" />
     <Compile Include="TestCommandHandlers\MediatorWithoutPipelineShouldWork.cs" />
     <Compile Include="TestCommandHandlers\AsyncCommandHandlerShouldWork.cs" />

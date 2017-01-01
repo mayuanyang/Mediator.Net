@@ -9,7 +9,7 @@
     <licenseUrl>https://github.com/mayuanyang/Mediator.Net</licenseUrl>
     <projectUrl>https://github.com/mayuanyang/Mediator.Net/</projectUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
-    <description>Decouple does matter</description>
+    <description>Decouple does matter, support sending command, publish event and request response</description>
     <tags>.NET Mediator Cqrs DDD</tags>
     <dependencies>
       <group targetFramework=".NETFramework4.5" />

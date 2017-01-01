@@ -2,14 +2,15 @@
 
 namespace Mediator.Net.Context
 {
-    class PublishContext : IPublishContext
+    class PublishContext : IPublishContext<IEvent>
     {
-        public PublishContext(IEvent message, IReceiveContext<IMessage> receiveContext )
+       
+        public PublishContext(IEvent message, IMediator mediator)
         {
+            Mediator = mediator;
             Message = message;
-            ReceiveContext = receiveContext;
         }
         public IEvent Message { get; }
-        public IReceiveContext<IMessage> ReceiveContext { get; }
+        public IMediator Mediator { get; }
     }
 }

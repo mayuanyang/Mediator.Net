@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
   <metadata>
     <id>Mediator.Net.Autofac</id>
-    <title>Autofac integration for Mediator.Net</title>
+    <title>Mediator.Net Autofac integration</title>
     <version>1</version>
     <authors>Yuan(Eddy) Ma</authors>
     <owners>Yuan(Eddy) Ma</owners>

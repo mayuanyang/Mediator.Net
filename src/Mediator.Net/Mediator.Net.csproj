@@ -63,10 +63,12 @@
     <Compile Include="Context\IReceiveContext.cs" />
     <Compile Include="Mediator.cs" />
     <Compile Include="MediatorBuilder.cs" />
+    <Compile Include="Pipeline\IPublishPipeConfigurator.cs" />
     <Compile Include="Pipeline\IRequestPipeConfigurator.cs" />
     <Compile Include="Pipeline\IReceivePipeConfigurator.cs" />
     <Compile Include="Pipeline\IRequestPipe.cs" />
     <Compile Include="Pipeline\PublishPipe.cs" />
+    <Compile Include="Pipeline\PublishPipeConfigurator.cs" />
     <Compile Include="Pipeline\RequestPipeConfigurator.cs" />
     <Compile Include="Pipeline\ReceivePipeConfigurator.cs" />
     <Compile Include="Pipeline\IPipe.cs" />
