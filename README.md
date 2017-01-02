@@ -8,39 +8,45 @@ You can get Autofac by [grabbing the latest NuGet packages](https://www.nuget.or
 Setup the mediator by using MediatorBuilder
 ```C#
   
-  var mediaBuilder = new MediatorBuilder();
-  var mediator = mediaBuilder.RegisterHandlers(typeof(this).Assembly).Build();
+	var mediaBuilder = new MediatorBuilder();
+	var mediator = mediaBuilder.RegisterHandlers(typeof(this).Assembly).Build();
            
 ```
 
 Handlers scan registration
 ```C#
 
-  var mediaBuilder = new MediatorBuilder();
-  var mediator = mediaBuilder.RegisterHandlers(typeof(this).Assembly).Build();
+	var mediaBuilder = new MediatorBuilder();
+	var mediator = mediaBuilder.RegisterHandlers(typeof(this).Assembly).Build();
            
 ```
 
 Handler explicit registration
 ```C#
   
-var mediator = builder.RegisterHandlers(() =>
+	var mediator = builder.RegisterHandlers(() =>
+        {
+            var binding = new List<MessageBinding>
             {
-                var binding = new List<MessageBinding>
-                {
-                    new MessageBinding(typeof(TestBaseCommand), typeof(TestBaseCommandHandler)),
-                    new MessageBinding(typeof(DerivedTestBaseCommand), typeof(DerivedTestBaseCommandHandler))
-                };
-                return binding;
-            }).Build();
+                new MessageBinding(typeof(TestBaseCommand), typeof(TestBaseCommandHandler)),
+                new MessageBinding(typeof(DerivedTestBaseCommand), typeof(DerivedTestBaseCommandHandler))
+            };
+            return binding;
+        }).Build();
            
 ```
 
 Sending a command, publishing event and sending request and getting response
 ```C#
 
-await _mediator.SendAsync(new TestBaseCommand(Guid.NewGuid()));
-await _mediator.PublishAsync(new TestEvent(Guid.NewGuid()));
-var result = await _mediator.RequestAsync<GetGuidRequest, GetGuidResponse>(new GetGuidRequest(_guid));
+	await _mediator.SendAsync(new TestBaseCommand(Guid.NewGuid()));
+	await _mediator.PublishAsync(new TestEvent(Guid.NewGuid()));
+	var result = await _mediator.RequestAsync<GetGuidRequest, GetGuidResponse>(new GetGuidRequest(_guid));
 
 ```
+
+Using pipelines
+TO BE ADDED
+
+Setting up middlewares
+TO BE ADDED
