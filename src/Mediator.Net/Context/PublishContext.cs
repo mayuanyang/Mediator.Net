@@ -22,7 +22,7 @@ namespace Mediator.Net.Context
 
         public bool TryGetService<T>(out T service)
         {
-            var result = _registeredServices.Last(x => x.GetType() == typeof(T) || x is T);
+            var result = _registeredServices.LastOrDefault(x => x.GetType() == typeof(T) || x is T);
             if (result != null)
             {
                 service = (T)result;

@@ -8,17 +8,19 @@ namespace Mediator.Net
 {
     public class Mediator : IMediator
     {
-        public IReceivePipe<IReceiveContext<IMessage>> ReceivePipe { get; }
-        public IRequestPipe<IReceiveContext<IRequest>> RequestPipe { get; }
-        public IPublishPipe<IPublishContext<IEvent>> PublishPipe { get; }
+        private readonly IReceivePipe<IReceiveContext<IMessage>> _receivePipe;
+        private readonly IRequestPipe<IReceiveContext<IRequest>> _requestPipe;
+        private readonly IPublishPipe<IPublishContext<IEvent>> _publishPipe;
         private readonly IDependancyScope _scope;
 
         public Mediator(IReceivePipe<IReceiveContext<IMessage>> receivePipe,
-            IRequestPipe<IReceiveContext<IRequest>> requestPipe, IPublishPipe<IPublishContext<IEvent>> publishPipe, IDependancyScope scope = null)
+            IRequestPipe<IReceiveContext<IRequest>> requestPipe, 
+            IPublishPipe<IPublishContext<IEvent>> publishPipe, 
+            IDependancyScope scope = null)
         {
-            ReceivePipe = receivePipe;
-            RequestPipe = requestPipe;
-            PublishPipe = publishPipe;
+            _receivePipe = receivePipe;
+            _requestPipe = requestPipe;
+            _publishPipe = publishPipe;
             _scope = scope;
         }
 
@@ -43,9 +45,13 @@ namespace Mediator.Net
         {
             var receiveContext = (IReceiveContext<TRequest>)Activator.CreateInstance(typeof(ReceiveContext<>).MakeGenericType(request.GetType()), request);
             receiveContext.RegisterService(this);
-
-            var sendMethodInRequestPipe = RequestPipe.GetType().GetMethod("Connect");
-            var result = await ((Task<object>)sendMethodInRequestPipe.Invoke(RequestPipe, new object[] { receiveContext })).ConfigureAwait(false);
+            IPublishPipe<IPublishContext<IEvent>> publishPipeInContext;
+            if (!receiveContext.TryGetService(out publishPipeInContext))
+            {
+                receiveContext.RegisterService(_publishPipe);
+            }
+            var sendMethodInRequestPipe = _requestPipe.GetType().GetMethod("Connect");
+            var result = await ((Task<object>)sendMethodInRequestPipe.Invoke(_requestPipe, new object[] { receiveContext })).ConfigureAwait(false);
             
             return (TResponse)result;
 
@@ -56,8 +62,14 @@ namespace Mediator.Net
         {
             var receiveContext = (IReceiveContext<TMessage>)Activator.CreateInstance(typeof(ReceiveContext<>).MakeGenericType(msg.GetType()), msg);
             receiveContext.RegisterService(this);
-            var sendMethodInReceivePipe = ReceivePipe.GetType().GetMethod("Connect");
-            var task = (Task)sendMethodInReceivePipe.Invoke(ReceivePipe, new object[] { receiveContext });
+            IPublishPipe<IPublishContext<IEvent>> publishPipeInContext;
+            if (!receiveContext.TryGetService(out publishPipeInContext))
+            {
+                receiveContext.RegisterService(_publishPipe);
+            }
+            
+            var sendMethodInReceivePipe = _receivePipe.GetType().GetMethod("Connect");
+            var task = (Task)sendMethodInReceivePipe.Invoke(_receivePipe, new object[] { receiveContext });
             task.ConfigureAwait(false);
             return task;
         }

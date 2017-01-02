@@ -9,8 +9,8 @@
     <licenseUrl>https://github.com/mayuanyang/Mediator.Net</licenseUrl>
     <projectUrl>https://github.com/mayuanyang/Mediator.Net/</projectUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
-    <description>Decouple does matter, support sending command, publish event and request response</description>
-    <tags>.NET Mediator Cqrs DDD</tags>
+    <description>Decouple does matter, A simple mediator for .Net for sending command, publishing event and request response with pipelines supported</description>
+    <tags>.NET Mediator Cqrs DDD Command Event Request Response</tags>
     <dependencies>
       <group targetFramework=".NETFramework4.5" />
     </dependencies>

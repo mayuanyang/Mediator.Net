@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Mediator.Net.Contracts;
+using Mediator.Net.Pipeline;
 
 namespace Mediator.Net.Context
 {
@@ -24,7 +25,7 @@ namespace Mediator.Net.Context
 
         public bool TryGetService<T>(out T service)
         {
-            var result = _registeredServices.Last(x => x.GetType() == typeof(T) || x is T);
+            var result = _registeredServices.LastOrDefault(x => x.GetType() == typeof(T) || x is T);
             if (result != null)
             {
                 service = (T)result;
@@ -40,12 +41,19 @@ namespace Mediator.Net.Context
             IMediator mediator;
             if (TryGetService(out mediator))
             {
-                var publishContext = (IPublishContext<IEvent>) Activator.CreateInstance(typeof(PublishContext), msg);
+                var publishContext = (IPublishContext<IEvent>)Activator.CreateInstance(typeof(PublishContext), msg);
                 publishContext.RegisterService(mediator);
-                var sendMethod = mediator.PublishPipe.GetType().GetMethod("Connect");
-                var task = (Task) sendMethod.Invoke(mediator.PublishPipe, new object[] {publishContext});
-                task.ConfigureAwait(false);
-                return task;
+                IPublishPipe<IPublishContext<IEvent>> publishPipe;
+                if (TryGetService(out publishPipe))
+                {
+                    var sendMethod = publishPipe.GetType().GetMethod("Connect");
+                    var task = (Task)sendMethod.Invoke(publishPipe, new object[] { publishContext });
+                    task.ConfigureAwait(false);
+                    return task;
+                }
+                throw new PipeIsNotAddedToContextException();
+
+
             }
             throw new MediatorIsNotAddedToTheContextException();
         }
