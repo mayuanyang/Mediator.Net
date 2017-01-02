@@ -7,6 +7,6 @@ namespace Mediator.Net.Pipeline
     public interface IPublishPipe<TContext> :IPipe<TContext>
         where TContext : IContext<IEvent>
     {
-        Task PublishAsync(TContext context, IMediator mediator);
+        
     }
 }

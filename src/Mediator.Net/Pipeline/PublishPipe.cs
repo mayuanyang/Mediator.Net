@@ -19,7 +19,8 @@ namespace Mediator.Net.Pipeline
             _specification = specification;
             _resolver = resolver;
         }
-        public async Task PublishAsync(TContext context, IMediator mediator)
+   
+        public async Task Connect(TContext context)
         {
             await _specification.ExecuteBeforeConnect(context);
             if (Next != null)
@@ -28,15 +29,19 @@ namespace Mediator.Net.Pipeline
             }
             else
             {
-                await mediator.PublishAsync(context.Message);
+                IMediator mediator;
+                if (context.TryGetService(out mediator))
+                {
+                    await mediator.PublishAsync(context.Message);
+                }
+                else
+                {
+                    throw new MediatorIsNotAddedToTheContextException();
+                }
+                
             }
 
             await _specification.ExecuteAfterConnect(context);
-        }
-
-        public Task Connect(TContext context)
-        {
-            throw new NotImplementedException();
         }
 
         public IPipe<TContext> Next { get; }

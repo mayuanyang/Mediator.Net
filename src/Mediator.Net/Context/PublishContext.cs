@@ -1,16 +1,38 @@
-﻿using Mediator.Net.Contracts;
+﻿using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
+using Mediator.Net.Contracts;
 
 namespace Mediator.Net.Context
 {
     class PublishContext : IPublishContext<IEvent>
     {
-       
-        public PublishContext(IEvent message, IMediator mediator)
+
+        private readonly IList<object> _registeredServices;
+        public PublishContext(IEvent message)
         {
-            Mediator = mediator;
             Message = message;
+            _registeredServices = new List<object>();
         }
         public IEvent Message { get; }
-        public IMediator Mediator { get; }
+        public void RegisterService<T>(T service)
+        {
+            _registeredServices.Add(service);
+        }
+
+        public bool TryGetService<T>(out T service)
+        {
+            var result = _registeredServices.Last(x => x.GetType() == typeof(T) || x is T);
+            if (result != null)
+            {
+                service = (T)result;
+                return true;
+            }
+            service = default(T);
+            return false;
+
+        }
+
+        
     }
 }

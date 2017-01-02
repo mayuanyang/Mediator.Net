@@ -43,6 +43,7 @@
   <ItemGroup>
     <Compile Include="Binding\MessageBinding.cs" />
     <Compile Include="Binding\MessageHandlerRegistry.cs" />
+    <Compile Include="MediatorIsNotAddedToTheContextException.cs" />
     <Compile Include="Context\PublishContext.cs" />
     <Compile Include="Context\ReceiveContext.cs" />
     <Compile Include="Contracts\IMessage.cs" />
