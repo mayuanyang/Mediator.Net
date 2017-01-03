@@ -13,7 +13,7 @@ Setup the mediator by using MediatorBuilder
            
 ```
 
-Handlers scan registration
+###Handlers scan registration
 ```C#
 
 	var mediaBuilder = new MediatorBuilder();
@@ -21,7 +21,7 @@ Handlers scan registration
            
 ```
 
-Handler explicit registration
+###Handlers explicit registration
 ```C#
   
 	var mediator = builder.RegisterHandlers(() =>
@@ -36,7 +36,7 @@ Handler explicit registration
            
 ```
 
-Sending a command, publishing event and sending request and getting response
+###Sending a command, publishing event and sending request and getting response
 ```C#
 
 	await _mediator.SendAsync(new TestBaseCommand(Guid.NewGuid()));
@@ -45,8 +45,8 @@ Sending a command, publishing event and sending request and getting response
 
 ```
 
-Using pipelines
-TO BE ADDED
+###Using pipelines
+You can setup different pipelines for different purpose, see test project for samples
 
-Setting up middlewares
-TO BE ADDED
+###Setting up middlewares
+You can add as many middlewares into the pipelines as you want, see test project for samples
