@@ -59,6 +59,7 @@
     <Compile Include="Contracts\IEvent.cs" />
     <Compile Include="Contracts\IEventHandler.cs" />
     <Compile Include="Pipeline\EmptyPipeSpecification.cs" />
+    <Compile Include="Pipeline\IGlobalReceivePipe.cs" />
     <Compile Include="Pipeline\IPipeConfigurator.cs" />
     <Compile Include="Pipeline\IPipeSpecification.cs" />
     <Compile Include="Context\IPublishContext.cs" />
