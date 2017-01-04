@@ -66,6 +66,7 @@
     <Compile Include="CommandHandlers\MultiCommandsHandler.cs" />
     <Compile Include="CommandHandlers\TestBaseCommandHandlerRaiseEvent.cs" />
     <Compile Include="CommandHandlers\TestBaseCommandHandler.cs" />
+    <Compile Include="CommandHandlers\TestNormalPerformance.cs" />
     <Compile Include="EventHandlers\DerivedEventHandler.cs" />
     <Compile Include="EventHandlers\TestEventHandler2.cs" />
     <Compile Include="EventHandlers\TestEventHandler.cs" />

@@ -26,7 +26,7 @@ namespace Mediator.Net.Pipeline
             Next = next;
         }
 
-        public async Task Connect(TContext context)
+        public async Task<object> Connect(TContext context)
         {
             await _specification.ExecuteBeforeConnect(context);
             if (Next != null)
@@ -39,12 +39,18 @@ namespace Mediator.Net.Pipeline
             }
 
             await _specification.ExecuteAfterConnect(context);
+            return null;
         }
 
         public IPipe<TContext> Next { get; }
 
         private Task ConnectToHandler(TContext context)
         {
+#if DEBUG
+            var sw = new Stopwatch();
+            sw.Start();
+#endif
+
             var handlers = MessageHandlerRegistry.MessageBindings.Where(x => x.MessageType.GetTypeInfo() == context.Message.GetType()).ToList();
             if (!handlers.Any())
                 throw new NoHandlerFoundException(context.Message.GetType());
@@ -55,6 +61,7 @@ namespace Mediator.Net.Pipeline
                     throw new MoreThanOneHandlerException(context.Message.GetType());
                 }
             }
+
             Task task = null;
             handlers.ForEach( x =>
             {
@@ -84,7 +91,10 @@ namespace Mediator.Net.Pipeline
                 task = (Task)handleMethod.Invoke(handler, new object[] { context });
 
             });
-
+#if DEBUG
+            sw.Stop();
+            Console.WriteLine($"It took {sw.ElapsedMilliseconds} milliseconds to run the handler");
+#endif
             return task;
         }
     }

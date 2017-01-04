@@ -1,19 +1,17 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Diagnostics;
+using System.Threading.Tasks;
 using Mediator.Net.Context;
 using Mediator.Net.Contracts;
 
 namespace Mediator.Net.Pipeline
 {
-    class GlobalReceivePipe<TContext> : IGlobalReceivePipe<TContext> where TContext : IContext<IMessage>
+    public class GlobalReceivePipe<TContext> : IGlobalReceivePipe<TContext> where TContext : IContext<IMessage>
     {
         private IPipeSpecification<TContext> _specification;
         private IDependancyScope _resolver;
 
-        Task IPipe<TContext>.Connect(TContext context)
-        {
-            return Connect(context);
-        }
-
+  
         public IPipe<TContext> Next { get; }
 
         public GlobalReceivePipe(IPipeSpecification<TContext> specification, IPipe<TContext> next, IDependancyScope resolver = null)
@@ -43,6 +41,7 @@ namespace Mediator.Net.Pipeline
 
         private async Task<object> ConnectToPipe(TContext context)
         {
+
             if (context.Message is ICommand)
             {
                 IReceivePipe<IReceiveContext<ICommand>> commandPipe;
@@ -68,6 +67,7 @@ namespace Mediator.Net.Pipeline
                     return await requestPipe.Connect((IReceiveContext<IRequest>)context);
                 }
             }
+
             return Task.FromResult((object)null);
         }
         

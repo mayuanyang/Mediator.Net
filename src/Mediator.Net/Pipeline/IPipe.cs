@@ -7,7 +7,7 @@ namespace Mediator.Net.Pipeline
     public interface IPipe<in TContext> 
         where TContext : IContext<IMessage> 
     {
-        Task Connect(TContext context);
+        Task<object> Connect(TContext context);
         IPipe<TContext> Next { get; }
 
     }

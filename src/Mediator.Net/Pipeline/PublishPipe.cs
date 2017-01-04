@@ -20,7 +20,7 @@ namespace Mediator.Net.Pipeline
             _resolver = resolver;
         }
    
-        public async Task Connect(TContext context)
+        public async Task<object> Connect(TContext context)
         {
             await _specification.ExecuteBeforeConnect(context);
             if (Next != null)
@@ -42,6 +42,7 @@ namespace Mediator.Net.Pipeline
             }
 
             await _specification.ExecuteAfterConnect(context);
+            return null;
         }
 
         public IPipe<TContext> Next { get; }
