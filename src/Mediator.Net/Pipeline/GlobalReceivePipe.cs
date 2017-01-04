@@ -9,6 +9,11 @@ namespace Mediator.Net.Pipeline
         private IPipeSpecification<TContext> _specification;
         private IDependancyScope _resolver;
 
+        Task IPipe<TContext>.Connect(TContext context)
+        {
+            return Connect(context);
+        }
+
         public IPipe<TContext> Next { get; }
 
         public GlobalReceivePipe(IPipeSpecification<TContext> specification, IPipe<TContext> next, IDependancyScope resolver = null)
@@ -18,22 +23,25 @@ namespace Mediator.Net.Pipeline
             Next = next;
         }
 
-        public async Task Connect(TContext context)
+        public async Task<object> Connect(TContext context)
         {
+            object result = null;
             await _specification.ExecuteBeforeConnect(context);
             if (Next != null)
             {
                 await Next.Connect(context);
+                
             }
             else
             {
-                await ConnectToPipe(context);
+                result = await ConnectToPipe(context);
             }
 
             await _specification.ExecuteAfterConnect(context);
+            return result;
         }
 
-        private async Task ConnectToPipe(TContext context)
+        private async Task<object> ConnectToPipe(TContext context)
         {
             if (context.Message is ICommand)
             {
@@ -46,21 +54,21 @@ namespace Mediator.Net.Pipeline
             }
             else if (context.Message is IEvent)
             {
-                IReceivePipe<IReceiveContext<IEvent>> commandPipe;
-                if (context.TryGetService(out commandPipe))
+                IReceivePipe<IReceiveContext<IEvent>> eventPipe;
+                if (context.TryGetService(out eventPipe))
                 {
-                    await commandPipe.Connect((IReceiveContext<IEvent>)context);
+                    await eventPipe.Connect((IReceiveContext<IEvent>)context);
                 }
             }
             else if (context.Message is IRequest)
             {
-                IRequestPipe<IReceiveContext<IRequest>> commandPipe;
-                if (context.TryGetService(out commandPipe))
+                IRequestPipe<IReceiveContext<IRequest>> requestPipe;
+                if (context.TryGetService(out requestPipe))
                 {
-                    await commandPipe.Connect((IReceiveContext<IRequest>)context);
+                    return await requestPipe.Connect((IReceiveContext<IRequest>)context);
                 }
             }
-
+            return Task.FromResult((object)null);
         }
         
     }

@@ -91,6 +91,8 @@
     <Compile Include="TestEventHandlers\EventShouldBePublishToSingleHandler.cs" />
     <Compile Include="TestEventHandlers\PublishDerivedEventShouldBeHandledByBaseHandler.cs" />
     <Compile Include="TestEventHandlers\PublishDerivedEventShouldBeHandled.cs" />
+    <Compile Include="TestPipeline\GlobalPipeConnectToRequestPipe.cs" />
+    <Compile Include="TestPipeline\GlobalPipeConnectToCommandPipe.cs" />
     <Compile Include="TestPipeline\MediatorSendsCommandAndRequestShouldUseDifferentPipe.cs" />
     <Compile Include="TestPipeline\UselessMiddlewareShouldNotBeExecuted.cs" />
     <Compile Include="TestPipeline\MiddlewaresShouldBeExecutedInReverseOrder.cs" />

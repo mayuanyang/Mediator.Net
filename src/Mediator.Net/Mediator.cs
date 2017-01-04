@@ -53,8 +53,14 @@ namespace Mediator.Net
             {
                 receiveContext.RegisterService(_publishPipe);
             }
-            var sendMethodInRequestPipe = _requestPipe.GetType().GetMethod("Connect");
-            var result = await ((Task<object>)sendMethodInRequestPipe.Invoke(_requestPipe, new object[] { receiveContext })).ConfigureAwait(false);
+
+            IRequestPipe<IReceiveContext<IRequest>> requestPipeInContext;
+            if (!receiveContext.TryGetService(out requestPipeInContext))
+            {
+                receiveContext.RegisterService(_requestPipe);
+            }
+            var sendMethodInRequestPipe = _globalPipe.GetType().GetMethod("Connect");
+            var result = await ((Task<object>)sendMethodInRequestPipe.Invoke(_globalPipe, new object[] { receiveContext })).ConfigureAwait(false);
             
             return (TResponse)result;
 

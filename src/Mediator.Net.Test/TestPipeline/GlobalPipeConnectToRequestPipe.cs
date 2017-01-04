@@ -16,20 +16,18 @@ using TestStack.BDDfy;
 
 namespace Mediator.Net.Test.TestPipeline
 {
-    class MediatorSendsCommandAndRequestShouldUseDifferentPipe : TestBase
+    class GlobalPipeConnectToRequestPipe : TestBase
     {
         private IMediator _mediator;
-        private GetGuidResponse _result;
-        private Task _commandTask;
+        private GetGuidResponse _response;
         private Guid _id = Guid.NewGuid();
-        public void GivenAMediatorAndTwoMiddlewares()
+        public void GivenAMediator()
         {
            var builder = new MediatorBuilder();
             _mediator = builder.RegisterHandlers(() =>
                 {
                     var binding = new List<MessageBinding>()
                     {
-                        new MessageBinding(typeof(TestBaseCommand), typeof(TestBaseCommandHandler)),
                         new MessageBinding(typeof(GetGuidRequest), typeof(GetGuidRequestHandler))
                     };
                     return binding;
@@ -51,22 +49,18 @@ namespace Mediator.Net.Test.TestPipeline
 
         }
 
-        public async Task WhenACommandAndARequestAreSent()
+        public async Task WhenARequestIsSent()
         {
-            _commandTask = _mediator.SendAsync(new TestBaseCommand(Guid.NewGuid()));
-            _result = await _mediator.RequestAsync<GetGuidRequest, GetGuidResponse>(new GetGuidRequest(_id));
+            _response = await _mediator.RequestAsync<GetGuidRequest, GetGuidResponse>(new GetGuidRequest(_id));
+            
         }
 
-        public void ThenTheCommandShouldBeHandled()
+        public void ThenTheRequestShouldBeHandled()
         {
-            _commandTask.Status.ShouldBe(TaskStatus.RanToCompletion);
+            _response.Id.ShouldBe(_id);
         }
 
-        public void AndTheRequestShouldBeHandled()
-        {
-            _result.Id.ShouldBe(_id);
-        }
-
+    
         [Test]
         public void Run()
         {
