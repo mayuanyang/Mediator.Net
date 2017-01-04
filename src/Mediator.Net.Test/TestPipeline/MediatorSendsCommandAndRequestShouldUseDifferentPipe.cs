@@ -34,9 +34,12 @@ namespace Mediator.Net.Test.TestPipeline
                     };
                     return binding;
                 })
-                .ConfigureReceivePipe(x =>
+                .ConfigureGlobalReceivePipe(x =>
                 {
                     x.UseConsoleLogger1();
+                })
+                .ConfigureReceivePipe(x =>
+                {
                     x.UseConsoleLogger2();
                 })
                 .ConfigureRequestPipe(x =>
