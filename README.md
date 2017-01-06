@@ -6,7 +6,7 @@ You can get Autofac by [grabbing the latest NuGet packages](https://www.nuget.or
 ## Get Started
 Install the nuget package Mediator.Net
 ```C#
-	nstall-Package Mediator.Net
+	Install-Package Mediator.Net
 ```
 
 Setup the mediator by using MediatorBuilder
@@ -151,7 +151,7 @@ To hook up middlewares into pipelines
 ####Autofac
 Install the nuget package Mediator.Net.Autofac
 ```C#
-	nstall-Package Mediator.Net.Autofac
+	Install-Package Mediator.Net.Autofac
 ```
 
 An extension method RegisterMediator for ContainerBuilder from Autofac is used to register the builder
