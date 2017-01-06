@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using Mediator.Net.Binding;
 using Mediator.Net.Test.EventHandlers;
@@ -13,7 +11,7 @@ using TestStack.BDDfy;
 
 namespace Mediator.Net.Test.TestEventHandlers
 {
-    class PublishDerivedEventShouldBeHandledByBaseHandler
+    class PublishDerivedEventShouldBeHandledByBaseHandler : TestBase
     {
         private IMediator _mediator;
         private Task _task;

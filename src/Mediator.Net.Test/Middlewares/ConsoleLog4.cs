@@ -7,16 +7,16 @@ using Mediator.Net.Test.TestUtils;
 
 namespace Mediator.Net.Test.Middlewares
 {
-    static class DummySave
+    static class ConsoleLog4
     {
-        public static void UseDummySave<TContext>(this IPipeConfigurator<TContext> configurator)
+        public static void UseConsoleLogger4<TContext>(this IPipeConfigurator<TContext> configurator)
             where TContext : IContext<IMessage>
         {
-            configurator.AddPipeSpecification(new DummySaveSpecification<TContext>());
+            configurator.AddPipeSpecification(new ConsoleLogSpecification4<TContext>());
         }
     }
 
-    class DummySaveSpecification<TContext> : IPipeSpecification<TContext> 
+    class ConsoleLogSpecification4<TContext> : IPipeSpecification<TContext> 
         where TContext : IContext<IMessage>
     {
         public bool ShouldExecute(TContext context)
@@ -28,9 +28,8 @@ namespace Mediator.Net.Test.Middlewares
         public Task ExecuteBeforeConnect(TContext context)
         {
             if (ShouldExecute(context))
-                Console.WriteLine("Before save to DB");
-
-            RubishBox.Rublish.Add(nameof(DummySave.UseDummySave));
+                Console.WriteLine("Before 4");
+            RubishBox.Rublish.Add(nameof(ConsoleLog4.UseConsoleLogger4));
             return Task.FromResult(0);
 
         }
@@ -38,7 +37,7 @@ namespace Mediator.Net.Test.Middlewares
         public Task ExecuteAfterConnect(TContext context)
         {
             if (ShouldExecute(context))
-                Console.WriteLine("After save to DB");
+                Console.WriteLine("After 4");
             return Task.FromResult(0);
         }
     }

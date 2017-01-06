@@ -46,10 +46,6 @@ namespace Mediator.Net.Pipeline
 
         private Task ConnectToHandler(TContext context)
         {
-#if DEBUG
-            var sw = new Stopwatch();
-            sw.Start();
-#endif
 
             var handlers = MessageHandlerRegistry.MessageBindings.Where(x => x.MessageType.GetTypeInfo() == context.Message.GetType()).ToList();
             if (!handlers.Any())
@@ -90,10 +86,7 @@ namespace Mediator.Net.Pipeline
                task = (Task)handleMethod.Invoke(handler, new object[] { context });
 
            });
-#if DEBUG
-            sw.Stop();
-            Console.WriteLine($"It took {sw.ElapsedMilliseconds} milliseconds to run the handler");
-#endif
+
             return task;
         }
     }

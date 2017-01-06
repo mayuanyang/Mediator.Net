@@ -2,8 +2,6 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Mediator.Net.Binding;
-using Mediator.Net.Context;
-using Mediator.Net.Contracts;
 using Mediator.Net.Test.Messages;
 using Mediator.Net.Test.Middlewares;
 using Mediator.Net.Test.RequestHandlers;
@@ -13,7 +11,7 @@ using TestStack.BDDfy;
 
 namespace Mediator.Net.Test.TestRequestHandlers
 {
-    class SendRequestShouldGetResponse
+    class SendRequestShouldGetResponse : TestBase
     {
         private IMediator _mediator;
         private GetGuidResponse _result;

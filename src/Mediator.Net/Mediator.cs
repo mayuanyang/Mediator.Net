@@ -34,16 +34,8 @@ namespace Mediator.Net
         public Task SendAsync<TMessage>(TMessage cmd)
             where TMessage : ICommand
         {
-#if DEBUG
-            var stopWatch = new Stopwatch();
-            stopWatch.Start();
-#endif
-            var task = SendMessage(cmd);
-#if DEBUG
-            stopWatch.Stop();
-            Console.WriteLine($"It took {stopWatch.ElapsedMilliseconds} milliseconds");
-#endif
-            
+
+            var task = SendMessage(cmd);           
             return task;
         }
 
@@ -81,10 +73,7 @@ namespace Mediator.Net
         private Task SendMessage<TMessage>(TMessage msg)
             where TMessage : IMessage
         {
-#if DEBUG
-            var sw = new Stopwatch();
-            sw.Start();
-#endif
+
             var receiveContext = (IReceiveContext<TMessage>)Activator.CreateInstance(typeof(ReceiveContext<>).MakeGenericType(msg.GetType()), msg);
             receiveContext.RegisterService(this);
             IPublishPipe<IPublishContext<IEvent>> publishPipeInContext;
@@ -104,12 +93,8 @@ namespace Mediator.Net
             {
                 receiveContext.RegisterService(_eventReceivePipe);
             }
-#if DEBUG
 
             var sendMethodInGlobalPipe = _globalPipe.GetType().GetMethod("Connect");
-            sw.Stop();
-            Console.WriteLine($"It took {sw.ElapsedMilliseconds} milliseconds to initialize");
-#endif
             var task = (Task)sendMethodInGlobalPipe.Invoke(_globalPipe, new object[] { receiveContext });
             task.ConfigureAwait(false);
             return task;

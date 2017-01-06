@@ -75,6 +75,7 @@
     <Compile Include="Messages\GetGuidResponse.cs" />
     <Compile Include="Messages\GetGuidRequest.cs" />
     <Compile Include="Messages\TestEvent.cs" />
+    <Compile Include="Middlewares\ConsoleLog4.cs" />
     <Compile Include="Middlewares\DummySave.cs" />
     <Compile Include="RequestHandlers\GetGuidRequestHandler2.cs" />
     <Compile Include="RequestHandlers\GetGuidRequestHandler.cs" />
@@ -91,6 +92,7 @@
     <Compile Include="TestEventHandlers\EventCanBePublishToMultipleHandlers.cs" />
     <Compile Include="TestEventHandlers\EventCanBePublishToSingleHandler.cs" />
     <Compile Include="TestEventHandlers\PublishDerivedEventShouldBeHandledByBaseHandler.cs" />
+    <Compile Include="TestPipeline\ConnectAllPipelines.cs" />
     <Compile Include="TestPipeline\GlobalPipeConnectToEventPipe.cs" />
     <Compile Include="TestPipeline\GlobalPipeConnectToRequestPipe.cs" />
     <Compile Include="TestPipeline\GlobalPipeConnectToCommandPipe.cs" />

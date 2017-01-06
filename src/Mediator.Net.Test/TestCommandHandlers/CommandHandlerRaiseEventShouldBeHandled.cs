@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using Mediator.Net.Binding;
 using Mediator.Net.Test.CommandHandlers;
@@ -54,7 +52,7 @@ namespace Mediator.Net.Test.TestCommandHandlers
 
         public void AndItShouldPutSomeRubishIntoRublishBox()
         {
-            RubishBox.Rublish.Contains(nameof(DummySave)).ShouldBeTrue();
+            RubishBox.Rublish.Contains(nameof(DummySave.UseDummySave)).ShouldBeTrue();
             RubishBox.Rublish.Contains(nameof(TestBaseCommandHandlerRaiseEvent)).ShouldBeTrue();
             RubishBox.Rublish.Contains(nameof(TestEventHandler)).ShouldBeTrue();
         }

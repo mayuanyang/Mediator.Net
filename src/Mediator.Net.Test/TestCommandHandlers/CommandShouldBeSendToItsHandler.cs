@@ -2,9 +2,6 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Mediator.Net.Binding;
-using Mediator.Net.Context;
-using Mediator.Net.Contracts;
-using Mediator.Net.Pipeline;
 using Mediator.Net.Test.CommandHandlers;
 using Mediator.Net.Test.Messages;
 using Mediator.Net.Test.TestUtils;

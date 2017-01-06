@@ -11,7 +11,7 @@ using TestStack.BDDfy;
 
 namespace Mediator.Net.Test.TestCommandHandlers
 {
-    class OneHandlerToHandleMultipleCommandsShouldWork
+    class OneHandlerToHandleMultipleCommandsShouldWork : TestBase
     {
         private IMediator _mediator;
         private Task _task1;
