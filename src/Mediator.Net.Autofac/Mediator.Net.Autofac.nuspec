@@ -7,9 +7,13 @@
     <authors>Yuan(Eddy) Ma</authors>
     <owners>Yuan(Eddy) Ma</owners>
     <licenseUrl>https://github.com/mayuanyang/Mediator.Net</licenseUrl>
-    <projectUrl>https://github.com/mayuanyang/Mediator.Net/</projectUrl>
+    <projectUrl>https://github.com/mayuanyang/Mediator.Net</projectUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>Use Autofac as the IoC container for Mediator.Net</description>
     <tags>.NET Mediator Autofac</tags>
+    <dependencies>
+      <dependency id="Mediator.Net" version="0.9.63" />
+      <dependency id="Autofac" version="3.5.2" />
+    </dependencies>
   </metadata>
 </package>
