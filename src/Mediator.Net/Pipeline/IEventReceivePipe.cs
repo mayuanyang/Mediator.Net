@@ -3,8 +3,8 @@ using Mediator.Net.Contracts;
 
 namespace Mediator.Net.Pipeline
 {
-    public interface IReceivePipe<in TContext> : IPipe<TContext> 
-        where TContext : IContext<IMessage>
+    public interface IEventReceivePipe<in TContext> : IPipe<TContext> 
+        where TContext : IContext<IEvent>
     {
         
     }

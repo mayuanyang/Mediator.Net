@@ -7,27 +7,27 @@ using Mediator.Net.Contracts;
 
 namespace Mediator.Net.Pipeline
 {
-    public class ReceivePipeConfigurator : IReceivePipeConfigurator
+    public class EventReceivePipeConfigurator : IEventReceivePipeConfigurator
     {
         private readonly IDependancyScope _resolver;
-        private readonly IList<IPipeSpecification<IReceiveContext<IMessage>>> _specifications;
+        private readonly IList<IPipeSpecification<IReceiveContext<IEvent>>> _specifications;
 
-        public ReceivePipeConfigurator(IDependancyScope resolver = null)
+        public EventReceivePipeConfigurator(IDependancyScope resolver = null)
         {
             _resolver = resolver;
-            _specifications = new List<IPipeSpecification<IReceiveContext<IMessage>>>();
+            _specifications = new List<IPipeSpecification<IReceiveContext<IEvent>>>();
         }
 
 
 
-        public void AddPipeSpecification(IPipeSpecification<IReceiveContext<IMessage>> specification)
+        public void AddPipeSpecification(IPipeSpecification<IReceiveContext<IEvent>> specification)
         {
             _specifications.Add(specification);
         }
 
-        public IReceivePipe<IReceiveContext<IMessage>> Build()
+        public IEventReceivePipe<IReceiveContext<IEvent>> Build()
         {
-            IReceivePipe<IReceiveContext<IMessage>> current = null;
+            IEventReceivePipe<IReceiveContext<IEvent>> current = null;
             if (_specifications.Any())
             {
                 for (int i = _specifications.Count - 1; i >= 0; i--)
@@ -35,13 +35,13 @@ namespace Mediator.Net.Pipeline
                     if (i == _specifications.Count - 1)
                     {
                         var thisPipe =
-                            new ReceivePipe<IReceiveContext<IMessage>>(_specifications[i], null, _resolver);
+                            new EventReceivePipe<IReceiveContext<IEvent>>(_specifications[i], null, _resolver);
                         current = thisPipe;
                     }
                     else
                     {
                         var thisPipe =
-                            new ReceivePipe<IReceiveContext<IMessage>>(_specifications[i], current, _resolver);
+                            new EventReceivePipe<IReceiveContext<IEvent>>(_specifications[i], current, _resolver);
                         current = thisPipe;
                     }
 
@@ -50,7 +50,7 @@ namespace Mediator.Net.Pipeline
             }
             else
             {
-                current = new ReceivePipe<IReceiveContext<IMessage>>(new EmptyPipeSpecification<IReceiveContext<IMessage>>(), null, _resolver);
+                current = new EventReceivePipe<IReceiveContext<IEvent>>(new EmptyPipeSpecification<IReceiveContext<IEvent>>(), null, _resolver);
             }
 
             return current;

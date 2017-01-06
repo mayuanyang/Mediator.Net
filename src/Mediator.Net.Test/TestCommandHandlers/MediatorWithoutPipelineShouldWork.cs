@@ -7,6 +7,7 @@ using Mediator.Net.Contracts;
 using Mediator.Net.Pipeline;
 using Mediator.Net.Test.CommandHandlers;
 using Mediator.Net.Test.Messages;
+using Mediator.Net.Test.TestUtils;
 using NUnit.Framework;
 using Shouldly;
 using TestStack.BDDfy;
@@ -37,6 +38,7 @@ namespace Mediator.Net.Test.TestCommandHandlers
         public void ThenItShouldReachTheRightHandler()
         {
             _task.Status.ShouldBe(TaskStatus.RanToCompletion);
+            RubishBox.Rublish.Contains(nameof(AsyncTestBaseCommandHandler)).ShouldBeTrue();
         }
 
         [Test]

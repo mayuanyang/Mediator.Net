@@ -12,14 +12,14 @@ using Mediator.Net.Contracts;
 
 namespace Mediator.Net.Pipeline
 {
-    public class ReceivePipe<TContext> : IReceivePipe<TContext>
-        where TContext : IContext<IMessage>
+    public class EventReceivePipe<TContext> : IEventReceivePipe<TContext>
+        where TContext : IContext<IEvent>
     {
         private readonly IPipeSpecification<TContext> _specification;
         private readonly IDependancyScope _resolver;
 
 
-        public ReceivePipe(IPipeSpecification<TContext> specification, IPipe<TContext> next, IDependancyScope resolver = null)
+        public EventReceivePipe(IPipeSpecification<TContext> specification, IPipe<TContext> next, IDependancyScope resolver = null)
         {
             _specification = specification;
             _resolver = resolver;
@@ -54,14 +54,7 @@ namespace Mediator.Net.Pipeline
             var handlers = MessageHandlerRegistry.MessageBindings.Where(x => x.MessageType.GetTypeInfo() == context.Message.GetType()).ToList();
             if (!handlers.Any())
                 throw new NoHandlerFoundException(context.Message.GetType());
-            if (typeof(ICommand).IsAssignableFrom(context.GetType().GenericTypeArguments[0]))
-            {
-                if (handlers.Count() > 1)
-                {
-                    throw new MoreThanOneHandlerException(context.Message.GetType());
-                }
-            }
-
+            
             Task task = null;
             handlers.ForEach( x =>
             {

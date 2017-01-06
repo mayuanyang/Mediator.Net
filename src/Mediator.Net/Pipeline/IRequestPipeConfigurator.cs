@@ -6,7 +6,7 @@ namespace Mediator.Net.Pipeline
     public interface IRequestPipeConfigurator<TContext> : IPipeConfigurator<TContext>
         where TContext : IReceiveContext<IRequest>
     {
-        IRequestPipe<TContext> Build();
-        IRequestPipe<TContext> Build(IDependancyScope resolver);
+        IRequestReceivePipe<TContext> Build();
+        IRequestReceivePipe<TContext> Build(IDependancyScope resolver);
     }
 }

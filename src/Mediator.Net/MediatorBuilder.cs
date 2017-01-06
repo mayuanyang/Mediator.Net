@@ -14,7 +14,8 @@ namespace Mediator.Net
     {
         
         private Action<IGlobalReceivePipeConfigurator> _globalReceivePipeConfiguratorAction;
-        private Action<IReceivePipeConfigurator> _receivePipeConfiguratorAction;
+        private Action<ICommandReceivePipeConfigurator> _commandReceivePipeConfiguratorAction;
+        private Action<IEventReceivePipeConfigurator> _eventReceivePipeConfiguratorAction;
         private Action<IRequestPipeConfigurator<IReceiveContext<IRequest>>> _requestPipeConfiguratorAction;
         private Action<IPublishPipeConfigurator> _publishPipeConfiguratorAction;
         public MediatorBuilder RegisterHandlers(params Assembly[] assemblies)
@@ -62,9 +63,15 @@ namespace Mediator.Net
             return this;
         }
 
-        public MediatorBuilder ConfigureReceivePipe(Action<IReceivePipeConfigurator> configurator)
+        public MediatorBuilder ConfigureCommandReceivePipe(Action<ICommandReceivePipeConfigurator> configurator)
         {
-            _receivePipeConfiguratorAction = configurator;
+            _commandReceivePipeConfiguratorAction = configurator;
+            return this;
+        }
+
+        public MediatorBuilder ConfigureEventReceivePipe(Action<IEventReceivePipeConfigurator> configurator)
+        {
+            _eventReceivePipeConfiguratorAction = configurator;
             return this;
         }
 
@@ -84,21 +91,34 @@ namespace Mediator.Net
         public IMediator Build()
         {
             IGlobalReceivePipe<IReceiveContext<IMessage>> globalReceivePipe;
-            IReceivePipe<IReceiveContext<IMessage>> receivePipe;
-            IRequestPipe<IReceiveContext<IRequest>> requestPipe;
+            ICommandReceivePipe<IReceiveContext<ICommand>> commandReceivePipe;
+            IEventReceivePipe<IReceiveContext<IEvent>> eventReceivePipe;
+            IRequestReceivePipe<IReceiveContext<IRequest>> requestPipe;
             IPublishPipe<IPublishContext<IEvent>> publishPipe;
 
-            var receivePipeConfigurator = new ReceivePipeConfigurator();
-            if (_receivePipeConfiguratorAction == null)
+            var commandReceivePipeConfigurator = new CommandReceivePipeConfigurator();
+            if (_commandReceivePipeConfiguratorAction == null)
             {
-                receivePipe = receivePipeConfigurator.Build();
+                commandReceivePipe = commandReceivePipeConfigurator.Build();
             }
             else
             {
-                _receivePipeConfiguratorAction(receivePipeConfigurator);
-                receivePipe = receivePipeConfigurator.Build();
+                _commandReceivePipeConfiguratorAction(commandReceivePipeConfigurator);
+                commandReceivePipe = commandReceivePipeConfigurator.Build();
             }
-            
+
+            var eventReceivePipeConfigurator = new EventReceivePipeConfigurator();
+            if (_eventReceivePipeConfiguratorAction == null)
+            {
+                eventReceivePipe = eventReceivePipeConfigurator.Build();
+            }
+            else
+            {
+                _eventReceivePipeConfiguratorAction(eventReceivePipeConfigurator);
+                eventReceivePipe = eventReceivePipeConfigurator.Build();
+            }
+
+
             var requestPipeConfigurator = new RequestPipeConfigurator();
             if (_requestPipeConfiguratorAction == null)
             {
@@ -132,25 +152,37 @@ namespace Mediator.Net
                 globalReceivePipe = globalPipeConfigurator.Build();
             }
 
-            return new Mediator(receivePipe, requestPipe, publishPipe, globalReceivePipe);
+            return new Mediator(commandReceivePipe, eventReceivePipe, requestPipe, publishPipe, globalReceivePipe);
         }
 
         public IMediator Build(IDependancyScope scope)
         {
             IGlobalReceivePipe<IReceiveContext<IMessage>> globalReceivePipe;
-            IReceivePipe<IReceiveContext<IMessage>> receivePipe;
-            IRequestPipe<IReceiveContext<IRequest>> requestPipe;
+            ICommandReceivePipe<IReceiveContext<ICommand>> commandReceivePipe;
+            IEventReceivePipe<IReceiveContext<IEvent>> eventReceivePipe;
+            IRequestReceivePipe<IReceiveContext<IRequest>> requestPipe;
             IPublishPipe<IPublishContext<IEvent>> publishPipe;
 
-            var receivePipeConfigurator = new ReceivePipeConfigurator(scope);
-            if (_receivePipeConfiguratorAction == null)
+            var receivePipeConfigurator = new CommandReceivePipeConfigurator(scope);
+            if (_commandReceivePipeConfiguratorAction == null)
             {
-                receivePipe = receivePipeConfigurator.Build();
+                commandReceivePipe = receivePipeConfigurator.Build();
             }
             else
             {
-                _receivePipeConfiguratorAction(receivePipeConfigurator);
-                receivePipe = receivePipeConfigurator.Build();
+                _commandReceivePipeConfiguratorAction(receivePipeConfigurator);
+                commandReceivePipe = receivePipeConfigurator.Build();
+            }
+
+            var eventReceivePipeConfigurator = new EventReceivePipeConfigurator(scope);
+            if (_eventReceivePipeConfiguratorAction == null)
+            {
+                eventReceivePipe = eventReceivePipeConfigurator.Build();
+            }
+            else
+            {
+                _eventReceivePipeConfiguratorAction(eventReceivePipeConfigurator);
+                eventReceivePipe = eventReceivePipeConfigurator.Build();
             }
 
             var requestPipeConfigurator = new RequestPipeConfigurator(scope);
@@ -187,7 +219,7 @@ namespace Mediator.Net
             }
 
 
-            return new Mediator(receivePipe, requestPipe, publishPipe, globalReceivePipe, scope);
+            return new Mediator(commandReceivePipe, eventReceivePipe, requestPipe, publishPipe, globalReceivePipe, scope);
         }
   
         private bool IsAssignableToGenericType(Type givenType, Type genericType)

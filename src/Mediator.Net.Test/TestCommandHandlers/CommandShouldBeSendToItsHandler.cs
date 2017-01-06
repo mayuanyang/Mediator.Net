@@ -7,6 +7,7 @@ using Mediator.Net.Contracts;
 using Mediator.Net.Pipeline;
 using Mediator.Net.Test.CommandHandlers;
 using Mediator.Net.Test.Messages;
+using Mediator.Net.Test.TestUtils;
 using NUnit.Framework;
 using Shouldly;
 using TestStack.BDDfy;
@@ -17,7 +18,7 @@ namespace Mediator.Net.Test.TestCommandHandlers
     {
         private IMediator _mediator;
         private Task _task;
-        public void GivenAMediator()
+        public void GivenAMediatorWithNoPipeline()
         {
                      
             var builder = new MediatorBuilder();
@@ -39,6 +40,8 @@ namespace Mediator.Net.Test.TestCommandHandlers
         {
             await _task;
             _task.Status.ShouldBe(TaskStatus.RanToCompletion);
+            RubishBox.Rublish.Contains(nameof(TestBaseCommandHandler)).ShouldBeTrue();
+            RubishBox.Rublish.Count.ShouldBe(1);
         }
 
         [Test]

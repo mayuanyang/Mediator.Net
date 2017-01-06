@@ -9,7 +9,7 @@ using Mediator.Net.Contracts;
 
 namespace Mediator.Net.Pipeline
 {
-    class RequestPipe<TContext> : IRequestPipe<TContext>
+    class RequestPipe<TContext> : IRequestReceivePipe<TContext>
         where TContext : IReceiveContext<IRequest>
     {
         private readonly IPipeSpecification<TContext> _specification;

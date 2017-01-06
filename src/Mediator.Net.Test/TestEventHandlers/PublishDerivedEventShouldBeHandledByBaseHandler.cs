@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Mediator.Net.Binding;
 using Mediator.Net.Test.EventHandlers;
 using Mediator.Net.Test.Messages;
+using Mediator.Net.Test.TestUtils;
 using NUnit.Framework;
 using Shouldly;
 using TestStack.BDDfy;
@@ -46,6 +47,9 @@ namespace Mediator.Net.Test.TestEventHandlers
         public void ThenItShouldReachTheBaseEventHandler()
         {
             _task.Status.ShouldBe(TaskStatus.RanToCompletion);
+            RubishBox.Rublish.Count.ShouldBe(2);
+            RubishBox.Rublish.Contains(nameof(TestEventHandler)).ShouldBeTrue();
+            RubishBox.Rublish.Contains(nameof(DerivedEventHandler)).ShouldBeTrue();
         }
 
         [Test]

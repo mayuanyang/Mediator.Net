@@ -89,9 +89,9 @@
     <Compile Include="Middlewares\ConsoleLog3.cs" />
     <Compile Include="TestCommandHandlers\OneHandlerToHandleMultipleCommandsShouldWork.cs" />
     <Compile Include="TestEventHandlers\EventCanBePublishToMultipleHandlers.cs" />
-    <Compile Include="TestEventHandlers\EventShouldBePublishToSingleHandler.cs" />
+    <Compile Include="TestEventHandlers\EventCanBePublishToSingleHandler.cs" />
     <Compile Include="TestEventHandlers\PublishDerivedEventShouldBeHandledByBaseHandler.cs" />
-    <Compile Include="TestEventHandlers\PublishDerivedEventShouldBeHandled.cs" />
+    <Compile Include="TestPipeline\GlobalPipeConnectToEventPipe.cs" />
     <Compile Include="TestPipeline\GlobalPipeConnectToRequestPipe.cs" />
     <Compile Include="TestPipeline\GlobalPipeConnectToCommandPipe.cs" />
     <Compile Include="TestPipeline\MediatorSendsCommandAndRequestShouldUseDifferentPipe.cs" />
@@ -107,6 +107,7 @@
     <Compile Include="TestBase.cs" />
     <Compile Include="TestRequestHandlers\OneRequestShouldNotHaveMultipleHandlers.cs" />
     <Compile Include="TestRequestHandlers\SendRequestShouldGetResponse.cs" />
+    <Compile Include="TestUtils\RubishBox.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Mediator.Net\Mediator.Net.csproj">

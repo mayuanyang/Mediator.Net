@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using Mediator.Net.Context;
 using Mediator.Net.Contracts;
 using Mediator.Net.Pipeline;
+using Mediator.Net.Test.TestUtils;
 
 namespace Mediator.Net.Test.Middlewares
 {
@@ -28,6 +29,7 @@ namespace Mediator.Net.Test.Middlewares
         {
             if (ShouldExecute(context))
                 Console.WriteLine("Before 2");
+            RubishBox.Rublish.Add(nameof(ConsoleLog2.UseConsoleLogger2));
             return Task.FromResult(0);
 
         }

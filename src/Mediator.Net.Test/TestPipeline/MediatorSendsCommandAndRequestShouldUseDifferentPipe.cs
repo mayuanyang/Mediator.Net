@@ -1,15 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using Mediator.Net.Binding;
-using Mediator.Net.Context;
-using Mediator.Net.Contracts;
 using Mediator.Net.Test.CommandHandlers;
 using Mediator.Net.Test.Messages;
 using Mediator.Net.Test.Middlewares;
 using Mediator.Net.Test.RequestHandlers;
+using Mediator.Net.Test.TestUtils;
 using NUnit.Framework;
 using Shouldly;
 using TestStack.BDDfy;
@@ -38,7 +36,7 @@ namespace Mediator.Net.Test.TestPipeline
                 {
                     x.UseConsoleLogger1();
                 })
-                .ConfigureReceivePipe(x =>
+                .ConfigureCommandReceivePipe(x =>
                 {
                     x.UseConsoleLogger2();
                 })
@@ -65,6 +63,17 @@ namespace Mediator.Net.Test.TestPipeline
         public void AndTheRequestShouldBeHandled()
         {
             _result.Id.ShouldBe(_id);
+            RubishBox.Rublish.Count.ShouldBe(6);
+            RubishBox.Rublish.Contains(nameof(ConsoleLog1.UseConsoleLogger1)).ShouldBeTrue();
+            RubishBox.Rublish.Contains(nameof(ConsoleLog2.UseConsoleLogger2)).ShouldBeTrue();
+            RubishBox.Rublish.Contains(nameof(ConsoleLog3.UseConsoleLogger3)).ShouldBeTrue();
+            RubishBox.Rublish.Contains(nameof(TestBaseCommandHandler)).ShouldBeTrue();
+            RubishBox.Rublish.Contains(nameof(GetGuidRequestHandler)).ShouldBeTrue();
+        }
+
+        public void AndItShouldUseConsoleLogger1Twice()
+        {
+            RubishBox.Rublish.Count(x => x.ToString() == nameof(ConsoleLog1.UseConsoleLogger1)).ShouldBe(2);
         }
 
         [Test]

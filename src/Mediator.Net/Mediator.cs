@@ -9,19 +9,21 @@ namespace Mediator.Net
 {
     public class Mediator : IMediator
     {
-        private readonly IReceivePipe<IReceiveContext<IMessage>> _receivePipe;
-        private readonly IRequestPipe<IReceiveContext<IRequest>> _requestPipe;
+        private readonly ICommandReceivePipe<IReceiveContext<ICommand>> _commandReceivePipe;
+        private readonly IEventReceivePipe<IReceiveContext<IEvent>> _eventReceivePipe;
+        private readonly IRequestReceivePipe<IReceiveContext<IRequest>> _requestPipe;
         private readonly IPublishPipe<IPublishContext<IEvent>> _publishPipe;
         private readonly IGlobalReceivePipe<IReceiveContext<IMessage>> _globalPipe;
         private readonly IDependancyScope _scope;
 
-        public Mediator(IReceivePipe<IReceiveContext<IMessage>> receivePipe,
-            IRequestPipe<IReceiveContext<IRequest>> requestPipe, 
+        public Mediator(ICommandReceivePipe<IReceiveContext<ICommand>> commandReceivePipe,
+            IEventReceivePipe<IReceiveContext<IEvent>> eventReceivePipe,
+            IRequestReceivePipe<IReceiveContext<IRequest>> requestPipe, 
             IPublishPipe<IPublishContext<IEvent>> publishPipe, 
-            IGlobalReceivePipe<IReceiveContext<IMessage>> globalPipe,
-            IDependancyScope scope = null)
+            IGlobalReceivePipe<IReceiveContext<IMessage>> globalPipe, IDependancyScope scope = null)
         {
-            _receivePipe = receivePipe;
+            _commandReceivePipe = commandReceivePipe;
+            _eventReceivePipe = eventReceivePipe;
             _requestPipe = requestPipe;
             _publishPipe = publishPipe;
             _globalPipe = globalPipe;
@@ -64,7 +66,7 @@ namespace Mediator.Net
                 receiveContext.RegisterService(_publishPipe);
             }
 
-            IRequestPipe<IReceiveContext<IRequest>> requestPipeInContext;
+            IRequestReceivePipe<IReceiveContext<IRequest>> requestPipeInContext;
             if (!receiveContext.TryGetService(out requestPipeInContext))
             {
                 receiveContext.RegisterService(_requestPipe);
@@ -91,13 +93,19 @@ namespace Mediator.Net
                 receiveContext.RegisterService(_publishPipe);
             }
 
-            IReceivePipe<IReceiveContext<IMessage>> receivePipeInContext;
-            if (!receiveContext.TryGetService(out receivePipeInContext))
+            ICommandReceivePipe<IReceiveContext<ICommand>> commandReceivePipeInContext;
+            if (!receiveContext.TryGetService(out commandReceivePipeInContext))
             {
-                receiveContext.RegisterService(_receivePipe);
+                receiveContext.RegisterService(_commandReceivePipe);
+            }
+
+            IEventReceivePipe<IReceiveContext<IEvent>> eventReceivePipeInContext;
+            if (!receiveContext.TryGetService(out eventReceivePipeInContext))
+            {
+                receiveContext.RegisterService(_eventReceivePipe);
             }
 #if DEBUG
-            
+
             var sendMethodInGlobalPipe = _globalPipe.GetType().GetMethod("Connect");
             sw.Stop();
             Console.WriteLine($"It took {sw.ElapsedMilliseconds} milliseconds to initialize");

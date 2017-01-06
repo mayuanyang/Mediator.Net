@@ -32,7 +32,7 @@ namespace Mediator.Net.Test.TestRequestHandlers
                     };
                     return binding;
                 })
-                .ConfigureReceivePipe(x =>
+                .ConfigureCommandReceivePipe(x =>
                 {
                     x.UseConsoleLogger1();
                     x.UseConsoleLogger2();

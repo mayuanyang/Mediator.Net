@@ -18,9 +18,9 @@ namespace Mediator.Net.Pipeline
             _specifications = new List<IPipeSpecification<IReceiveContext<IRequest>>>();
         }
 
-        public IRequestPipe<IReceiveContext<IRequest>> Build()
+        public IRequestReceivePipe<IReceiveContext<IRequest>> Build()
         {
-            IRequestPipe<IReceiveContext<IRequest>> current = null;
+            IRequestReceivePipe<IReceiveContext<IRequest>> current = null;
             if (_specifications.Any())
             {
                 for (int i = _specifications.Count - 1; i >= 0; i--)
@@ -48,7 +48,7 @@ namespace Mediator.Net.Pipeline
             return current;
         }
 
-        public IRequestPipe<IReceiveContext<IRequest>> Build(IDependancyScope resolver)
+        public IRequestReceivePipe<IReceiveContext<IRequest>> Build(IDependancyScope resolver)
         {
             throw new System.NotImplementedException();
         }

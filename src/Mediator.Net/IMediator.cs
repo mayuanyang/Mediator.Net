@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Threading.Tasks;
-using Mediator.Net.Context;
 using Mediator.Net.Contracts;
-using Mediator.Net.Pipeline;
 
 namespace Mediator.Net
 {

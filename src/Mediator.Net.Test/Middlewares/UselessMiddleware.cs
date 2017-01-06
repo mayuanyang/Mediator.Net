@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using Mediator.Net.Context;
 using Mediator.Net.Contracts;
 using Mediator.Net.Pipeline;
+using Mediator.Net.Test.TestUtils;
 
 namespace Mediator.Net.Test.Middlewares
 {
@@ -11,7 +12,7 @@ namespace Mediator.Net.Test.Middlewares
         public static void UseUselessMiddleware<TContext>(this IPipeConfigurator<TContext> configurator)
             where TContext : IContext<IMessage>
         {
-            configurator.AddPipeSpecification(new ConsoleLogSpecification1<TContext>());
+            configurator.AddPipeSpecification(new UselessMiddlewareSpecification<TContext>());
         }
     }
 
@@ -27,7 +28,11 @@ namespace Mediator.Net.Test.Middlewares
         public Task ExecuteBeforeConnect(TContext context)
         {
             if (ShouldExecute(context))
-                Console.WriteLine($"you should never see me: {nameof(ExecuteBeforeConnect)}");
+            {
+                 Console.WriteLine($"you should never see me: {nameof(ExecuteBeforeConnect)}");
+                RubishBox.Rublish.Add(nameof(UselessMiddleware.UseUselessMiddleware));
+            }
+               
             return Task.FromResult(0);
 
         }

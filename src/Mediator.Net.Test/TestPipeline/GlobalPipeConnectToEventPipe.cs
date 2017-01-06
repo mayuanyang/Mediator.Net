@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using Mediator.Net.Binding;
 using Mediator.Net.Test.CommandHandlers;
+using Mediator.Net.Test.EventHandlers;
 using Mediator.Net.Test.Messages;
 using Mediator.Net.Test.Middlewares;
 using Mediator.Net.Test.TestUtils;
@@ -12,7 +13,7 @@ using TestStack.BDDfy;
 
 namespace Mediator.Net.Test.TestPipeline
 {
-    class GlobalPipeConnectToCommandPipe : TestBase
+    class GlobalPipeConnectToEventPipe : TestBase
     {
         private IMediator _mediator;
         private Task _commandTask;
@@ -24,7 +25,7 @@ namespace Mediator.Net.Test.TestPipeline
                 {
                     var binding = new List<MessageBinding>()
                     {
-                        new MessageBinding(typeof(TestBaseCommand), typeof(TestBaseCommandHandler)),
+                        new MessageBinding(typeof(TestEvent), typeof(TestEventHandler)),
                     };
                     return binding;
                 })
@@ -32,7 +33,7 @@ namespace Mediator.Net.Test.TestPipeline
                 {
                     x.UseConsoleLogger1();
                 })
-                .ConfigureCommandReceivePipe(x =>
+                .ConfigureEventReceivePipe(x =>
                 {
                     x.UseConsoleLogger2();
                 })
@@ -43,17 +44,17 @@ namespace Mediator.Net.Test.TestPipeline
 
         public void WhenACommandIsSent()
         {
-            _commandTask = _mediator.SendAsync(new TestBaseCommand(Guid.NewGuid()));
+            _commandTask = _mediator.PublishAsync(new TestEvent(Guid.NewGuid()));
             
         }
 
-        public void ThenTheCommandShouldBeHandled()
+        public void ThenItShouldUseTheRightMiddlewares()
         {
             _commandTask.Status.ShouldBe(TaskStatus.RanToCompletion);
             RubishBox.Rublish.Count.ShouldBe(3);
             RubishBox.Rublish.Contains(nameof(ConsoleLog1.UseConsoleLogger1)).ShouldBeTrue();
             RubishBox.Rublish.Contains(nameof(ConsoleLog2.UseConsoleLogger2)).ShouldBeTrue();
-            RubishBox.Rublish.Contains(nameof(TestBaseCommandHandler)).ShouldBeTrue();
+            RubishBox.Rublish.Contains(nameof(TestEventHandler)).ShouldBeTrue();
         }
 
     

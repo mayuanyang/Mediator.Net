@@ -44,7 +44,7 @@ namespace Mediator.Net.Pipeline
 
             if (context.Message is ICommand)
             {
-                IReceivePipe<IReceiveContext<ICommand>> commandPipe;
+                ICommandReceivePipe<IReceiveContext<ICommand>> commandPipe;
                 if (context.TryGetService(out commandPipe))
                 {
                     await commandPipe.Connect((IReceiveContext<ICommand>)context);
@@ -53,7 +53,7 @@ namespace Mediator.Net.Pipeline
             }
             else if (context.Message is IEvent)
             {
-                IReceivePipe<IReceiveContext<IEvent>> eventPipe;
+                IEventReceivePipe<IReceiveContext<IEvent>> eventPipe;
                 if (context.TryGetService(out eventPipe))
                 {
                     await eventPipe.Connect((IReceiveContext<IEvent>)context);
@@ -61,7 +61,7 @@ namespace Mediator.Net.Pipeline
             }
             else if (context.Message is IRequest)
             {
-                IRequestPipe<IReceiveContext<IRequest>> requestPipe;
+                IRequestReceivePipe<IReceiveContext<IRequest>> requestPipe;
                 if (context.TryGetService(out requestPipe))
                 {
                     return await requestPipe.Connect((IReceiveContext<IRequest>)context);
