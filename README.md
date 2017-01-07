@@ -195,11 +195,30 @@ var mediaBuilder = new MediatorBuilder();
     _container = new Container();
     _container.Configure(x =>
     {
-        x.ForConcreteType<SimpleService>();
-        x.ForConcreteType<AnotherSimpleService>();
+        // Do your thing
     });
     StructureMapExtensions.Configure(mediaBuilder, _container);
 
 ```
 
+####Unity
+```C#
+	Install-Package Mediator.Net.Unity
+```
+Setup an IUnityContainer and do your normal registration, then pass it along with the MediatorBuilder to the UnityExtensions class to register Mediator.Net
+```C#
+var mediaBuilder = new MediatorBuilder();
+    var mediaBuilder = new MediatorBuilder();
+    mediaBuilder.RegisterHandlers(TestUtilAssembly.Assembly)
+        .ConfigureCommandReceivePipe(x =>
+        {
+            x.UseSimpleMiddleware();
+        });
+    _container = new UnityContainer();
+    _container.RegisterType<SimpleService>();
+    _container.RegisterType<AnotherSimpleService>();
+
+    UnityExtensioins.Configure(mediaBuilder, _container);
+
+```
 ####More IoC frameworks to be added

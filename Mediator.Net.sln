@@ -23,6 +23,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mediator.Net.StructureMap.T
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mediator.Net.IoCTestUtil", "src\Mediator.Net.IoCTestUtil\Mediator.Net.IoCTestUtil.csproj", "{D4BCC0A5-CF8B-4681-9079-39D5DA445BF7}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mediator.Net.Unity", "src\Mediator.Net.Unity\Mediator.Net.Unity.csproj", "{45128832-8CCD-4F08-863A-5D9E387D0E08}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mediator.Net.Unity.Test", "src\Mediator.Net.Unity.Test\Mediator.Net.Unity.Test.csproj", "{2A381F9F-FB9E-4102-9163-41E6925312D4}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -57,6 +61,14 @@ Global
 		{D4BCC0A5-CF8B-4681-9079-39D5DA445BF7}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D4BCC0A5-CF8B-4681-9079-39D5DA445BF7}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D4BCC0A5-CF8B-4681-9079-39D5DA445BF7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{45128832-8CCD-4F08-863A-5D9E387D0E08}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{45128832-8CCD-4F08-863A-5D9E387D0E08}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{45128832-8CCD-4F08-863A-5D9E387D0E08}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{45128832-8CCD-4F08-863A-5D9E387D0E08}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2A381F9F-FB9E-4102-9163-41E6925312D4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2A381F9F-FB9E-4102-9163-41E6925312D4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2A381F9F-FB9E-4102-9163-41E6925312D4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2A381F9F-FB9E-4102-9163-41E6925312D4}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -69,5 +81,7 @@ Global
 		{EC25A035-9982-43BF-98FE-793CABEE15A2} = {9679C957-E490-4F90-9E5C-360B2C1B9A24}
 		{CA97CEB8-7BA1-480E-8450-F9679768A2E6} = {9679C957-E490-4F90-9E5C-360B2C1B9A24}
 		{D4BCC0A5-CF8B-4681-9079-39D5DA445BF7} = {9679C957-E490-4F90-9E5C-360B2C1B9A24}
+		{45128832-8CCD-4F08-863A-5D9E387D0E08} = {9679C957-E490-4F90-9E5C-360B2C1B9A24}
+		{2A381F9F-FB9E-4102-9163-41E6925312D4} = {9679C957-E490-4F90-9E5C-360B2C1B9A24}
 	EndGlobalSection
 EndGlobal
