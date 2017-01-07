@@ -1,9 +1,10 @@
 ﻿using System;
 using System.Threading.Tasks;
 using Autofac;
-using Mediator.Net.Autofac.Test.Messages;
-using Mediator.Net.Autofac.Test.Middlewares;
-using Mediator.Net.Autofac.Test.Services;
+using Mediator.Net.IoCTestUtil;
+using Mediator.Net.IoCTestUtil.Messages;
+using Mediator.Net.IoCTestUtil.Middlewares;
+using Mediator.Net.IoCTestUtil.Services;
 using NUnit.Framework;
 using Shouldly;
 using TestStack.BDDfy;
@@ -20,7 +21,7 @@ namespace Mediator.Net.Autofac.Test.Tests
         public void GivenAContainer()
         {
             var mediaBuilder = new MediatorBuilder();
-            mediaBuilder.RegisterHandlers(typeof(TestContainer).Assembly)
+            mediaBuilder.RegisterHandlers(TestUtilAssembly.Assembly)
                 .ConfigureCommandReceivePipe(x =>
                 {
                     x.UseSimpleMiddleware();

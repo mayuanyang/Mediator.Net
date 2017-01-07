@@ -1,10 +1,10 @@
 ﻿using System.Threading.Tasks;
-using Mediator.Net.Autofac.Test.Messages;
-using Mediator.Net.Autofac.Test.Services;
 using Mediator.Net.Context;
 using Mediator.Net.Contracts;
+using Mediator.Net.IoCTestUtil.Messages;
+using Mediator.Net.IoCTestUtil.Services;
 
-namespace Mediator.Net.Autofac.Test.Handlers
+namespace Mediator.Net.IoCTestUtil.Handlers
 {
     class SimpleRequestHandler : IRequestHandler<SimpleRequest, SimpleResponse>
     {

@@ -1,17 +1,17 @@
 ﻿using System.Threading.Tasks;
-using Autofac;
 using Mediator.Net.IoCTestUtil;
 using Mediator.Net.IoCTestUtil.Messages;
 using Mediator.Net.IoCTestUtil.Middlewares;
 using Mediator.Net.IoCTestUtil.Services;
 using NUnit.Framework;
 using Shouldly;
+using StructureMap;
 using TestStack.BDDfy;
 
-namespace Mediator.Net.Autofac.Test.Tests
+namespace Mediator.Net.StructureMap.Test.Tests
 {
    
-    class TestRequestHandlerWithDependancyInjection : TestBase
+    class TestEventHandlerWithDependancyInjection : TestBase
     {
         private IContainer _container = null;
         private IMediator _mediator;
@@ -25,20 +25,22 @@ namespace Mediator.Net.Autofac.Test.Tests
                 {
                     x.UseSimpleMiddleware();
                 });
-            var containerBuilder = new ContainerBuilder();
-            containerBuilder.RegisterType<SimpleService>().AsSelf();
-            containerBuilder.RegisterType<AnotherSimpleService>().AsSelf();
-            containerBuilder.RegisterMediator(mediaBuilder);
-            _container = containerBuilder.Build();
+            _container = new Container();
+            _container.Configure(x =>
+            {
+                x.ForConcreteType<SimpleService>();
+                x.ForConcreteType<AnotherSimpleService>();
+            });
+            StructureMapExtensions.Configure(mediaBuilder, _container);
         }
 
-        public void WhenARequestIsSent()
+        public void WhenACommandIsSent()
         {
-            _mediator = _container.Resolve<IMediator>();
-            _task = _mediator.RequestAsync<SimpleRequest, SimpleResponse>(new SimpleRequest());
+            _mediator = _container.GetInstance<IMediator>();
+            _task = _mediator.PublishAsync(new SimpleEvent());
         }
 
-        public void ThenTheRequestShouldReachItsHandler()
+        public void ThenTheEventShouldReachItsHandler()
         {
             _task.Status.ShouldBe(TaskStatus.RanToCompletion);
             

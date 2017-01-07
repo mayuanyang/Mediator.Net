@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Mediator.Net.Autofac.Test.Services
+namespace Mediator.Net.IoCTestUtil.Services
 {
     public class AnotherSimpleService
     {

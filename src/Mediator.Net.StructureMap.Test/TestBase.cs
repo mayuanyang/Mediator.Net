@@ -1,7 +1,7 @@
 ﻿using Mediator.Net.Binding;
 using NUnit.Framework;
 
-namespace Mediator.Net.Autofac.Test
+namespace Mediator.Net.StructureMap.Test
 {
     class TestBase
     {

@@ -1,9 +1,9 @@
 ﻿using System;
 using Mediator.Net.Contracts;
 
-namespace Mediator.Net.Autofac.Test.Messages
+namespace Mediator.Net.IoCTestUtil.Messages
 {
-    class SimpleCommand : ICommand
+    public class SimpleCommand : ICommand
     {
         public Guid Id { get; }
 

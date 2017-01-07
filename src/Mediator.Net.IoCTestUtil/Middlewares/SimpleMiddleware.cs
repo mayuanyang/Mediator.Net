@@ -4,9 +4,9 @@ using Mediator.Net.Context;
 using Mediator.Net.Contracts;
 using Mediator.Net.Pipeline;
 
-namespace Mediator.Net.Autofac.Test.Middlewares
+namespace Mediator.Net.IoCTestUtil.Middlewares
 {
-    static class SimpleMiddleware
+    public static class SimpleMiddleware
     {
         public static void UseSimpleMiddleware<TContext>(this IPipeConfigurator<TContext> configurator)
             where TContext : IContext<IMessage>
@@ -15,7 +15,7 @@ namespace Mediator.Net.Autofac.Test.Middlewares
         }
     }
 
-    class SimpleMiddlewareSpecification<TContext> : IPipeSpecification<TContext>
+    public class SimpleMiddlewareSpecification<TContext> : IPipeSpecification<TContext>
         where TContext : IContext<IMessage>
     {
         public bool ShouldExecute(TContext context)
