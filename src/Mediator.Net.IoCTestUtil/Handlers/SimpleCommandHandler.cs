@@ -17,6 +17,11 @@ namespace Mediator.Net.IoCTestUtil.Handlers
         public Task Handle(ReceiveContext<SimpleCommand> context)
         {
             _simpleService.DoWork();
+            DummyTransaction transaction;
+            if (context.TryGetService(out transaction))
+            {
+                transaction.Commit();
+            }
             return Task.FromResult(0);
         }
     }

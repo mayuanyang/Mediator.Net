@@ -49,6 +49,32 @@ Setup the mediator by using MediatorBuilder
 
 ```
 
+###Handling message from handler
+Once a message is sent, it will reach its handlers, you can only have one handler for ICommand and IRequest and can have multi handlers for IEvent. ReceiveContext<T> will be delivered to the handler.
+```C#
+	class TestBaseCommandHandler : ICommandHandler<TestBaseCommand>
+    {
+        
+        public Task Handle(ReceiveContext<TestBaseCommand> context)
+        {
+            Console.WriteLine(context.Message.Id);
+            RubishBox.Rublish.Add(nameof(TestBaseCommandHandler));
+            return Task.FromResult(0);
+        }
+    }
+	
+	// Or in async 
+	class AsyncTestBaseCommandHandler : ICommandHandler<TestBaseCommand>
+    {
+        public async Task Handle(ReceiveContext<TestBaseCommand> context)
+        {
+            RubishBox.Rublish.Add(nameof(AsyncTestBaseCommandHandler));
+            Console.WriteLine(context.Message.Id);
+            await Task.FromResult(0);
+        }
+    }
+```
+
 ###Using pipelines
 There are 4 different type of pipeline you can use
 ####GlobalReceivePipeline
@@ -145,6 +171,54 @@ To hook up middlewares into pipelines
          })
      .Build();   
 
+```
+
+###ReceiveContext in Handlers
+As you might already noticed, mediator will deliver ReceiveContext<T> to the handler and it has a property Message which is the original message sent, in some cases you might have one event being handled in multiple handlers and you might want to share something between, ReceiveContext would be a very good place that to register your service or instance. For example you can make a middleware and register the service from there.
+####Register DummyTransaction from middleware
+```C#
+	public class SimpleMiddlewareSpecification<TContext> : IPipeSpecification<TContext>
+        where TContext : IContext<IMessage>
+    {
+        public bool ShouldExecute(TContext context)
+        {
+            return true;
+
+        }
+
+        public Task ExecuteBeforeConnect(TContext context)
+        {
+            if (ShouldExecute(context))
+            {
+                Console.WriteLine($"Before 1: {context.Message}");
+                context.RegisterService(new DummyTransaction());
+            }
+
+            return Task.FromResult(0);
+
+        }
+
+        public Task ExecuteAfterConnect(TContext context)
+        {
+            if (ShouldExecute(context))
+                Console.WriteLine($"After 1: {context.Message}");
+            return Task.FromResult(0);
+        }
+    }
+```
+
+####Get the service from the handler
+```C#
+	public Task Handle(ReceiveContext<SimpleCommand> context)
+    {
+        _simpleService.DoWork();
+        DummyTransaction transaction;
+        if (context.TryGetService(out transaction))
+        {
+            transaction.Commit();
+        }
+        return Task.FromResult(0);
+    }
 ```
 
 ###Using dependancy injection(IoC) frameworks

@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 using Mediator.Net.Context;
 using Mediator.Net.Contracts;
+using Mediator.Net.IoCTestUtil.Services;
 using Mediator.Net.Pipeline;
 
 namespace Mediator.Net.IoCTestUtil.Middlewares
@@ -27,7 +28,11 @@ namespace Mediator.Net.IoCTestUtil.Middlewares
         public Task ExecuteBeforeConnect(TContext context)
         {
             if (ShouldExecute(context))
+            {
                 Console.WriteLine($"Before 1: {context.Message}");
+                context.RegisterService(new DummyTransaction());
+            }
+
             return Task.FromResult(0);
 
         }
