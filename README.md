@@ -180,5 +180,26 @@ You can also setup middlewares for each pipe before register it
     _container = containerBuilder.Build();  
 
 ```
+####StructureMap
+```C#
+	Install-Package Mediator.Net.StructureMap
+```
+Setup an IContainer and do your normal registration, then pass it along with the MediatorBuilder to the StructureMapExtensions class to register Mediator.Net
+```C#
+var mediaBuilder = new MediatorBuilder();
+    mediaBuilder.RegisterHandlers(TestUtilAssembly.Assembly)
+        .ConfigureCommandReceivePipe(x =>
+        {
+            x.UseSimpleMiddleware();
+        });
+    _container = new Container();
+    _container.Configure(x =>
+    {
+        x.ForConcreteType<SimpleService>();
+        x.ForConcreteType<AnotherSimpleService>();
+    });
+    StructureMapExtensions.Configure(mediaBuilder, _container);
+
+```
 
 ####More IoC frameworks to be added
