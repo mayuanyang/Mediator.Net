@@ -15,7 +15,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "IoC", "IoC", "{9679C957-E49
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Core", "Core", "{0096B862-187D-4FF8-9FD6-7DF491ADF2BE}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Test", "Test", "{9EF16702-297F-4E25-BF9C-E1E47065A444}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{9EF16702-297F-4E25-BF9C-E1E47065A444}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mediator.Net.StructureMap", "src\Mediator.Net.StructureMap\Mediator.Net.StructureMap.csproj", "{EC25A035-9982-43BF-98FE-793CABEE15A2}"
 EndProject
@@ -26,6 +26,10 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mediator.Net.Unity", "src\Mediator.Net.Unity\Mediator.Net.Unity.csproj", "{45128832-8CCD-4F08-863A-5D9E387D0E08}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mediator.Net.Unity.Test", "src\Mediator.Net.Unity.Test\Mediator.Net.Unity.Test.csproj", "{2A381F9F-FB9E-4102-9163-41E6925312D4}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mediator.Net.Sample.Web", "src\Mediator.Net.Sample.Web\Mediator.Net.Sample.Web.csproj", "{E33C3758-B2C5-48CE-AD9C-4EDB53882EBB}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Samples", "Samples", "{43D24961-1EAC-4B4D-8B17-9F179A74E79B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -69,6 +73,10 @@ Global
 		{2A381F9F-FB9E-4102-9163-41E6925312D4}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2A381F9F-FB9E-4102-9163-41E6925312D4}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2A381F9F-FB9E-4102-9163-41E6925312D4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E33C3758-B2C5-48CE-AD9C-4EDB53882EBB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E33C3758-B2C5-48CE-AD9C-4EDB53882EBB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E33C3758-B2C5-48CE-AD9C-4EDB53882EBB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E33C3758-B2C5-48CE-AD9C-4EDB53882EBB}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -83,5 +91,6 @@ Global
 		{D4BCC0A5-CF8B-4681-9079-39D5DA445BF7} = {9679C957-E490-4F90-9E5C-360B2C1B9A24}
 		{45128832-8CCD-4F08-863A-5D9E387D0E08} = {9679C957-E490-4F90-9E5C-360B2C1B9A24}
 		{2A381F9F-FB9E-4102-9163-41E6925312D4} = {9679C957-E490-4F90-9E5C-360B2C1B9A24}
+		{E33C3758-B2C5-48CE-AD9C-4EDB53882EBB} = {43D24961-1EAC-4B4D-8B17-9F179A74E79B}
 	EndGlobalSection
 EndGlobal
