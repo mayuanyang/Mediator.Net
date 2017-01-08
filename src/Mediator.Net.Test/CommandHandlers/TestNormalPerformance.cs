@@ -12,16 +12,17 @@ namespace Mediator.Net.Test.CommandHandlers
     class TestNormalPerformance
     {
         private TestBaseCommandHandler _handler;
+        private Stopwatch _sw;
+
         public void GivenAHandler()
         {
+            _sw = new Stopwatch();
+            _sw.Start();
             _handler = new TestBaseCommandHandler();
         }
 
         public async Task WhenTheCommandIsHandled()
         {
-           
-            var sw = new Stopwatch();
-            sw.Start();
             var cmd = new TestBaseCommand(Guid.NewGuid());
             var context = new ReceiveContext<TestBaseCommand>(cmd);
             var console1 = new EmptyPipeSpecification<IReceiveContext<TestBaseCommand>>();
@@ -33,8 +34,8 @@ namespace Mediator.Net.Test.CommandHandlers
             await _handler.Handle(new ReceiveContext<TestBaseCommand>(cmd));
             await console1.ExecuteAfterConnect(context);
             await console2.ExecuteAfterConnect(context);
-            sw.Stop();
-            Console.WriteLine($"It took {sw.ElapsedMilliseconds} milliseconds");
+            _sw.Stop();
+            Console.WriteLine($"It took {_sw.ElapsedMilliseconds} milliseconds");
         }
 
         public void ThenItShouldBeFast()

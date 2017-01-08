@@ -50,6 +50,7 @@
     <Compile Include="Middlewares\SimpleMiddleware.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\AnotherSimpleService.cs" />
+    <Compile Include="Services\DummyTransaction.cs" />
     <Compile Include="Services\SimpleService.cs" />
     <Compile Include="TestUtilAssembly.cs" />
   </ItemGroup>

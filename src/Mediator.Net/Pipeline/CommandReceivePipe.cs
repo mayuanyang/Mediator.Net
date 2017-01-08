@@ -63,23 +63,11 @@ namespace Mediator.Net.Pipeline
                var handlerType = x.HandlerType.GetTypeInfo();
                var messageType = context.Message.GetType();
 
-               var handleMethods = handlerType.GetRuntimeMethods().Where(m =>
+               var handleMethod = handlerType.GetRuntimeMethods().Single(m =>
                {
                    var result = m.Name == "Handle" && m.IsPublic && m.GetParameters().Any()
                    && (m.GetParameters()[0].ParameterType.GetGenericArguments().Contains(messageType) || m.GetParameters()[0].ParameterType.GetGenericArguments().First().GetTypeInfo().IsAssignableFrom(messageType));
                    return result;
-               }).ToList();
-
-               var handleMethod = handleMethods.Single(y =>
-               {
-                   var parameterTypeIsCorrect = y.GetParameters().Single()
-                   .ParameterType.GenericTypeArguments.First()
-                   .GetTypeInfo()
-                   .IsAssignableFrom(messageType.GetTypeInfo());
-
-                   return parameterTypeIsCorrect
-                          && y.IsPublic
-                          && ((y.CallingConvention & CallingConventions.HasThis) != 0);
                });
 
                var handler = (_resolver == null) ? Activator.CreateInstance(handlerType) : _resolver.Resolve(handlerType);

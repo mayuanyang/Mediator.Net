@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Diagnostics;
 using System.Threading.Tasks;
 using Mediator.Net.Context;
 using Mediator.Net.Contracts;
@@ -50,27 +49,11 @@ namespace Mediator.Net
             where TRequest : IRequest
             where TResponse : IResponse
         {
-            var receiveContext = (IReceiveContext<TRequest>)Activator.CreateInstance(typeof(ReceiveContext<>).MakeGenericType(request.GetType()), request);
-            receiveContext.RegisterService(this);
-            IPublishPipe<IPublishContext<IEvent>> publishPipeInContext;
-            if (!receiveContext.TryGetService(out publishPipeInContext))
-            {
-                receiveContext.RegisterService(_publishPipe);
-            }
-
-            IRequestReceivePipe<IReceiveContext<IRequest>> requestPipeInContext;
-            if (!receiveContext.TryGetService(out requestPipeInContext))
-            {
-                receiveContext.RegisterService(_requestPipe);
-            }
-            var sendMethodInRequestPipe = _globalPipe.GetType().GetMethod("Connect");
-            var result = await ((Task<object>)sendMethodInRequestPipe.Invoke(_globalPipe, new object[] { receiveContext })).ConfigureAwait(false);
-            
+            var result = await SendMessage(request);
             return (TResponse)result;
-
         }
 
-        private Task SendMessage<TMessage>(TMessage msg)
+        private Task<object> SendMessage<TMessage>(TMessage msg)
             where TMessage : IMessage
         {
 
@@ -94,8 +77,13 @@ namespace Mediator.Net
                 receiveContext.RegisterService(_eventReceivePipe);
             }
 
-            var sendMethodInGlobalPipe = _globalPipe.GetType().GetMethod("Connect");
-            var task = (Task)sendMethodInGlobalPipe.Invoke(_globalPipe, new object[] { receiveContext });
+            IRequestReceivePipe<IReceiveContext<IRequest>> requestPipeInContext;
+            if (!receiveContext.TryGetService(out requestPipeInContext))
+            {
+                receiveContext.RegisterService(_requestPipe);
+            }
+
+            var task = _globalPipe.Connect((IReceiveContext<IMessage>) receiveContext);
             task.ConfigureAwait(false);
             return task;
         }
