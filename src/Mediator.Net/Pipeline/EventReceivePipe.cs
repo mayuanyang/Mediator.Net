@@ -47,23 +47,23 @@ namespace Mediator.Net.Pipeline
         private Task ConnectToHandler(TContext context)
         {
 
-            var handlers = MessageHandlerRegistry.MessageBindings.Where(x => x.MessageType.GetTypeInfo() == context.Message.GetType()).ToList();
+            var handlers = MessageHandlerRegistry.MessageBindings.Where(x => x.MessageType == context.Message.GetType()).ToList();
             if (!handlers.Any())
                 throw new NoHandlerFoundException(context.Message.GetType());
             
             Task task = null;
-            handlers.ForEach( x =>
+            foreach (var x in handlers)
             {
-                var handlerType = x.HandlerType.GetTypeInfo();
+                var handlerType = x.HandlerType;
                 var messageType = context.Message.GetType();
-              
+
                 var handleMethods = handlerType.GetRuntimeMethods().Where(m =>
                 {
                     var result = m.Name == "Handle" && m.IsPublic && m.GetParameters().Any()
-                    && (m.GetParameters()[0].ParameterType.GetGenericArguments().Contains(messageType) || m.GetParameters()[0].ParameterType.GetGenericArguments().First().GetTypeInfo().IsAssignableFrom(messageType));
+                    && (m.GetParameters()[0].ParameterType.GenericTypeArguments.Contains(messageType) || m.GetParameters()[0].ParameterType.GenericTypeArguments.First().GetTypeInfo().IsAssignableFrom(messageType.GetTypeInfo()));
                     return result;
                 }).ToList();
-             
+
                 var handleMethod = handleMethods.Single(y =>
                 {
                     var parameterTypeIsCorrect = y.GetParameters().Single()
@@ -79,8 +79,8 @@ namespace Mediator.Net.Pipeline
                 var handler = (_resolver == null) ? Activator.CreateInstance(handlerType) : _resolver.Resolve(handlerType);
                 task = (Task)handleMethod.Invoke(handler, new object[] { context });
 
-            });
-
+            }
+        
             return task;
         }
     }

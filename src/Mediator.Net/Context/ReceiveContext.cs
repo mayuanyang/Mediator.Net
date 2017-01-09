@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Threading.Tasks;
 using Mediator.Net.Contracts;
 using Mediator.Net.Pipeline;
@@ -46,7 +47,7 @@ namespace Mediator.Net.Context
                 IPublishPipe<IPublishContext<IEvent>> publishPipe;
                 if (TryGetService(out publishPipe))
                 {
-                    var sendMethod = publishPipe.GetType().GetMethod("Connect");
+                    var sendMethod = publishPipe.GetType().GetRuntimeMethods().Single(x => x.Name == "Connect");
                     var task = (Task)sendMethod.Invoke(publishPipe, new object[] { publishContext });
                     task.ConfigureAwait(false);
                     return task;

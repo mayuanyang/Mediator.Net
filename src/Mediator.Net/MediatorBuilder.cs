@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
+using System.Reactive.Linq;
 using System.Reflection;
 using Mediator.Net.Binding;
 using Mediator.Net.Context;
@@ -12,7 +13,7 @@ namespace Mediator.Net
 {
     public class MediatorBuilder
     {
-        
+
         private Action<IGlobalReceivePipeConfigurator> _globalReceivePipeConfiguratorAction;
         private Action<ICommandReceivePipeConfigurator> _commandReceivePipeConfiguratorAction;
         private Action<IEventReceivePipeConfigurator> _eventReceivePipeConfiguratorAction;
@@ -23,22 +24,25 @@ namespace Mediator.Net
             foreach (var assembly in assemblies)
             {
                 var commandHandlers = assembly.GetTypes().Where(x => IsAssignableToGenericType(x, typeof(ICommandHandler<>))).ToList();
-                commandHandlers.ForEach(x =>
+                foreach (var x in commandHandlers)
                 {
-                    MessageHandlerRegistry.MessageBindings.Add(new MessageBinding(x.GetInterfaces().First().GenericTypeArguments[0].GetTypeInfo(), x.GetTypeInfo()));
-                });
+                    MessageHandlerRegistry.MessageBindings.Add(new MessageBinding(x.GetTypeInfo().ImplementedInterfaces.First().GenericTypeArguments[0], x));
+                }
+
 
                 var eventHandlers = assembly.GetTypes().Where(x => IsAssignableToGenericType(x, typeof(IEventHandler<>))).ToList();
-                eventHandlers.ForEach(x =>
+                foreach (var x in commandHandlers)
                 {
-                    MessageHandlerRegistry.MessageBindings.Add(new MessageBinding(x.GetInterfaces().First().GenericTypeArguments[0].GetTypeInfo(), x.GetTypeInfo()));
-                });
+                    MessageHandlerRegistry.MessageBindings.Add(new MessageBinding(x.GetTypeInfo().ImplementedInterfaces.First().GenericTypeArguments[0], x));
+                }
+
 
                 var requestHandlers = assembly.GetTypes().Where(x => IsAssignableToGenericType(x, typeof(IRequestHandler<,>))).ToList();
-                requestHandlers.ForEach(x =>
+                foreach (var x in requestHandlers)
                 {
-                    MessageHandlerRegistry.MessageBindings.Add(new MessageBinding(x.GetInterfaces().First().GenericTypeArguments[0].GetTypeInfo(), x.GetTypeInfo()));
-                });
+                    MessageHandlerRegistry.MessageBindings.Add(new MessageBinding(x.GetTypeInfo().ImplementedInterfaces.First().GenericTypeArguments[0], x));
+                }
+
 
             }
             return this;
@@ -221,21 +225,21 @@ namespace Mediator.Net
 
             return new Mediator(commandReceivePipe, eventReceivePipe, requestPipe, publishPipe, globalReceivePipe, scope);
         }
-  
+
         private bool IsAssignableToGenericType(Type givenType, Type genericType)
         {
-            var interfaceTypes = givenType.GetInterfaces();
+            var interfaceTypes = givenType.GetTypeInfo().ImplementedInterfaces;
 
             foreach (var it in interfaceTypes)
             {
-                if (it.IsGenericType && it.GetGenericTypeDefinition() == genericType)
+                if (it.GetTypeInfo().IsGenericType && it.GetGenericTypeDefinition() == genericType)
                     return true;
             }
 
-            if (givenType.IsGenericType && givenType.GetGenericTypeDefinition() == genericType)
+            if (givenType.GetTypeInfo().IsGenericType && givenType.GetGenericTypeDefinition() == genericType)
                 return true;
 
-            Type baseType = givenType.BaseType;
+            Type baseType = givenType.GetTypeInfo().BaseType;
             if (baseType == null) return false;
 
             return IsAssignableToGenericType(baseType, genericType);

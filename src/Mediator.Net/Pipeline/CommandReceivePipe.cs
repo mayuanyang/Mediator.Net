@@ -47,7 +47,7 @@ namespace Mediator.Net.Pipeline
         private Task ConnectToHandler(TContext context)
         {
 
-            var handlers = MessageHandlerRegistry.MessageBindings.Where(x => x.MessageType.GetTypeInfo() == context.Message.GetType()).ToList();
+            var handlers = MessageHandlerRegistry.MessageBindings.Where(x => x.MessageType == context.Message.GetType()).ToList();
             if (!handlers.Any())
                 throw new NoHandlerFoundException(context.Message.GetType());
 
@@ -58,23 +58,24 @@ namespace Mediator.Net.Pipeline
 
 
             Task task = null;
-            handlers.ForEach(x =>
-           {
-               var handlerType = x.HandlerType.GetTypeInfo();
-               var messageType = context.Message.GetType();
+            foreach (var x in handlers)
+            {
+                var handlerType = x.HandlerType;
+                var messageType = context.Message.GetType();
 
-               var handleMethod = handlerType.GetRuntimeMethods().Single(m =>
-               {
-                   var result = m.Name == "Handle" && m.IsPublic && m.GetParameters().Any()
-                   && (m.GetParameters()[0].ParameterType.GetGenericArguments().Contains(messageType) || m.GetParameters()[0].ParameterType.GetGenericArguments().First().GetTypeInfo().IsAssignableFrom(messageType));
-                   return result;
-               });
+                var handleMethod = handlerType.GetRuntimeMethods().Single(m =>
+                {
+                    var result = m.Name == "Handle" && m.IsPublic && m.GetParameters().Any()
+                    && (m.GetParameters()[0].ParameterType.GenericTypeArguments.Contains(messageType) || m.GetParameters()[0].ParameterType.GenericTypeArguments.First().GetTypeInfo().IsAssignableFrom(messageType.GetTypeInfo()));
+                    return result;
+                });
 
-               var handler = (_resolver == null) ? Activator.CreateInstance(handlerType) : _resolver.Resolve(handlerType);
-               task = (Task)handleMethod.Invoke(handler, new object[] { context });
+                var handler = (_resolver == null) ? Activator.CreateInstance(handlerType) : _resolver.Resolve(handlerType);
+                task = (Task)handleMethod.Invoke(handler, new object[] { context });
 
-           });
+            }
 
+           
             return task;
         }
     }

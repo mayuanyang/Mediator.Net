@@ -44,7 +44,7 @@ namespace Mediator.Net.Pipeline
 
             var handlers =
                 MessageHandlerRegistry.MessageBindings.Where(
-                    x => x.MessageType.GetTypeInfo() == context.Message.GetType()).ToList();
+                    x => x.MessageType == context.Message.GetType()).ToList();
             if (!handlers.Any())
                 throw new NoHandlerFoundException(context.Message.GetType());
 
@@ -55,7 +55,7 @@ namespace Mediator.Net.Pipeline
 
             var binding = handlers.Single();
 
-            var handlerType = binding.HandlerType.GetTypeInfo();
+            var handlerType = binding.HandlerType;
             var messageType = context.Message.GetType();
 
             var handleMethods = handlerType.GetRuntimeMethods().Where(m => m.Name == "Handle");

@@ -11,6 +11,7 @@ using NUnit.Framework;
 using Shouldly;
 using TestStack.BDDfy;
 
+
 namespace Mediator.Net.Test.TestPipeline
 {
     class GlobalPipeConnectToEventPipe : TestBase
