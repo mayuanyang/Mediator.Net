@@ -4,6 +4,6 @@ namespace Mediator.Net.IoCTestUtil
 {
     public class TestUtilAssembly
     {
-        public static Assembly Assembly => typeof(TestUtilAssembly).Assembly;
+        public static Assembly Assembly => typeof(TestUtilAssembly).GetTypeInfo().Assembly;
     }
 }

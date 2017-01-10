@@ -1,0 +1,23 @@
+{
+  "version": "1.0.0-*",
+
+  "dependencies": {
+    "Autofac": "4.2.1",
+    "Mediator.Net": "1.0.0-*",
+    "Mediator.Net.Autofac": "1.0.0-*",
+    "Mediator.Net.IoCTestUtil": "1.0.0-*",
+    "NETStandard.Library": "1.6.0",
+    "NUnit": "3.5.0",
+    "Shouldly": "2.8.2",
+    "System.Interactive.Async": "3.0.0",
+    "System.Reactive.Linq": "3.1.1",
+    "System.Reflection.TypeExtensions": "4.1.0",
+    "TestStack.BDDfy": "4.3.2"
+  },
+
+  "frameworks": {
+    "netstandard1.1": {
+      "imports": "dnxcore50"
+    }
+  }
+}
