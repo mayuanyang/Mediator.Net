@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
-using System.Web;
+﻿using System.Reflection;
 using System.Web.Http;
 using System.Web.Mvc;
 using System.Web.Optimization;
@@ -11,9 +7,8 @@ using Autofac;
 using Autofac.Integration.Mvc;
 using Autofac.Integration.WebApi;
 using Mediator.Net.Autofac;
-using Mediator.Net.IoCTestUtil;
-using Mediator.Net.IoCTestUtil.Services;
 using Mediator.Net.Sample.Web.Controllers;
+using Mediator.Net.Sample.Web.Services;
 
 namespace Mediator.Net.Sample.Web
 {
@@ -41,12 +36,12 @@ namespace Mediator.Net.Sample.Web
             // OPTIONAL: Register the Autofac filter provider.
             builder.RegisterWebApiFilterProvider(config);
             var mediatorBuilder = new MediatorBuilder();
-            mediatorBuilder.RegisterHandlers(TestUtilAssembly.Assembly);
+            mediatorBuilder.RegisterHandlers(Assembly.GetExecutingAssembly());
             builder.RegisterMediator(mediatorBuilder);
 
             // Misc
-            builder.RegisterType<SimpleService>();
-            builder.RegisterType<AnotherSimpleService>();
+            builder.RegisterType<SimpleService>().AsImplementedInterfaces();
+        
 
             // Set the dependency resolver to be Autofac.
             var container = builder.Build();

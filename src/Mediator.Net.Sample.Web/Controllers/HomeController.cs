@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
 using System.Web.Mvc;
-using Mediator.Net.IoCTestUtil.Messages;
+using Mediator.Net.Sample.Web.Commands;
 
 namespace Mediator.Net.Sample.Web.Controllers
 {
