@@ -1,7 +1,7 @@
 # Mediator.Net
 A mediator project for .NET
 ## Get Packages
-You can get Autofac by [grabbing the latest NuGet packages](https://www.nuget.org/packages/Mediator.Net/).
+You can get Mediator.Net by [grabbing the latest NuGet packages](https://www.nuget.org/packages/Mediator.Net/).
 
 ## Get Started
 Install the nuget package Mediator.Net
