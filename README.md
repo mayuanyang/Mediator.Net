@@ -1,4 +1,4 @@
-[![Build status](https://ci.appveyor.com/api/projects/status/j42okw862yjgdeo9?svg=true)]
+![Build status](https://ci.appveyor.com/api/projects/status/j42okw862yjgdeo9?svg=true)
 
 # Mediator.Net
 A mediator project for .NET
