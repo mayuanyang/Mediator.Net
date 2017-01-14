@@ -1,7 +1,11 @@
 version: 1.0.{build}
+configuration: Release
+nuget:
+  disable_publish_on_pr: true
 before_build:
 - cmd: nuget restore
 build:
   project: Mediator.Net.sln
   publish_nuget: true
   verbosity: minimal
+test: off
