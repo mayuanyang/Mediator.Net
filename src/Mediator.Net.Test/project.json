@@ -4,15 +4,18 @@
   "dependencies": {
     "Mediator.Net": "1.0.0-*",
     "NETStandard.Library": "1.6.0",
-    "NUnit": "3.5.0",
+    "NUnit": "3.4.0",
     "Shouldly": "2.8.2",
     "System.Console": "4.0.0",
     "TestStack.BDDfy": "4.3.2"
   },
-
+  "testRunner": "nunit",
   "frameworks": {
     "netstandard1.1": {
       "imports": "dnxcore50"
     }
+  },
+  "runtimes": {
+    "win10-x64": {}
   }
 }

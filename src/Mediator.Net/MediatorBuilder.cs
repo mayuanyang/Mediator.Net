@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Net;
-using System.Reactive.Linq;
 using System.Reflection;
 using Mediator.Net.Binding;
 using Mediator.Net.Context;
@@ -23,24 +21,24 @@ namespace Mediator.Net
         {
             foreach (var assembly in assemblies)
             {
-                var commandHandlers = assembly.GetTypes().Where(x => IsAssignableToGenericType(x, typeof(ICommandHandler<>))).ToList();
+                var commandHandlers = assembly.DefinedTypes.Where(x => IsAssignableToGenericType(x.BaseType, typeof(ICommandHandler<>))).ToList();
                 foreach (var x in commandHandlers)
                 {
-                    MessageHandlerRegistry.MessageBindings.Add(new MessageBinding(x.GetTypeInfo().ImplementedInterfaces.First().GenericTypeArguments[0], x));
+                    MessageHandlerRegistry.MessageBindings.Add(new MessageBinding(x.ImplementedInterfaces.First().GenericTypeArguments[0], x.BaseType));
                 }
 
 
-                var eventHandlers = assembly.GetTypes().Where(x => IsAssignableToGenericType(x, typeof(IEventHandler<>))).ToList();
+                var eventHandlers = assembly.DefinedTypes.Where(x => IsAssignableToGenericType(x.BaseType, typeof(IEventHandler<>))).ToList();
                 foreach (var x in commandHandlers)
                 {
-                    MessageHandlerRegistry.MessageBindings.Add(new MessageBinding(x.GetTypeInfo().ImplementedInterfaces.First().GenericTypeArguments[0], x));
+                    MessageHandlerRegistry.MessageBindings.Add(new MessageBinding(x.ImplementedInterfaces.First().GenericTypeArguments[0], x.BaseType));
                 }
 
 
-                var requestHandlers = assembly.GetTypes().Where(x => IsAssignableToGenericType(x, typeof(IRequestHandler<,>))).ToList();
+                var requestHandlers = assembly.DefinedTypes.Where(x => IsAssignableToGenericType(x.BaseType, typeof(IRequestHandler<,>))).ToList();
                 foreach (var x in requestHandlers)
                 {
-                    MessageHandlerRegistry.MessageBindings.Add(new MessageBinding(x.GetTypeInfo().ImplementedInterfaces.First().GenericTypeArguments[0], x));
+                    MessageHandlerRegistry.MessageBindings.Add(new MessageBinding(x.ImplementedInterfaces.First().GenericTypeArguments[0], x.BaseType));
                 }
 
 

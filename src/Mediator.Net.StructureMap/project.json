@@ -3,16 +3,14 @@
 
   "dependencies": {
     "Mediator.Net": "1.0.0-*",
-    "NETStandard.Library": "1.6.0",
-    "StructureMap": "4.4.2",
-    "System.Interactive.Async": "3.0.0",
-    "System.Reactive.Linq": "3.1.1",
-    "System.Reflection.TypeExtensions": "4.1.0"
+    "StructureMap": "4.4.2"
   },
 
   "frameworks": {
+    "net4.5": {},
     "netstandard1.1": {
-      "imports": "dnxcore50"
+      "imports": "dnxcore50",
+      "NETStandard.Library": "1.6.0"
     }
   }
 }

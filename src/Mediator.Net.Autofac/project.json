@@ -3,16 +3,13 @@
 
   "dependencies": {
     "Autofac": "4.2.1",
-    "Mediator.Net": "1.0.0-*",
-    "NETStandard.Library": "1.6.0",
-    "System.Interactive.Async": "3.0.0",
-    "System.Reactive.Linq": "3.1.1",
-    "System.Reflection.TypeExtensions": "4.1.0"
+    "Mediator.Net": "1.0.0-*"
   },
 
   "frameworks": {
+    "net4.5": {},
     "netstandard1.1": {
-      "imports": "dnxcore50"
+      "NETStandard.Library": "1.6.0"
     }
   }
 }

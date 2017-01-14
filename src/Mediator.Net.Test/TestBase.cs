@@ -7,7 +7,7 @@ namespace Mediator.Net.Test
    
     class TestBase
     {
-        [TestFixtureTearDown]
+        [OneTimeTearDown]
         public void Teardown()
         {
             MessageHandlerRegistry.MessageBindings.Clear();

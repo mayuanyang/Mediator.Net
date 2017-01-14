@@ -58,11 +58,11 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="Mediator.Net, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>packages\Mediator.Net.1.0.0\lib\net452\Mediator.Net.dll</HintPath>
+      <HintPath>packages\Mediator.Net.0.9.70\lib\net452\Mediator.Net.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Mediator.Net.Autofac, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>packages\Mediator.Net.Autofac.1.0.0\lib\net452\Mediator.Net.Autofac.dll</HintPath>
+      <HintPath>packages\Mediator.Net.Autofac.0.9.70\lib\net452\Mediator.Net.Autofac.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Microsoft.AI.Agent.Intercept, Version=1.2.1.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
