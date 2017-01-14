@@ -2,5 +2,6 @@ version: 1.0.{build}
 before_build:
 - cmd: nuget restore
 build:
+  project: Mediator.Net.sln
   publish_nuget: true
   verbosity: minimal
