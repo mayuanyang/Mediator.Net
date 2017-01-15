@@ -1,4 +1,4 @@
-[![Build status](https://ci.appveyor.com/api/projects/status/j42okw862yjgdeo9?svg=true)]
+![Build status](https://ci.appveyor.com/api/projects/status/j42okw862yjgdeo9?svg=true)
 
 # Mediator.Net
 A mediator project for .NET
@@ -78,7 +78,9 @@ Once a message is sent, it will reach its handlers, you can only have one handle
 ```
 
 ###Using pipelines
-There are 4 different type of pipeline you can use
+There are 5 different type of pipelines you can use 
+![image](https://cloud.githubusercontent.com/assets/3387099/21959127/9a065420-db09-11e6-8dbc-ca0069894e1c.png)
+
 ####GlobalReceivePipeline
 This pipeline will be triggered whenever a message is sent, published or requested before it reach the next pipeline and handler
 
