@@ -8,9 +8,9 @@ environment:
 init:
 - ps: $Env:LABEL = $Env:APPVEYOR_BUILD_NUMBER
 before_build:
-- appveyor-retry dotnet restore -v Minimal
 - npm install
 - node update-version.js
+- appveyor-retry dotnet restore -v Minimal
 build_script:
 - dotnet build "src\Mediator.Net" -c %CONFIGURATION% --no-dependencies
 - dotnet build "src\Mediator.Net.IoCTestUtil" -c %CONFIGURATION% --no-dependencies
