@@ -1,9 +1,18 @@
 {
   "version": "1.0.0-*",
-
+  "title": "A simple .NET mediator",
+  "authors": [ "Yuan(Eddy) Ma" ],
+  "description": "Decouple does matter, A simple mediator for .Net for sending command, publishing event and request response with pipelines supported",
+  "packOptions": {
+    "tags": [ ".NET", "Mediator", "Cqrs", "DDD", "Command", "Event", "Request", "Response" ],
+    "projectUrl": "https://github.com/mayuanyang/Mediator.Net",
+    "licenseUrl": "https://github.com/mayuanyang/Mediator.Net",
+    "owners": [ "Yuan(Eddy) Ma" ],
+    "requireLicenseAcceptance": false
+  },
   "dependencies": {
-    
-    
+
+
   },
 
   "frameworks": {

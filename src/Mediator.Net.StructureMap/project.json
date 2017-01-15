@@ -1,6 +1,15 @@
 {
   "version": "1.0.0-*",
-
+  "title": "Mediator.Net StructureMap integration",
+  "authors": [ "Yuan(Eddy) Ma" ],
+  "description": "Use Autofac as the IoC container for Mediator.Net",
+  "packOptions": {
+    "tags": [ ".NET", "Mediator", "Cqrs", "DDD", "Command", "Event", "Request", "Response", "StructureMap" ],
+    "projectUrl": "https://github.com/mayuanyang/Mediator.Net",
+    "licenseUrl": "https://github.com/mayuanyang/Mediator.Net",
+    "owners": [ "Yuan(Eddy) Ma" ],
+    "requireLicenseAcceptance": false
+  },
   "dependencies": {
     "Mediator.Net": "1.0.0-*",
     "StructureMap": "4.4.2"
