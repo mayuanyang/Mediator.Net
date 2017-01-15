@@ -12,12 +12,13 @@ before_build:
 - appveyor-retry dotnet restore -v Minimal
 build_script:
 - dotnet build "src\Mediator.Net" -c %CONFIGURATION% --no-dependencies --version-suffix %LABEL%
+- dotnet build "src\Mediator.Net.IoCTestUtil" -c %CONFIGURATION% --no-dependencies --version-suffix %LABEL%
 - dotnet build "src\Mediator.Net.Test" -c %CONFIGURATION% --no-dependencies --version-suffix %LABEL%
 - dotnet build "src\Mediator.Net.Autofac" -c %CONFIGURATION% --no-dependencies --version-suffix %LABEL%
 - dotnet build "src\Mediator.Net.Autofac.Test" -c %CONFIGURATION% --no-dependencies --version-suffix %LABEL%
 - dotnet build "src\Mediator.Net.StructureMap" -c %CONFIGURATION% --no-dependencies --version-suffix %LABEL%
 - dotnet build "src\Mediator.Net.StructureMap.Test" -c %CONFIGURATION% --no-dependencies --version-suffix %LABEL%
-- dotnet build "src\Mediator.Net.IoCTestUtil" -c %CONFIGURATION% --no-dependencies --version-suffix %LABEL%
+
 
 after_build:
 - dotnet pack "src\Mediator.Net" -c %CONFIGURATION% --no-build --version-suffix %LABEL% -o artifacts
