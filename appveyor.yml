@@ -7,7 +7,7 @@ environment:
   # Don't report back to the mothership
   DOTNET_CLI_TELEMETRY_OPTOUT: 1
 init:
-- ps: $Env:LABEL = "CI" + $Env:APPVEYOR_BUILD_NUMBER.PadLeft(5, "0")
+- ps: $Env:LABEL = $Env:APPVEYOR_BUILD_NUMBER
 before_build:
 - appveyor-retry dotnet restore -v Minimal
 build_script:
@@ -33,4 +33,3 @@ artifacts:
 cache:
 - '%USERPROFILE%\.nuget\packages'
 on_finish: # Done
-- Write-Host 'Done'
