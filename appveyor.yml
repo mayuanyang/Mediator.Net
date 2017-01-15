@@ -1,6 +1,5 @@
-version: '1.0.{build}'
+version: '1.0.{$Env:APPVEYOR_BUILD_NUMBER}'
 configuration:
-- Debug
 - Release
 platform: Any CPU
 environment:
@@ -11,19 +10,19 @@ init:
 before_build:
 - appveyor-retry dotnet restore -v Minimal
 build_script:
-- dotnet build "src\Mediator.Net" -c %CONFIGURATION% --no-dependencies --version-suffix %LABEL%
-- dotnet build "src\Mediator.Net.IoCTestUtil" -c %CONFIGURATION% --no-dependencies --version-suffix %LABEL%
-- dotnet build "src\Mediator.Net.Test" -c %CONFIGURATION% --no-dependencies --version-suffix %LABEL%
-- dotnet build "src\Mediator.Net.Autofac" -c %CONFIGURATION% --no-dependencies --version-suffix %LABEL%
-- dotnet build "src\Mediator.Net.Autofac.Test" -c %CONFIGURATION% --no-dependencies --version-suffix %LABEL%
-- dotnet build "src\Mediator.Net.StructureMap" -c %CONFIGURATION% --no-dependencies --version-suffix %LABEL%
-- dotnet build "src\Mediator.Net.StructureMap.Test" -c %CONFIGURATION% --no-dependencies --version-suffix %LABEL%
+- dotnet build "src\Mediator.Net" -c %CONFIGURATION% --no-dependencies 
+- dotnet build "src\Mediator.Net.IoCTestUtil" -c %CONFIGURATION% --no-dependencies 
+- dotnet build "src\Mediator.Net.Test" -c %CONFIGURATION% --no-dependencies 
+- dotnet build "src\Mediator.Net.Autofac" -c %CONFIGURATION% --no-dependencies 
+- dotnet build "src\Mediator.Net.Autofac.Test" -c %CONFIGURATION% --no-dependencies 
+- dotnet build "src\Mediator.Net.StructureMap" -c %CONFIGURATION% --no-dependencies 
+- dotnet build "src\Mediator.Net.StructureMap.Test" -c %CONFIGURATION% --no-dependencies 
 
 
 after_build:
-- dotnet pack "src\Mediator.Net" -c %CONFIGURATION% --no-build --version-suffix %LABEL% -o artifacts
-- dotnet pack "src\Mediator.Net.Autofac" -c %CONFIGURATION% --no-build --version-suffix %LABEL% -o artifacts
-- dotnet pack "src\Mediator.Net.StructureMap" -c %CONFIGURATION% --no-build --version-suffix %LABEL% -o artifacts
+- dotnet pack "src\Mediator.Net" -c %CONFIGURATION% --no-build -o artifacts
+- dotnet pack "src\Mediator.Net.Autofac" -c %CONFIGURATION% --no-build -o artifacts
+- dotnet pack "src\Mediator.Net.StructureMap" -c %CONFIGURATION% --no-build -o artifacts
 test_script:
 - dotnet test "src\Mediator.Net.Test" -c %CONFIGURATION%
 - dotnet test "src\Mediator.Net.Autofac.Test" -c %CONFIGURATION%
