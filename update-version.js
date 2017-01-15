@@ -20,6 +20,7 @@ console.error(err);
 
 jsonfile.readFile(file2, function (err, project) { 
 project.version = buildNumber; 
+project.dependencies['Mediator.Net'] = buildNumber;
 jsonfile.writeFile(file2, project, {spaces: 2}, function(err) { 
 console.error(err); 
 }); 
@@ -27,6 +28,9 @@ console.error(err);
 
 jsonfile.readFile(file3, function (err, project) { 
 project.version = buildNumber; 
+project.dependencies['Mediator.Net'] = buildNumber;
+project.dependencies['Mediator.Net.IoCTestUtil'] = buildNumber;
+project.dependencies['Mediator.Net.Autofac'] = buildNumber;
 jsonfile.writeFile(file3, project, {spaces: 2}, function(err) { 
 console.error(err); 
 }); 
@@ -34,6 +38,7 @@ console.error(err);
 
 jsonfile.readFile(file4, function (err, project) { 
 project.version = buildNumber; 
+project.dependencies['Mediator.Net'] = buildNumber;
 jsonfile.writeFile(file4, project, {spaces: 2}, function(err) { 
 console.error(err); 
 }); 
@@ -41,6 +46,7 @@ console.error(err);
 
 jsonfile.readFile(file5, function (err, project) { 
 project.version = buildNumber; 
+project.dependencies['Mediator.Net'] = buildNumber;
 console.log(file5);
 jsonfile.writeFile(file5, project, {spaces: 2}, function(err) { 
 console.error(err); 
@@ -49,6 +55,9 @@ console.error(err);
 
 jsonfile.readFile(file6, function (err, project) { 
 project.version = buildNumber; 
+project.dependencies['Mediator.Net'] = buildNumber;
+project.dependencies['Mediator.Net.IoCTestUtil'] = buildNumber;
+project.dependencies['Mediator.Net.StructureMap'] = buildNumber;
 jsonfile.writeFile(file6, project, {spaces: 2}, function(err) { 
 console.error(err); 
 }); 
@@ -56,6 +65,7 @@ console.error(err);
 
 jsonfile.readFile(file7, function (err, project) { 
 project.version = buildNumber; 
+project.dependencies['Mediator.Net'] = buildNumber;
 jsonfile.writeFile(file7, project, {spaces: 2}, function(err) { 
 console.error(err); 
 }); 
