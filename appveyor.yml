@@ -1,4 +1,4 @@
-version: '1.0.{build}'
+version: '1.0.0.{build}'
 configuration:
 - Release
 platform: Any CPU
@@ -22,7 +22,7 @@ build_script:
 
 
 after_build:
-- dotnet pack "src\Mediator.Net" -c %CONFIGURATION% --no-build o artifacts
+- dotnet pack "src\Mediator.Net" -c %CONFIGURATION% --no-build -o artifacts
 - dotnet pack "src\Mediator.Net.Autofac" -c %CONFIGURATION% --no-build -o artifacts
 - dotnet pack "src\Mediator.Net.StructureMap" -c %CONFIGURATION% --no-build -o artifacts
 test_script:
