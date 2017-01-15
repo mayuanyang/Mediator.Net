@@ -34,7 +34,7 @@ namespace Mediator.Net.Autofac.Test.Tests
         public void ThenInterfaceTypeShouldBeResolved()
         {
             _mediator.ShouldNotBeNull();
-            1.ShouldBe(2);
+            
         }
 
         [Test]
