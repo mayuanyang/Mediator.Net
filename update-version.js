@@ -9,7 +9,7 @@ var file4 = 'src/Mediator.Net.IoCTestUtil/project.json';
 var file5 = 'src/Mediator.Net.StructureMap/project.json';
 var file6 = 'src/Mediator.Net.StructureMap.Test/project.json';
 var file7 = 'src/Mediator.Net.Test/project.json'; 
-var buildNumber = '1.0.' + process.env.APPVEYOR_BUILD_VERSION;
+var buildNumber = process.env.APPVEYOR_BUILD_VERSION;
 
 jsonfile.readFile(file, function (err, project) { 
 project.version = buildNumber; 
