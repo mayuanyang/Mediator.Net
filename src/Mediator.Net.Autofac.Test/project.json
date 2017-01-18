@@ -13,7 +13,9 @@
     "System.Interactive.Async": "3.0.0",
     "System.Reactive.Linq": "3.1.1",
     "System.Reflection.TypeExtensions": "4.1.0",
-    "TestStack.BDDfy": "4.3.2"
+    "TestStack.BDDfy": "4.3.2",
+    "Mediator.Net.Middlewares.Serilog": "1.0.0-*",
+    "Serilog.Sinks.Console": "2.1.0"
   },
 
   "testRunner": "nunit",

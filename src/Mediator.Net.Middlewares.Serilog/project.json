@@ -1,0 +1,26 @@
+﻿{
+  "version": "1.0.0-*",
+  "title": "Serilog middleware for Mediator.NET",
+  "authors": [ "Yuan(Eddy) Ma" ],
+  "description": "Log message by using Serilog",
+  "packOptions": {
+    "tags": [ ".NET", "Mediator", "Cqrs", "DDD", "Command", "Event", "Request", "Response", "Serilog" ],
+    "projectUrl": "https://github.com/mayuanyang/Mediator.Net",
+    "licenseUrl": "https://github.com/mayuanyang/Mediator.Net",
+    "owners": [ "Yuan(Eddy) Ma" ],
+    "requireLicenseAcceptance": false
+  },
+
+  "dependencies": {
+    "Mediator.Net": "1.0.0-*",
+    "NETStandard.Library": "1.6.0",
+    "Serilog": "2.3.0"
+  },
+
+  "frameworks": {
+    "net4.5": {},
+    "netstandard1.3": {
+      "NETStandard.Library": "1.6.0"
+    }
+  }
+}

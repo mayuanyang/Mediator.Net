@@ -21,10 +21,7 @@ namespace Mediator.Net
         {
             foreach (var assembly in assemblies)
             {
-                var commandHandlers = assembly.DefinedTypes.Where(x =>
-                {
-                    return IsAssignableToGenericType(x.AsType(), typeof(ICommandHandler<>));
-                }).ToList();
+                var commandHandlers = assembly.DefinedTypes.Where(x => IsAssignableToGenericType(x.AsType(), typeof(ICommandHandler<>))).ToList();
                 foreach (var x in commandHandlers)
                 {
                     MessageHandlerRegistry.MessageBindings.Add(new MessageBinding(x.ImplementedInterfaces.First().GenericTypeArguments[0], x.AsType()));
