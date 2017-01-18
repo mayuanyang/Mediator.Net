@@ -19,12 +19,14 @@ build_script:
 - dotnet build "src\Mediator.Net.Autofac.Test" -c %CONFIGURATION% --no-dependencies
 - dotnet build "src\Mediator.Net.StructureMap" -c %CONFIGURATION% --no-dependencies
 - dotnet build "src\Mediator.Net.StructureMap.Test" -c %CONFIGURATION% --no-dependencies
+- dotnet build "src\Mediator.Net.Middlewares.Serilog" -c %CONFIGURATION% --no-dependencies
 
 
 after_build:
 - dotnet pack "src\Mediator.Net" -c %CONFIGURATION% --no-build -o artifacts
 - dotnet pack "src\Mediator.Net.Autofac" -c %CONFIGURATION% --no-build -o artifacts
 - dotnet pack "src\Mediator.Net.StructureMap" -c %CONFIGURATION% --no-build -o artifacts
+- dotnet pack "src\Mediator.Net.Middlewares.Serilog" -c %CONFIGURATION% --no-build -o artifacts
 test_script:
 - dotnet test "src\Mediator.Net.Test" -c %CONFIGURATION%
 - dotnet test "src\Mediator.Net.Autofac.Test" -c %CONFIGURATION%
