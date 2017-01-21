@@ -31,7 +31,7 @@ namespace Mediator.Net.Autofac.Test.Tests.Middlewares
             mediaBuilder.RegisterHandlers(TestUtilAssembly.Assembly)
                 .ConfigureCommandReceivePipe(x =>
                 {
-                    x.UseSerilog(Log.Logger, LogEventLevel.Information);
+                    x.UseSerilog(LogEventLevel.Information);
                 });
             
             containerBuilder.RegisterMediator(mediaBuilder);

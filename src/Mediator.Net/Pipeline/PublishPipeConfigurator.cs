@@ -9,6 +9,7 @@ namespace Mediator.Net.Pipeline
     {
         private readonly IDependancyScope _resolver;
         private readonly IList<IPipeSpecification<IPublishContext<IEvent>>> _specifications;
+        public IDependancyScope DependancyScope => _resolver;
         public PublishPipeConfigurator(IDependancyScope resolver = null)
         {
             _resolver = resolver;

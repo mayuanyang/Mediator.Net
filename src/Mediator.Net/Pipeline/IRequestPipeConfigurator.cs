@@ -7,6 +7,5 @@ namespace Mediator.Net.Pipeline
         where TContext : IReceiveContext<IRequest>
     {
         IRequestReceivePipe<TContext> Build();
-        IRequestReceivePipe<TContext> Build(IDependancyScope resolver);
     }
 }

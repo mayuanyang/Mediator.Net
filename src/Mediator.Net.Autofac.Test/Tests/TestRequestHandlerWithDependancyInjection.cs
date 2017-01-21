@@ -21,7 +21,7 @@ namespace Mediator.Net.Autofac.Test.Tests
         {
             var mediaBuilder = new MediatorBuilder();
             mediaBuilder.RegisterHandlers(TestUtilAssembly.Assembly)
-                .ConfigureCommandReceivePipe(x =>
+                .ConfigureRequestPipe(x =>
                 {
                     x.UseSimpleMiddleware();
                 });

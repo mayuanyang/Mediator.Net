@@ -11,7 +11,7 @@ namespace Mediator.Net.Pipeline
     {
         private readonly IDependancyScope _resolver;
         private readonly IList<IPipeSpecification<IReceiveContext<IRequest>>> _specifications;
-
+        public IDependancyScope DependancyScope => _resolver;
         public RequestPipeConfigurator(IDependancyScope resolver = null)
         {
             _resolver = resolver;
@@ -47,12 +47,6 @@ namespace Mediator.Net.Pipeline
 
             return current;
         }
-
-        public IRequestReceivePipe<IReceiveContext<IRequest>> Build(IDependancyScope resolver)
-        {
-            throw new System.NotImplementedException();
-        }
-
 
         public void AddPipeSpecification(IPipeSpecification<IReceiveContext<IRequest>> specification)
         {
