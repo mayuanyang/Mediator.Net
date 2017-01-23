@@ -98,21 +98,46 @@ This pipeline will be triggered when an IEvent is published inside your handler,
 
 ###Setting up middlewares
 The most powerful thing for the pipelines above is you can add as many middlewares as you want.
-Here is a simple middleware example
+Follow the following steps to setup a middlewaree
+* Add a static class for your middleware
+* Add a public static extension method in that class you just added, usually follow the UseXxxx naming convention
+* Add another class for your middleware's specification, note that this is the implementation of your middleware
+
+Note that, in order to make the framework both both with IoC and without, you can either pass your instance in or resolve the instance by the provided DependancyScope from the IPipeConfigurator
+
+An example is shown below
+
+Middleware class
 ```C#
 
-	static class ConsoleLog1
+	 public static class SerilogMiddleware
     {
-        public static void UseConsoleLogger1<TContext>(this IPipeConfigurator<TContext> configurator)
+        public static void UseSerilog<TContext>(this IPipeConfigurator<TContext> configurator, LogEventLevel logAsLevel, ILogger logger = null)
             where TContext : IContext<IMessage>
         {
-            configurator.AddPipeSpecification(new ConsoleLogSpecification1<TContext>());
+            if (logger == null && configurator.DependancyScope == null)
+            {
+                throw new DependancyScopeNotConfiguredException($"{nameof(ILogger)} is not provided and IDependancyScope is not configured, Please ensure {nameof(ILogger)} is registered properly if you are using IoC container, otherwise please pass {nameof(ILogger)} as parameter");
+            }
+            logger = logger ?? configurator.DependancyScope.Resolve<ILogger>();
+            
+            configurator.AddPipeSpecification(new SerilogMiddlewareSpecification<TContext>(logger, logAsLevel));
         }
     }
-
-    class ConsoleLogSpecification1<TContext> : IPipeSpecification<TContext> 
+```
+Specification class
+```C#
+    class SerilogMiddlewareSpecification<TContext> : IPipeSpecification<TContext>
         where TContext : IContext<IMessage>
     {
+        private readonly ILogger _logger;
+        private readonly LogEventLevel _level;
+
+        public SerilogMiddlewareSpecification(ILogger logger, LogEventLevel level)
+        {
+            _logger = logger;
+            _level = level;
+        }
         public bool ShouldExecute(TContext context)
         {
             return true;
@@ -122,16 +147,36 @@ Here is a simple middleware example
         public Task ExecuteBeforeConnect(TContext context)
         {
             if (ShouldExecute(context))
-                Console.WriteLine($"Before 1: {context.Message}");
-            RubishBox.Rublish.Add(nameof(ConsoleLog1.UseConsoleLogger1));
+            {
+                switch (_level)
+                {
+                    case LogEventLevel.Error:
+                        _logger.Error("Receive message {@Message}", context.Message);
+                            break;
+                    case LogEventLevel.Debug:
+                        _logger.Debug("Receive message {@Message}", context.Message);
+                        break;
+                    case LogEventLevel.Fatal:
+                        _logger.Fatal("Receive message {@Message}", context.Message);
+                        break;
+                    case LogEventLevel.Information:
+                        _logger.Information("Receive message {@Message}", context.Message); 
+                        break;
+                    case LogEventLevel.Verbose:
+                        _logger.Verbose("Receive message {@Message}", context.Message);
+                        break;
+                    case LogEventLevel.Warning:
+                        _logger.Verbose("Receive message {@Message}", context.Message);
+                        break;
+                    default:
+                        throw new ArgumentOutOfRangeException();
+                }
+            }
             return Task.FromResult(0);
-
         }
 
         public Task ExecuteAfterConnect(TContext context)
         {
-            if (ShouldExecute(context))
-                Console.WriteLine($"After 1: {context.Message}");
             return Task.FromResult(0);
         }
     }
