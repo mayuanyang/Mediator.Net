@@ -24,15 +24,7 @@ namespace Mediator.Net.Test.TestEventHandlers
 
         public void AndGivenTheEventIsRegisteredToItsBaseClassHandler()
         {
-            _mediator = _builder.RegisterHandlers(() =>
-            {
-                var binding = new List<MessageBinding>
-                {
-                    new MessageBinding(typeof(DerivedEvent), typeof(TestEventHandler)),
-                    new MessageBinding(typeof(DerivedEvent), typeof(DerivedEventHandler))
-                };
-                return binding;
-            }).Build();
+            _mediator = _builder.RegisterHandlers(typeof(PublishDerivedEventShouldBeHandledByBaseHandler).Assembly()).Build();
         }
 
         public async Task WhenAMoreDerivedEventIsPublished()
@@ -45,9 +37,10 @@ namespace Mediator.Net.Test.TestEventHandlers
         public void ThenItShouldReachTheBaseEventHandler()
         {
             _task.Status.ShouldBe(TaskStatus.RanToCompletion);
-            RubishBox.Rublish.Count.ShouldBe(2);
+            RubishBox.Rublish.Count.ShouldBe(3);
             RubishBox.Rublish.Contains(nameof(TestEventHandler)).ShouldBeTrue();
             RubishBox.Rublish.Contains(nameof(DerivedEventHandler)).ShouldBeTrue();
+            RubishBox.Rublish.Contains(nameof(TestEventHandler2)).ShouldBeTrue();
         }
 
         [Test]

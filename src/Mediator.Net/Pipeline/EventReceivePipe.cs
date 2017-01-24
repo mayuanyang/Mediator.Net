@@ -47,7 +47,7 @@ namespace Mediator.Net.Pipeline
         private Task ConnectToHandler(TContext context)
         {
 
-            var handlers = MessageHandlerRegistry.MessageBindings.Where(x => x.MessageType == context.Message.GetType()).ToList();
+            var handlers = MessageHandlerRegistry.MessageBindings.Where(x => x.MessageType.GetTypeInfo().IsAssignableFrom(context.Message.GetType().GetTypeInfo())).ToList();
             if (!handlers.Any())
                 throw new NoHandlerFoundException(context.Message.GetType());
             
