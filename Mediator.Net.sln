@@ -28,6 +28,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "test", "test", "{824BE2F6-8
 EndProject
 Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "Mediator.Net.Middlewares.Serilog", "src\Mediator.Net.Middlewares.Serilog\Mediator.Net.Middlewares.Serilog.xproj", "{14420311-76AF-46D9-87CA-53DB8C30AC80}"
 EndProject
+Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "Mediator.Net.Ninject", "src\Mediator.Net.Ninject\Mediator.Net.Ninject.xproj", "{D7F048FA-8502-4E32-BE3F-444722617830}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -66,6 +68,10 @@ Global
 		{14420311-76AF-46D9-87CA-53DB8C30AC80}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{14420311-76AF-46D9-87CA-53DB8C30AC80}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{14420311-76AF-46D9-87CA-53DB8C30AC80}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D7F048FA-8502-4E32-BE3F-444722617830}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D7F048FA-8502-4E32-BE3F-444722617830}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D7F048FA-8502-4E32-BE3F-444722617830}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D7F048FA-8502-4E32-BE3F-444722617830}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -79,5 +85,6 @@ Global
 		{5FCBEC1E-28BE-40E2-90F3-061D34082A55} = {5BF2F858-926D-4A23-B32F-36B052A719CF}
 		{73F653AD-EF77-40CA-BF6B-DA9B867FA208} = {824BE2F6-887E-49A0-B1DF-30AE1FE8AEB4}
 		{14420311-76AF-46D9-87CA-53DB8C30AC80} = {5BF2F858-926D-4A23-B32F-36B052A719CF}
+		{D7F048FA-8502-4E32-BE3F-444722617830} = {5BF2F858-926D-4A23-B32F-36B052A719CF}
 	EndGlobalSection
 EndGlobal
