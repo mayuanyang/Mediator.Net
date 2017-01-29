@@ -6,7 +6,7 @@
   "packOptions": {
     "tags": [ ".NET", "Mediator", "Cqrs", "DDD", "Command", "Event", "Request", "Response", "Autofac" ],
     "projectUrl": "https://github.com/mayuanyang/Mediator.Net",
-    "licenseUrl": "https://github.com/mayuanyang/Mediator.Net",
+    "licenseUrl": "http://www.apache.org/licenses/LICENSE-2.0",
     "owners": [ "Yuan(Eddy) Ma" ],
     "requireLicenseAcceptance": false
   },
