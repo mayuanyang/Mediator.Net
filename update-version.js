@@ -11,7 +11,7 @@ var file6 = 'src/Mediator.Net.StructureMap.Test/project.json';
 var file7 = 'src/Mediator.Net.Test/project.json'; 
 var file8 = 'src/Mediator.Net.Middlewares.Serilog/project.json'; 
 var buildNumber = process.env.APPVEYOR_BUILD_VERSION;
-var baseVersion = '1.0.34';
+var baseVersion = '1.0.46';
 
 jsonfile.readFile(file, function (err, project) { 
 project.version = buildNumber; 
