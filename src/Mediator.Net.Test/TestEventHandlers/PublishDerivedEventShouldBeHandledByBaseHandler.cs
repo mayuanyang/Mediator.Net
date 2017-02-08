@@ -1,7 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Threading.Tasks;
-using Mediator.Net.Binding;
 using Mediator.Net.Test.EventHandlers;
 using Mediator.Net.Test.Messages;
 using Mediator.Net.Test.TestUtils;
