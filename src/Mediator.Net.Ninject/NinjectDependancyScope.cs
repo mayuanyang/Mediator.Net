@@ -9,12 +9,13 @@ namespace Mediator.Net.Ninject
 
         public NinjectDependancyScope(StandardKernel kernal)
         {
+            // TODO: A scope should be used rather than directly using the kernal
             _kernal = kernal;
         }
 
         public void Dispose()
         {
-            throw new NotImplementedException();
+            // TODO: Waiting for Ninject.Extensions.NamedScope is supported for .NET Core
         }
 
         public T Resolve<T>()

@@ -1,5 +1,5 @@
 {
-  "version": "1.0.0-*",
+  "version": "1.0.0-beta-*",
   "title": "Mediator.Net Ninject integration",
   "authors": [ "Yuan(Eddy) Ma" ],
   "description": "Use Ninject as the IoC container for Mediator.Net",

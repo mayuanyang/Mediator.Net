@@ -6,6 +6,7 @@ var file = 'src/Mediator.Net/project.json';
 var file2 = 'src/Mediator.Net.Autofac/project.json';
 var file3 = 'src/Mediator.Net.Autofac.Test/project.json';
 var file4 = 'src/Mediator.Net.IoCTestUtil/project.json';
+var file4_1 = 'src/Mediator.Net.Ninject/project.json';
 var file5 = 'src/Mediator.Net.StructureMap/project.json';
 var file6 = 'src/Mediator.Net.StructureMap.Test/project.json';
 var file7 = 'src/Mediator.Net.Test/project.json'; 
@@ -42,6 +43,14 @@ jsonfile.readFile(file4, function (err, project) {
 project.version = buildNumber; 
 project.dependencies['Mediator.Net'] = baseVersion;
 jsonfile.writeFile(file4, project, {spaces: 2}, function(err) { 
+console.error(err); 
+}); 
+});
+
+jsonfile.readFile(file4_1, function (err, project) { 
+project.version = buildNumber + '-beta-1'; 
+project.dependencies['Mediator.Net'] = baseVersion;
+jsonfile.writeFile(file4_1, project, {spaces: 2}, function(err) { 
 console.error(err); 
 }); 
 });
