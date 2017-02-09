@@ -344,4 +344,35 @@ var mediaBuilder = new MediatorBuilder();
     UnityExtensioins.Configure(mediaBuilder, _container);
 
 ```
+
+####SimpleInjector
+```C#
+	Install-Package Mediator.Net.SimpleInjector
+```
+We have created a helper class InjectHelper to register all necessary components for Mediator.Net
+
+```C#
+	var mediaBuilder = new MediatorBuilder();
+    mediaBuilder.RegisterHandlers(TestUtilAssembly.Assembly)
+        .ConfigureCommandReceivePipe(x =>
+        {
+            x.UseSimpleMiddleware();
+        });
+    _container = new Container();
+    _container.Options.DefaultScopedLifestyle = new LifetimeScopeLifestyle();
+    _container.Register<SimpleService>();
+    _container.Register<AnotherSimpleService>();
+    
+    InjectHelper.RegisterMediator(_container, mediaBuilder);
+
+```
+Thought that you can have transient registration for IMediator, but we recommend to use lifetime scope, you can do constructor injection as well as the following
+```C#
+	using (var scope = _container.BeginLifetimeScope())
+    {
+        _mediator = scope.GetInstance<IMediator>();
+        _task = _mediator.RequestAsync<SimpleRequest, SimpleResponse>(new SimpleRequest());
+    }
+```
+
 ####More IoC frameworks to be added

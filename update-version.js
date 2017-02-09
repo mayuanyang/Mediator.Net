@@ -11,6 +11,9 @@ var file5 = 'src/Mediator.Net.StructureMap/project.json';
 var file6 = 'src/Mediator.Net.StructureMap.Test/project.json';
 var file7 = 'src/Mediator.Net.Test/project.json'; 
 var file8 = 'src/Mediator.Net.Middlewares.Serilog/project.json'; 
+var file9 = 'src/Mediator.Net.SimpleInjector/project.json';
+var file10 = 'src/Mediator.Net.SimpleInjector.Test/project.json';
+
 var buildNumber = process.env.APPVEYOR_BUILD_VERSION;
 var baseVersion = '1.0.46';
 
@@ -86,6 +89,22 @@ jsonfile.readFile(file8, function (err, project) {
 project.version = buildNumber; 
 project.dependencies['Mediator.Net'] = baseVersion;
 jsonfile.writeFile(file8, project, {spaces: 2}, function(err) { 
+console.error(err); 
+}); 
+});
+
+jsonfile.readFile(file9, function (err, project) { 
+project.version = buildNumber; 
+project.dependencies['Mediator.Net'] = baseVersion;
+jsonfile.writeFile(file9, project, {spaces: 2}, function(err) { 
+console.error(err); 
+}); 
+});
+
+jsonfile.readFile(file10, function (err, project) { 
+project.version = buildNumber; 
+project.dependencies['Mediator.Net'] = baseVersion;
+jsonfile.writeFile(file10, project, {spaces: 2}, function(err) { 
 console.error(err); 
 }); 
 });

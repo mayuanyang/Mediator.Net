@@ -30,6 +30,10 @@ Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "Mediator.Net.Middlewares.Se
 EndProject
 Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "Mediator.Net.Ninject", "src\Mediator.Net.Ninject\Mediator.Net.Ninject.xproj", "{D7F048FA-8502-4E32-BE3F-444722617830}"
 EndProject
+Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "Mediator.Net.SimpleInjector", "src\Mediator.Net.SimpleInjector\Mediator.Net.SimpleInjector.xproj", "{45E0682E-11D3-438C-9F53-9F89C8AF8300}"
+EndProject
+Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "Mediator.Net.SimpleInjector.Test", "src\Mediator.Net.SimpleInjector.Test\Mediator.Net.SimpleInjector.Test.xproj", "{84FC4E95-8E26-4C2C-BCE2-26AA6FAFB164}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -72,6 +76,14 @@ Global
 		{D7F048FA-8502-4E32-BE3F-444722617830}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D7F048FA-8502-4E32-BE3F-444722617830}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D7F048FA-8502-4E32-BE3F-444722617830}.Release|Any CPU.Build.0 = Release|Any CPU
+		{45E0682E-11D3-438C-9F53-9F89C8AF8300}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{45E0682E-11D3-438C-9F53-9F89C8AF8300}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{45E0682E-11D3-438C-9F53-9F89C8AF8300}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{45E0682E-11D3-438C-9F53-9F89C8AF8300}.Release|Any CPU.Build.0 = Release|Any CPU
+		{84FC4E95-8E26-4C2C-BCE2-26AA6FAFB164}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{84FC4E95-8E26-4C2C-BCE2-26AA6FAFB164}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{84FC4E95-8E26-4C2C-BCE2-26AA6FAFB164}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{84FC4E95-8E26-4C2C-BCE2-26AA6FAFB164}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -86,5 +98,7 @@ Global
 		{73F653AD-EF77-40CA-BF6B-DA9B867FA208} = {824BE2F6-887E-49A0-B1DF-30AE1FE8AEB4}
 		{14420311-76AF-46D9-87CA-53DB8C30AC80} = {5BF2F858-926D-4A23-B32F-36B052A719CF}
 		{D7F048FA-8502-4E32-BE3F-444722617830} = {5BF2F858-926D-4A23-B32F-36B052A719CF}
+		{45E0682E-11D3-438C-9F53-9F89C8AF8300} = {5BF2F858-926D-4A23-B32F-36B052A719CF}
+		{84FC4E95-8E26-4C2C-BCE2-26AA6FAFB164} = {824BE2F6-887E-49A0-B1DF-30AE1FE8AEB4}
 	EndGlobalSection
 EndGlobal
