@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Collections.Specialized;
 using System.Linq;
 using Mediator.Net.Contracts;
 
@@ -9,6 +10,7 @@ namespace Mediator.Net.Context
     {
 
         private readonly IList<object> _registeredServices;
+        private Dictionary<string, object> _metaData;
         public PublishContext(IEvent message)
         {
             Message = message;
@@ -33,6 +35,13 @@ namespace Mediator.Net.Context
 
         }
 
-        
+        public Dictionary<string, object> MetaData
+        {
+            get
+            {
+                _metaData = _metaData ?? new Dictionary<string, object>();
+                return _metaData;
+            }
+        }
     }
 }

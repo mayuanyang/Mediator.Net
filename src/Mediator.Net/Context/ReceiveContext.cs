@@ -13,6 +13,7 @@ namespace Mediator.Net.Context
     {
 
         private readonly IList<object> _registeredServices;
+        private Dictionary<string, object> _metaData;
         public ReceiveContext(TMessasge message)
         {
             Message = message;
@@ -37,6 +38,15 @@ namespace Mediator.Net.Context
 
         }
 
+        public Dictionary<string, object> MetaData
+        {
+            get
+            {
+                _metaData = _metaData ?? new Dictionary<string, object>();
+                return _metaData;
+            }
+        }
+
         public Task PublishAsync(IEvent msg)
         {
             IMediator mediator;
@@ -53,8 +63,6 @@ namespace Mediator.Net.Context
                     return task;
                 }
                 throw new PipeIsNotAddedToContextException();
-
-
             }
             throw new MediatorIsNotAddedToTheContextException();
         }
