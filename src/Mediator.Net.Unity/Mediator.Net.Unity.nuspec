@@ -3,7 +3,7 @@
   <metadata>
     <id>Mediator.Net.Unity</id>
     <title>Mediator.Net Unity integration</title>
-    <version>1</version>
+    <version>1.0.2</version>
     <authors>Yuan(Eddy) Ma</authors>
     <owners>Yuan(Eddy) Ma</owners>
     <licenseUrl>https://github.com/mayuanyang/Mediator.Net</licenseUrl>
@@ -12,7 +12,7 @@
     <description>Use Unity as the IoC container for Mediator.Net</description>
     <tags>.NET Mediator Unity IoC</tags>
     <dependencies>
-      <dependency id="Mediator.Net" version="0.9.63" />
+      <dependency id="Mediator.Net" version="1.0.56" />
       <dependency id="Unity" version="4.0.0" />
     </dependencies>
   </metadata>
