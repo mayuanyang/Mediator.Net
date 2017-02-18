@@ -46,9 +46,9 @@ namespace Mediator.Net.Test.TestPipeline
             {
                 await _mediator.SendAsync(new TestBaseCommand(Guid.NewGuid()));
             }
-            catch (Exception e)
+            catch (Exception)
             {
-                Console.WriteLine(e);
+                // ignored
             }
         }
 
