@@ -22,7 +22,6 @@ namespace Mediator.Net.IoCTestUtil.Middlewares
         public bool ShouldExecute(TContext context)
         {
             return true;
-
         }
 
         public Task ExecuteBeforeConnect(TContext context)

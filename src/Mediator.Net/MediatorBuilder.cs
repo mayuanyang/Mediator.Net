@@ -208,17 +208,16 @@ namespace Mediator.Net
             }
 
             var globalPipeConfigurator = new GlobalRececivePipeConfigurator();
-            if (_publishPipeConfiguratorAction == null)
+            if (_globalReceivePipeConfiguratorAction == null)
             {
                 globalReceivePipe = globalPipeConfigurator.Build();
             }
             else
             {
-                _publishPipeConfiguratorAction(publishPipeConfigurator);
+                _globalReceivePipeConfiguratorAction(globalPipeConfigurator);
                 globalReceivePipe = globalPipeConfigurator.Build();
             }
-
-
+            
             return new Mediator(commandReceivePipe, eventReceivePipe, requestPipe, publishPipe, globalReceivePipe, scope);
         }
 
