@@ -3,7 +3,7 @@ using Mediator.Net.Contracts;
 
 namespace Mediator.Net.Test.Messages
 {
-    class TestBaseCommand : ICommand
+    public class TestBaseCommand : ICommand
     {
         public Guid Id { get; set; }
 

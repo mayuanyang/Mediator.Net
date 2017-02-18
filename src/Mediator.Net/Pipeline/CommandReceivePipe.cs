@@ -28,17 +28,24 @@ namespace Mediator.Net.Pipeline
 
         public async Task<object> Connect(TContext context)
         {
-            await _specification.ExecuteBeforeConnect(context);
-            if (Next != null)
+            try
             {
-                await Next.Connect(context);
+                await _specification.ExecuteBeforeConnect(context);
+                if (Next != null)
+                {
+                    await Next.Connect(context);
+                }
+                else
+                {
+                    await ConnectToHandler(context);
+                }
+                await _specification.ExecuteAfterConnect(context);
             }
-            else
+            catch (Exception e)
             {
-                await ConnectToHandler(context);
+                _specification.OnException(e, context);
+                
             }
-
-            await _specification.ExecuteAfterConnect(context);
             return null;
         }
 
@@ -75,7 +82,7 @@ namespace Mediator.Net.Pipeline
 
             }
 
-           
+
             return task;
         }
     }

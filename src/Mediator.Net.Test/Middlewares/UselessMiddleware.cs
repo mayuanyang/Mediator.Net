@@ -43,5 +43,10 @@ namespace Mediator.Net.Test.Middlewares
                 Console.WriteLine($"you should never see me: {nameof(ExecuteAfterConnect)}");
             return Task.FromResult(0);
         }
+
+        public void OnException(Exception ex, TContext context)
+        {
+            throw ex;
+        }
     }
 }

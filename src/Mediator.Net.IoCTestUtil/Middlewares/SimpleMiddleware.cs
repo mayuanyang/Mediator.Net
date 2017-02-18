@@ -42,5 +42,10 @@ namespace Mediator.Net.IoCTestUtil.Middlewares
                 Console.WriteLine($"After 1: {context.Message}");
             return Task.FromResult(0);
         }
+
+        public void OnException(Exception ex, TContext context)
+        {
+            throw ex;
+        }
     }
 }

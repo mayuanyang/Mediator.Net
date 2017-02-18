@@ -11,7 +11,7 @@ namespace Mediator.Net.Pipeline
         private IPipeSpecification<TContext> _specification;
         private IDependancyScope _resolver;
 
-  
+
         public IPipe<TContext> Next { get; }
 
         public GlobalReceivePipe(IPipeSpecification<TContext> specification, IPipe<TContext> next, IDependancyScope resolver = null)
@@ -24,18 +24,24 @@ namespace Mediator.Net.Pipeline
         public async Task<object> Connect(TContext context)
         {
             object result = null;
-            await _specification.ExecuteBeforeConnect(context);
-            if (Next != null)
+            try
             {
-                await Next.Connect(context);
-                
+                await _specification.ExecuteBeforeConnect(context);
+                if (Next != null)
+                {
+                    await Next.Connect(context);
+                }
+                else
+                {
+                    result = await ConnectToPipe(context);
+                }
+                await _specification.ExecuteAfterConnect(context);
+                return result;
             }
-            else
+            catch (Exception e)
             {
-                result = await ConnectToPipe(context);
+                _specification.OnException(e, context);
             }
-
-            await _specification.ExecuteAfterConnect(context);
             return result;
         }
 
@@ -70,6 +76,6 @@ namespace Mediator.Net.Pipeline
 
             return Task.FromResult((object)null);
         }
-        
+
     }
 }

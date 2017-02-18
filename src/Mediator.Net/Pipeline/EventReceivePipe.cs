@@ -28,17 +28,24 @@ namespace Mediator.Net.Pipeline
 
         public async Task<object> Connect(TContext context)
         {
-            await _specification.ExecuteBeforeConnect(context);
-            if (Next != null)
+            try
             {
-                await Next.Connect(context);
-            }
-            else
-            {
-                await ConnectToHandler(context);
-            }
+                await _specification.ExecuteBeforeConnect(context);
+                if (Next != null)
+                {
+                    await Next.Connect(context);
+                }
+                else
+                {
+                    await ConnectToHandler(context);
+                }
 
-            await _specification.ExecuteAfterConnect(context);
+                await _specification.ExecuteAfterConnect(context);
+            }
+            catch (Exception e)
+            {
+                _specification.OnException(e, context);
+            }
             return null;
         }
 
@@ -50,7 +57,7 @@ namespace Mediator.Net.Pipeline
             var handlers = MessageHandlerRegistry.MessageBindings.Where(x => x.MessageType.GetTypeInfo().IsAssignableFrom(context.Message.GetType().GetTypeInfo())).ToList();
             if (!handlers.Any())
                 throw new NoHandlerFoundException(context.Message.GetType());
-            
+
             Task task = null;
             foreach (var x in handlers)
             {
@@ -80,7 +87,7 @@ namespace Mediator.Net.Pipeline
                 task = (Task)handleMethod.Invoke(handler, new object[] { context });
 
             }
-        
+
             return task;
         }
     }

@@ -25,17 +25,23 @@ namespace Mediator.Net.Pipeline
         public async Task<object> Connect(TContext context)
         {
             object result = null;
-            await _specification.ExecuteBeforeConnect(context).ConfigureAwait(false);
-            if (Next != null)
+            try
             {
-                await Next.Connect(context).ConfigureAwait(false);
+                await _specification.ExecuteBeforeConnect(context).ConfigureAwait(false);
+                if (Next != null)
+                {
+                    await Next.Connect(context).ConfigureAwait(false);
+                }
+                else
+                {
+                    result = await ConnectToHandler(context);
+                }
+                await _specification.ExecuteAfterConnect(context).ConfigureAwait(false);
             }
-            else
+            catch (Exception e)
             {
-                result = await ConnectToHandler(context);
+                _specification.OnException(e, context);
             }
-
-            await _specification.ExecuteAfterConnect(context).ConfigureAwait(false);
             return result;
         }
 
@@ -76,15 +82,15 @@ namespace Mediator.Net.Pipeline
 
             var taskType = task.GetType();
             var typeInfo = taskType.GetTypeInfo();
-            
+
             var resultProperty = typeInfo.GetDeclaredProperty("Result").GetMethod;
             var result = resultProperty.Invoke(task, new object[] { });
 
             return Task.FromResult(result);
 
         }
-        
-     
+
+
         public IPipe<TContext> Next { get; }
     }
 }

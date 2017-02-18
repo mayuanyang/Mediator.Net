@@ -40,5 +40,11 @@ namespace Mediator.Net.Test.Middlewares
                 Console.WriteLine("After 2");
             return Task.FromResult(0);
         }
+
+        public void OnException(Exception ex, TContext context)
+        {
+            RubishBox.Rublish.Add(ex);
+            throw ex;
+        }
     }
 }

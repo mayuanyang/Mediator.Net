@@ -60,5 +60,10 @@ namespace Mediator.Net.Middlewares.Serilog
         {
             return Task.FromResult(0);
         }
+
+        public void OnException(Exception ex, TContext context)
+        {
+            throw ex;
+        }
     }
 }

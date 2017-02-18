@@ -40,5 +40,10 @@ namespace Mediator.Net.Test.Middlewares
                 Console.WriteLine("After 3");
             return Task.FromResult(0);
         }
+
+        public void OnException(Exception ex, TContext context)
+        {
+            throw ex;
+        }
     }
 }

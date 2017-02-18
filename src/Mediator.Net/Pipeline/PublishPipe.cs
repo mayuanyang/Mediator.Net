@@ -19,34 +19,39 @@ namespace Mediator.Net.Pipeline
             _specification = specification;
             _resolver = resolver;
         }
-   
+
         public async Task<object> Connect(TContext context)
         {
-            await _specification.ExecuteBeforeConnect(context);
-            if (Next != null)
+            try
             {
-                await Next.Connect(context);
-            }
-            else
-            {
-                IMediator mediator;
-                if (context.TryGetService(out mediator))
+                await _specification.ExecuteBeforeConnect(context);
+                if (Next != null)
                 {
-                    await mediator.PublishAsync(context.Message);
+                    await Next.Connect(context);
                 }
                 else
                 {
-                    throw new MediatorIsNotAddedToTheContextException();
+                    IMediator mediator;
+                    if (context.TryGetService(out mediator))
+                    {
+                        await mediator.PublishAsync(context.Message);
+                    }
+                    else
+                    {
+                        throw new MediatorIsNotAddedToTheContextException();
+                    }
                 }
-                
+                await _specification.ExecuteAfterConnect(context);
             }
-
-            await _specification.ExecuteAfterConnect(context);
+            catch (Exception e)
+            {
+                _specification.OnException(e, context);
+            }
             return null;
         }
 
         public IPipe<TContext> Next { get; }
 
-        
+
     }
 }

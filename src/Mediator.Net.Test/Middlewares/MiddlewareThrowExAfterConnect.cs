@@ -3,44 +3,41 @@ using System.Threading.Tasks;
 using Mediator.Net.Context;
 using Mediator.Net.Contracts;
 using Mediator.Net.Pipeline;
+using Mediator.Net.Test.TestUtils;
 
-namespace Mediator.Net.Autofac.Test.Middlewares
+namespace Mediator.Net.Test.Middlewares
 {
-    public static class SimpleMiddleware1
+    static class MiddlewareThrowExAfterConnect
     {
-        public static void UseSimpleMiddleware1<TContext>(this IPipeConfigurator<TContext> configurator)
+        public static void UseMiddlewareThrowExAfterConnect<TContext>(this IPipeConfigurator<TContext> configurator)
             where TContext : IContext<IMessage>
         {
-            configurator.AddPipeSpecification(new SimpleMiddleware1Specification<TContext>());
+            configurator.AddPipeSpecification(new MiddlewareThrowExAfterConnectSpecification<TContext>());
         }
     }
 
-    public class SimpleMiddleware1Specification<TContext> : IPipeSpecification<TContext>
+    class MiddlewareThrowExAfterConnectSpecification<TContext> : IPipeSpecification<TContext> 
         where TContext : IContext<IMessage>
     {
         public bool ShouldExecute(TContext context)
         {
             return true;
+
         }
 
         public Task ExecuteBeforeConnect(TContext context)
         {
-            if (ShouldExecute(context))
-            {
-                RubishBin.Rublish.Add(new object());
-            }
-
             return Task.FromResult(0);
-
         }
 
         public Task ExecuteAfterConnect(TContext context)
         {
-            return Task.FromResult(0);
+            throw new Exception();
         }
 
         public void OnException(Exception ex, TContext context)
         {
+            RubishBox.Rublish.Add(ex);
             throw ex;
         }
     }

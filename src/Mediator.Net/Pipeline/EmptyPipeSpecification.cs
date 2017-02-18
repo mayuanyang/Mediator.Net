@@ -23,5 +23,10 @@ namespace Mediator.Net.Pipeline
             return Task.FromResult(0);
         }
 
+        
+        public void OnException(Exception ex, TContext context)
+        {
+            throw ex;
+        }
     }
 }
