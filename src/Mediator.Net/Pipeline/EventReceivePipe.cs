@@ -51,14 +51,13 @@ namespace Mediator.Net.Pipeline
 
         public IPipe<TContext> Next { get; }
 
-        private Task ConnectToHandler(TContext context)
+        private async Task ConnectToHandler(TContext context)
         {
 
             var handlers = MessageHandlerRegistry.MessageBindings.Where(x => x.MessageType.GetTypeInfo().IsAssignableFrom(context.Message.GetType().GetTypeInfo())).ToList();
             if (!handlers.Any())
                 throw new NoHandlerFoundException(context.Message.GetType());
 
-            Task task = null;
             foreach (var x in handlers)
             {
                 var handlerType = x.HandlerType;
@@ -84,11 +83,9 @@ namespace Mediator.Net.Pipeline
                 });
 
                 var handler = (_resolver == null) ? Activator.CreateInstance(handlerType) : _resolver.Resolve(handlerType);
-                task = (Task)handleMethod.Invoke(handler, new object[] { context });
-
+                var task = (Task)handleMethod.Invoke(handler, new object[] { context });
+                await task.ConfigureAwait(false);
             }
-
-            return task;
         }
     }
 }
