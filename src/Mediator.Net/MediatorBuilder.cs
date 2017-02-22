@@ -196,7 +196,7 @@ namespace Mediator.Net
                 requestPipe = requestPipeConfigurator.Build();
             }
 
-            var publishPipeConfigurator = new PublishPipeConfigurator();
+            var publishPipeConfigurator = new PublishPipeConfigurator(scope);
             if (_publishPipeConfiguratorAction == null)
             {
                 publishPipe = publishPipeConfigurator.Build();
@@ -207,7 +207,7 @@ namespace Mediator.Net
                 publishPipe = publishPipeConfigurator.Build();
             }
 
-            var globalPipeConfigurator = new GlobalRececivePipeConfigurator();
+            var globalPipeConfigurator = new GlobalRececivePipeConfigurator(scope);
             if (_globalReceivePipeConfiguratorAction == null)
             {
                 globalReceivePipe = globalPipeConfigurator.Build();

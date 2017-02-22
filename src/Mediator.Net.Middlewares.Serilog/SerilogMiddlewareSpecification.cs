@@ -13,16 +13,21 @@ namespace Mediator.Net.Middlewares.Serilog
     {
         private readonly ILogger _logger;
         private readonly LogEventLevel _level;
+        private readonly Func<bool> _shouldExcute;
 
-        public SerilogMiddlewareSpecification(ILogger logger, LogEventLevel level)
+        public SerilogMiddlewareSpecification(ILogger logger, LogEventLevel level, Func<bool> shouldExcute )
         {
             _logger = logger;
             _level = level;
+            _shouldExcute = shouldExcute;
         }
         public bool ShouldExecute(TContext context)
         {
-            return true;
-
+            if (_shouldExcute == null)
+            {
+                return true;
+            }
+            return _shouldExcute.Invoke();
         }
 
         public Task ExecuteBeforeConnect(TContext context)

@@ -11,28 +11,32 @@ using Serilog;
 using Serilog.Events;
 using Shouldly;
 using TestStack.BDDfy;
+using NSubstitute;
 
 namespace Mediator.Net.Autofac.Test.Tests.Middlewares
 {
-    class TestSerilog : TestBase
+    class TestSerilogInGlobalAndCommandPipe : TestBase
     {
         private IContainer _container = null;
         private IMediator _mediator;
+        private ILogger _logger;
 
-        public void GivenAContainer()
+        public void GivenAMediatorWithSerilogAddToAllPipelines()
         {
             var containerBuilder = new ContainerBuilder();
-            Log.Logger = new LoggerConfiguration()
-                .WriteTo.Console()
-            .CreateLogger();
-            containerBuilder.RegisterInstance(Log.Logger);
+            _logger = Substitute.For<ILogger>();
+            containerBuilder.RegisterInstance(_logger).As<ILogger>();
 
             var mediaBuilder = new MediatorBuilder();
             mediaBuilder.RegisterHandlers(TestUtilAssembly.Assembly)
-                .ConfigureCommandReceivePipe(x =>
+                .ConfigureGlobalReceivePipe(x =>
                 {
-                    x.UseSerilog(LogEventLevel.Information);
-                });
+                    x.UseSerilog();
+                }).ConfigureCommandReceivePipe(y =>
+                {
+                    y.UseSerilog();
+                }).ConfigureEventReceivePipe(z => z.UseSerilog())
+                .ConfigureRequestPipe(x => x.UseSerilog());
             
             containerBuilder.RegisterMediator(mediaBuilder);
             containerBuilder.RegisterType<SimpleService>();
@@ -40,15 +44,19 @@ namespace Mediator.Net.Autofac.Test.Tests.Middlewares
             _container = containerBuilder.Build();
         }
 
-        public async Task WhenACommandIsSent()
+        public async Task WhenACommandAndEventAreSent()
         {
             _mediator = _container.Resolve<IMediator>();
             await _mediator.SendAsync(new SimpleCommand(Guid.NewGuid()));
+            await _mediator.PublishAsync(new SimpleEvent());
+            await _mediator.RequestAsync<SimpleRequest, SimpleResponse>(new SimpleRequest());
         }
 
-        public void ThenInterfaceTypeShouldBeResolved()
+        public void ThenItShouldLogTheCommand()
         {
-            _mediator.ShouldNotBeNull();
+            _logger.Received(2).Information(Arg.Any<string>(), Arg.Any<SimpleCommand>());
+            _logger.Received(2).Information(Arg.Any<string>(), Arg.Any<SimpleEvent>());
+            _logger.Received(2).Information(Arg.Any<string>(), Arg.Any<SimpleRequest>());
 
         }
 

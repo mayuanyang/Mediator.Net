@@ -1,4 +1,5 @@
-﻿using Mediator.Net.Context;
+﻿using System;
+using Mediator.Net.Context;
 using Mediator.Net.Contracts;
 using Mediator.Net.Pipeline;
 using Serilog;
@@ -8,7 +9,7 @@ namespace Mediator.Net.Middlewares.Serilog
 {
     public static class SerilogMiddleware
     {
-        public static void UseSerilog<TContext>(this IPipeConfigurator<TContext> configurator, LogEventLevel logAsLevel, ILogger logger = null)
+        public static void UseSerilog<TContext>(this IPipeConfigurator<TContext> configurator, LogEventLevel logAsLevel = LogEventLevel.Information, ILogger logger = null, Func<bool> shouldExecute = null )
             where TContext : IContext<IMessage>
         {
             if (logger == null && configurator.DependancyScope == null)
@@ -17,7 +18,7 @@ namespace Mediator.Net.Middlewares.Serilog
             }
             logger = logger ?? configurator.DependancyScope.Resolve<ILogger>();
             
-            configurator.AddPipeSpecification(new SerilogMiddlewareSpecification<TContext>(logger, logAsLevel));
+            configurator.AddPipeSpecification(new SerilogMiddlewareSpecification<TContext>(logger, logAsLevel, shouldExecute));
         }
     }
 }
