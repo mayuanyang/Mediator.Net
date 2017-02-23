@@ -79,7 +79,7 @@ namespace Mediator.Net.Pipeline
 
             var handler = (_resolver == null) ? Activator.CreateInstance(handlerType) : _resolver.Resolve(handlerType);
             var task = (Task)handleMethod.Invoke(handler, new object[] { context });
-
+            
             var taskType = task.GetType();
             var typeInfo = taskType.GetTypeInfo();
 
