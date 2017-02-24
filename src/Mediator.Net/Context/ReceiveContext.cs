@@ -47,24 +47,31 @@ namespace Mediator.Net.Context
             }
         }
 
-        public Task PublishAsync(IEvent msg)
+        public async Task PublishAsync(IEvent msg)
         {
             IMediator mediator;
             if (TryGetService(out mediator))
             {
-                var publishContext = (IPublishContext<IEvent>)Activator.CreateInstance(typeof(PublishContext), msg);
+                var publishContext = (IPublishContext<IEvent>) Activator.CreateInstance(typeof(PublishContext), msg);
                 publishContext.RegisterService(mediator);
                 IPublishPipe<IPublishContext<IEvent>> publishPipe;
                 if (TryGetService(out publishPipe))
                 {
                     var sendMethod = publishPipe.GetType().GetRuntimeMethods().Single(x => x.Name == "Connect");
-                    var task = (Task)sendMethod.Invoke(publishPipe, new object[] { publishContext });
-                    task.ConfigureAwait(false);
-                    return task;
+                    var task = (Task) sendMethod.Invoke(publishPipe, new object[] {publishContext});
+                    await task.ConfigureAwait(false);
                 }
-                throw new PipeIsNotAddedToContextException();
+                else
+                {
+                    throw new PipeIsNotAddedToContextException();
+                }
+
             }
-            throw new MediatorIsNotAddedToTheContextException();
+            else
+            {
+                throw new MediatorIsNotAddedToTheContextException();
+            }
+            
         }
     }
 }

@@ -30,19 +30,16 @@ namespace Mediator.Net
         }
 
 
-        public Task SendAsync<TMessage>(TMessage cmd)
+        public async Task SendAsync<TMessage>(TMessage cmd)
             where TMessage : ICommand
         {
-
-            var task = SendMessage(cmd);           
-            return task;
+            await SendMessage(cmd);           
         }
 
-        public Task PublishAsync<TMessage>(TMessage evt)
+        public async Task PublishAsync<TMessage>(TMessage evt)
             where TMessage : IEvent
         {
-            var task = SendMessage(evt);
-            return task;
+            await SendMessage(evt);
         }
 
         public async Task<TResponse> RequestAsync<TRequest, TResponse>(TRequest request)
@@ -53,7 +50,7 @@ namespace Mediator.Net
             return (TResponse)result;
         }
 
-        private Task<object> SendMessage<TMessage>(TMessage msg)
+        private async Task<object> SendMessage<TMessage>(TMessage msg)
             where TMessage : IMessage
         {
 
@@ -84,8 +81,8 @@ namespace Mediator.Net
             }
 
             var task = _globalPipe.Connect((IReceiveContext<IMessage>) receiveContext);
-            task.ConfigureAwait(false);
-            return task;
+            await task.ConfigureAwait(false);
+            return task.Result;
         }
 
         public void Dispose()

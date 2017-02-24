@@ -38,19 +38,13 @@ namespace Mediator.Net.Test.TestCommandHandlers
 
         }
 
-        public void WhenACommandIsSent()
+        public async Task WhenACommandIsSent()
         {
-            _task = _mediator.SendAsync(new TestBaseCommand(Guid.NewGuid()));
-
+           await _mediator.SendAsync(new TestBaseCommand(Guid.NewGuid()));
         }
 
-        public async Task ThenItShouldReachTheRightHandler()
-        {
-            await _task;
-            _task.Status.ShouldBe(TaskStatus.RanToCompletion);
-        }
-
-        public void AndItShouldPutSomeRubishIntoRublishBox()
+     
+        public void ThenItShouldPutSomeRubishIntoRublishBox()
         {
             RubishBox.Rublish.Contains(nameof(DummySave.UseDummySave)).ShouldBeTrue();
             RubishBox.Rublish.Contains(nameof(TestBaseCommandHandlerRaiseEvent)).ShouldBeTrue();
