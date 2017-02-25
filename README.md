@@ -375,4 +375,26 @@ Thought that you can have transient registration for IMediator, but we recommend
     }
 ```
 
-####More IoC frameworks to be added
+## Middlewares
+One of the key feature for Mediator.Net is you can plug as many middlewares as you like, we have implemented some common one as below
+###Mediator.Net.Middlewares.UnitOfWork
+```
+	Install-Package Mediator.Net.Middlewares.UnitOfWork
+```
+This middleware provide a CommittableTransaction inside the context, handlers can enlist the transaction if it requires UnitOfWork
+[Mediator.Net.Middlewares.UnitOfWork](https://github.com/mayuanyang/Mediator.Net.Middlewares.UnitOfWork) - Middleware for Mediator.Net to support unit of work.
+
+###Mediator.Net.Middlewares.Serilog
+```
+	Install-Package Mediator.Net.Middlewares.Serilog
+```
+This middleware logs every message by using Serilog
+
+###Mediator.Net.Middlewares.EventStore
+```
+	Install-Package Mediator.Net.Middlewares.EventStore
+```
+Middleware for Mediator.Net to write event to GetEventStore, it is a Middleware for Mediator.Net that plugs intothe publish pipeline
+[Mediator.Net.Middlewares.UnitOfWork](https://github.com/mayuanyang/Mediator.Net.Middlewares.EventStore) - Middleware for Mediator.Net to persist event to EventStore.
+
+
