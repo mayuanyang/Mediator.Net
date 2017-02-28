@@ -81,8 +81,7 @@ namespace Mediator.Net
             }
 
             var task = _globalPipe.Connect((IReceiveContext<IMessage>) receiveContext);
-            await task.ConfigureAwait(false);
-            return task.Result;
+            return await task.ConfigureAwait(false);
         }
 
         public void Dispose()
