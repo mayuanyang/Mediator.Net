@@ -15,7 +15,7 @@ var file9 = 'src/Mediator.Net.SimpleInjector/project.json';
 var file10 = 'src/Mediator.Net.SimpleInjector.Test/project.json';
 
 var buildNumber = process.env.APPVEYOR_BUILD_VERSION;
-var baseVersion = '1.0.59';
+var baseVersion = '1.0.65';
 
 jsonfile.readFile(file, function (err, project) { 
 project.version = buildNumber; 
