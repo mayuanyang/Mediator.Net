@@ -29,6 +29,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Mediator.Net.SimpleInjector
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Mediator.Net.SimpleInjector.Test", "src\Mediator.Net.SimpleInjector.Test\Mediator.Net.SimpleInjector.Test.csproj", "{84FC4E95-8E26-4C2C-BCE2-26AA6FAFB164}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Mediator.Net.Autofac.Test", "src\Mediator.Net.Autofac.Test\Mediator.Net.Autofac.Test.csproj", "{50F6692A-B86A-4E1E-B045-8D201C87F8B3}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -75,6 +77,10 @@ Global
 		{84FC4E95-8E26-4C2C-BCE2-26AA6FAFB164}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{84FC4E95-8E26-4C2C-BCE2-26AA6FAFB164}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{84FC4E95-8E26-4C2C-BCE2-26AA6FAFB164}.Release|Any CPU.Build.0 = Release|Any CPU
+		{50F6692A-B86A-4E1E-B045-8D201C87F8B3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{50F6692A-B86A-4E1E-B045-8D201C87F8B3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{50F6692A-B86A-4E1E-B045-8D201C87F8B3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{50F6692A-B86A-4E1E-B045-8D201C87F8B3}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -90,5 +96,6 @@ Global
 		{D7F048FA-8502-4E32-BE3F-444722617830} = {5BF2F858-926D-4A23-B32F-36B052A719CF}
 		{45E0682E-11D3-438C-9F53-9F89C8AF8300} = {5BF2F858-926D-4A23-B32F-36B052A719CF}
 		{84FC4E95-8E26-4C2C-BCE2-26AA6FAFB164} = {824BE2F6-887E-49A0-B1DF-30AE1FE8AEB4}
+		{50F6692A-B86A-4E1E-B045-8D201C87F8B3} = {824BE2F6-887E-49A0-B1DF-30AE1FE8AEB4}
 	EndGlobalSection
 EndGlobal
