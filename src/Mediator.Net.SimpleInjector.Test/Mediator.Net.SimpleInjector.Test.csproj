@@ -1,0 +1,39 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp1.0</TargetFramework>
+    <AssemblyName>Mediator.Net.SimpleInjector.Test</AssemblyName>
+    <PackageId>Mediator.Net.SimpleInjector.Test</PackageId>
+    <GenerateRuntimeConfigurationFiles>true</GenerateRuntimeConfigurationFiles>
+    <RuntimeIdentifiers>win10-x64;win81-x64;win8-x64;win7-x64</RuntimeIdentifiers>
+    <NetStandardImplicitPackageVersion>1.6.0</NetStandardImplicitPackageVersion>
+    <PackageTargetFallback>$(PackageTargetFallback);dnxcore50</PackageTargetFallback>
+    <GenerateAssemblyTitleAttribute>false</GenerateAssemblyTitleAttribute>
+    <GenerateAssemblyDescriptionAttribute>false</GenerateAssemblyDescriptionAttribute>
+    <GenerateAssemblyConfigurationAttribute>false</GenerateAssemblyConfigurationAttribute>
+    <GenerateAssemblyCompanyAttribute>false</GenerateAssemblyCompanyAttribute>
+    <GenerateAssemblyProductAttribute>false</GenerateAssemblyProductAttribute>
+    <GenerateAssemblyCopyrightAttribute>false</GenerateAssemblyCopyrightAttribute>
+    <GenerateAssemblyVersionAttribute>false</GenerateAssemblyVersionAttribute>
+    <GenerateAssemblyFileVersionAttribute>false</GenerateAssemblyFileVersionAttribute>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Mediator.Net\Mediator.Net.csproj" />
+    <ProjectReference Include="..\Mediator.Net.IoCTestUtil\Mediator.Net.IoCTestUtil.csproj" />
+    <ProjectReference Include="..\Mediator.Net.SimpleInjector\Mediator.Net.SimpleInjector.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="15.0.0-preview-20170106-08" />
+    <PackageReference Include="NUnit" Version="3.6.0" />
+    <PackageReference Include="dotnet-test-nunit" Version="3.4.0-beta-3" />
+    <PackageReference Include="Shouldly" Version="2.8.2" />
+    <PackageReference Include="SimpleInjector" Version="3.3.2" />
+    <PackageReference Include="System.Interactive.Async" Version="3.0.0" />
+    <PackageReference Include="System.Reactive.Linq" Version="3.1.1" />
+    <PackageReference Include="System.Reflection.TypeExtensions" Version="4.1.0" />
+    <PackageReference Include="TestStack.BDDfy" Version="4.3.0" />
+  </ItemGroup>
+
+</Project>

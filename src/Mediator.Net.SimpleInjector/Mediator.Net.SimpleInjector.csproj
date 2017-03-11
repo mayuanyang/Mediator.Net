@@ -1,0 +1,37 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <Description>Use SimpleInjector as the IoC container for Mediator.Net</Description>
+    <AssemblyTitle>Mediator.Net SimpleInjector integration</AssemblyTitle>
+    <Authors>Yuan(Eddy) Ma</Authors>
+    <TargetFrameworks>net45;netstandard1.1</TargetFrameworks>
+    <AssemblyName>Mediator.Net.SimpleInjector</AssemblyName>
+    <PackageId>Mediator.Net.SimpleInjector</PackageId>
+    <PackageTags>.NET;Mediator;Cqrs;DDD;Command;Event;Request;Response;SimpleInjector</PackageTags>
+    <PackageProjectUrl>https://github.com/mayuanyang/Mediator.Net</PackageProjectUrl>
+    <PackageLicenseUrl>http://www.apache.org/licenses/LICENSE-2.0</PackageLicenseUrl>
+    <GenerateAssemblyTitleAttribute>false</GenerateAssemblyTitleAttribute>
+    <GenerateAssemblyDescriptionAttribute>false</GenerateAssemblyDescriptionAttribute>
+    <GenerateAssemblyConfigurationAttribute>false</GenerateAssemblyConfigurationAttribute>
+    <GenerateAssemblyCompanyAttribute>false</GenerateAssemblyCompanyAttribute>
+    <GenerateAssemblyProductAttribute>false</GenerateAssemblyProductAttribute>
+    <GenerateAssemblyCopyrightAttribute>false</GenerateAssemblyCopyrightAttribute>
+    <GenerateAssemblyVersionAttribute>false</GenerateAssemblyVersionAttribute>
+    <GenerateAssemblyFileVersionAttribute>false</GenerateAssemblyFileVersionAttribute>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Mediator.Net\Mediator.Net.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="SimpleInjector" Version="3.3.2" />
+    <PackageReference Include="SimpleInjector.Extensions.LifetimeScoping" Version="3.3.2" />
+  </ItemGroup>
+
+  <ItemGroup Condition=" '$(TargetFramework)' == 'net45' ">
+    <Reference Include="System" />
+    <Reference Include="Microsoft.CSharp" />
+  </ItemGroup>
+
+</Project>
