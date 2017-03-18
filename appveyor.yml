@@ -1,17 +1,10 @@
-version: '1.0.{build}'
-configuration:
-- Release
-platform: Any CPU
-environment:
-  # Don't report back to the mothership
-  DOTNET_CLI_TELEMETRY_OPTOUT: 1
-init:
-- ps: $Env:LABEL = $Env:APPVEYOR_BUILD_NUMBER
+version: 1.0.{build}
+configuration: Release
 before_build:
-    - cmd: Nuget restore
-project: Mediator.Net.CoreWebSample.sln
-
-
+- cmd: Nuget restore
+build:
+  project: Mediator.Net.sln
+  verbosity: minimal
 
 after_build:
 - dotnet pack "src\Mediator.Net" -c %CONFIGURATION% --no-build -o artifacts
