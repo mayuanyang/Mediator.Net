@@ -9,7 +9,6 @@ init:
 - ps: $Env:LABEL = $Env:APPVEYOR_BUILD_NUMBER
 before_build:
     - cmd: Nuget restore
-build_script:
 project: Mediator.Net.CoreWebSample.sln
 
 
