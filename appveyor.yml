@@ -8,19 +8,10 @@ environment:
 init:
 - ps: $Env:LABEL = $Env:APPVEYOR_BUILD_NUMBER
 before_build:
-- appveyor-retry dotnet restore -v Minimal
+    - cmd: Nuget restore
 build_script:
-- dotnet build "src\Mediator.Net" -c %CONFIGURATION% --no-dependencies
-- dotnet build "src\Mediator.Net.IoCTestUtil" -c %CONFIGURATION% --no-dependencies
-- dotnet build "src\Mediator.Net.Middlewares.Serilog" -c %CONFIGURATION% --no-dependencies
-- dotnet build "src\Mediator.Net.Test" -c %CONFIGURATION% --no-dependencies
-- dotnet build "src\Mediator.Net.Autofac" -c %CONFIGURATION% --no-dependencies
-- dotnet build "src\Mediator.Net.Autofac.Test" -c %CONFIGURATION% --no-dependencies
-- dotnet build "src\Mediator.Net.StructureMap" -c %CONFIGURATION% --no-dependencies
-- dotnet build "src\Mediator.Net.StructureMap.Test" -c %CONFIGURATION% --no-dependencies
-- dotnet build "src\Mediator.Net.Ninject" -c %CONFIGURATION% --no-dependencies
-- dotnet build "src\Mediator.Net.SimpleInjector" -c %CONFIGURATION% --no-dependencies
-- dotnet build "src\Mediator.Net.SimpleInjector.Test" -c %CONFIGURATION% --no-dependencies
+project: Mediator.Net.CoreWebSample.sln
+
 
 
 after_build:
