@@ -1,6 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
+    <PackageVersion>1.0.0</PackageVersion>
     <Description>Log message by using Serilog</Description>
     <AssemblyTitle>Serilog middleware for Mediator.NET</AssemblyTitle>
     <Authors>Yuan(Eddy) Ma</Authors>

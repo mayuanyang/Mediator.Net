@@ -1,6 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
+    <PackageVersion>1.0.0</PackageVersion>
     <Description>Use Ninject as the IoC container for Mediator.Net</Description>
     <AssemblyTitle>Mediator.Net Ninject integration</AssemblyTitle>
     <VersionPrefix>1.0.0-beta</VersionPrefix>

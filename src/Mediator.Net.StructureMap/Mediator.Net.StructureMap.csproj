@@ -1,6 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
+    <PackageVersion>1.0.0</PackageVersion>
     <Description>Use StructureMap as the IoC container for Mediator.Net</Description>
     <AssemblyTitle>Mediator.Net StructureMap integration</AssemblyTitle>
     <Authors>Yuan(Eddy) Ma</Authors>
