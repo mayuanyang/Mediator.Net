@@ -3,6 +3,7 @@ image: Visual Studio 2017
 configuration: Release
 before_build:
 - cmd: Nuget restore
+- ps: ./update-version.ps1
 build:
   project: Mediator.Net.sln
   verbosity: minimal
