@@ -7,8 +7,7 @@ namespace Mediator.Net.Test
    
     class TestBase
     {
-        [OneTimeTearDown]
-        public void Teardown()
+        public void ClearBinding()
         {
             MessageHandlerRegistry.MessageBindings.Clear();
             RubishBox.Rublish.Clear();

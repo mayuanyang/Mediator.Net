@@ -9,6 +9,7 @@ using Mediator.Net.Test.TestUtils;
 using NUnit.Framework;
 using Shouldly;
 using TestStack.BDDfy;
+using Xunit;
 
 namespace Mediator.Net.Test.TestPipeline
 {
@@ -17,6 +18,7 @@ namespace Mediator.Net.Test.TestPipeline
         private IMediator _mediator;
         public void GivenAMediator()
         {
+            ClearBinding();
             var binding = new List<MessageBinding>() { new MessageBinding( typeof(TestBaseCommand), typeof(TestBaseCommandHandler) ) };
             var builder = new MediatorBuilder();
             _mediator = builder.RegisterHandlers(binding)
@@ -41,7 +43,7 @@ namespace Mediator.Net.Test.TestPipeline
             
         }
 
-        [Test]
+        [Fact]
         public void Run()
         {
             this.BDDfy();

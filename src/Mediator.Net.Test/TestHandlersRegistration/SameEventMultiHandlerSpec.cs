@@ -1,9 +1,9 @@
 ﻿using System.Linq;
 using Mediator.Net.Binding;
 using Mediator.Net.Test.Messages;
-using NUnit.Framework;
 using Shouldly;
 using TestStack.BDDfy;
+using Xunit;
 
 namespace Mediator.Net.Test.TestHandlersRegistration
 {
@@ -11,7 +11,7 @@ namespace Mediator.Net.Test.TestHandlersRegistration
     {
         public void GivenAnAssemblyWithMultipleHandlersForTheSameEvent()
         {
-            
+            ClearBinding();
         }
 
         public void WhenScanRegistrationIsExecuted()
@@ -25,7 +25,7 @@ namespace Mediator.Net.Test.TestHandlersRegistration
             MessageHandlerRegistry.MessageBindings.Count(x => x.MessageType == typeof(TestEvent)).ShouldBe(2);
         }
 
-        [Test]
+        [Fact]
         public void Run()
         {
             this.BDDfy();

@@ -1,15 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Security.Cryptography.X509Certificates;
 using System.Threading.Tasks;
 using Mediator.Net.Binding;
 using Mediator.Net.Test.CommandHandlers;
 using Mediator.Net.Test.Messages;
 using Mediator.Net.Test.Middlewares;
-using NUnit.Framework;
 using Shouldly;
 using TestStack.BDDfy;
+using Xunit;
 
 namespace Mediator.Net.Test.TestPerformance
 {
@@ -19,7 +18,7 @@ namespace Mediator.Net.Test.TestPerformance
         private MediatorBuilder _builder;
         public void GivenAMediator()
         {
-
+            ClearBinding();
             _builder = new MediatorBuilder();
             _builder.RegisterHandlers(() =>
             {
@@ -57,7 +56,7 @@ namespace Mediator.Net.Test.TestPerformance
             milliSeconds.ShouldBeLessThan(50);
         }
 
-        [Test]
+        [Fact]
         public void Run()
         {
             this.BDDfy();

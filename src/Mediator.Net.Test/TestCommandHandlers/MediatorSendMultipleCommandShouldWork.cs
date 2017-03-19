@@ -5,9 +5,9 @@ using Mediator.Net.Binding;
 using Mediator.Net.Test.CommandHandlers;
 using Mediator.Net.Test.Messages;
 using Mediator.Net.Test.TestUtils;
-using NUnit.Framework;
 using Shouldly;
 using TestStack.BDDfy;
+using Xunit;
 
 namespace Mediator.Net.Test.TestCommandHandlers
 {
@@ -18,7 +18,7 @@ namespace Mediator.Net.Test.TestCommandHandlers
         private Task _task2;
         public void GivenAMediator()
         {
-                     
+            ClearBinding();
             var builder = new MediatorBuilder();
             _mediator = builder.RegisterHandlers(() =>
             {
@@ -29,14 +29,14 @@ namespace Mediator.Net.Test.TestCommandHandlers
                 };
                 return binding;
             }).Build();
-           
+
         }
 
         public void WhenTwoCommandsAreSent()
         {
             _task1 = _mediator.SendAsync(new TestBaseCommand(Guid.NewGuid()));
             _task2 = _mediator.SendAsync(new DerivedTestBaseCommand(Guid.NewGuid()));
-            
+
         }
 
         public async Task ThenItShouldReachTheRightHandler()
@@ -49,7 +49,7 @@ namespace Mediator.Net.Test.TestCommandHandlers
             RubishBox.Rublish.Contains(nameof(DerivedTestBaseCommandHandler)).ShouldBeTrue();
         }
 
-        [Test]
+        [Fact]
         public void Run()
         {
             this.BDDfy();

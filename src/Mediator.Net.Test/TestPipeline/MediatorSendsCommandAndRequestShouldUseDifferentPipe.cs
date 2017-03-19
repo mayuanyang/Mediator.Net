@@ -8,9 +8,9 @@ using Mediator.Net.Test.Messages;
 using Mediator.Net.Test.Middlewares;
 using Mediator.Net.Test.RequestHandlers;
 using Mediator.Net.Test.TestUtils;
-using NUnit.Framework;
 using Shouldly;
 using TestStack.BDDfy;
+using Xunit;
 
 namespace Mediator.Net.Test.TestPipeline
 {
@@ -22,6 +22,7 @@ namespace Mediator.Net.Test.TestPipeline
         private Guid _id = Guid.NewGuid();
         public void GivenAMediatorAndTwoMiddlewares()
         {
+            ClearBinding();
            var builder = new MediatorBuilder();
             _mediator = builder.RegisterHandlers(() =>
                 {
@@ -76,7 +77,7 @@ namespace Mediator.Net.Test.TestPipeline
             RubishBox.Rublish.Count(x => x.ToString() == nameof(ConsoleLog1.UseConsoleLogger1)).ShouldBe(2);
         }
 
-        [Test]
+        [Fact]
         public void Run()
         {
             this.BDDfy();

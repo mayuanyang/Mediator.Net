@@ -7,9 +7,9 @@ using Mediator.Net.Test.EventHandlers;
 using Mediator.Net.Test.Messages;
 using Mediator.Net.Test.Middlewares;
 using Mediator.Net.Test.TestUtils;
-using NUnit.Framework;
 using Shouldly;
 using TestStack.BDDfy;
+using Xunit;
 
 namespace Mediator.Net.Test.TestCommandHandlers
 {
@@ -19,7 +19,7 @@ namespace Mediator.Net.Test.TestCommandHandlers
         private Task _task;
         public void GivenAMediator()
         {
-
+            ClearBinding();
             var builder = new MediatorBuilder();
             _mediator = builder.RegisterHandlers(() =>
             {
@@ -51,7 +51,7 @@ namespace Mediator.Net.Test.TestCommandHandlers
             RubishBox.Rublish.Contains(nameof(TestEventHandler)).ShouldBeTrue();
         }
 
-        [Test]
+        [Fact]
         public void Run()
         {
             this.BDDfy();
