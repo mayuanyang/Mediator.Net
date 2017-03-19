@@ -3,14 +3,14 @@ using Mediator.Net.IoCTestUtil;
 using Mediator.Net.IoCTestUtil.Messages;
 using Mediator.Net.IoCTestUtil.Middlewares;
 using Mediator.Net.IoCTestUtil.Services;
-using NUnit.Framework;
 using Shouldly;
 using StructureMap;
 using TestStack.BDDfy;
+using Xunit;
 
 namespace Mediator.Net.StructureMap.Test.Tests
 {
-   
+
     class TestRequestHandlerWithDependancyInjection : TestBase
     {
         private IContainer _container = null;
@@ -19,6 +19,7 @@ namespace Mediator.Net.StructureMap.Test.Tests
  
         public void GivenAContainer()
         {
+            ClearBinding();
             var mediaBuilder = new MediatorBuilder();
             mediaBuilder.RegisterHandlers(TestUtilAssembly.Assembly)
                 .ConfigureCommandReceivePipe(x =>
@@ -48,7 +49,7 @@ namespace Mediator.Net.StructureMap.Test.Tests
             
         }
 
-        [Test]
+        [Fact]
         public void Run()
         {
             this.BDDfy();
