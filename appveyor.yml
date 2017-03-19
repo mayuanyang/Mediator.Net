@@ -20,9 +20,6 @@ after_build:
 artifacts:
 - path: artifacts\**\*.*
 
-test_script:
-- cmd: xunit.console "src\Mediator.Net.Test\bin\Release\netcoreapp1.0\Mediator.Net.Test.dll"
-
 cache:
 - '%USERPROFILE%\.nuget\packages'
 on_finish: # Done
