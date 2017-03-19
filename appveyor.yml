@@ -17,7 +17,7 @@ after_build:
 - dotnet pack "src\Mediator.Net.Middlewares.Serilog" -c %CONFIGURATION% --no-build -o artifacts
 - dotnet pack "src\Mediator.Net.IoCTestUtil" -c %CONFIGURATION% --no-build -o artifacts
 test:
-- cmd: xunit.console '\**\*.Test.dll'
+- cmd: xunit.console "src\Mediator.Net.Test\bin\Debug\netcoreapp1.0\Mediator.Net.Test.dll"
 artifacts:
 - path: artifacts\**\*.*
 cache:
