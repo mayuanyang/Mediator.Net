@@ -20,7 +20,7 @@ after_build:
 test: off
 
 artifacts:
-- path: artifacts\**\*.*
+- path: \**\artifacts\**\*.*
 
 cache:
 - '%USERPROFILE%\.nuget\packages'
