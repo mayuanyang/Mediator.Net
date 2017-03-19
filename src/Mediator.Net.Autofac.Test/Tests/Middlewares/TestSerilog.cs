@@ -3,15 +3,12 @@ using System.Threading.Tasks;
 using Autofac;
 using Mediator.Net.IoCTestUtil;
 using Mediator.Net.IoCTestUtil.Messages;
-using Mediator.Net.IoCTestUtil.Middlewares;
 using Mediator.Net.IoCTestUtil.Services;
 using Mediator.Net.Middlewares.Serilog;
-using NUnit.Framework;
 using Serilog;
-using Serilog.Events;
-using Shouldly;
 using TestStack.BDDfy;
 using NSubstitute;
+using Xunit;
 
 namespace Mediator.Net.Autofac.Test.Tests.Middlewares
 {
@@ -60,7 +57,7 @@ namespace Mediator.Net.Autofac.Test.Tests.Middlewares
 
         }
 
-        [Test]
+        [Fact]
         public void Run()
         {
             this.BDDfy();

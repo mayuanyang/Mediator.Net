@@ -5,8 +5,7 @@ namespace Mediator.Net.Autofac.Test
 {
     class TestBase
     {
-        [OneTimeTearDown]
-        public void Teardown()
+        public void ClearBinding()
         {
             MessageHandlerRegistry.MessageBindings.Clear();
         }
