@@ -5,7 +5,7 @@ using NUnit.Framework;
 namespace Mediator.Net.Test
 {
    
-    class TestBase
+    public class TestBase
     {
         public void ClearBinding()
         {

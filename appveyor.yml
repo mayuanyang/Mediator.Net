@@ -16,11 +16,8 @@ after_build:
 - dotnet pack "src\Mediator.Net.SimpleInjector" -c %CONFIGURATION% --no-build -o artifacts
 - dotnet pack "src\Mediator.Net.Middlewares.Serilog" -c %CONFIGURATION% --no-build -o artifacts
 - dotnet pack "src\Mediator.Net.IoCTestUtil" -c %CONFIGURATION% --no-build -o artifacts
-test_script:
-- dotnet test "src\Mediator.Net.Test" -c %CONFIGURATION%
-- dotnet test "src\Mediator.Net.Autofac.Test" -c %CONFIGURATION%
-- dotnet test "src\Mediator.Net.StructureMap.Test" -c %CONFIGURATION%
-- dotnet test "src\Mediator.Net.SimpleInjector.Test" -c %CONFIGURATION%
+test:
+  assemblies: '*.Test.dll'
 artifacts:
 - path: artifacts\**\*.*
 cache:

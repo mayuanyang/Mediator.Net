@@ -10,7 +10,7 @@ using Xunit;
 
 namespace Mediator.Net.Test.TestCommandHandlers
 {
-    class AsyncCommandHandlerShouldWork : TestBase
+    public class AsyncCommandHandlerShouldWork : TestBase
     {
         private IMediator _mediator;
         public void GivenAMediator()
