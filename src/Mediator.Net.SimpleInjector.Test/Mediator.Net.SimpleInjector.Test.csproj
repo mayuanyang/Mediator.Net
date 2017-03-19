@@ -34,6 +34,7 @@
     <PackageReference Include="System.Reflection.TypeExtensions" Version="4.3.0" />
     <PackageReference Include="TestStack.BDDfy" Version="4.3.2" />
     <PackageReference Include="xunit" Version="2.2.0" />
+    <PackageReference Include="xunit.runners" Version="2.0.0" />
   </ItemGroup>
 
 </Project>
