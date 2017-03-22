@@ -1,12 +1,10 @@
 ﻿using Mediator.Net.Binding;
-using NUnit.Framework;
 
 namespace Mediator.Net.StructureMap.Test
 {
     class TestBase
     {
-        [OneTimeTearDown]
-        public void Teardown()
+        public void ClearBinding()
         {
             MessageHandlerRegistry.MessageBindings.Clear();
         }

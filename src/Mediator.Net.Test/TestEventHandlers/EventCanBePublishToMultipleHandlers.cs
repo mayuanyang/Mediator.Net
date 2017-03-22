@@ -2,15 +2,12 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Mediator.Net.Binding;
-using Mediator.Net.Context;
-using Mediator.Net.Contracts;
-using Mediator.Net.Pipeline;
 using Mediator.Net.Test.EventHandlers;
 using Mediator.Net.Test.Messages;
 using Mediator.Net.Test.TestUtils;
-using NUnit.Framework;
 using Shouldly;
 using TestStack.BDDfy;
+using Xunit;
 
 namespace Mediator.Net.Test.TestEventHandlers
 {
@@ -20,7 +17,7 @@ namespace Mediator.Net.Test.TestEventHandlers
         private Task _task;
         public void GivenAMediator()
         {
-
+            ClearBinding();
             var builder = new MediatorBuilder();
             _mediator = builder.RegisterHandlers(() =>
             {
@@ -49,7 +46,7 @@ namespace Mediator.Net.Test.TestEventHandlers
             RubishBox.Rublish.Contains(nameof(TestEventHandler2)).ShouldBeTrue();
         }
 
-        [Test]
+        [Fact]
         public void Run()
         {
             this.BDDfy();

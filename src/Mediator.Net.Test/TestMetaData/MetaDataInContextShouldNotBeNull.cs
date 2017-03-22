@@ -5,9 +5,9 @@ using Mediator.Net.Binding;
 using Mediator.Net.Test.CommandHandlers;
 using Mediator.Net.Test.Messages;
 using Mediator.Net.Test.TestUtils;
-using NUnit.Framework;
 using Shouldly;
 using TestStack.BDDfy;
+using Xunit;
 
 namespace Mediator.Net.Test.TestMetaData
 {
@@ -16,7 +16,7 @@ namespace Mediator.Net.Test.TestMetaData
         private IMediator _mediator;
         public void GivenAMediator()
         {
-
+            ClearBinding();
             var builder = new MediatorBuilder();
             _mediator = builder.RegisterHandlers(() =>
             {
@@ -38,7 +38,7 @@ namespace Mediator.Net.Test.TestMetaData
             RubishBox.Rublish[0].ShouldBe(false);
         }
 
-        [Test]
+        [Fact]
         public void Run()
         {
             this.BDDfy();

@@ -4,9 +4,9 @@ using Mediator.Net.IoCTestUtil;
 using Mediator.Net.IoCTestUtil.Messages;
 using Mediator.Net.IoCTestUtil.Middlewares;
 using Mediator.Net.IoCTestUtil.Services;
-using NUnit.Framework;
 using Shouldly;
 using TestStack.BDDfy;
+using Xunit;
 
 namespace Mediator.Net.Autofac.Test.Tests
 {
@@ -19,6 +19,7 @@ namespace Mediator.Net.Autofac.Test.Tests
  
         public void GivenAContainer()
         {
+            base.ClearBinding();
             var mediaBuilder = new MediatorBuilder();
             mediaBuilder.RegisterHandlers(TestUtilAssembly.Assembly)
                 .ConfigureRequestPipe(x =>
@@ -44,7 +45,7 @@ namespace Mediator.Net.Autofac.Test.Tests
             
         }
 
-        [Test]
+        [Fact]
         public void Run()
         {
             this.BDDfy();

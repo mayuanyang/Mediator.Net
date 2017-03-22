@@ -6,9 +6,9 @@ using Mediator.Net.Binding;
 using Mediator.Net.Test.CommandHandlers;
 using Mediator.Net.Test.Messages;
 using Mediator.Net.Test.Middlewares;
-using NUnit.Framework;
 using Shouldly;
 using TestStack.BDDfy;
+using Xunit;
 
 namespace Mediator.Net.Test.TestPerformance
 {
@@ -18,7 +18,7 @@ namespace Mediator.Net.Test.TestPerformance
         private long milliSeconds = 0;
         public void GivenAMediator()
         {
-
+            ClearBinding();
             var builder = new MediatorBuilder();
             _mediator = builder.RegisterHandlers(() =>
             {
@@ -52,7 +52,7 @@ namespace Mediator.Net.Test.TestPerformance
             milliSeconds.ShouldBeLessThan(50);
         }
 
-        [Test]
+        [Fact]
         public void Run()
         {
             this.BDDfy();

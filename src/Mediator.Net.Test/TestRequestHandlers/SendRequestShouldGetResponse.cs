@@ -5,9 +5,9 @@ using Mediator.Net.Binding;
 using Mediator.Net.Test.Messages;
 using Mediator.Net.Test.Middlewares;
 using Mediator.Net.Test.RequestHandlers;
-using NUnit.Framework;
 using Shouldly;
 using TestStack.BDDfy;
+using Xunit;
 
 namespace Mediator.Net.Test.TestRequestHandlers
 {
@@ -18,7 +18,7 @@ namespace Mediator.Net.Test.TestRequestHandlers
         private readonly Guid _guid = Guid.NewGuid();
         public void GivenAMediatorAndTwoMiddlewares()
         {
-            
+            ClearBinding();
             var builder = new MediatorBuilder();
             _mediator = builder.RegisterHandlers(() =>
                 {
@@ -52,7 +52,7 @@ namespace Mediator.Net.Test.TestRequestHandlers
             _result.Id.ShouldBe(_guid);
         }
 
-        [Test]
+        [Fact]
         public void Run()
         {
             this.BDDfy();

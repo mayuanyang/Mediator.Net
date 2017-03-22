@@ -6,20 +6,20 @@ using Mediator.Net.Pipeline;
 using Mediator.Net.Test.Messages;
 using Mediator.Net.Test.Middlewares;
 using Mediator.Net.Test.RequestHandlers;
-using NUnit.Framework;
 using Shouldly;
 using TestStack.BDDfy;
+using Xunit;
 
 namespace Mediator.Net.Test.TestRequestHandlers
 {
-    class OneRequestShouldNotHaveMultipleHandlers
+    class OneRequestShouldNotHaveMultipleHandlers : TestBase
     {
         private IMediator _mediator;
         private Task _task;
         private readonly Guid _guid = Guid.NewGuid();
         public void GivenAMediatorAndTwoMiddlewares()
         {
-            
+            ClearBinding();
             var builder = new MediatorBuilder();
             _mediator = builder.RegisterHandlers(() =>
                 {
@@ -55,7 +55,7 @@ namespace Mediator.Net.Test.TestRequestHandlers
             _task.ShouldThrow<MoreThanOneHandlerException>();
         }
 
-        [Test]
+        [Fact]
         public void Run()
         {
             this.BDDfy();

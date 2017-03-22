@@ -4,18 +4,19 @@ using System.Threading.Tasks;
 using Mediator.Net.Context;
 using Mediator.Net.Pipeline;
 using Mediator.Net.Test.Messages;
-using NUnit.Framework;
 using TestStack.BDDfy;
+using Xunit;
 
 namespace Mediator.Net.Test.CommandHandlers
 {
-    class TestNormalPerformance
+    class TestNormalPerformance : TestBase
     {
         private TestBaseCommandHandler _handler;
         private Stopwatch _sw;
 
         public void GivenAHandler()
         {
+            ClearBinding();
             _sw = new Stopwatch();
             _sw.Start();
             _handler = new TestBaseCommandHandler();
@@ -42,7 +43,7 @@ namespace Mediator.Net.Test.CommandHandlers
         {
             
         }
-        [Test]
+        [Fact]
         public void Run()
         {
             this.BDDfy();

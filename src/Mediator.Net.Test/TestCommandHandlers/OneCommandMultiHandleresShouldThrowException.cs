@@ -2,14 +2,12 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Mediator.Net.Binding;
-using Mediator.Net.Context;
-using Mediator.Net.Contracts;
 using Mediator.Net.Pipeline;
 using Mediator.Net.Test.CommandHandlers;
 using Mediator.Net.Test.Messages;
-using NUnit.Framework;
 using Shouldly;
 using TestStack.BDDfy;
+using Xunit;
 
 namespace Mediator.Net.Test.TestCommandHandlers
 {
@@ -20,6 +18,7 @@ namespace Mediator.Net.Test.TestCommandHandlers
         private MediatorBuilder _builder;
         public void GivenAMediatorBuilder()
         {
+            ClearBinding();
             _builder = new MediatorBuilder();
         }
 
@@ -48,7 +47,7 @@ namespace Mediator.Net.Test.TestCommandHandlers
             _task.ShouldThrow<MoreThanOneHandlerException>();
         }
 
-        [Test]
+        [Fact]
         public void Run()
         {
             this.BDDfy();
