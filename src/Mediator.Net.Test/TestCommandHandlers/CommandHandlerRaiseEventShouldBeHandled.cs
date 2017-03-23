@@ -16,7 +16,7 @@ namespace Mediator.Net.Test.TestCommandHandlers
     class CommandHandlerRaiseEventShouldBeHandled : TestBase
     {
         private IMediator _mediator;
-        private Task _task;
+        
         public void GivenAMediator()
         {
             ClearBinding();

@@ -16,8 +16,7 @@ namespace Mediator.Net.Autofac.Test.Tests
     {
         private IContainer _container = null;
         private IMediator _mediator;
-        private Task _task;
- 
+        
         public void GivenAMediatorBuildConnectsToAllPipelines()
         {
             base.ClearBinding();

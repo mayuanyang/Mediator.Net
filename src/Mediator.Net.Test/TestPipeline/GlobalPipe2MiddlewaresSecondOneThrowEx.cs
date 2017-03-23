@@ -16,8 +16,6 @@ namespace Mediator.Net.Test.TestPipeline
     class GlobalPipe2MiddlewaresSecondOneThrowEx : TestBase
     {
         private IMediator _mediator;
-        private Task _commandTask;
-        private Guid _id = Guid.NewGuid();
         public void GivenAMediatorWithGlobalPipeWith2Middlewares()
         {
             ClearBinding();
