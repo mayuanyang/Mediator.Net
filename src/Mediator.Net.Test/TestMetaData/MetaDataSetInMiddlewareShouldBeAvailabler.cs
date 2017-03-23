@@ -12,6 +12,7 @@ using Xunit;
 
 namespace Mediator.Net.Test.TestMetaData
 {
+    [Collection("Avoid parallel execution")]
     public class MetaDataSetInMiddlewareShouldBeAvailable : TestBase
     {
         private IMediator _mediator;

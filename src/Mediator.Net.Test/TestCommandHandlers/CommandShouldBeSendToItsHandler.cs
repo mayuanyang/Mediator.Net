@@ -11,13 +11,18 @@ using Xunit;
 
 namespace Mediator.Net.Test.TestCommandHandlers
 {
+    [Collection("Avoid parallel execution")]
     public class CommandShouldBeSendToItsHandler : TestBase
     {
         private IMediator _mediator;
         private Task _task;
-        public void GivenAMediatorWithNoPipeline()
+
+        public CommandShouldBeSendToItsHandler()
         {
             ClearBinding();
+        }
+        public void GivenAMediatorWithNoPipeline()
+        {
             var builder = new MediatorBuilder();
             _mediator = builder.RegisterHandlers(() =>
             {

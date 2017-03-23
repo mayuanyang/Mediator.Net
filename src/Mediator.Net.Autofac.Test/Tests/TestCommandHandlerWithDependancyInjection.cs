@@ -11,7 +11,7 @@ using Xunit;
 
 namespace Mediator.Net.Autofac.Test.Tests
 {
-
+    [Collection("Avoid parallel execution")]
     public class TestCommandHandlerWithDependancyInjection : TestBase
     {
         private IContainer _container = null;

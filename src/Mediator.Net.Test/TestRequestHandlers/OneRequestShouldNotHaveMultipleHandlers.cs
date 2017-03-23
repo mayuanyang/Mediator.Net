@@ -12,6 +12,7 @@ using Xunit;
 
 namespace Mediator.Net.Test.TestRequestHandlers
 {
+    [Collection("Avoid parallel execution")]
     public class OneRequestShouldNotHaveMultipleHandlers : TestBase
     {
         private IMediator _mediator;

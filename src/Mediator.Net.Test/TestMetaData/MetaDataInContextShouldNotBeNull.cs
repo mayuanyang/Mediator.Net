@@ -11,6 +11,7 @@ using Xunit;
 
 namespace Mediator.Net.Test.TestMetaData
 {
+    [Collection("Avoid parallel execution")]
     public class MetadataInContextShouldNotBeNull : TestBase
     {
         private IMediator _mediator;

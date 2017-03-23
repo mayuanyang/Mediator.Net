@@ -12,6 +12,7 @@ using Xunit;
 
 namespace Mediator.Net.Test.TestPerformance
 {
+    [Collection("Avoid parallel execution")]
     public class DifferentMediatorSend1000CommandsOneMiddlewareEachPipe : TestBase
     {
         private long milliSeconds = 0;

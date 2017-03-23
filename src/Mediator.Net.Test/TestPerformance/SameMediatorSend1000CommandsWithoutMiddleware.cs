@@ -11,6 +11,7 @@ using Xunit;
 
 namespace Mediator.Net.Test.TestPerformance
 {
+    [Collection("Avoid parallel execution")]
     public class SameMediatorSend1000CommandsWithoutMiddleware : TestBase
     {
         private IMediator _mediator;

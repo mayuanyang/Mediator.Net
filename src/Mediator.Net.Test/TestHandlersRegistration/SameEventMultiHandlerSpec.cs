@@ -7,6 +7,7 @@ using Xunit;
 
 namespace Mediator.Net.Test.TestHandlersRegistration
 {
+    [Collection("Avoid parallel execution")]
     public class SameEventMultiHandlerSpec : TestBase
     {
         public void GivenAnAssemblyWithMultipleHandlersForTheSameEvent()

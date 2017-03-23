@@ -9,6 +9,7 @@ using Xunit;
 
 namespace Mediator.Net.Test.TestEventHandlers
 {
+    [Collection("Avoid parallel execution")]
     public class PublishDerivedEventShouldBeHandledByBaseHandler : TestBase
     {
         private IMediator _mediator;

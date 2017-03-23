@@ -13,13 +13,17 @@ using Xunit;
 
 namespace Mediator.Net.Test.TestCommandHandlers
 {
+    [Collection("Avoid parallel execution")]
     public class CommandHandlerRaiseEventShouldBeHandled : TestBase
     {
         private IMediator _mediator;
-        
-        public void GivenAMediator()
+
+        public CommandHandlerRaiseEventShouldBeHandled()
         {
             ClearBinding();
+        }
+        public void GivenAMediator()
+        {
             var builder = new MediatorBuilder();
             _mediator = builder.RegisterHandlers(() =>
             {

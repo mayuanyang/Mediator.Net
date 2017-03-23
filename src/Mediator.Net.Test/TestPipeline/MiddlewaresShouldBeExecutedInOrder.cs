@@ -12,6 +12,7 @@ using Xunit;
 
 namespace Mediator.Net.Test.TestPipeline
 {
+    [Collection("Avoid parallel execution")]
     public class MiddlewaresShouldBeExecutedInOrder : TestBase
     {
         private IMediator _mediator;

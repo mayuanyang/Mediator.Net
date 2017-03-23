@@ -11,13 +11,18 @@ using Xunit;
 
 namespace Mediator.Net.Test.TestCommandHandlers
 {
+    [Collection("Avoid parallel execution")]
     public class MoreDeviredMessageShouldGetExecutedOnce : TestBase
     {
         private IMediator _mediator;
         private Task _task;
-        public void GivenAMediator()
+
+        public MoreDeviredMessageShouldGetExecutedOnce()
         {
             ClearBinding();
+        }
+        public void GivenAMediator()
+        {
             var builder = new MediatorBuilder();
             _mediator = builder.RegisterHandlers(() =>
             {

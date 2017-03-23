@@ -11,6 +11,7 @@ using Xunit;
 
 namespace Mediator.Net.Test.TestRequestHandlers
 {
+    [Collection("Avoid parallel execution")]
     public class SendRequestShouldGetResponse : TestBase
     {
         private IMediator _mediator;

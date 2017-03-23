@@ -16,6 +16,7 @@ using Xunit;
 
 namespace Mediator.Net.Test.TestPipeline
 {
+    [Collection("Avoid parallel execution")]
     public class ConnectAllPipelines : TestBase
     {
         private IMediator _mediator;

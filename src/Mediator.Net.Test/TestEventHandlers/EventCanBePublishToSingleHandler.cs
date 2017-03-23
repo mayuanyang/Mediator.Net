@@ -11,6 +11,7 @@ using Xunit;
 
 namespace Mediator.Net.Test.TestEventHandlers
 {
+    [Collection("Avoid parallel execution")]
     public class EventCanBePublishToSingleHandler : TestBase
     {
         private IMediator _mediator;

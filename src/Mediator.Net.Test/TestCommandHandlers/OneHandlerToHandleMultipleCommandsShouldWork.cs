@@ -11,14 +11,19 @@ using Xunit;
 
 namespace Mediator.Net.Test.TestCommandHandlers
 {
+    [Collection("Avoid parallel execution")]
     public class OneHandlerToHandleMultipleCommandsShouldWork : TestBase
     {
         private IMediator _mediator;
         private Task _task1;
         private Task _task2;
-        public void GivenAMediator()
+
+        public OneHandlerToHandleMultipleCommandsShouldWork()
         {
             ClearBinding();
+        }
+        public void GivenAMediator()
+        {
             var builder = new MediatorBuilder();
             _mediator = builder.RegisterHandlers(() =>
             {

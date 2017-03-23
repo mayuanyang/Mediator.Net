@@ -13,6 +13,7 @@ using Xunit;
 
 namespace Mediator.Net.Test.TestPipeline
 {
+    [Collection("Avoid parallel execution")]
     public class GlobalPipe2MiddlewaresHandlerThrowException : TestBase
     {
         private IMediator _mediator;
