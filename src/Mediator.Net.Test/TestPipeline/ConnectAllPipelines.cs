@@ -16,7 +16,7 @@ using Xunit;
 
 namespace Mediator.Net.Test.TestPipeline
 {
-    class ConnectAllPipelines : TestBase
+    public class ConnectAllPipelines : TestBase
     {
         private IMediator _mediator;
         private Guid _id = Guid.NewGuid();

@@ -11,7 +11,7 @@ using Xunit;
 
 namespace Mediator.Net.Test.TestCommandHandlers
 {
-    class NoHandlerForMessageShouldThrow : TestBase
+    public class NoHandlerForMessageShouldThrow : TestBase
     {
         private IMediator _mediator;
         private Task _task;

@@ -6,14 +6,13 @@ using Mediator.Net.Test.CommandHandlers;
 using Mediator.Net.Test.Messages;
 using Mediator.Net.Test.Middlewares;
 using Mediator.Net.Test.TestUtils;
-using NUnit.Framework;
 using Shouldly;
 using TestStack.BDDfy;
 using Xunit;
 
 namespace Mediator.Net.Test.TestPipeline
 {
-    class UselessMiddlewareShouldNotBeExecuted : TestBase
+    public class UselessMiddlewareShouldNotBeExecuted : TestBase
     {
         private IMediator _mediator;
         public void GivenAMediator()

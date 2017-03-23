@@ -12,7 +12,7 @@ using Xunit;
 
 namespace Mediator.Net.Test.TestMetaData
 {
-    class MetaDataSetInMiddlewareShouldBeAvailable : TestBase
+    public class MetaDataSetInMiddlewareShouldBeAvailable : TestBase
     {
         private IMediator _mediator;
         public void GivenAMediator()

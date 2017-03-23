@@ -14,7 +14,7 @@ using Xunit;
 
 namespace Mediator.Net.Test.TestPipeline
 {
-    class MediatorSendsCommandAndRequestShouldUseDifferentPipe : TestBase
+    public class MediatorSendsCommandAndRequestShouldUseDifferentPipe : TestBase
     {
         private IMediator _mediator;
         private GetGuidResponse _result;

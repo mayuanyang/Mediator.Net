@@ -11,7 +11,7 @@ using Xunit;
 
 namespace Mediator.Net.Test.TestCommandHandlers
 {
-    class OneHandlerToHandleMultipleCommandsShouldWork : TestBase
+    public class OneHandlerToHandleMultipleCommandsShouldWork : TestBase
     {
         private IMediator _mediator;
         private Task _task1;

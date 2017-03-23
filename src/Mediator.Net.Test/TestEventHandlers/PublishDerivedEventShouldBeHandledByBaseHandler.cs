@@ -9,7 +9,7 @@ using Xunit;
 
 namespace Mediator.Net.Test.TestEventHandlers
 {
-    class PublishDerivedEventShouldBeHandledByBaseHandler : TestBase
+    public class PublishDerivedEventShouldBeHandledByBaseHandler : TestBase
     {
         private IMediator _mediator;
         private Task _task;

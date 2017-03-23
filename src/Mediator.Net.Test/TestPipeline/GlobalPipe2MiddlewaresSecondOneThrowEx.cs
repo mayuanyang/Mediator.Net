@@ -13,7 +13,7 @@ using Xunit;
 
 namespace Mediator.Net.Test.TestPipeline
 {
-    class GlobalPipe2MiddlewaresSecondOneThrowEx : TestBase
+    public class GlobalPipe2MiddlewaresSecondOneThrowEx : TestBase
     {
         private IMediator _mediator;
         public void GivenAMediatorWithGlobalPipeWith2Middlewares()

@@ -11,7 +11,7 @@ using Xunit;
 
 namespace Mediator.Net.Test.TestEventHandlers
 {
-    class EventCanBePublishToSingleHandler : TestBase
+    public class EventCanBePublishToSingleHandler : TestBase
     {
         private IMediator _mediator;
         private Task _task;

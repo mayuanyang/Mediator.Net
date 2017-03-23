@@ -11,7 +11,7 @@ using Xunit;
 
 namespace Mediator.Net.Test.TestMetaData
 {
-    class MetadataInContextShouldNotBeNull : TestBase
+    public class MetadataInContextShouldNotBeNull : TestBase
     {
         private IMediator _mediator;
         public void GivenAMediator()

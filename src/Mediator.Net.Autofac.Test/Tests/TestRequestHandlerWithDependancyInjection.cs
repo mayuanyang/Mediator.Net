@@ -10,8 +10,8 @@ using Xunit;
 
 namespace Mediator.Net.Autofac.Test.Tests
 {
-   
-    class TestRequestHandlerWithDependancyInjection : TestBase
+
+    public class TestRequestHandlerWithDependancyInjection : TestBase
     {
         private IContainer _container = null;
         private IMediator _mediator;

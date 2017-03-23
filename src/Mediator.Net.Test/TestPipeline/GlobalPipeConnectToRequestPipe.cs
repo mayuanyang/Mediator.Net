@@ -6,14 +6,13 @@ using Mediator.Net.Test.Messages;
 using Mediator.Net.Test.Middlewares;
 using Mediator.Net.Test.RequestHandlers;
 using Mediator.Net.Test.TestUtils;
-using NUnit.Framework;
 using Shouldly;
 using TestStack.BDDfy;
 using Xunit;
 
 namespace Mediator.Net.Test.TestPipeline
 {
-    class GlobalPipeConnectToRequestPipe : TestBase
+    public class GlobalPipeConnectToRequestPipe : TestBase
     {
         private IMediator _mediator;
         private GetGuidResponse _response;

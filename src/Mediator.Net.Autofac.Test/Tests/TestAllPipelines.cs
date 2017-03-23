@@ -12,7 +12,7 @@ using Xunit;
 namespace Mediator.Net.Autofac.Test.Tests
 {
    
-    class TestAllPipelines : TestBase
+    public class TestAllPipelines : TestBase
     {
         private IContainer _container = null;
         private IMediator _mediator;

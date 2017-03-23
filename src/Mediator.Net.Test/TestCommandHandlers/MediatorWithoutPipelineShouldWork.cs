@@ -11,7 +11,7 @@ using Xunit;
 
 namespace Mediator.Net.Test.TestCommandHandlers
 {
-    class MediatorWithoutPipelineShouldWork : TestBase
+    public class MediatorWithoutPipelineShouldWork : TestBase
     {
         private IMediator _mediator;
         private Task _task;

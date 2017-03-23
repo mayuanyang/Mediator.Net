@@ -1,6 +1,6 @@
 ﻿using Mediator.Net.Binding;
 using Mediator.Net.Test.TestUtils;
-using NUnit.Framework;
+
 
 namespace Mediator.Net.Test
 {

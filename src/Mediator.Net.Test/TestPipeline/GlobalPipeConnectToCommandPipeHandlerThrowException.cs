@@ -13,7 +13,7 @@ using Xunit;
 
 namespace Mediator.Net.Test.TestPipeline
 {
-    class GlobalPipeConnectToCommandPipeHandlerThrowException : TestBase
+    public class GlobalPipeConnectToCommandPipeHandlerThrowException : TestBase
     {
         private IMediator _mediator;
         private Guid _id = Guid.NewGuid();

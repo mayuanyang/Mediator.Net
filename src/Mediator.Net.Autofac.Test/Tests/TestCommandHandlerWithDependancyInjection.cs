@@ -11,8 +11,8 @@ using Xunit;
 
 namespace Mediator.Net.Autofac.Test.Tests
 {
-   
-    class TestCommandHandlerWithDependancyInjection : TestBase
+
+    public class TestCommandHandlerWithDependancyInjection : TestBase
     {
         private IContainer _container = null;
         private IMediator _mediator;

@@ -12,7 +12,7 @@ using Xunit;
 
 namespace Mediator.Net.Test.TestPipeline
 {
-    class GlobalPipeConnectToCommandPipe : TestBase
+    public class GlobalPipeConnectToCommandPipe : TestBase
     {
         private IMediator _mediator;
         private Task _commandTask;

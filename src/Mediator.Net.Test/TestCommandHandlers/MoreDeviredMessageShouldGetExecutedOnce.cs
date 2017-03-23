@@ -11,7 +11,7 @@ using Xunit;
 
 namespace Mediator.Net.Test.TestCommandHandlers
 {
-    class MoreDeviredMessageShouldGetExecutedOnce : TestBase
+    public class MoreDeviredMessageShouldGetExecutedOnce : TestBase
     {
         private IMediator _mediator;
         private Task _task;

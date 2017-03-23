@@ -11,7 +11,7 @@ using Xunit;
 
 namespace Mediator.Net.Test.TestRequestHandlers
 {
-    class SendRequestShouldGetResponse : TestBase
+    public class SendRequestShouldGetResponse : TestBase
     {
         private IMediator _mediator;
         private GetGuidResponse _result;

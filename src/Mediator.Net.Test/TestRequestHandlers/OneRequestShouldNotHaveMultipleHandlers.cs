@@ -12,7 +12,7 @@ using Xunit;
 
 namespace Mediator.Net.Test.TestRequestHandlers
 {
-    class OneRequestShouldNotHaveMultipleHandlers : TestBase
+    public class OneRequestShouldNotHaveMultipleHandlers : TestBase
     {
         private IMediator _mediator;
         private Task _task;

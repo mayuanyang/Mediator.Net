@@ -11,7 +11,7 @@ using Xunit;
 
 namespace Mediator.Net.Test.TestPerformance
 {
-    class SameMediatorSend1000CommandsWithoutMiddleware : TestBase
+    public class SameMediatorSend1000CommandsWithoutMiddleware : TestBase
     {
         private IMediator _mediator;
         private long milliSeconds = 0;

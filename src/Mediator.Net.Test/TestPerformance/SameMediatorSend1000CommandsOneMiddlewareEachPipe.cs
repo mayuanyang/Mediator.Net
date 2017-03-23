@@ -1,20 +1,18 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Security.Cryptography.X509Certificates;
 using System.Threading.Tasks;
 using Mediator.Net.Binding;
 using Mediator.Net.Test.CommandHandlers;
 using Mediator.Net.Test.Messages;
 using Mediator.Net.Test.Middlewares;
-using NUnit.Framework;
 using Shouldly;
 using TestStack.BDDfy;
 using Xunit;
 
 namespace Mediator.Net.Test.TestPerformance
 {
-    class SameMediatorSend1000CommandsOneMiddlewareEachPipe : TestBase
+    public class SameMediatorSend1000CommandsOneMiddlewareEachPipe : TestBase
     {
         private IMediator _mediator;
         private long milliSeconds = 0;

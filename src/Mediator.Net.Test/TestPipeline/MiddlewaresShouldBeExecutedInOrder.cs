@@ -12,7 +12,7 @@ using Xunit;
 
 namespace Mediator.Net.Test.TestPipeline
 {
-    class MiddlewaresShouldBeExecutedInOrder : TestBase
+    public class MiddlewaresShouldBeExecutedInOrder : TestBase
     {
         private IMediator _mediator;
         public void GivenAMediatorAndTwoMiddlewares()

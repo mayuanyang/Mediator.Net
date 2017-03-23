@@ -13,7 +13,7 @@ using Xunit;
 
 namespace Mediator.Net.Test.TestCommandHandlers
 {
-    class CommandHandlerRaiseEventShouldBeHandled : TestBase
+    public class CommandHandlerRaiseEventShouldBeHandled : TestBase
     {
         private IMediator _mediator;
         

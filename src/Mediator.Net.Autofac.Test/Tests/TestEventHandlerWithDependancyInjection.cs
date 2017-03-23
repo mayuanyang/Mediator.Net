@@ -4,7 +4,6 @@ using Mediator.Net.IoCTestUtil;
 using Mediator.Net.IoCTestUtil.Messages;
 using Mediator.Net.IoCTestUtil.Middlewares;
 using Mediator.Net.IoCTestUtil.Services;
-using NUnit.Framework;
 using Shouldly;
 using TestStack.BDDfy;
 using Xunit;
@@ -12,7 +11,7 @@ using Xunit;
 namespace Mediator.Net.Autofac.Test.Tests
 {
    
-    class TestEventHandlerWithDependancyInjection : TestBase
+    public class TestEventHandlerWithDependancyInjection : TestBase
     {
         private IContainer _container = null;
         private IMediator _mediator;

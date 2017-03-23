@@ -12,7 +12,7 @@ using Xunit;
 
 namespace Mediator.Net.Test.TestPerformance
 {
-    class DifferentMediatorSend1000CommandsOneMiddlewareEachPipe : TestBase
+    public class DifferentMediatorSend1000CommandsOneMiddlewareEachPipe : TestBase
     {
         private long milliSeconds = 0;
         private MediatorBuilder _builder;

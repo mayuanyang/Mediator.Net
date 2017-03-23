@@ -7,7 +7,7 @@ using Xunit;
 
 namespace Mediator.Net.Test.TestHandlersRegistration
 {
-    class SameEventMultiHandlerSpec : TestBase
+    public class SameEventMultiHandlerSpec : TestBase
     {
         public void GivenAnAssemblyWithMultipleHandlersForTheSameEvent()
         {
