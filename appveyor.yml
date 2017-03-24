@@ -17,7 +17,9 @@ after_build:
 - dotnet pack "src\Mediator.Net.Middlewares.Serilog" -c %CONFIGURATION% --no-build -o artifacts
 - dotnet pack "src\Mediator.Net.IoCTestUtil" -c %CONFIGURATION% --no-build -o artifacts
 
-test: off
+test:
+- dotnet test "src\Mediator.Net.Test"
+- dotnet test "src\Mediator.Net.Autofac.Test"
 
 artifacts:
 - path: \**\artifacts\**\*.*
