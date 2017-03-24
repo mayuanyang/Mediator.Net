@@ -11,36 +11,14 @@ Install the nuget package Mediator.Net
 	Install-Package Mediator.Net
 ```
 
-Setup the mediator by using MediatorBuilder
+##Simple usage
 ```C#
-  
+	// Setup a mediator builder
 	var mediaBuilder = new MediatorBuilder();
 	var mediator = mediaBuilder.RegisterHandlers(typeof(this).Assembly).Build();
            
 ```
 
-###Handlers scan registration
-```C#
-
-	var mediaBuilder = new MediatorBuilder();
-	var mediator = mediaBuilder.RegisterHandlers(typeof(this).Assembly).Build();
-           
-```
-
-###Handlers explicit registration
-```C#
-  
-	var mediator = builder.RegisterHandlers(() =>
-        {
-            var binding = new List<MessageBinding>
-            {
-                new MessageBinding(typeof(TestBaseCommand), typeof(TestBaseCommandHandler)),
-                new MessageBinding(typeof(DerivedTestBaseCommand), typeof(DerivedTestBaseCommandHandler))
-            };
-            return binding;
-        }).Build();
-           
-```
 
 ###Sending a command, publishing event and sending request and getting response
 ```C#
@@ -75,6 +53,28 @@ Once a message is sent, it will reach its handlers, you can only have one handle
             await Task.FromResult(0);
         }
     }
+```
+
+##Handler Registration
+###Handlers explicit registration
+```C#
+  
+	var mediator = builder.RegisterHandlers(() =>
+        {
+            var binding = new List<MessageBinding>
+            {
+                new MessageBinding(typeof(TestBaseCommand), typeof(TestBaseCommandHandler)),
+                new MessageBinding(typeof(DerivedTestBaseCommand), typeof(DerivedTestBaseCommandHandler))
+            };
+            return binding;
+        }).Build();
+           
+```
+
+###Scan registration
+```C#
+	var mediaBuilder = new MediatorBuilder();
+	var mediator = mediaBuilder.RegisterHandlers(typeof(this).Assembly).Build();
 ```
 
 ###Using pipelines
