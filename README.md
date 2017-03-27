@@ -2,6 +2,8 @@
 
 # Mediator.Net
 A mediator project for .NET
+![logo_sm](https://cloud.githubusercontent.com/assets/3387099/24352947/e7f74d94-132e-11e7-9445-44c7506c0faa.png)
+
 ## Get Packages
 You can get Mediator.Net by [grabbing the latest NuGet packages](https://www.nuget.org/packages/Mediator.Net/).
 
