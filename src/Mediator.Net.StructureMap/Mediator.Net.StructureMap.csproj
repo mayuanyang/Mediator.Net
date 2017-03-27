@@ -5,7 +5,7 @@
     <Description>Use StructureMap as the IoC container for Mediator.Net</Description>
     <AssemblyTitle>Mediator.Net StructureMap integration</AssemblyTitle>
     <Authors>Yuan(Eddy) Ma</Authors>
-    <IconUrl>https://cloud.githubusercontent.com/assets/3387099/24353370/97f573f0-1330-11e7-890c-85855628a575.png</IconUrl>
+    <iconUrl>https://cloud.githubusercontent.com/assets/3387099/24353370/97f573f0-1330-11e7-890c-85855628a575.png</iconUrl>
     <TargetFrameworks>net45;netstandard1.1</TargetFrameworks>
     <AssemblyName>Mediator.Net.StructureMap</AssemblyName>
     <PackageId>Mediator.Net.StructureMap</PackageId>
