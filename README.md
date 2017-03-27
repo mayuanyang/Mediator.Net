@@ -2,7 +2,8 @@
 
 # Mediator.Net
 A mediator project for .NET
-![logo_sm](https://cloud.githubusercontent.com/assets/3387099/24352947/e7f74d94-132e-11e7-9445-44c7506c0faa.png)
+
+![logo_sm](https://cloud.githubusercontent.com/assets/3387099/24353370/97f573f0-1330-11e7-890c-85855628a575.png)
 
 ## Get Packages
 You can get Mediator.Net by [grabbing the latest NuGet packages](https://www.nuget.org/packages/Mediator.Net/).
@@ -13,7 +14,7 @@ Install the nuget package Mediator.Net
 	Install-Package Mediator.Net
 ```
 
-##Simple usage
+## Simple usage
 ```C#
 	// Setup a mediator builder
 	var mediaBuilder = new MediatorBuilder();
@@ -22,7 +23,7 @@ Install the nuget package Mediator.Net
 ```
 
 
-###Sending a command, publishing event and sending request and getting response
+### Sending a command, publishing event and sending request and getting response
 ```C#
 
 	await _mediator.SendAsync(new TestBaseCommand(Guid.NewGuid()));
@@ -31,7 +32,7 @@ Install the nuget package Mediator.Net
 
 ```
 
-###Handling message from handler
+### Handling message from handler
 Once a message is sent, it will reach its handlers, you can only have one handler for ICommand and IRequest and can have multi handlers for IEvent. ReceiveContext<T> will be delivered to the handler.
 ```C#
 	class TestBaseCommandHandler : ICommandHandler<TestBaseCommand>
@@ -57,8 +58,8 @@ Once a message is sent, it will reach its handlers, you can only have one handle
     }
 ```
 
-##Handler Registration
-###Handlers explicit registration
+## Handler Registration
+### Handlers explicit registration
 ```C#
   
 	var mediator = builder.RegisterHandlers(() =>
@@ -73,32 +74,32 @@ Once a message is sent, it will reach its handlers, you can only have one handle
            
 ```
 
-###Scan registration
+### Scan registration
 ```C#
 	var mediaBuilder = new MediatorBuilder();
 	var mediator = mediaBuilder.RegisterHandlers(typeof(this).Assembly).Build();
 ```
 
-###Using pipelines
+### Using pipelines
 There are 5 different type of pipelines you can use 
 ![image](https://cloud.githubusercontent.com/assets/3387099/21959127/9a065420-db09-11e6-8dbc-ca0069894e1c.png)
 
-####GlobalReceivePipeline
+#### GlobalReceivePipeline
 This pipeline will be triggered whenever a message is sent, published or requested before it reach the next pipeline and handler
 
-####CommandReceivePipeline
+#### CommandReceivePipeline
 This pipeline will be triggered just after the GlobalReceivePipeline and before it reach its command handler, this pipeline will only used for ICommand
 
-####EventReceivePipeline
+#### EventReceivePipeline
 This pipeline will be triggered just after the GlobalReceivePipeline and before it reach its event handler/handlers, this pipeline will only used for IEvent
 
-####RequestReceivePipeline
+#### RequestReceivePipeline
 This pipeline will be triggered just after the GlobalReceivePipeline and before it reach its request handler, this pipeline will only used for IRequest
 
-####PublishPipeline
+#### PublishPipeline
 This pipeline will be triggered when an IEvent is published inside your handler, this pipeline will only used for IEvent, it is usually being used as outgoing interceptor
 
-###Setting up middlewares
+### Setting up middlewares
 The most powerful thing for the pipelines above is you can add as many middlewares as you want.
 Follow the following steps to setup a middlewaree
 * Add a static class for your middleware
@@ -224,9 +225,10 @@ To hook up middlewares into pipelines
 
 ```
 
-###ReceiveContext in Handlers
+### ReceiveContext in Handlers
 As you might already noticed, mediator will deliver ReceiveContext<T> to the handler and it has a property Message which is the original message sent, in some cases you might have one event being handled in multiple handlers and you might want to share something between, ReceiveContext would be a very good place that to register your service or instance. For example you can make a middleware and register the service from there.
-####Register DummyTransaction from middleware
+
+#### Register DummyTransaction from middleware
 ```C#
 	public class SimpleMiddlewareSpecification<TContext> : IPipeSpecification<TContext>
         where TContext : IContext<IMessage>
@@ -258,7 +260,7 @@ As you might already noticed, mediator will deliver ReceiveContext<T> to the han
     }
 ```
 
-####Get the service from the handler
+#### Get the service from the handler
 ```C#
 	public Task Handle(ReceiveContext<SimpleCommand> context)
     {
@@ -272,8 +274,8 @@ As you might already noticed, mediator will deliver ReceiveContext<T> to the han
     }
 ```
 
-###Using dependancy injection(IoC) frameworks
-####Autofac
+### Using dependancy injection(IoC) frameworks
+#### Autofac
 Install the nuget package Mediator.Net.Autofac
 ```C#
 	Install-Package Mediator.Net.Autofac
@@ -305,7 +307,7 @@ You can also setup middlewares for each pipe before register it
     _container = containerBuilder.Build();  
 
 ```
-####StructureMap
+#### StructureMap
 ```C#
 	Install-Package Mediator.Net.StructureMap
 ```
@@ -326,7 +328,7 @@ var mediaBuilder = new MediatorBuilder();
 
 ```
 
-####Unity
+#### Unity
 ```C#
 	Install-Package Mediator.Net.Unity
 ```
@@ -347,7 +349,7 @@ var mediaBuilder = new MediatorBuilder();
 
 ```
 
-####SimpleInjector
+#### SimpleInjector
 ```C#
 	Install-Package Mediator.Net.SimpleInjector
 ```
@@ -386,13 +388,13 @@ One of the key feature for Mediator.Net is you can plug as many middlewares as y
 This middleware provide a CommittableTransaction inside the context, handlers can enlist the transaction if it requires UnitOfWork
 [Mediator.Net.Middlewares.UnitOfWork](https://github.com/mayuanyang/Mediator.Net.Middlewares.UnitOfWork) - Middleware for Mediator.Net to support unit of work.
 
-###Mediator.Net.Middlewares.Serilog
+### Mediator.Net.Middlewares.Serilog
 ```
 	Install-Package Mediator.Net.Middlewares.Serilog
 ```
 This middleware logs every message by using Serilog
 
-###Mediator.Net.Middlewares.EventStore
+### Mediator.Net.Middlewares.EventStore
 ```
 	Install-Package Mediator.Net.Middlewares.EventStore
 ```
