@@ -110,7 +110,7 @@ Note that, in order to make the framework both both with IoC and without, you ca
 
 An example is shown below
 
-Middleware class
+## Middleware class
 ```C#
 
 	 public static class SerilogMiddleware
@@ -128,7 +128,7 @@ Middleware class
         }
     }
 ```
-Specification class
+## Specification class
 ```C#
     class SerilogMiddlewareSpecification<TContext> : IPipeSpecification<TContext>
         where TContext : IContext<IMessage>
