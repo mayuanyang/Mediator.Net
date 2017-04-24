@@ -186,7 +186,7 @@ An example is shown below
 
 ```
 
-To hook up middlewares into pipelines
+### To hook up middlewares into pipelines
 ```C#
 
 	
