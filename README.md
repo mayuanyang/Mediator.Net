@@ -11,73 +11,67 @@ You can get Mediator.Net by [grabbing the latest NuGet packages](https://www.nug
 ## Get Started
 Install the nuget package Mediator.Net
 ```C#
-	Install-Package Mediator.Net
+Install-Package Mediator.Net
 ```
 
 ## Simple usage
 ```C#
-	// Setup a mediator builder
-	var mediaBuilder = new MediatorBuilder();
-	var mediator = mediaBuilder.RegisterHandlers(typeof(this).Assembly).Build();
-           
+// Setup a mediator builder
+var mediaBuilder = new MediatorBuilder();
+var mediator = mediaBuilder.RegisterHandlers(typeof(this).Assembly).Build();     
 ```
 
 
 ### Sending a command, publishing event and sending request and getting response
 ```C#
-
-	await _mediator.SendAsync(new TestBaseCommand(Guid.NewGuid()));
-	await _mediator.PublishAsync(new TestEvent(Guid.NewGuid()));
-	var result = await _mediator.RequestAsync<GetGuidRequest, GetGuidResponse>(new GetGuidRequest(_guid));
-
+await _mediator.SendAsync(new TestBaseCommand(Guid.NewGuid()));
+await _mediator.PublishAsync(new TestEvent(Guid.NewGuid()));
+var result = await _mediator.RequestAsync<GetGuidRequest, GetGuidResponse>(new GetGuidRequest(_guid));
 ```
 
 ### Handling message from handler
 Once a message is sent, it will reach its handlers, you can only have one handler for ICommand and IRequest and can have multi handlers for IEvent. ReceiveContext<T> will be delivered to the handler.
 ```C#
-	class TestBaseCommandHandler : ICommandHandler<TestBaseCommand>
+class TestBaseCommandHandler : ICommandHandler<TestBaseCommand>
+{
+    public Task Handle(ReceiveContext<TestBaseCommand> context)
     {
-        
-        public Task Handle(ReceiveContext<TestBaseCommand> context)
-        {
-            Console.WriteLine(context.Message.Id);
-            RubishBox.Rublish.Add(nameof(TestBaseCommandHandler));
-            return Task.FromResult(0);
-        }
+        Console.WriteLine(context.Message.Id);
+        RubishBox.Rublish.Add(nameof(TestBaseCommandHandler));
+        return Task.FromResult(0);
     }
+}
 	
-	// Or in async 
-	class AsyncTestBaseCommandHandler : ICommandHandler<TestBaseCommand>
+// Or in async 
+class AsyncTestBaseCommandHandler : ICommandHandler<TestBaseCommand>
+{
+    public async Task Handle(ReceiveContext<TestBaseCommand> context)
     {
-        public async Task Handle(ReceiveContext<TestBaseCommand> context)
-        {
-            RubishBox.Rublish.Add(nameof(AsyncTestBaseCommandHandler));
-            Console.WriteLine(context.Message.Id);
-            await Task.FromResult(0);
-        }
+        RubishBox.Rublish.Add(nameof(AsyncTestBaseCommandHandler));
+        Console.WriteLine(context.Message.Id);
+        await Task.FromResult(0);
     }
+}
 ```
 
 ## Handler Registration
 ### Handlers explicit registration
 ```C#
-  
-	var mediator = builder.RegisterHandlers(() =>
-        {
-            var binding = new List<MessageBinding>
-            {
-                new MessageBinding(typeof(TestBaseCommand), typeof(TestBaseCommandHandler)),
-                new MessageBinding(typeof(DerivedTestBaseCommand), typeof(DerivedTestBaseCommandHandler))
-            };
-            return binding;
-        }).Build();
-           
+var mediator = builder.RegisterHandlers(() =>
+{
+    var binding = new List<MessageBinding>
+    {
+        new MessageBinding(typeof(TestBaseCommand), typeof(TestBaseCommandHandler)),
+        new MessageBinding(typeof(DerivedTestBaseCommand), typeof(DerivedTestBaseCommandHandler))
+    };
+    return binding;
+}).Build();          
 ```
 
 ### Scan registration
 ```C#
-	var mediaBuilder = new MediatorBuilder();
-	var mediator = mediaBuilder.RegisterHandlers(typeof(this).Assembly).Build();
+var mediaBuilder = new MediatorBuilder();
+var mediator = mediaBuilder.RegisterHandlers(typeof(this).Assembly).Build();
 ```
 
 ### Using pipelines
@@ -112,117 +106,112 @@ An example is shown below
 
 ## Middleware class
 ```C#
-
-	 public static class SerilogMiddleware
+public static class SerilogMiddleware
+{
+    public static void UseSerilog<TContext>(this IPipeConfigurator<TContext> configurator, LogEventLevel logAsLevel, ILogger logger = null)
+        where TContext : IContext<IMessage>
     {
-        public static void UseSerilog<TContext>(this IPipeConfigurator<TContext> configurator, LogEventLevel logAsLevel, ILogger logger = null)
-            where TContext : IContext<IMessage>
+        if (logger == null && configurator.DependancyScope == null)
         {
-            if (logger == null && configurator.DependancyScope == null)
-            {
-                throw new DependancyScopeNotConfiguredException($"{nameof(ILogger)} is not provided and IDependancyScope is not configured, Please ensure {nameof(ILogger)} is registered properly if you are using IoC container, otherwise please pass {nameof(ILogger)} as parameter");
-            }
-            logger = logger ?? configurator.DependancyScope.Resolve<ILogger>();
-            
-            configurator.AddPipeSpecification(new SerilogMiddlewareSpecification<TContext>(logger, logAsLevel));
+            throw new DependancyScopeNotConfiguredException($"{nameof(ILogger)} is not provided and IDependancyScope is not configured, Please ensure {nameof(ILogger)} is registered properly if you are using IoC container, otherwise please pass {nameof(ILogger)} as parameter");
         }
+        logger = logger ?? configurator.DependancyScope.Resolve<ILogger>();
+            
+        configurator.AddPipeSpecification(new SerilogMiddlewareSpecification<TContext>(logger, logAsLevel));
     }
+}
 ```
 ## Specification class
 ```C#
-    class SerilogMiddlewareSpecification<TContext> : IPipeSpecification<TContext>
-        where TContext : IContext<IMessage>
+class SerilogMiddlewareSpecification<TContext> : IPipeSpecification<TContext>
+    where TContext : IContext<IMessage>
+{
+    private readonly ILogger _logger;
+    private readonly LogEventLevel _level;
+
+    public SerilogMiddlewareSpecification(ILogger logger, LogEventLevel level)
     {
-        private readonly ILogger _logger;
-        private readonly LogEventLevel _level;
+        _logger = logger;
+        _level = level;
+    }
+    public bool ShouldExecute(TContext context)
+    {
+        return true;
 
-        public SerilogMiddlewareSpecification(ILogger logger, LogEventLevel level)
-        {
-            _logger = logger;
-            _level = level;
-        }
-        public bool ShouldExecute(TContext context)
-        {
-            return true;
-
-        }
-
-        public Task ExecuteBeforeConnect(TContext context)
-        {
-            if (ShouldExecute(context))
-            {
-                switch (_level)
-                {
-                    case LogEventLevel.Error:
-                        _logger.Error("Receive message {@Message}", context.Message);
-                            break;
-                    case LogEventLevel.Debug:
-                        _logger.Debug("Receive message {@Message}", context.Message);
-                        break;
-                    case LogEventLevel.Fatal:
-                        _logger.Fatal("Receive message {@Message}", context.Message);
-                        break;
-                    case LogEventLevel.Information:
-                        _logger.Information("Receive message {@Message}", context.Message); 
-                        break;
-                    case LogEventLevel.Verbose:
-                        _logger.Verbose("Receive message {@Message}", context.Message);
-                        break;
-                    case LogEventLevel.Warning:
-                        _logger.Verbose("Receive message {@Message}", context.Message);
-                        break;
-                    default:
-                        throw new ArgumentOutOfRangeException();
-                }
-            }
-            return Task.FromResult(0);
-        }
-
-        public Task ExecuteAfterConnect(TContext context)
-        {
-            return Task.FromResult(0);
-        }
     }
 
+    public Task ExecuteBeforeConnect(TContext context)
+    {
+        if (ShouldExecute(context))
+        {
+            switch (_level)
+            {
+                case LogEventLevel.Error:
+                    _logger.Error("Receive message {@Message}", context.Message);
+                        break;
+                case LogEventLevel.Debug:
+                    _logger.Debug("Receive message {@Message}", context.Message);
+                    break;
+                case LogEventLevel.Fatal:
+                    _logger.Fatal("Receive message {@Message}", context.Message);
+                    break;
+                case LogEventLevel.Information:
+                    _logger.Information("Receive message {@Message}", context.Message); 
+                    break;
+                case LogEventLevel.Verbose:
+                    _logger.Verbose("Receive message {@Message}", context.Message);
+                    break;
+                case LogEventLevel.Warning:
+                    _logger.Verbose("Receive message {@Message}", context.Message);
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException();
+            }
+        }
+        return Task.FromResult(0);
+    }
+
+    public Task ExecuteAfterConnect(TContext context)
+    {
+        return Task.FromResult(0);
+    }
+}
 ```
 
 ### To hook up middlewares into pipelines
 ```C#
-
-	
-    var builder = new MediatorBuilder();
-     _mediator = builder.RegisterHandlers(() =>
-         {
-             var binding = new List<MessageBinding>()
-             {
-                 new MessageBinding(typeof(TestBaseCommand), typeof(TestBaseCommandHandlerRaiseEvent)),
-                 new MessageBinding(typeof(TestEvent), typeof(TestEventHandler)),
-                 new MessageBinding(typeof(GetGuidRequest), typeof(GetGuidRequestHandler))
-             };
-             return binding;
-         })
-         .ConfigureGlobalReceivePipe(x =>
-         {
-             x.UseDummySave();
-         })
-         .ConfigureCommandReceivePipe(x =>
-         {
-             x.UseConsoleLogger1();
-         })
-         .ConfigureEventReceivePipe(x =>
-         {
-             x.UseConsoleLogger2();
-         })
-         .ConfigureRequestPipe(x =>
-         {
-             x.UseConsoleLogger3();
-         })
-         .ConfigurePublishPipe(x =>
-         {
-             x.UseConsoleLogger4();
-         })
-     .Build();   
-
+var builder = new MediatorBuilder();
+_mediator = builder.RegisterHandlers(() =>
+    {
+        var binding = new List<MessageBinding>()
+        {
+            new MessageBinding(typeof(TestBaseCommand), typeof(TestBaseCommandHandlerRaiseEvent)),
+            new MessageBinding(typeof(TestEvent), typeof(TestEventHandler)),
+            new MessageBinding(typeof(GetGuidRequest), typeof(GetGuidRequestHandler))
+        };
+        return binding;
+    })
+    .ConfigureGlobalReceivePipe(x =>
+    {
+        x.UseDummySave();
+    })
+    .ConfigureCommandReceivePipe(x =>
+    {
+        x.UseConsoleLogger1();
+    })
+    .ConfigureEventReceivePipe(x =>
+    {
+        x.UseConsoleLogger2();
+    })
+    .ConfigureRequestPipe(x =>
+    {
+        x.UseConsoleLogger3();
+    })
+    .ConfigurePublishPipe(x =>
+    {
+        x.UseConsoleLogger4();
+    })
+.Build();
 ```
 
 ### ReceiveContext in Handlers
@@ -230,102 +219,98 @@ As you might already noticed, mediator will deliver ReceiveContext<T> to the han
 
 #### Register DummyTransaction from middleware
 ```C#
-	public class SimpleMiddlewareSpecification<TContext> : IPipeSpecification<TContext>
-        where TContext : IContext<IMessage>
+public class SimpleMiddlewareSpecification<TContext> : IPipeSpecification<TContext>
+    where TContext : IContext<IMessage>
+{
+    public bool ShouldExecute(TContext context)
     {
-        public bool ShouldExecute(TContext context)
-        {
-            return true;
+        return true;
 
-        }
-
-        public Task ExecuteBeforeConnect(TContext context)
-        {
-            if (ShouldExecute(context))
-            {
-                Console.WriteLine($"Before 1: {context.Message}");
-                context.RegisterService(new DummyTransaction());
-            }
-
-            return Task.FromResult(0);
-
-        }
-
-        public Task ExecuteAfterConnect(TContext context)
-        {
-            if (ShouldExecute(context))
-                Console.WriteLine($"After 1: {context.Message}");
-            return Task.FromResult(0);
-        }
     }
+
+    public Task ExecuteBeforeConnect(TContext context)
+    {
+        if (ShouldExecute(context))
+        {
+            Console.WriteLine($"Before 1: {context.Message}");
+            context.RegisterService(new DummyTransaction());
+        }
+
+        return Task.FromResult(0);
+
+    }
+
+    public Task ExecuteAfterConnect(TContext context)
+    {
+        if (ShouldExecute(context))
+            Console.WriteLine($"After 1: {context.Message}");
+        return Task.FromResult(0);
+    }
+}
 ```
 
 #### Get the service from the handler
 ```C#
-	public Task Handle(ReceiveContext<SimpleCommand> context)
+public Task Handle(ReceiveContext<SimpleCommand> context)
+{
+    _simpleService.DoWork();
+    DummyTransaction transaction;
+    if (context.TryGetService(out transaction))
     {
-        _simpleService.DoWork();
-        DummyTransaction transaction;
-        if (context.TryGetService(out transaction))
-        {
-            transaction.Commit();
-        }
-        return Task.FromResult(0);
+        transaction.Commit();
     }
+    return Task.FromResult(0);
+}
 ```
 
 ### Using dependancy injection(IoC) frameworks
 #### Autofac
 Install the nuget package Mediator.Net.Autofac
 ```C#
-	Install-Package Mediator.Net.Autofac
+Install-Package Mediator.Net.Autofac
 ```
 
 An extension method RegisterMediator for ContainerBuilder from Autofac is used to register the builder
 
 The super simple use case
 ```C#
-	
-	var mediaBuilder = new MediatorBuilder();
-    mediaBuilder.RegisterHandlers(typeof(TestContainer).Assembly);
-    var containerBuilder = new ContainerBuilder();
-    containerBuilder.RegisterMediator(mediaBuilder);
-    _container = containerBuilder.Build();  
-
+var mediaBuilder = new MediatorBuilder();
+mediaBuilder.RegisterHandlers(typeof(TestContainer).Assembly);
+var containerBuilder = new ContainerBuilder();
+containerBuilder.RegisterMediator(mediaBuilder);
+ _container = containerBuilder.Build();  
 ```
 
 You can also setup middlewares for each pipe before register it
 ```C#
-	var mediaBuilder = new MediatorBuilder();
-    mediaBuilder.RegisterHandlers(typeof(TestContainer).Assembly)
-        .ConfigureCommandReceivePipe(x =>
-        {
-            x.UseSimpleMiddleware();
-        });
-    var containerBuilder = new ContainerBuilder();
-    containerBuilder.RegisterMediator(mediaBuilder);
-    _container = containerBuilder.Build();  
-
+var mediaBuilder = new MediatorBuilder();
+mediaBuilder.RegisterHandlers(typeof(TestContainer).Assembly)
+    .ConfigureCommandReceivePipe(x =>
+    {
+        x.UseSimpleMiddleware();
+    });
+var containerBuilder = new ContainerBuilder();
+containerBuilder.RegisterMediator(mediaBuilder);
+_container = containerBuilder.Build();  
 ```
 #### StructureMap
 ```C#
-	Install-Package Mediator.Net.StructureMap
+Install-Package Mediator.Net.StructureMap
 ```
 Setup an IContainer and do your normal registration, then pass it along with the MediatorBuilder to the StructureMapExtensions class to register Mediator.Net
 ```C#
 var mediaBuilder = new MediatorBuilder();
-    mediaBuilder.RegisterHandlers(TestUtilAssembly.Assembly)
-        .ConfigureCommandReceivePipe(x =>
-        {
-            x.UseSimpleMiddleware();
-        });
-    _container = new Container();
-    _container.Configure(x =>
+mediaBuilder.RegisterHandlers(TestUtilAssembly.Assembly)
+    .ConfigureCommandReceivePipe(x =>
     {
-        // Do your thing
+        x.UseSimpleMiddleware();
     });
-    StructureMapExtensions.Configure(mediaBuilder, _container);
-
+_container = new Container();
+_container.Configure(x =>
+{
+    // Do your thing
+});
+StructureMapExtensions.Configure(mediaBuilder, _container);
 ```
 
 #### Unity
@@ -335,68 +320,66 @@ var mediaBuilder = new MediatorBuilder();
 Setup an IUnityContainer and do your normal registration, then pass it along with the MediatorBuilder to the UnityExtensions class to register Mediator.Net
 ```C#
 var mediaBuilder = new MediatorBuilder();
-    var mediaBuilder = new MediatorBuilder();
-    mediaBuilder.RegisterHandlers(TestUtilAssembly.Assembly)
-        .ConfigureCommandReceivePipe(x =>
-        {
-            x.UseSimpleMiddleware();
-        });
-    _container = new UnityContainer();
-    _container.RegisterType<SimpleService>();
-    _container.RegisterType<AnotherSimpleService>();
+var mediaBuilder = new MediatorBuilder();
+mediaBuilder.RegisterHandlers(TestUtilAssembly.Assembly)
+    .ConfigureCommandReceivePipe(x =>
+    {
+        x.UseSimpleMiddleware();
+    });
+_container = new UnityContainer();
+_container.RegisterType<SimpleService>();
+_container.RegisterType<AnotherSimpleService>();
 
-    UnityExtensioins.Configure(mediaBuilder, _container);
-
+UnityExtensioins.Configure(mediaBuilder, _container);
 ```
 
 #### SimpleInjector
 ```C#
-	Install-Package Mediator.Net.SimpleInjector
+Install-Package Mediator.Net.SimpleInjector
 ```
 We have created a helper class InjectHelper to register all necessary components for Mediator.Net
 
 ```C#
-	var mediaBuilder = new MediatorBuilder();
-    mediaBuilder.RegisterHandlers(TestUtilAssembly.Assembly)
-        .ConfigureCommandReceivePipe(x =>
-        {
-            x.UseSimpleMiddleware();
-        });
-    _container = new Container();
-    _container.Options.DefaultScopedLifestyle = new LifetimeScopeLifestyle();
-    _container.Register<SimpleService>();
-    _container.Register<AnotherSimpleService>();
+var mediaBuilder = new MediatorBuilder();
+mediaBuilder.RegisterHandlers(TestUtilAssembly.Assembly)
+    .ConfigureCommandReceivePipe(x =>
+    {
+        x.UseSimpleMiddleware();
+    });
+_container = new Container();
+_container.Options.DefaultScopedLifestyle = new LifetimeScopeLifestyle();
+_container.Register<SimpleService>();
+_container.Register<AnotherSimpleService>();
     
-    InjectHelper.RegisterMediator(_container, mediaBuilder);
-
+InjectHelper.RegisterMediator(_container, mediaBuilder);
 ```
 Thought that you can have transient registration for IMediator, but we recommend to use lifetime scope, you can do constructor injection as well as the following
 ```C#
-	using (var scope = _container.BeginLifetimeScope())
-    {
-        _mediator = scope.GetInstance<IMediator>();
-        _task = _mediator.RequestAsync<SimpleRequest, SimpleResponse>(new SimpleRequest());
-    }
+using (var scope = _container.BeginLifetimeScope())
+{
+    _mediator = scope.GetInstance<IMediator>();
+    _task = _mediator.RequestAsync<SimpleRequest, SimpleResponse>(new SimpleRequest());
+}
 ```
 
 ## Middlewares
 One of the key feature for Mediator.Net is you can plug as many middlewares as you like, we have implemented some common one as below
 ###Mediator.Net.Middlewares.UnitOfWork
 ```
-	Install-Package Mediator.Net.Middlewares.UnitOfWork
+Install-Package Mediator.Net.Middlewares.UnitOfWork
 ```
 This middleware provide a CommittableTransaction inside the context, handlers can enlist the transaction if it requires UnitOfWork
 [Mediator.Net.Middlewares.UnitOfWork](https://github.com/mayuanyang/Mediator.Net.Middlewares.UnitOfWork) - Middleware for Mediator.Net to support unit of work.
 
 ### Mediator.Net.Middlewares.Serilog
 ```
-	Install-Package Mediator.Net.Middlewares.Serilog
+Install-Package Mediator.Net.Middlewares.Serilog
 ```
 This middleware logs every message by using Serilog
 
 ### Mediator.Net.Middlewares.EventStore
 ```
-	Install-Package Mediator.Net.Middlewares.EventStore
+Install-Package Mediator.Net.Middlewares.EventStore
 ```
 Middleware for Mediator.Net to write event to GetEventStore, it is a Middleware for Mediator.Net that plugs intothe publish pipeline
 [Mediator.Net.Middlewares.UnitOfWork](https://github.com/mayuanyang/Mediator.Net.Middlewares.EventStore) - Middleware for Mediator.Net to persist event to EventStore.
