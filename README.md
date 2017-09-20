@@ -137,7 +137,6 @@ class SerilogMiddlewareSpecification<TContext> : IPipeSpecification<TContext>
     public bool ShouldExecute(TContext context)
     {
         return true;
-
     }
 
     public Task ExecuteBeforeConnect(TContext context)
@@ -225,7 +224,6 @@ public class SimpleMiddlewareSpecification<TContext> : IPipeSpecification<TConte
     public bool ShouldExecute(TContext context)
     {
         return true;
-
     }
 
     public Task ExecuteBeforeConnect(TContext context)
@@ -315,7 +313,7 @@ StructureMapExtensions.Configure(mediaBuilder, _container);
 
 #### Unity
 ```C#
-	Install-Package Mediator.Net.Unity
+Install-Package Mediator.Net.Unity
 ```
 Setup an IUnityContainer and do your normal registration, then pass it along with the MediatorBuilder to the UnityExtensions class to register Mediator.Net
 ```C#
