@@ -45,9 +45,8 @@ namespace Mediator.Net.Pipeline
             return result;
         }
 
-        private Task<object> ConnectToHandler(TContext context)
+        private async Task<object> ConnectToHandler(TContext context)
         {
-
             var handlers =
                 MessageHandlerRegistry.MessageBindings.Where(
                     x => x.MessageType == context.Message.GetType()).ToList();
@@ -78,16 +77,11 @@ namespace Mediator.Net.Pipeline
             });
 
             var handler = (_resolver == null) ? Activator.CreateInstance(handlerType) : _resolver.Resolve(handlerType);
+
             var task = (Task)handleMethod.Invoke(handler, new object[] { context });
-            
-            var taskType = task.GetType();
-            var typeInfo = taskType.GetTypeInfo();
+            await task.ConfigureAwait(false);
 
-            var resultProperty = typeInfo.GetDeclaredProperty("Result").GetMethod;
-            var result = resultProperty.Invoke(task, new object[] { });
-
-            return Task.FromResult(result);
-
+            return task.GetType().GetTypeInfo().GetDeclaredProperty("Result").GetValue(task);
         }
 
 
