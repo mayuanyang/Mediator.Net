@@ -28,14 +28,7 @@ namespace Mediator.Net.Pipeline
             try
             {
                 await _specification.ExecuteBeforeConnect(context);
-                if (Next != null)
-                {
-                    await Next.Connect(context);
-                }
-                else
-                {
-                    result = await ConnectToHandler(context);
-                }
+                result = await (Next?.Connect(context) ?? ConnectToHandler(context));
                 await _specification.ExecuteAfterConnect(context);
             }
             catch (Exception e)
