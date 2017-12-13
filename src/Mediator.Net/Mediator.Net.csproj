@@ -20,7 +20,7 @@
     <GenerateAssemblyCopyrightAttribute>false</GenerateAssemblyCopyrightAttribute>
     <GenerateAssemblyVersionAttribute>false</GenerateAssemblyVersionAttribute>
     <GenerateAssemblyFileVersionAttribute>false</GenerateAssemblyFileVersionAttribute>
-    <PackageIconUrl>https://nuget.org/Content/gallery/img/default-package-icon-256x256.png</PackageIconUrl>
+    <PackageIconUrl>https://cloud.githubusercontent.com/assets/3387099/24353370/97f573f0-1330-11e7-890c-85855628a575.png</PackageIconUrl>
     <RepositoryUrl>https://github.com/mayuanyang/Mediator.Net</RepositoryUrl>
   </PropertyGroup>
 
