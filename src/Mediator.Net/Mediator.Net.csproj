@@ -1,0 +1,38 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <Description>Decouple does matter, A simple mediator for .Net for sending command, publishing event and request response with pipelines supported</Description>
+    <AssemblyTitle>A simple .NET mediator</AssemblyTitle>
+    <Authors>Yuan(Eddy) Ma</Authors>
+    <TargetFrameworks>net45;netstandard1.1</TargetFrameworks>
+    <AssemblyName>Mediator.Net</AssemblyName>
+    <PackageId>Mediator.Net</PackageId>
+    <PackageTags>.NET;Mediator;Cqrs;DDD;Command;Event;Request;Response</PackageTags>
+    <PackageProjectUrl>https://github.com/mayuanyang/Mediator.Net</PackageProjectUrl>
+    <PackageLicenseUrl>https://github.com/mayuanyang/Mediator.Net</PackageLicenseUrl>
+    <NetStandardImplicitPackageVersion Condition=" '$(TargetFramework)' == 'netstandard1.1' ">1.6.0</NetStandardImplicitPackageVersion>
+    <GenerateAssemblyTitleAttribute>false</GenerateAssemblyTitleAttribute>
+    <GenerateAssemblyDescriptionAttribute>false</GenerateAssemblyDescriptionAttribute>
+    <GenerateAssemblyConfigurationAttribute>false</GenerateAssemblyConfigurationAttribute>
+    <GenerateAssemblyCompanyAttribute>false</GenerateAssemblyCompanyAttribute>
+    <GenerateAssemblyProductAttribute>false</GenerateAssemblyProductAttribute>
+    <GenerateAssemblyCopyrightAttribute>false</GenerateAssemblyCopyrightAttribute>
+    <GenerateAssemblyVersionAttribute>false</GenerateAssemblyVersionAttribute>
+    <GenerateAssemblyFileVersionAttribute>false</GenerateAssemblyFileVersionAttribute>
+  </PropertyGroup>
+
+  <ItemGroup Condition=" '$(TargetFramework)' == 'net45' ">
+    <Reference Include="System" />
+    <Reference Include="Microsoft.CSharp" />
+  </ItemGroup>
+
+  <ItemGroup Condition=" '$(TargetFramework)' == 'netstandard1.1' ">
+    <PackageReference Include="System.Runtime" Version="4.1.0" />
+    <PackageReference Include="System.Reflection" Version="4.1.0" />
+    <PackageReference Include="System.Linq" Version="4.1.0" />
+    <PackageReference Include="System.Collections" Version="4.0.11" />
+    <PackageReference Include="System.Reflection.Extensions" Version="4.0.1" />
+    <PackageReference Include="System.Runtime.Extensions" Version="4.1.0" />
+  </ItemGroup>
+
+</Project>

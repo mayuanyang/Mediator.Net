@@ -14,6 +14,7 @@ namespace Mediator.Net.Context
             Message = message;
             _registeredServices = new List<object>();
         }
+
         public IEvent Message { get; }
         public void RegisterService<T>(T service)
         {

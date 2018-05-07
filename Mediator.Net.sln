@@ -1,30 +1,27 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 14
-VisualStudioVersion = 14.0.25420.1
+# Visual Studio 15
+VisualStudioVersion = 15.0.27428.2015
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{5BF2F858-926D-4A23-B32F-36B052A719CF}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{F37D71E1-DD5A-4504-93E0-C2133ECE5CC1}"
-	ProjectSection(SolutionItems) = preProject
-		global.json = global.json
-	EndProjectSection
-EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "Mediator.Net", "src\Mediator.Net\Mediator.Net.xproj", "{CEC12AF5-D444-4B6F-8129-6041A0D1F9C1}"
-EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "Mediator.Net.Test", "src\Mediator.Net.Test\Mediator.Net.Test.xproj", "{C38D89FD-CDA2-4FEC-95E4-2476E8027818}"
-EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "Mediator.Net.Autofac", "src\Mediator.Net.Autofac\Mediator.Net.Autofac.xproj", "{838C1537-081C-4B3C-B5A6-5222174AD8B0}"
-EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "Mediator.Net.Autofac.Test", "src\Mediator.Net.Autofac.Test\Mediator.Net.Autofac.Test.xproj", "{26D7088A-BC0C-43C3-B3B7-5EF9AB048FBE}"
-EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "Mediator.Net.IoCTestUtil", "src\Mediator.Net.IoCTestUtil\Mediator.Net.IoCTestUtil.xproj", "{C7EF3B6D-310B-4EF7-B2E7-97CB5141AD29}"
-EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "Mediator.Net.StructureMap", "src\Mediator.Net.StructureMap\Mediator.Net.StructureMap.xproj", "{5FCBEC1E-28BE-40E2-90F3-061D34082A55}"
-EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "Mediator.Net.StructureMap.Test", "src\Mediator.Net.StructureMap.Test\Mediator.Net.StructureMap.Test.xproj", "{73F653AD-EF77-40CA-BF6B-DA9B867FA208}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "test", "test", "{824BE2F6-887E-49A0-B1DF-30AE1FE8AEB4}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Mediator.Net", "src\Mediator.Net\Mediator.Net.csproj", "{CEC12AF5-D444-4B6F-8129-6041A0D1F9C1}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Mediator.Net.Test", "src\Mediator.Net.Test\Mediator.Net.Test.csproj", "{C38D89FD-CDA2-4FEC-95E4-2476E8027818}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Mediator.Net.Autofac", "src\Mediator.Net.Autofac\Mediator.Net.Autofac.csproj", "{838C1537-081C-4B3C-B5A6-5222174AD8B0}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Mediator.Net.Autofac.Test", "src\Mediator.Net.Autofac.Test\Mediator.Net.Autofac.Test.csproj", "{26D7088A-BC0C-43C3-B3B7-5EF9AB048FBE}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Mediator.Net.IoCTestUtil", "src\Mediator.Net.IoCTestUtil\Mediator.Net.IoCTestUtil.csproj", "{C7EF3B6D-310B-4EF7-B2E7-97CB5141AD29}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Mediator.Net.StructureMap", "src\Mediator.Net.StructureMap\Mediator.Net.StructureMap.csproj", "{5FCBEC1E-28BE-40E2-90F3-061D34082A55}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Mediator.Net.StructureMap.Test", "src\Mediator.Net.StructureMap.Test\Mediator.Net.StructureMap.Test.csproj", "{73F653AD-EF77-40CA-BF6B-DA9B867FA208}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -72,5 +69,8 @@ Global
 		{C7EF3B6D-310B-4EF7-B2E7-97CB5141AD29} = {5BF2F858-926D-4A23-B32F-36B052A719CF}
 		{5FCBEC1E-28BE-40E2-90F3-061D34082A55} = {5BF2F858-926D-4A23-B32F-36B052A719CF}
 		{73F653AD-EF77-40CA-BF6B-DA9B867FA208} = {824BE2F6-887E-49A0-B1DF-30AE1FE8AEB4}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {0B7A2DD9-8F7F-42C8-9CAF-4509141651D8}
 	EndGlobalSection
 EndGlobal
