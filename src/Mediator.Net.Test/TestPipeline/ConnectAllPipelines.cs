@@ -60,11 +60,11 @@ namespace Mediator.Net.Test.TestPipeline
 
         }
 
-        async Task WhenAllMessagesAreSent()
+        void WhenAllMessagesAreSent()
         {
-            await _mediator.SendAsync(new TestBaseCommand(Guid.NewGuid()));
-            await _mediator.PublishAsync(new TestEvent(Guid.NewGuid()));
-            await _mediator.RequestAsync<GetGuidRequest, GetGuidResponse>(new GetGuidRequest(Guid.NewGuid()));
+            _mediator.SendAsync(new TestBaseCommand(Guid.NewGuid())).Wait();
+            _mediator.PublishAsync(new TestEvent(Guid.NewGuid())).Wait();
+            _mediator.RequestAsync<GetGuidRequest, GetGuidResponse>(new GetGuidRequest(Guid.NewGuid())).Wait();
             
         }
 

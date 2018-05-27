@@ -44,10 +44,10 @@ namespace Mediator.Net.Test.TestCommandHandlers
 
         }
 
-        async Task ThenItShouldReachTheRightHandler()
+        void ThenItShouldReachTheRightHandler()
         {
-            await _task1;
-            await _task2;
+            _task1.Wait();
+            _task2.Wait();
             _task1.Status.ShouldBe(TaskStatus.RanToCompletion);
             _task2.Status.ShouldBe(TaskStatus.RanToCompletion);
             RubishBox.Rublish.Count.ShouldBe(2);

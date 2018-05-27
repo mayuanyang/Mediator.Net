@@ -51,10 +51,10 @@ namespace Mediator.Net.Test.TestPipeline
 
         }
 
-        async Task WhenACommandAndARequestAreSent()
+        void WhenACommandAndARequestAreSent()
         {
             _commandTask = _mediator.SendAsync(new TestBaseCommand(Guid.NewGuid()));
-            _result = await _mediator.RequestAsync<GetGuidRequest, GetGuidResponse>(new GetGuidRequest(_id));
+            _result = _mediator.RequestAsync<GetGuidRequest, GetGuidResponse>(new GetGuidRequest(_id)).Result;
         }
 
         void ThenTheCommandShouldBeHandled()

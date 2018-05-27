@@ -37,14 +37,14 @@ namespace Mediator.Net.Test.TestPerformance
 
         }
 
-        async Task When1000CommandIsSentByDifferentMediator()
+        void When1000CommandIsSentByDifferentMediator()
         {
             var sw = new Stopwatch();
             sw.Start();
             for (int i = 0; i < 1000; i++)
             {
                 var mediator = _builder.Build();
-                await mediator.SendAsync(new NoWorkCommand());
+                mediator.SendAsync(new NoWorkCommand()).Wait();
             }
 
             sw.Stop();

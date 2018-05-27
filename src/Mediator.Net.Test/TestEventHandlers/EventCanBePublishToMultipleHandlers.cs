@@ -33,10 +33,10 @@ namespace Mediator.Net.Test.TestEventHandlers
             
         }
 
-        async Task WhenAEventIsSent()
+        void WhenAEventIsSent()
         {
             _task = _mediator.PublishAsync(new TestEvent(Guid.NewGuid()));
-            await _task;
+            _task.Wait();
         }
 
         void ThenItShouldReachTheRightHandlers()

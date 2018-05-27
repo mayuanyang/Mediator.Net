@@ -33,11 +33,11 @@ namespace Mediator.Net.Test.TestCommandHandlers
 
         }
 
-        async Task WhenACommandIsSent()
+        void WhenACommandIsSent()
         {
             var sw = new Stopwatch();
             sw.Start();
-            await _mediator.SendAsync(new TestBaseCommand(Guid.NewGuid()));
+            _mediator.SendAsync(new TestBaseCommand(Guid.NewGuid())).Wait();
             sw.Stop();
             Console.WriteLine($"it took {sw.ElapsedMilliseconds} milliseconds");
         }

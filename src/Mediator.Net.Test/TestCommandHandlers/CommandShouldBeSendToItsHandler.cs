@@ -38,9 +38,9 @@ namespace Mediator.Net.Test.TestCommandHandlers
 
         }
 
-        async Task ThenItShouldReachTheRightHandler()
+        void ThenItShouldReachTheRightHandler()
         {
-            await _task;
+            _task.Wait();
             _task.Status.ShouldBe(TaskStatus.RanToCompletion);
             RubishBox.Rublish.Contains(nameof(TestBaseCommandHandler)).ShouldBeTrue();
             RubishBox.Rublish.Count.ShouldBe(1);

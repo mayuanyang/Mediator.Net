@@ -36,10 +36,10 @@ namespace Mediator.Net.Test.TestCommandHandlers
             
         }
 
-        async Task WhenAMoreDerivedCommandIsSent()
+        void WhenAMoreDerivedCommandIsSent()
         {
             _task = _mediator.SendAsync(new DerivedTestBaseCommand(Guid.NewGuid()));
-            await _task;
+            _task.Wait();
         }
 
         void ThenItShouldReachTheRightHandler()

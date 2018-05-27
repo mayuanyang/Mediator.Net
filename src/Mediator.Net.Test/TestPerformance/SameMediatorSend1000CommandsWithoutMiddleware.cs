@@ -29,13 +29,13 @@ namespace Mediator.Net.Test.TestPerformance
 
         }
 
-        async Task When1000CommandIsSent()
+        void When1000CommandIsSent()
         {
             var sw = new Stopwatch();
             sw.Start();
             for (int i = 0; i < 1000; i++)
             {
-                await _mediator.SendAsync(new NoWorkCommand());
+                _mediator.SendAsync(new NoWorkCommand()).Wait();
             }
             sw.Stop();
             milliSeconds = sw.ElapsedMilliseconds;

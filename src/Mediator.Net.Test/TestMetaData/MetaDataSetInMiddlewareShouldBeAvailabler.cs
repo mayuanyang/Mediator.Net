@@ -37,9 +37,9 @@ namespace Mediator.Net.Test.TestMetaData
 
         }
 
-        async Task WhenACommandIsSent()
+        void WhenACommandIsSent()
         {
-            await _mediator.SendAsync(new TestBaseCommand(Guid.NewGuid()));
+            _mediator.SendAsync(new TestBaseCommand(Guid.NewGuid())).Wait();
         }
 
         void ThenItShouldReachTheRightHandler()

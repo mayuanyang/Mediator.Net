@@ -27,10 +27,10 @@ namespace Mediator.Net.Test.TestEventHandlers
             _mediator = _builder.RegisterHandlers(typeof(PublishDerivedEventShouldBeHandledByBaseHandler).Assembly()).Build();
         }
 
-        async Task WhenAMoreDerivedEventIsPublished()
+        void WhenAMoreDerivedEventIsPublished()
         {
             _task = _mediator.PublishAsync(new DerivedEvent(Guid.NewGuid(), "ddd"));
-            await _task;
+            _task.Wait();
 
         }
 

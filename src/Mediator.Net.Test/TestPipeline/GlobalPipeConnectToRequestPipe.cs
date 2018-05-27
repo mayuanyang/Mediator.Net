@@ -43,10 +43,9 @@ namespace Mediator.Net.Test.TestPipeline
 
         }
 
-        async Task WhenARequestIsSent()
+        void WhenARequestIsSent()
         {
-            _response = await _mediator.RequestAsync<GetGuidRequest, GetGuidResponse>(new GetGuidRequest(_id));
-            
+            _response = _mediator.RequestAsync<GetGuidRequest, GetGuidResponse>(new GetGuidRequest(_id)).Result;
         }
 
         void ThenTheRequestShouldBeHandled()
