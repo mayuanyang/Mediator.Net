@@ -47,7 +47,7 @@ namespace Mediator.Net.Test.TestPerformance
             milliSeconds.ShouldBeLessThan(50);
         }
 
-        [Fact]
+        [Trait("Category", "Performance")]
         public void Run()
         {
             this.BDDfy();
