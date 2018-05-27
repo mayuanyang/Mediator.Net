@@ -7,7 +7,7 @@ using Xunit;
 
 namespace Mediator.Net.Autofac.Test.Tests
 {
-    
+    [Collection("Sequential")]
     public class TestContainer : TestBase
     {
         private IContainer _container = null;

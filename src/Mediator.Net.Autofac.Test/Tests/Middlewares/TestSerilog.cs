@@ -12,6 +12,7 @@ using Xunit;
 
 namespace Mediator.Net.Autofac.Test.Tests.Middlewares
 {
+    [Collection("Sequential")]
     public class TestSerilogInGlobalAndCommandPipe : TestBase
     {
         private IContainer _container = null;

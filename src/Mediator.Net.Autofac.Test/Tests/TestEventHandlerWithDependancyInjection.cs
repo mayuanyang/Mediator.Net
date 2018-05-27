@@ -10,6 +10,8 @@ using Xunit;
 
 namespace Mediator.Net.Autofac.Test.Tests
 {
+
+    [Collection("Sequential")]
     public class TestEventHandlerWithDependancyInjection : TestBase
     {
         private IContainer _container = null;
