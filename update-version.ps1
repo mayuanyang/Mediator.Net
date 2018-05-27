@@ -4,7 +4,7 @@ if ($env:APPVEYOR_REPO_TAG -eq "true" -And $env:APPVEYOR_REPO_BRANCH -eq "master
 }
 else
 {
-    Update-AppveyorBuild -Version "$env:APPVEYOR_REPO_BRANCH-$($env:APPVEYOR_BUILD_VERSION)-ci$($env:APPVEYOR_BUILD_NUMBER)"
+    Update-AppveyorBuild -Version "$($env:APPVEYOR_BUILD_VERSION)-$($env:APPVEYOR_REPO_BRANCH)$($env:APPVEYOR_BUILD_NUMBER)"
 }
 $configFiles = Get-ChildItem . *.csproj -rec
 $versionString = "<PackageVersion>" + $env:APPVEYOR_BUILD_VERSION + "</PackageVersion>"
