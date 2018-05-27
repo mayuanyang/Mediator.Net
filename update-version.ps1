@@ -1,6 +1,8 @@
-if ($env:APPVEYOR_REPO_TAG -eq "true" -And $env:APPVEYOR_REPO_BRANCH -eq "master")
+if ($env:APPVEYOR_REPO_BRANCH -eq "master")
 {
-    Update-AppveyorBuild -Version "$($env:APPVEYOR_REPO_TAG_NAME)"
+	$ver = "$($env:APPVEYOR_BUILD_VERSION)"
+	$verForRelease = $ver.SubString(0,$ver.lastIndexOf("."))
+    Update-AppveyorBuild -Version "$verForRelease"
 }
 else
 {
