@@ -15,7 +15,7 @@ namespace Mediator.Net.Autofac.Test.Tests.Middlewares
     [Collection("Sequential")]
     public class TestSerilogInGlobalAndCommandPipe : TestBase
     {
-        private IContainer _container = null;
+        private IContainer _container;
         private IMediator _mediator;
         private ILogger _logger;
 
@@ -26,14 +26,11 @@ namespace Mediator.Net.Autofac.Test.Tests.Middlewares
             containerBuilder.RegisterInstance(_logger).As<ILogger>();
 
             var mediaBuilder = new MediatorBuilder();
+            Console.WriteLine($"Thread ID {System.Threading.Thread.CurrentThread.ManagedThreadId}");
             mediaBuilder.RegisterHandlers(TestUtilAssembly.Assembly)
-                .ConfigureGlobalReceivePipe(x =>
-                {
-                    x.UseSerilog();
-                }).ConfigureCommandReceivePipe(y =>
-                {
-                    y.UseSerilog();
-                }).ConfigureEventReceivePipe(z => z.UseSerilog())
+                .ConfigureGlobalReceivePipe(x => x.UseSerilog())
+                .ConfigureCommandReceivePipe(y => y.UseSerilog())
+                .ConfigureEventReceivePipe(z => z.UseSerilog())
                 .ConfigureRequestPipe(x => x.UseSerilog());
             
             containerBuilder.RegisterMediator(mediaBuilder);
