@@ -11,13 +11,12 @@ using Xunit;
 
 namespace Mediator.Net.Autofac.Test.Tests
 {
-    [Collection("Avoid parallel execution")]
     public class TestAllPipelines : TestBase
     {
         private IContainer _container = null;
         private IMediator _mediator;
         
-        public void GivenAMediatorBuildConnectsToAllPipelines()
+        void GivenAMediatorBuildConnectsToAllPipelines()
         {
             base.ClearBinding();
             var mediaBuilder = new MediatorBuilder();
@@ -48,16 +47,16 @@ namespace Mediator.Net.Autofac.Test.Tests
             _container = containerBuilder.Build();
         }
 
-        public async Task WhenAMessageIsSent()
+        void WhenAMessageIsSent()
         {
             _mediator = _container.Resolve<IMediator>();
-            await _mediator.SendAsync(new SimpleCommand(Guid.NewGuid()));
-            await _mediator.PublishAsync(new SimpleEvent());
-            await _mediator.RequestAsync<SimpleRequest, SimpleResponse>(new SimpleRequest());
+            _mediator.SendAsync(new SimpleCommand(Guid.NewGuid())).Wait();
+            _mediator.PublishAsync(new SimpleEvent()).Wait();
+            _mediator.RequestAsync<SimpleRequest, SimpleResponse>(new SimpleRequest()).Wait();
 
         }
 
-        public void ThenAllMiddlewaresInPipelinesShouldBeExecuted()
+        void ThenAllMiddlewaresInPipelinesShouldBeExecuted()
         {
             RubishBin.Rublish.Count.ShouldBe(6);
             

@@ -7,13 +7,12 @@ using Xunit;
 
 namespace Mediator.Net.Autofac.Test.Tests
 {
-    [Collection("Avoid parallel execution")]
     public class TestContainer : TestBase
     {
         private IContainer _container = null;
         private IMediator _mediator;
  
-        public void GivenAContainer()
+        void GivenAContainer()
         {
             base.ClearBinding();
             var mediaBuilder = new MediatorBuilder();
@@ -27,12 +26,12 @@ namespace Mediator.Net.Autofac.Test.Tests
             _container = containerBuilder.Build();
         }
 
-        public void WhenTryToResolveTheInterfaceType()
+        void WhenTryToResolveTheInterfaceType()
         {
             _mediator = _container.Resolve<IMediator>();
         }
 
-        public void ThenInterfaceTypeShouldBeResolved()
+        void ThenInterfaceTypeShouldBeResolved()
         {
             _mediator.ShouldNotBeNull();
             

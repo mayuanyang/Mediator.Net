@@ -12,27 +12,25 @@ using Xunit;
 
 namespace Mediator.Net.Autofac.Test.Tests.Middlewares
 {
-    class TestSerilogInGlobalAndCommandPipe : TestBase
+    public class TestSerilogInGlobalAndCommandPipe : TestBase
     {
-        private IContainer _container = null;
+        private IContainer _container;
         private IMediator _mediator;
         private ILogger _logger;
 
-        public void GivenAMediatorWithSerilogAddToAllPipelines()
+        void GivenAMediatorWithSerilogAddToAllPipelines()
         {
+            ClearBinding();
             var containerBuilder = new ContainerBuilder();
             _logger = Substitute.For<ILogger>();
             containerBuilder.RegisterInstance(_logger).As<ILogger>();
 
             var mediaBuilder = new MediatorBuilder();
+
             mediaBuilder.RegisterHandlers(TestUtilAssembly.Assembly)
-                .ConfigureGlobalReceivePipe(x =>
-                {
-                    x.UseSerilog();
-                }).ConfigureCommandReceivePipe(y =>
-                {
-                    y.UseSerilog();
-                }).ConfigureEventReceivePipe(z => z.UseSerilog())
+                .ConfigureGlobalReceivePipe(x => x.UseSerilog())
+                .ConfigureCommandReceivePipe(y => y.UseSerilog())
+                .ConfigureEventReceivePipe(z => z.UseSerilog())
                 .ConfigureRequestPipe(x => x.UseSerilog());
             
             containerBuilder.RegisterMediator(mediaBuilder);
@@ -41,15 +39,15 @@ namespace Mediator.Net.Autofac.Test.Tests.Middlewares
             _container = containerBuilder.Build();
         }
 
-        public async Task WhenACommandAndEventAreSent()
+        void WhenACommandAndEventAreSent()
         {
             _mediator = _container.Resolve<IMediator>();
-            await _mediator.SendAsync(new SimpleCommand(Guid.NewGuid()));
-            await _mediator.PublishAsync(new SimpleEvent());
-            await _mediator.RequestAsync<SimpleRequest, SimpleResponse>(new SimpleRequest());
+            _mediator.SendAsync(new SimpleCommand(Guid.NewGuid())).Wait();
+            _mediator.PublishAsync(new SimpleEvent()).Wait();
+            _mediator.RequestAsync<SimpleRequest, SimpleResponse>(new SimpleRequest()).Wait();
         }
 
-        public void ThenItShouldLogTheCommand()
+        void ThenItShouldLogTheCommand()
         {
             _logger.Received(2).Information(Arg.Any<string>(), Arg.Any<SimpleCommand>());
             _logger.Received(2).Information(Arg.Any<string>(), Arg.Any<SimpleEvent>());

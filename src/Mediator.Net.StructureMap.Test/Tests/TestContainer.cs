@@ -7,13 +7,12 @@ using Xunit;
 
 namespace Mediator.Net.StructureMap.Test.Tests
 {
-   
-    class TestContainer : TestBase
+    public class TestContainer : TestBase
     {
         private IContainer _container = null;
         private IMediator _mediator;
  
-        public void GivenAContainer()
+        void GivenAContainer()
         {
             ClearBinding();
             var mediaBuilder = new MediatorBuilder();
@@ -27,12 +26,12 @@ namespace Mediator.Net.StructureMap.Test.Tests
             StructureMapExtensions.Configure(mediaBuilder, _container);
         }
 
-        public void WhenTryToResolveTheInterfaceType()
+        void WhenTryToResolveTheInterfaceType()
         {
             _mediator = _container.GetInstance<IMediator>();
         }
 
-        public void ThenInterfaceTypeShouldBeResolved()
+        void ThenInterfaceTypeShouldBeResolved()
         {
             _mediator.ShouldNotBeNull();
             

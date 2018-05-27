@@ -9,12 +9,12 @@ using Xunit;
 
 namespace Mediator.Net.Test.CommandHandlers
 {
-    class TestNormalPerformance : TestBase
+    public class TestNormalPerformance : TestBase
     {
         private TestBaseCommandHandler _handler;
         private Stopwatch _sw;
 
-        public void GivenAHandler()
+        void GivenAHandler()
         {
             ClearBinding();
             _sw = new Stopwatch();
@@ -22,7 +22,7 @@ namespace Mediator.Net.Test.CommandHandlers
             _handler = new TestBaseCommandHandler();
         }
 
-        public async Task WhenTheCommandIsHandled()
+        async Task WhenTheCommandIsHandled()
         {
             var cmd = new TestBaseCommand(Guid.NewGuid());
             var context = new ReceiveContext<TestBaseCommand>(cmd);
@@ -39,7 +39,7 @@ namespace Mediator.Net.Test.CommandHandlers
             Console.WriteLine($"It took {_sw.ElapsedMilliseconds} milliseconds");
         }
 
-        public void ThenItShouldBeFast()
+        void ThenItShouldBeFast()
         {
             
         }

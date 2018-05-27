@@ -11,7 +11,7 @@ using Xunit;
 
 namespace Mediator.Net.Test.TestCommandHandlers
 {
-    [Collection("Avoid parallel execution")]
+    
     public class CommandShouldBeSendToItsHandler : TestBase
     {
         private IMediator _mediator;
@@ -21,7 +21,7 @@ namespace Mediator.Net.Test.TestCommandHandlers
         {
             ClearBinding();
         }
-        public void GivenAMediatorWithNoPipeline()
+        void GivenAMediatorWithNoPipeline()
         {
             var builder = new MediatorBuilder();
             _mediator = builder.RegisterHandlers(() =>
@@ -32,15 +32,15 @@ namespace Mediator.Net.Test.TestCommandHandlers
 
         }
 
-        public void WhenACommandIsSent()
+        void WhenACommandIsSent()
         {
             _task = _mediator.SendAsync(new TestBaseCommand(Guid.NewGuid()));
 
         }
 
-        public async Task ThenItShouldReachTheRightHandler()
+        void ThenItShouldReachTheRightHandler()
         {
-            await _task;
+            _task.Wait();
             _task.Status.ShouldBe(TaskStatus.RanToCompletion);
             RubishBox.Rublish.Contains(nameof(TestBaseCommandHandler)).ShouldBeTrue();
             RubishBox.Rublish.Count.ShouldBe(1);

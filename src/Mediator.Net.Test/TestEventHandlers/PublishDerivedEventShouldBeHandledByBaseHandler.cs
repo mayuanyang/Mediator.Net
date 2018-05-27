@@ -9,32 +9,32 @@ using Xunit;
 
 namespace Mediator.Net.Test.TestEventHandlers
 {
-    [Collection("Avoid parallel execution")]
+    
     public class PublishDerivedEventShouldBeHandledByBaseHandler : TestBase
     {
         private IMediator _mediator;
         private Task _task;
         private MediatorBuilder _builder;
-        public void GivenAMediatorBuilder()
+        void GivenAMediatorBuilder()
         {
             ClearBinding();
             _builder = new MediatorBuilder();
             
         }
 
-        public void AndGivenTheEventIsRegisteredToItsBaseClassHandler()
+        void AndGivenTheEventIsRegisteredToItsBaseClassHandler()
         {
             _mediator = _builder.RegisterHandlers(typeof(PublishDerivedEventShouldBeHandledByBaseHandler).Assembly()).Build();
         }
 
-        public async Task WhenAMoreDerivedEventIsPublished()
+        void WhenAMoreDerivedEventIsPublished()
         {
             _task = _mediator.PublishAsync(new DerivedEvent(Guid.NewGuid(), "ddd"));
-            await _task;
+            _task.Wait();
 
         }
 
-        public void ThenItShouldReachTheBaseEventHandler()
+        void ThenItShouldReachTheBaseEventHandler()
         {
             _task.Status.ShouldBe(TaskStatus.RanToCompletion);
             RubishBox.Rublish.Count.ShouldBe(3);

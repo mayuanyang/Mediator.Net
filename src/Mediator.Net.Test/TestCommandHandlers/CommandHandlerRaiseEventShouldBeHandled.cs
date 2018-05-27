@@ -13,7 +13,7 @@ using Xunit;
 
 namespace Mediator.Net.Test.TestCommandHandlers
 {
-    [Collection("Avoid parallel execution")]
+    
     public class CommandHandlerRaiseEventShouldBeHandled : TestBase
     {
         private IMediator _mediator;
@@ -22,7 +22,7 @@ namespace Mediator.Net.Test.TestCommandHandlers
         {
             ClearBinding();
         }
-        public void GivenAMediator()
+        void GivenAMediator()
         {
             var builder = new MediatorBuilder();
             _mediator = builder.RegisterHandlers(() =>
@@ -42,13 +42,13 @@ namespace Mediator.Net.Test.TestCommandHandlers
 
         }
 
-        public async Task WhenACommandIsSent()
+        void WhenACommandIsSent()
         {
-           await _mediator.SendAsync(new TestBaseCommand(Guid.NewGuid()));
+           _mediator.SendAsync(new TestBaseCommand(Guid.NewGuid())).Wait();
         }
 
      
-        public void ThenItShouldPutSomeRubishIntoRublishBox()
+        void ThenItShouldPutSomeRubishIntoRublishBox()
         {
             RubishBox.Rublish.Contains(nameof(DummySave.UseDummySave)).ShouldBeTrue();
             RubishBox.Rublish.Contains(nameof(TestBaseCommandHandlerRaiseEvent)).ShouldBeTrue();

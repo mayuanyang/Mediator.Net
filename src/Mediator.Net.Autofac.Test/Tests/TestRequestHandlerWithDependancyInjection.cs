@@ -10,14 +10,13 @@ using Xunit;
 
 namespace Mediator.Net.Autofac.Test.Tests
 {
-    [Collection("Avoid parallel execution")]
     public class TestRequestHandlerWithDependancyInjection : TestBase
     {
         private IContainer _container = null;
         private IMediator _mediator;
         private Task _task;
  
-        public void GivenAContainer()
+        void GivenAContainer()
         {
             base.ClearBinding();
             var mediaBuilder = new MediatorBuilder();
@@ -33,13 +32,13 @@ namespace Mediator.Net.Autofac.Test.Tests
             _container = containerBuilder.Build();
         }
 
-        public void WhenARequestIsSent()
+        void WhenARequestIsSent()
         {
             _mediator = _container.Resolve<IMediator>();
             _task = _mediator.RequestAsync<SimpleRequest, SimpleResponse>(new SimpleRequest());
         }
 
-        public void ThenTheRequestShouldReachItsHandler()
+        void ThenTheRequestShouldReachItsHandler()
         {
             _task.Status.ShouldBe(TaskStatus.RanToCompletion);
             

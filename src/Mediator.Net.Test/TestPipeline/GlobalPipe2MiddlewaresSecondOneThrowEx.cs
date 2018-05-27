@@ -13,11 +13,11 @@ using Xunit;
 
 namespace Mediator.Net.Test.TestPipeline
 {
-    [Collection("Avoid parallel execution")]
+    
     public class GlobalPipe2MiddlewaresSecondOneThrowEx : TestBase
     {
         private IMediator _mediator;
-        public void GivenAMediatorWithGlobalPipeWith2Middlewares()
+        void GivenAMediatorWithGlobalPipeWith2Middlewares()
         {
             ClearBinding();
            var builder = new MediatorBuilder();
@@ -38,11 +38,11 @@ namespace Mediator.Net.Test.TestPipeline
             .Build();
         }
 
-        public async Task WhenACommandIsSent()
+        void WhenACommandIsSent()
         {
             try
             {
-                await _mediator.SendAsync(new TestBaseCommand(Guid.NewGuid()));
+                _mediator.SendAsync(new TestBaseCommand(Guid.NewGuid())).Wait();
             }
             catch (Exception)
             {
@@ -50,7 +50,7 @@ namespace Mediator.Net.Test.TestPipeline
             }
         }
 
-        public void ThenBothMiddlewaresShouldHandleException()
+        void ThenBothMiddlewaresShouldHandleException()
         {
             RubishBox.Rublish.Where(x => x is Exception).ToList().Count.ShouldBe(2);
         }

@@ -2,7 +2,7 @@
 
 namespace Mediator.Net.StructureMap.Test
 {
-    class TestBase
+    public class TestBase
     {
         public void ClearBinding()
         {

@@ -13,13 +13,13 @@ using Xunit;
 namespace Mediator.Net.SimpleInjector.Test.Tests
 {
 
-    class TestCommandHandlerWithDependancyInjection : TestBase
+    public class TestCommandHandlerWithDependancyInjection : TestBase
     {
         private Container _container = null;
         private IMediator _mediator;
         private Task _task;
 
-        public void GivenAContainer()
+        void GivenAContainer()
         {
             ClearBinding();
             var mediaBuilder = new MediatorBuilder();
@@ -36,7 +36,7 @@ namespace Mediator.Net.SimpleInjector.Test.Tests
             InjectHelper.RegisterMediator(_container, mediaBuilder);
         }
 
-        public void WhenACommandIsSent()
+        void WhenACommandIsSent()
         {
             using (var scope = _container.BeginLifetimeScope())
             {
@@ -46,7 +46,7 @@ namespace Mediator.Net.SimpleInjector.Test.Tests
 
         }
 
-        public void ThenTheCommandShouldReachItsHandler()
+        void ThenTheCommandShouldReachItsHandler()
         {
             _task.Status.ShouldBe(TaskStatus.RanToCompletion);
 

@@ -9,14 +9,13 @@ using Xunit;
 
 namespace Mediator.Net.StructureMap.Test.Tests
 {
-   
-    class TestEventHandlerWithDependancyInjection : TestBase
+    public class TestEventHandlerWithDependancyInjection : TestBase
     {
         private IContainer _container = null;
         private IMediator _mediator;
         private Task _task;
  
-        public void GivenAContainer()
+        void GivenAContainer()
         {
             ClearBinding();
             var mediaBuilder = new MediatorBuilder();
@@ -29,13 +28,13 @@ namespace Mediator.Net.StructureMap.Test.Tests
             StructureMapExtensions.Configure(mediaBuilder, _container);
         }
 
-        public void WhenACommandIsSent()
+        void WhenACommandIsSent()
         {
             _mediator = _container.GetInstance<IMediator>();
             _task = _mediator.PublishAsync(new SimpleEvent());
         }
 
-        public void ThenTheEventShouldReachItsHandler()
+        void ThenTheEventShouldReachItsHandler()
         {
             _task.Status.ShouldBe(TaskStatus.RanToCompletion);
             

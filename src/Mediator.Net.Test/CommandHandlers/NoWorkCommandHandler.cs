@@ -9,7 +9,7 @@ namespace Mediator.Net.Test.CommandHandlers
     {
         public Task Handle(ReceiveContext<NoWorkCommand> context)
         {
-            return Task.CompletedTask;
+            return Task.FromResult(0);
         }
     }
 }

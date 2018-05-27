@@ -1,12 +1,10 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netcoreapp1.0</TargetFramework>
+    <TargetFrameworks>netcoreapp2.0;net452;net46</TargetFrameworks>
     <AssemblyName>Mediator.Net.Test</AssemblyName>
     <PackageId>Mediator.Net.Test</PackageId>
     <GenerateRuntimeConfigurationFiles>true</GenerateRuntimeConfigurationFiles>
-    <NetStandardImplicitPackageVersion>1.6.1</NetStandardImplicitPackageVersion>
-    <PackageTargetFallback>$(PackageTargetFallback);dnxcore50</PackageTargetFallback>
     <GenerateAssemblyTitleAttribute>false</GenerateAssemblyTitleAttribute>
     <GenerateAssemblyDescriptionAttribute>false</GenerateAssemblyDescriptionAttribute>
     <GenerateAssemblyConfigurationAttribute>false</GenerateAssemblyConfigurationAttribute>
@@ -18,16 +16,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Mediator.Net.IoCTestUtil\Mediator.Net.IoCTestUtil.csproj" />
     <ProjectReference Include="..\Mediator.Net\Mediator.Net.csproj" />
   </ItemGroup>
-
-  <ItemGroup>
-    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="15.0.0" />
-    <PackageReference Include="Shouldly" Version="2.8.2" />
-    <PackageReference Include="System.Console" Version="4.3.0" />
-    <PackageReference Include="TestStack.BDDfy" Version="4.3.2" />
-    <PackageReference Include="xunit" Version="2.2.0" />
-    <PackageReference Include="xunit.runner.visualstudio" Version="2.2.0" />
-  </ItemGroup>
-
 </Project>

@@ -12,13 +12,13 @@ using Xunit;
 
 namespace Mediator.Net.Test.TestRequestHandlers
 {
-    [Collection("Avoid parallel execution")]
+    
     public class OneRequestShouldNotHaveMultipleHandlers : TestBase
     {
         private IMediator _mediator;
         private Task _task;
         private readonly Guid _guid = Guid.NewGuid();
-        public void GivenAMediatorAndTwoMiddlewares()
+        void GivenAMediatorAndTwoMiddlewares()
         {
             ClearBinding();
             var builder = new MediatorBuilder();
@@ -45,13 +45,13 @@ namespace Mediator.Net.Test.TestRequestHandlers
 
         }
 
-        public Task WhenARequestIsSent()
+        Task WhenARequestIsSent()
         {
             _task = _mediator.RequestAsync<GetGuidRequest, GetGuidResponse>(new GetGuidRequest(_guid));
             return Task.FromResult(0);
         }
 
-        public void ThenTheResultShouldBeReturn()
+        void ThenTheResultShouldBeReturn()
         {
             _task.ShouldThrow<MoreThanOneHandlerException>();
         }

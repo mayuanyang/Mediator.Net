@@ -10,7 +10,7 @@ using Xunit;
 
 namespace Mediator.Net.Test.TestCommandHandlers
 {
-    [Collection("Avoid parallel execution")]
+    
     public class AsyncCommandHandlerShouldWork : TestBase
     {
 
@@ -20,7 +20,7 @@ namespace Mediator.Net.Test.TestCommandHandlers
         {
             ClearBinding();
         }
-        public void GivenAMediator()
+        void GivenAMediator()
         {
             
             var builder = new MediatorBuilder();
@@ -33,16 +33,16 @@ namespace Mediator.Net.Test.TestCommandHandlers
 
         }
 
-        public async Task WhenACommandIsSent()
+        void WhenACommandIsSent()
         {
             var sw = new Stopwatch();
             sw.Start();
-            await _mediator.SendAsync(new TestBaseCommand(Guid.NewGuid()));
+            _mediator.SendAsync(new TestBaseCommand(Guid.NewGuid())).Wait();
             sw.Stop();
             Console.WriteLine($"it took {sw.ElapsedMilliseconds} milliseconds");
         }
 
-        public void ThenItShouldReachTheRightHandler()
+        void ThenItShouldReachTheRightHandler()
         {
 
         }

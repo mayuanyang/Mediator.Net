@@ -16,12 +16,12 @@ using Xunit;
 
 namespace Mediator.Net.Test.TestPipeline
 {
-    [Collection("Avoid parallel execution")]
+    
     public class ConnectAllPipelines : TestBase
     {
         private IMediator _mediator;
         private Guid _id = Guid.NewGuid();
-        public void GivenAMediator()
+        void GivenAMediator()
         {
             ClearBinding();
            var builder = new MediatorBuilder();
@@ -60,15 +60,15 @@ namespace Mediator.Net.Test.TestPipeline
 
         }
 
-        public async Task WhenAllMessagesAreSent()
+        void WhenAllMessagesAreSent()
         {
-            await _mediator.SendAsync(new TestBaseCommand(Guid.NewGuid()));
-            await _mediator.PublishAsync(new TestEvent(Guid.NewGuid()));
-            await _mediator.RequestAsync<GetGuidRequest, GetGuidResponse>(new GetGuidRequest(Guid.NewGuid()));
+            _mediator.SendAsync(new TestBaseCommand(Guid.NewGuid())).Wait();
+            _mediator.PublishAsync(new TestEvent(Guid.NewGuid())).Wait();
+            _mediator.RequestAsync<GetGuidRequest, GetGuidResponse>(new GetGuidRequest(Guid.NewGuid())).Wait();
             
         }
 
-        public void ThenTheRightMiddlewaresShouldBeUsed()
+        void ThenTheRightMiddlewaresShouldBeUsed()
         {
             
             RubishBox.Rublish.Count.ShouldBe(13);
@@ -92,7 +92,7 @@ namespace Mediator.Net.Test.TestPipeline
           
         }
 
-        public void AndTheMiddlewaresShouldBeUsedInTheCorrectOrder()
+        void AndTheMiddlewaresShouldBeUsedInTheCorrectOrder()
         {
             RubishBox.Rublish[0].ShouldBe(nameof(DummySave.UseDummySave));
             RubishBox.Rublish[1].ShouldBe(nameof(ConsoleLog1.UseConsoleLogger1));

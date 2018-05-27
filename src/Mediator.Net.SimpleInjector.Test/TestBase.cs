@@ -2,7 +2,7 @@
 
 namespace Mediator.Net.SimpleInjector.Test
 {
-    class TestBase
+    public class TestBase
     {
         public void ClearBinding()
         {
