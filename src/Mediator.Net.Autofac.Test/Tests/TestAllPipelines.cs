@@ -11,7 +11,6 @@ using Xunit;
 
 namespace Mediator.Net.Autofac.Test.Tests
 {
-    [Collection("Sequential")]
     public class TestAllPipelines : TestBase
     {
         private IContainer _container = null;

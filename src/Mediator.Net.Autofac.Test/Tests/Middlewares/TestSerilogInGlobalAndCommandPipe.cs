@@ -12,7 +12,6 @@ using Xunit;
 
 namespace Mediator.Net.Autofac.Test.Tests.Middlewares
 {
-    [Collection("Sequential")]
     public class TestSerilogInGlobalAndCommandPipe : TestBase
     {
         private IContainer _container;
@@ -21,12 +20,13 @@ namespace Mediator.Net.Autofac.Test.Tests.Middlewares
 
         void GivenAMediatorWithSerilogAddToAllPipelines()
         {
+            ClearBinding();
             var containerBuilder = new ContainerBuilder();
             _logger = Substitute.For<ILogger>();
             containerBuilder.RegisterInstance(_logger).As<ILogger>();
 
             var mediaBuilder = new MediatorBuilder();
-            Console.WriteLine($"Thread ID {System.Threading.Thread.CurrentThread.ManagedThreadId}");
+
             mediaBuilder.RegisterHandlers(TestUtilAssembly.Assembly)
                 .ConfigureGlobalReceivePipe(x => x.UseSerilog())
                 .ConfigureCommandReceivePipe(y => y.UseSerilog())
