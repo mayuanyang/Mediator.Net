@@ -25,6 +25,13 @@ test_script:
 artifacts:
 - path: \**\artifacts\**\*.*
 
+deploy:
+  provider: NuGet
+  api_key:
+    secure: 4X88h97AvwauWOEJH7XRu9C4vXfU+1krfjvHX9QOt6BXj8emwPdIUB8L5k7vi0zO
+  skip_symbols: false
+  artifact: /.*\.nupkg/
+
 cache:
 - '%USERPROFILE%\.nuget\packages'
 on_finish: # Done
