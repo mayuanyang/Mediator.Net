@@ -9,7 +9,7 @@ using Xunit;
 namespace Mediator.Net.SimpleInjector.Test.Tests
 {
 
-    class TestContainer : TestBase
+    public class TestContainer : TestBase
     {
         private Container _container = null;
         private IMediator _mediator;

@@ -12,7 +12,7 @@ using Xunit;
 namespace Mediator.Net.StructureMap.Test.Tests
 {
 
-    class TestCommandHandlerWithDependancyInjection : TestBase
+    public class TestCommandHandlerWithDependancyInjection : TestBase
     {
         private IContainer _container = null;
         private IMediator _mediator;

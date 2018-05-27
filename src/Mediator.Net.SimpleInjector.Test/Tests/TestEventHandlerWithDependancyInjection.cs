@@ -11,7 +11,7 @@ using Xunit;
 namespace Mediator.Net.SimpleInjector.Test.Tests
 {
 
-    class TestEventHandlerWithDependancyInjection : TestBase
+    public class TestEventHandlerWithDependancyInjection : TestBase
     {
         private Container _container = null;
         private IMediator _mediator;

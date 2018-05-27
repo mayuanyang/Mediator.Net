@@ -12,7 +12,7 @@ using Xunit;
 
 namespace Mediator.Net.Autofac.Test.Tests.Middlewares
 {
-    class TestSerilogInGlobalAndCommandPipe : TestBase
+    public class TestSerilogInGlobalAndCommandPipe : TestBase
     {
         private IContainer _container = null;
         private IMediator _mediator;

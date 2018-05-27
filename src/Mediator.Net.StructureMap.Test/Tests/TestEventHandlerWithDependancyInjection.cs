@@ -9,8 +9,7 @@ using Xunit;
 
 namespace Mediator.Net.StructureMap.Test.Tests
 {
-   
-    class TestEventHandlerWithDependancyInjection : TestBase
+    public class TestEventHandlerWithDependancyInjection : TestBase
     {
         private IContainer _container = null;
         private IMediator _mediator;

@@ -9,7 +9,7 @@ using Xunit;
 
 namespace Mediator.Net.Test.CommandHandlers
 {
-    class TestNormalPerformance : TestBase
+    public class TestNormalPerformance : TestBase
     {
         private TestBaseCommandHandler _handler;
         private Stopwatch _sw;

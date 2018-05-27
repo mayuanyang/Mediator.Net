@@ -7,8 +7,7 @@ using Xunit;
 
 namespace Mediator.Net.StructureMap.Test.Tests
 {
-   
-    class TestContainer : TestBase
+    public class TestContainer : TestBase
     {
         private IContainer _container = null;
         private IMediator _mediator;
