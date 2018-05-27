@@ -45,7 +45,7 @@ namespace Mediator.Net.Test.TestRequestHandlers
 
         }
 
-        public Task WhenARequestIsSent()
+        Task WhenARequestIsSent()
         {
             _task = _mediator.RequestAsync<GetGuidRequest, GetGuidResponse>(new GetGuidRequest(_guid));
             return Task.FromResult(0);

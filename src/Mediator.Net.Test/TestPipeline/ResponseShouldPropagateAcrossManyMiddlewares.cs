@@ -16,8 +16,7 @@ namespace Mediator.Net.Test.TestPipeline
     {
         private IMediator _mediator;
         private GetGuidResponse _result;
-        private Task _commandTask;
-        private Guid _id = Guid.NewGuid();
+        private readonly Guid _id = Guid.NewGuid();
         void GivenAMediatorAndTwoMiddlewares()
         {
             ClearBinding();
