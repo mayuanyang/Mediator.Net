@@ -12,11 +12,11 @@ using Xunit;
 
 namespace Mediator.Net.Test.TestPipeline
 {
-    [Collection("Avoid parallel execution")]
+    
     public class MiddlewaresShouldBeExecutedInReverseOrder : TestBase
     {
         private IMediator _mediator;
-        public void GivenAMediator()
+        void GivenAMediator()
         {
             ClearBinding();
             var binding = new List<MessageBinding>() { new MessageBinding( typeof(TestBaseCommand), typeof(TestBaseCommandHandler) ) };
@@ -31,12 +31,12 @@ namespace Mediator.Net.Test.TestPipeline
  
         }
 
-        public async Task WhenACommandIsSent()
+        async Task WhenACommandIsSent()
         {
             await _mediator.SendAsync(new TestBaseCommand(Guid.NewGuid()));
         }
 
-        public void ThenItShouldReachTheRightHandler()
+        void ThenItShouldReachTheRightHandler()
         {
             RubishBox.Rublish[0].ShouldBe(nameof(ConsoleLog2.UseConsoleLogger2));
             RubishBox.Rublish[1].ShouldBe(nameof(ConsoleLog1.UseConsoleLogger1));

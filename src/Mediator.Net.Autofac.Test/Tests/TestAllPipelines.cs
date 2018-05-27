@@ -17,7 +17,7 @@ namespace Mediator.Net.Autofac.Test.Tests
         private IContainer _container = null;
         private IMediator _mediator;
         
-        public void GivenAMediatorBuildConnectsToAllPipelines()
+        void GivenAMediatorBuildConnectsToAllPipelines()
         {
             base.ClearBinding();
             var mediaBuilder = new MediatorBuilder();
@@ -48,7 +48,7 @@ namespace Mediator.Net.Autofac.Test.Tests
             _container = containerBuilder.Build();
         }
 
-        public async Task WhenAMessageIsSent()
+        async Task WhenAMessageIsSent()
         {
             _mediator = _container.Resolve<IMediator>();
             await _mediator.SendAsync(new SimpleCommand(Guid.NewGuid()));
@@ -57,7 +57,7 @@ namespace Mediator.Net.Autofac.Test.Tests
 
         }
 
-        public void ThenAllMiddlewaresInPipelinesShouldBeExecuted()
+        void ThenAllMiddlewaresInPipelinesShouldBeExecuted()
         {
             RubishBin.Rublish.Count.ShouldBe(6);
             

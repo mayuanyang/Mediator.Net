@@ -12,13 +12,13 @@ using Xunit;
 
 namespace Mediator.Net.Test.TestPipeline
 {
-    [Collection("Avoid parallel execution")]
+    
     public class GlobalPipeConnectToCommandPipe : TestBase
     {
         private IMediator _mediator;
         private Task _commandTask;
         private Guid _id = Guid.NewGuid();
-        public void GivenAMediator()
+        void GivenAMediator()
         {
             ClearBinding();
            var builder = new MediatorBuilder();
@@ -43,13 +43,13 @@ namespace Mediator.Net.Test.TestPipeline
 
         }
 
-        public void WhenACommandIsSent()
+        void WhenACommandIsSent()
         {
             _commandTask = _mediator.SendAsync(new TestBaseCommand(Guid.NewGuid()));
             
         }
 
-        public void ThenTheCommandShouldBeHandled()
+        void ThenTheCommandShouldBeHandled()
         {
             _commandTask.Status.ShouldBe(TaskStatus.RanToCompletion);
             RubishBox.Rublish.Count.ShouldBe(3);

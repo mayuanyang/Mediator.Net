@@ -18,7 +18,7 @@ namespace Mediator.Net.Autofac.Test.Tests.Middlewares
         private IMediator _mediator;
         private ILogger _logger;
 
-        public void GivenAMediatorWithSerilogAddToAllPipelines()
+        void GivenAMediatorWithSerilogAddToAllPipelines()
         {
             var containerBuilder = new ContainerBuilder();
             _logger = Substitute.For<ILogger>();
@@ -41,7 +41,7 @@ namespace Mediator.Net.Autofac.Test.Tests.Middlewares
             _container = containerBuilder.Build();
         }
 
-        public async Task WhenACommandAndEventAreSent()
+        async Task WhenACommandAndEventAreSent()
         {
             _mediator = _container.Resolve<IMediator>();
             await _mediator.SendAsync(new SimpleCommand(Guid.NewGuid()));
@@ -49,7 +49,7 @@ namespace Mediator.Net.Autofac.Test.Tests.Middlewares
             await _mediator.RequestAsync<SimpleRequest, SimpleResponse>(new SimpleRequest());
         }
 
-        public void ThenItShouldLogTheCommand()
+        void ThenItShouldLogTheCommand()
         {
             _logger.Received(2).Information(Arg.Any<string>(), Arg.Any<SimpleCommand>());
             _logger.Received(2).Information(Arg.Any<string>(), Arg.Any<SimpleEvent>());

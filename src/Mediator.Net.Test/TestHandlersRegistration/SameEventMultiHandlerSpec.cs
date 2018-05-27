@@ -7,21 +7,21 @@ using Xunit;
 
 namespace Mediator.Net.Test.TestHandlersRegistration
 {
-    [Collection("Avoid parallel execution")]
+    
     public class SameEventMultiHandlerSpec : TestBase
     {
-        public void GivenAnAssemblyWithMultipleHandlersForTheSameEvent()
+        void GivenAnAssemblyWithMultipleHandlersForTheSameEvent()
         {
             ClearBinding();
         }
 
-        public void WhenScanRegistrationIsExecuted()
+        void WhenScanRegistrationIsExecuted()
         {
             var builder = new MediatorBuilder();
             builder.RegisterHandlers(typeof(SameEventMultiHandlerSpec).Assembly()).Build();
         }
 
-        public void ThenAllHandlersShouldBeRegistered()
+        void ThenAllHandlersShouldBeRegistered()
         {
             MessageHandlerRegistry.MessageBindings.Count(x => x.MessageType == typeof(TestEvent)).ShouldBe(2);
         }

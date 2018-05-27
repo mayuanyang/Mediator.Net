@@ -14,7 +14,7 @@ namespace Mediator.Net.SimpleInjector.Test.Tests
         private Container _container = null;
         private IMediator _mediator;
  
-        public void GivenAContainer()
+        void GivenAContainer()
         {
             ClearBinding();
             var mediaBuilder = new MediatorBuilder();
@@ -28,7 +28,7 @@ namespace Mediator.Net.SimpleInjector.Test.Tests
             InjectHelper.RegisterMediator(_container, mediaBuilder);
         }
 
-        public void WhenTryToResolveTheInterfaceType()
+        void WhenTryToResolveTheInterfaceType()
         {
             using (var scope = _container.BeginLifetimeScope())
             {
@@ -36,7 +36,7 @@ namespace Mediator.Net.SimpleInjector.Test.Tests
             }
         }
 
-        public void ThenInterfaceTypeShouldBeResolved()
+        void ThenInterfaceTypeShouldBeResolved()
         {
             _mediator.ShouldNotBeNull();
             

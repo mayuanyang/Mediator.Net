@@ -11,12 +11,12 @@ using Xunit;
 
 namespace Mediator.Net.Test.TestEventHandlers
 {
-    [Collection("Avoid parallel execution")]
+    
     public class EventCanBePublishToMultipleHandlers : TestBase
     {
         private IMediator _mediator;
         private Task _task;
-        public void GivenAMediator()
+        void GivenAMediator()
         {
             ClearBinding();
             var builder = new MediatorBuilder();
@@ -33,13 +33,13 @@ namespace Mediator.Net.Test.TestEventHandlers
             
         }
 
-        public async Task WhenAEventIsSent()
+        async Task WhenAEventIsSent()
         {
             _task = _mediator.PublishAsync(new TestEvent(Guid.NewGuid()));
             await _task;
         }
 
-        public void ThenItShouldReachTheRightHandlers()
+        void ThenItShouldReachTheRightHandlers()
         {
             _task.Status.ShouldBe(TaskStatus.RanToCompletion);
             RubishBox.Rublish.Count.ShouldBe(2);

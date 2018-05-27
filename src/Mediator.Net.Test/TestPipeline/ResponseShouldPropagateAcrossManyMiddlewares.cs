@@ -11,14 +11,14 @@ using Xunit;
 
 namespace Mediator.Net.Test.TestPipeline
 {
-    [Collection("Avoid parallel execution")]
+    
     public class ResponseShouldPropagateAcrossManyMiddlewares : TestBase
     {
         private IMediator _mediator;
         private GetGuidResponse _result;
         private Task _commandTask;
         private Guid _id = Guid.NewGuid();
-        public void GivenAMediatorAndTwoMiddlewares()
+        void GivenAMediatorAndTwoMiddlewares()
         {
             ClearBinding();
             var builder = new MediatorBuilder();
@@ -35,12 +35,12 @@ namespace Mediator.Net.Test.TestPipeline
                 .Build();
         }
 
-        public async Task WhenARequestIsSent()
+        async Task WhenARequestIsSent()
         {
             _result = await _mediator.RequestAsync<GetGuidRequest, GetGuidResponse>(new GetGuidRequest(_id));
         }
 
-        public void ThenTheResponseShouldBeReceived()
+        void ThenTheResponseShouldBeReceived()
         {
             _result.Id.ShouldBe(_id);
         }

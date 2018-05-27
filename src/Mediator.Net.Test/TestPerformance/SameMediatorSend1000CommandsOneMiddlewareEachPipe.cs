@@ -12,12 +12,12 @@ using Xunit;
 
 namespace Mediator.Net.Test.TestPerformance
 {
-    [Collection("Avoid parallel execution")]
+    
     public class SameMediatorSend1000CommandsOneMiddlewareEachPipe : TestBase
     {
         private IMediator _mediator;
         private long milliSeconds = 0;
-        public void GivenAMediator()
+        void GivenAMediator()
         {
             ClearBinding();
             var builder = new MediatorBuilder();
@@ -38,7 +38,7 @@ namespace Mediator.Net.Test.TestPerformance
 
         }
 
-        public async Task When1000CommandIsSent()
+        async Task When1000CommandIsSent()
         {
             var sw = new Stopwatch();
             sw.Start();
@@ -52,7 +52,7 @@ namespace Mediator.Net.Test.TestPerformance
             Console.WriteLine($"it took {milliSeconds} milliseconds");
         }
 
-        public void ThenItShouldNotTakeMoreThan50MilliSeconds()
+        void ThenItShouldNotTakeMoreThan50MilliSeconds()
         {
             milliSeconds.ShouldBeLessThan(50);
         }

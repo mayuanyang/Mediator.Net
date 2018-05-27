@@ -17,7 +17,7 @@ namespace Mediator.Net.StructureMap.Test.Tests
         private IMediator _mediator;
         private Task _task;
  
-        public void GivenAContainer()
+        void GivenAContainer()
         {
             ClearBinding();
             var mediaBuilder = new MediatorBuilder();
@@ -37,13 +37,13 @@ namespace Mediator.Net.StructureMap.Test.Tests
 
         }
 
-        public void WhenARequestIsSent()
+        void WhenARequestIsSent()
         {
             _mediator = _container.GetInstance<IMediator>();
             _task = _mediator.RequestAsync<SimpleRequest, SimpleResponse>(new SimpleRequest());
         }
 
-        public void ThenTheRequestShouldReachItsHandler()
+        void ThenTheRequestShouldReachItsHandler()
         {
             _task.Status.ShouldBe(TaskStatus.RanToCompletion);
             

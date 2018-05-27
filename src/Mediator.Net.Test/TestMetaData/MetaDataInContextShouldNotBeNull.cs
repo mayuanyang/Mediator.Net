@@ -11,11 +11,11 @@ using Xunit;
 
 namespace Mediator.Net.Test.TestMetaData
 {
-    [Collection("Avoid parallel execution")]
+    
     public class MetadataInContextShouldNotBeNull : TestBase
     {
         private IMediator _mediator;
-        public void GivenAMediator()
+        void GivenAMediator()
         {
             ClearBinding();
             var builder = new MediatorBuilder();
@@ -28,12 +28,12 @@ namespace Mediator.Net.Test.TestMetaData
 
         }
 
-        public async Task WhenACommandIsSent()
+        async Task WhenACommandIsSent()
         {
             await _mediator.SendAsync(new TestBaseCommand(Guid.NewGuid()));
         }
 
-        public void ThenItShouldReachTheRightHandler()
+        void ThenItShouldReachTheRightHandler()
         {
             RubishBox.Rublish.Count.ShouldBe(1);
             RubishBox.Rublish[0].ShouldBe(false);

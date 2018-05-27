@@ -11,7 +11,7 @@ using Xunit;
 
 namespace Mediator.Net.Test.TestCommandHandlers
 {
-    [Collection("Avoid parallel execution")]
+    
     public class OneCommandMultiHandleresShouldThrowException : TestBase
     {
         private IMediator _mediator;
@@ -22,12 +22,12 @@ namespace Mediator.Net.Test.TestCommandHandlers
         {
             ClearBinding();
         }
-        public void GivenAMediatorBuilder()
+        void GivenAMediatorBuilder()
         {
             _builder = new MediatorBuilder();
         }
 
-        public void AndGivenABindingWithOneCommandMultipleHandlers()
+        void AndGivenABindingWithOneCommandMultipleHandlers()
         {
             _mediator = _builder.RegisterHandlers(() =>
             {
@@ -42,12 +42,12 @@ namespace Mediator.Net.Test.TestCommandHandlers
             
         }
 
-        public void WhenACommandIsSent()
+        void WhenACommandIsSent()
         {
             _task = _mediator.SendAsync(new TestBaseCommand(Guid.NewGuid()));
         }
 
-        public void ThenItShouldThrowNoHandlerFoundException()
+        void ThenItShouldThrowNoHandlerFoundException()
         {
             _task.ShouldThrow<MoreThanOneHandlerException>();
         }

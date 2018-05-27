@@ -18,7 +18,7 @@ namespace Mediator.Net.SimpleInjector.Test.Tests
         private IMediator _mediator;
         private Task _task;
  
-        public void GivenAContainer()
+        void GivenAContainer()
         {
             ClearBinding();
             var mediaBuilder = new MediatorBuilder();
@@ -35,7 +35,7 @@ namespace Mediator.Net.SimpleInjector.Test.Tests
             InjectHelper.RegisterMediator(_container, mediaBuilder);
         }
 
-        public void WhenARequestIsSent()
+        void WhenARequestIsSent()
         {
             using (var scope = _container.BeginLifetimeScope())
             {
@@ -45,7 +45,7 @@ namespace Mediator.Net.SimpleInjector.Test.Tests
             
         }
 
-        public void ThenTheRequestShouldReachItsHandler()
+        void ThenTheRequestShouldReachItsHandler()
         {
             _task.Status.ShouldBe(TaskStatus.RanToCompletion);
             
