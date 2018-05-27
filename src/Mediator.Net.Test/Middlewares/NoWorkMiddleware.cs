@@ -27,12 +27,12 @@ namespace Mediator.Net.Test.Middlewares
 
         public Task ExecuteBeforeConnect(TContext context)
         {
-            return Task.CompletedTask;
+            return Task.FromResult(0);
         }
 
         public Task ExecuteAfterConnect(TContext context)
         {
-            return Task.CompletedTask;
+            return Task.FromResult(0);
         }
 
         public void OnException(Exception ex, TContext context)

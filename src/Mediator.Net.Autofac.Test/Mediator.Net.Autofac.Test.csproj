@@ -1,13 +1,10 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netcoreapp1.0</TargetFramework>
+    <TargetFrameworks>netcoreapp2.0;net452;net46</TargetFrameworks>
     <AssemblyName>Mediator.Net.Autofac.Test</AssemblyName>
     <PackageId>Mediator.Net.Autofac.Test</PackageId>
     <GenerateRuntimeConfigurationFiles>true</GenerateRuntimeConfigurationFiles>
-    <RuntimeIdentifiers>win10-x64;win81-x64;win8-x64;win7-x64</RuntimeIdentifiers>
-    <NetStandardImplicitPackageVersion>1.6.0</NetStandardImplicitPackageVersion>
-    <PackageTargetFallback>$(PackageTargetFallback);dnxcore50</PackageTargetFallback>
     <GenerateAssemblyTitleAttribute>false</GenerateAssemblyTitleAttribute>
     <GenerateAssemblyDescriptionAttribute>false</GenerateAssemblyDescriptionAttribute>
     <GenerateAssemblyConfigurationAttribute>false</GenerateAssemblyConfigurationAttribute>
@@ -16,6 +13,9 @@
     <GenerateAssemblyCopyrightAttribute>false</GenerateAssemblyCopyrightAttribute>
     <GenerateAssemblyVersionAttribute>false</GenerateAssemblyVersionAttribute>
     <GenerateAssemblyFileVersionAttribute>false</GenerateAssemblyFileVersionAttribute>
+    <ApplicationIcon />
+    <OutputType>Library</OutputType>
+    <StartupObject />
   </PropertyGroup>
 
   <ItemGroup>
@@ -26,19 +26,10 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="dotnet-test-xunit" Version="2.2.0-preview2-build1029" />
-    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="15.0.0" />
-    <PackageReference Include="Autofac" Version="4.4.0" />
-    <PackageReference Include="Shouldly" Version="2.8.2" />
     <PackageReference Include="System.Interactive.Async" Version="3.1.1" />
     <PackageReference Include="System.Reactive.Linq" Version="3.1.1" />
-    <PackageReference Include="System.Reflection.TypeExtensions" Version="4.3.0" />
-    <PackageReference Include="TestStack.BDDfy" Version="4.3.2" />
     <PackageReference Include="Serilog.Sinks.Console" Version="2.1.0" />
     <PackageReference Include="NSubstitute" Version="2.0.2" />
-    <PackageReference Include="xunit" Version="2.2.0" />
-    <PackageReference Include="xunit.runner.visualstudio" Version="2.2.0" />
-    <PackageReference Include="xunit.runners" Version="2.0.0" />
   </ItemGroup>
 
 </Project>
