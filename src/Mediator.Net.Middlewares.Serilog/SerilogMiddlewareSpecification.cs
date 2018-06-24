@@ -32,13 +32,18 @@ namespace Mediator.Net.Middlewares.Serilog
 
         public Task ExecuteBeforeConnect(TContext context)
         {
+            return Task.FromResult(0);
+        }
+
+        public Task Execute(TContext context)
+        {
             if (ShouldExecute(context))
             {
                 switch (_level)
                 {
                     case LogEventLevel.Error:
                         _logger.Error("Receive message {@Message}", context.Message);
-                            break;
+                        break;
                     case LogEventLevel.Debug:
                         _logger.Debug("Receive message {@Message}", context.Message);
                         break;
@@ -46,7 +51,7 @@ namespace Mediator.Net.Middlewares.Serilog
                         _logger.Fatal("Receive message {@Message}", context.Message);
                         break;
                     case LogEventLevel.Information:
-                        _logger.Information("Receive message {@Message}", context.Message); 
+                        _logger.Information("Receive message {@Message}", context.Message);
                         break;
                     case LogEventLevel.Verbose:
                         _logger.Verbose("Receive message {@Message}", context.Message);

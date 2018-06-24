@@ -22,17 +22,21 @@ namespace Mediator.Net.Test.Middlewares
         public bool ShouldExecute(TContext context)
         {
             return true;
-
         }
 
         public Task ExecuteBeforeConnect(TContext context)
         {
-            if (ShouldExecute(context))
-                Console.WriteLine("Before save to DB");
-
-            RubishBox.Rublish.Add(nameof(DummySave.UseDummySave));
             return Task.FromResult(0);
+        }
 
+        public Task Execute(TContext context)
+        {
+            if (ShouldExecute(context))
+            {
+                Console.WriteLine("Before save to DB");
+                RubishBox.Rublish.Add(nameof(DummySave.UseDummySave));
+            }
+            return Task.FromResult(0);
         }
 
         public Task ExecuteAfterConnect(TContext context)

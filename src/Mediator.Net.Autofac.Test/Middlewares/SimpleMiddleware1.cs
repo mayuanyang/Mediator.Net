@@ -25,13 +25,16 @@ namespace Mediator.Net.Autofac.Test.Middlewares
 
         public Task ExecuteBeforeConnect(TContext context)
         {
+            return Task.FromResult(0);
+        }
+
+        public Task Execute(TContext context)
+        {
             if (ShouldExecute(context))
             {
                 RubishBin.Rublish.Add(new object());
             }
-
             return Task.FromResult(0);
-
         }
 
         public Task ExecuteAfterConnect(TContext context)

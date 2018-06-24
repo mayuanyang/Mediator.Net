@@ -10,6 +10,7 @@ namespace Mediator.Net.Pipeline
     {
         bool ShouldExecute(TContext context);
         Task ExecuteBeforeConnect(TContext context);
+        Task Execute(TContext context);
         Task ExecuteAfterConnect(TContext context);
         void OnException(Exception ex, TContext context);
     }

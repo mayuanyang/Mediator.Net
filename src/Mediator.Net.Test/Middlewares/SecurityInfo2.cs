@@ -21,14 +21,18 @@ namespace Mediator.Net.Test.Middlewares
         public bool ShouldExecute(TContext context)
         {
             return true;
-
         }
 
         public Task ExecuteBeforeConnect(TContext context)
         {
-            context.MetaData["Password"] = "password";
             return Task.FromResult(0);
+        }
 
+        public Task Execute(TContext context)
+        {
+            if (ShouldExecute(context))
+                context.MetaData["Password"] = "password";
+            return Task.FromResult(0);
         }
 
         public Task ExecuteAfterConnect(TContext context)

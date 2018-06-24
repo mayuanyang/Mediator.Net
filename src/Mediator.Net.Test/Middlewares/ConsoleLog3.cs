@@ -22,16 +22,19 @@ namespace Mediator.Net.Test.Middlewares
         public bool ShouldExecute(TContext context)
         {
             return true;
-
         }
 
         public Task ExecuteBeforeConnect(TContext context)
+        {
+            return Task.FromResult(0);
+        }
+
+        public Task Execute(TContext context)
         {
             if (ShouldExecute(context))
                 Console.WriteLine("Before 3");
             RubishBox.Rublish.Add(nameof(ConsoleLog3.UseConsoleLogger3));
             return Task.FromResult(0);
-
         }
 
         public Task ExecuteAfterConnect(TContext context)

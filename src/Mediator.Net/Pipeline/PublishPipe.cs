@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using System.Reflection;
+using System.Threading;
 using System.Threading.Tasks;
 using Mediator.Net.Binding;
 using Mediator.Net.Context;
@@ -20,27 +21,28 @@ namespace Mediator.Net.Pipeline
             _resolver = resolver;
         }
 
-        public async Task<object> Connect(TContext context)
+        public async Task<object> Connect(TContext context, CancellationToken cancellationToken = default(CancellationToken))
         {
             try
             {
                 await _specification.ExecuteBeforeConnect(context);
+                await _specification.Execute(context);
                 if (Next != null)
                 {
-                    await Next.Connect(context);
+                    await Next.Connect(context, cancellationToken);
                 }
                 else
                 {
-                    IMediator mediator;
-                    if (context.TryGetService(out mediator))
+                    if (context.TryGetService(out IMediator mediator))
                     {
-                        await mediator.PublishAsync(context.Message);
+                        await mediator.PublishAsync(context.Message, cancellationToken);
                     }
                     else
                     {
                         throw new MediatorIsNotAddedToTheContextException();
                     }
                 }
+
                 await _specification.ExecuteAfterConnect(context);
             }
             catch (Exception e)
@@ -51,7 +53,5 @@ namespace Mediator.Net.Pipeline
         }
 
         public IPipe<TContext> Next { get; }
-
-
     }
 }

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading;
 using System.Threading.Tasks;
 using Mediator.Net.Context;
 using Mediator.Net.Contracts;
@@ -10,7 +11,7 @@ namespace Mediator.Net.Test.CommandHandlers
     class TestBaseCommandHandlerRaiseEvent : ICommandHandler<TestBaseCommand>
     {
         
-        public async Task Handle(ReceiveContext<TestBaseCommand> context)
+        public async Task Handle(ReceiveContext<TestBaseCommand> context, CancellationToken cancellationToken = default(CancellationToken))
         {
             RubishBox.Rublish.Add("TestBaseCommandHandlerRaiseEvent");
             Console.WriteLine($"Handling command {context.Message.Id}");

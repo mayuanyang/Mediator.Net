@@ -22,10 +22,14 @@ namespace Mediator.Net.Test.Middlewares
         public bool ShouldExecute(TContext context)
         {
             return true;
-
         }
 
         public Task ExecuteBeforeConnect(TContext context)
+        {
+            return Task.FromResult(0);
+        }
+
+        public Task Execute(TContext context)
         {
             return Task.FromResult(0);
         }

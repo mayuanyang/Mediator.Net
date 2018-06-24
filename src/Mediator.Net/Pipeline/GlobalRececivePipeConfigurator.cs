@@ -17,38 +17,30 @@ namespace Mediator.Net.Pipeline
         }
         public IGlobalReceivePipe<IReceiveContext<IMessage>> Build()
         {
-            IGlobalReceivePipe<IReceiveContext<IMessage>> current = null;
-            if (_specifications.Any())
-            {
-                for (int i = _specifications.Count - 1; i >= 0; i--)
-                {
-                    if (i == _specifications.Count - 1)
-                    {
-                        var thisPipe =
-                            new GlobalReceivePipe<IReceiveContext<IMessage>>(_specifications[i], null, _resolver);
-                        current = thisPipe;
-                    }
-                    else
-                    {
-                        var thisPipe =
-                            new GlobalReceivePipe<IReceiveContext<IMessage>>(_specifications[i], current, _resolver);
-                        current = thisPipe;
-                    }
-
-
-                }
-            }
-            else
-            {
-                current = new GlobalReceivePipe<IReceiveContext<IMessage>>(new EmptyPipeSpecification<IReceiveContext<IMessage>>(), null, _resolver);
-            }
-
-            return current;
+            return Chain();
         }
 
         public void AddPipeSpecification(IPipeSpecification<IReceiveContext<IMessage>> specification)
         {
             _specifications.Add(specification);
+        }
+
+        IGlobalReceivePipe<IReceiveContext<IMessage>> Chain()
+        {
+            IGlobalReceivePipe<IReceiveContext<IMessage>> current = null;
+            if (_specifications.Any())
+            {
+                for (int i = _specifications.Count - 1; i >= 0; i--)
+                {
+                    current = i == _specifications.Count - 1 ? new GlobalReceivePipe<IReceiveContext<IMessage>>(_specifications[i], null) : new GlobalReceivePipe<IReceiveContext<IMessage>>(_specifications[i], current);
+                }
+            }
+            else
+            {
+                current = new GlobalReceivePipe<IReceiveContext<IMessage>>(new EmptyPipeSpecification<IReceiveContext<IMessage>>(), null);
+            }
+
+            return current;
         }
     }
 }

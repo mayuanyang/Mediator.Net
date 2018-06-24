@@ -22,19 +22,22 @@ namespace Mediator.Net.Test.Middlewares
         public bool ShouldExecute(TContext context)
         {
             return false;
-
         }
 
         public Task ExecuteBeforeConnect(TContext context)
         {
+            return Task.FromResult(0);
+        }
+
+        public Task Execute(TContext context)
+        {
             if (ShouldExecute(context))
             {
-                 Console.WriteLine($"you should never see me: {nameof(ExecuteBeforeConnect)}");
+                Console.WriteLine($"you should never see me: {nameof(ExecuteBeforeConnect)}");
                 RubishBox.Rublish.Add(nameof(UselessMiddleware.UseUselessMiddleware));
             }
-               
-            return Task.FromResult(0);
 
+            return Task.FromResult(0);
         }
 
         public Task ExecuteAfterConnect(TContext context)

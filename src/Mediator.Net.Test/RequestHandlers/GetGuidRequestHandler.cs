@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading;
 using System.Threading.Tasks;
 using Mediator.Net.Context;
 using Mediator.Net.Contracts;
@@ -9,7 +10,7 @@ namespace Mediator.Net.Test.RequestHandlers
 {
     class GetGuidRequestHandler : IRequestHandler<GetGuidRequest, GetGuidResponse>
     {
-        public Task<GetGuidResponse> Handle(ReceiveContext<GetGuidRequest> context)
+        public Task<GetGuidResponse> Handle(ReceiveContext<GetGuidRequest> context, CancellationToken cancellationToken = default(CancellationToken))
         {
             RubishBox.Rublish.Add(nameof(GetGuidRequestHandler));
             Console.WriteLine(context.Message.Id);

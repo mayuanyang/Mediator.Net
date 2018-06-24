@@ -15,6 +15,10 @@
     <GenerateAssemblyFileVersionAttribute>false</GenerateAssemblyFileVersionAttribute>
   </PropertyGroup>
 
+  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|netcoreapp2.0|AnyCPU'">
+    <LangVersion>latest</LangVersion>
+  </PropertyGroup>
+
   <ItemGroup>
     <ProjectReference Include="..\Mediator.Net.IoCTestUtil\Mediator.Net.IoCTestUtil.csproj" />
     <ProjectReference Include="..\Mediator.Net\Mediator.Net.csproj" />

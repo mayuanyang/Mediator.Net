@@ -18,6 +18,11 @@ namespace Mediator.Net.Pipeline
             return Task.FromResult(0);
         }
 
+        public Task Execute(TContext context)
+        {
+            return Task.FromResult(0);
+        }
+
         public Task ExecuteAfterConnect(TContext context)
         {
             return Task.FromResult(0);

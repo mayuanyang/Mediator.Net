@@ -26,14 +26,17 @@ namespace Mediator.Net.IoCTestUtil.Middlewares
 
         public Task ExecuteBeforeConnect(TContext context)
         {
+            return Task.FromResult(0);
+        }
+
+        public Task Execute(TContext context)
+        {
             if (ShouldExecute(context))
             {
                 Console.WriteLine($"Before 1: {context.Message}");
                 context.RegisterService(new DummyTransaction());
             }
-
             return Task.FromResult(0);
-
         }
 
         public Task ExecuteAfterConnect(TContext context)
