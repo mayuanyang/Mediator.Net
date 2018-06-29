@@ -51,7 +51,7 @@ namespace Mediator.Net
             return (TResponse)result;
         }
 
-        private async Task<object> SendMessage<TMessage>(TMessage msg, CancellationToken cancellationToken = default(CancellationToken))
+        private async Task<object> SendMessage<TMessage>(TMessage msg, CancellationToken cancellationToken)
             where TMessage : IMessage
         {
 

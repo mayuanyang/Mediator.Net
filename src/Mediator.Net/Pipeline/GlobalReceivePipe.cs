@@ -20,13 +20,13 @@ namespace Mediator.Net.Pipeline
             Next = next;
         }
 
-        public async Task<object> Connect(TContext context, CancellationToken cancellationToken = default(CancellationToken))
+        public async Task<object> Connect(TContext context, CancellationToken cancellationToken)
         {
             object result = null;
             try
             {
-                await _specification.ExecuteBeforeConnect(context);
-                await _specification.Execute(context);
+                await _specification.ExecuteBeforeConnect(context, cancellationToken);
+                await _specification.Execute(context, cancellationToken);
                 if (Next != null)
                 {
                     await Next.Connect(context, cancellationToken);
@@ -36,7 +36,7 @@ namespace Mediator.Net.Pipeline
                     result = await ConnectToPipe(context, cancellationToken);
                 }
 
-                await _specification.ExecuteAfterConnect(context);
+                await _specification.ExecuteAfterConnect(context, cancellationToken);
                 return result;
             }
             catch (Exception e)

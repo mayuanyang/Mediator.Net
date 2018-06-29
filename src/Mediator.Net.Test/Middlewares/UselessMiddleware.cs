@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading;
 using System.Threading.Tasks;
 using Mediator.Net.Context;
 using Mediator.Net.Contracts;
@@ -19,19 +20,19 @@ namespace Mediator.Net.Test.Middlewares
     class UselessMiddlewareSpecification<TContext> : IPipeSpecification<TContext> 
         where TContext : IContext<IMessage>
     {
-        public bool ShouldExecute(TContext context)
+        public bool ShouldExecute(TContext context, CancellationToken cancellationToken)
         {
             return false;
         }
 
-        public Task ExecuteBeforeConnect(TContext context)
+        public Task ExecuteBeforeConnect(TContext context, CancellationToken cancellationToken)
         {
             return Task.FromResult(0);
         }
 
-        public Task Execute(TContext context)
+        public Task Execute(TContext context, CancellationToken cancellationToken)
         {
-            if (ShouldExecute(context))
+            if (ShouldExecute(context, cancellationToken))
             {
                 Console.WriteLine($"you should never see me: {nameof(ExecuteBeforeConnect)}");
                 RubishBox.Rublish.Add(nameof(UselessMiddleware.UseUselessMiddleware));
@@ -40,9 +41,9 @@ namespace Mediator.Net.Test.Middlewares
             return Task.FromResult(0);
         }
 
-        public Task ExecuteAfterConnect(TContext context)
+        public Task ExecuteAfterConnect(TContext context, CancellationToken cancellationToken)
         {
-            if (ShouldExecute(context))
+            if (ShouldExecute(context, cancellationToken))
                 Console.WriteLine($"you should never see me: {nameof(ExecuteAfterConnect)}");
             return Task.FromResult(0);
         }

@@ -8,7 +8,7 @@ namespace Mediator.Net.Pipeline
     public interface IPipe<in TContext> 
         where TContext : IContext<IMessage> 
     {
-        Task<object> Connect(TContext context, CancellationToken cancellationToken = default(CancellationToken));
+        Task<object> Connect(TContext context, CancellationToken cancellationToken);
         IPipe<TContext> Next { get; }
 
     }

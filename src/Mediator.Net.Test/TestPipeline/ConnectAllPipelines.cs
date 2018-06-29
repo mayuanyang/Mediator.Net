@@ -56,8 +56,6 @@ namespace Mediator.Net.Test.TestPipeline
                     x.UseConsoleLogger4();
                 })
             .Build();
-
-
         }
 
         void WhenAllMessagesAreSent()
