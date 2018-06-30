@@ -1,12 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
-using System.Threading;
 
 namespace Mediator.Net.Test.TestUtils
 {
     public static class TokenRecorder
     {
-        public static List<string> Recorder => new List<string>();
+        [ThreadStatic] static IList<int> _recorder;
+        public static IList<int> Recorder => _recorder ?? (_recorder = new List<int>());
     }
 }

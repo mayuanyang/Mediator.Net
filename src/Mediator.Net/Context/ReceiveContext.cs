@@ -48,7 +48,7 @@ namespace Mediator.Net.Context
             }
         }
 
-        public async Task PublishAsync(IEvent msg, CancellationToken cancellationToken = default(CancellationToken))
+        public async Task PublishAsync(IEvent msg, CancellationToken cancellationToken)
         {
             if (TryGetService(out IMediator mediator))
             {

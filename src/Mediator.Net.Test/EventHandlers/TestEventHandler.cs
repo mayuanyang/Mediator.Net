@@ -12,6 +12,7 @@ namespace Mediator.Net.Test.EventHandlers
     {
         public Task Handle(IReceiveContext<TestEvent> context, CancellationToken cancellationToken = default(CancellationToken))
         {
+            TokenRecorder.Recorder.Add(cancellationToken.GetHashCode());
             RubishBox.Rublish.Add(nameof(TestEventHandler));
             Console.WriteLine($"Hi, i am event {context.Message.Id}");
             return Task.FromResult(0);

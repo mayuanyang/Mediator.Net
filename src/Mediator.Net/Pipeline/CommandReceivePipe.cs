@@ -56,7 +56,7 @@ namespace Mediator.Net.Pipeline
 
         private async Task ConnectToHandler(TContext context, CancellationToken cancellationToken)
         {
-            var handlerBindings = PipeHelper.GetHandlerBindings(context, true, cancellationToken);
+            var handlerBindings = PipeHelper.GetHandlerBindings(context, true);
 
             if (handlerBindings.Count() > 1)
             {

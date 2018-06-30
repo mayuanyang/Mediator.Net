@@ -27,21 +27,24 @@ namespace Mediator.Net.Test.Middlewares
 
         public Task ExecuteBeforeConnect(TContext context, CancellationToken cancellationToken)
         {
+            TokenRecorder.Recorder.Add(cancellationToken.GetHashCode());
             return Task.FromResult(0);
         }
 
         public Task Execute(TContext context, CancellationToken cancellationToken)
         {
             if (ShouldExecute(context, cancellationToken))
-                Console.WriteLine("Before 2");
-            RubishBox.Rublish.Add(nameof(ConsoleLog2.UseConsoleLogger2));
+            {
+                TokenRecorder.Recorder.Add(cancellationToken.GetHashCode());
+                RubishBox.Rublish.Add(nameof(ConsoleLog2.UseConsoleLogger2));
+            }
             return Task.FromResult(0);
         }
 
         public Task ExecuteAfterConnect(TContext context, CancellationToken cancellationToken)
         {
             if (ShouldExecute(context, cancellationToken))
-                Console.WriteLine("After 2");
+                TokenRecorder.Recorder.Add(cancellationToken.GetHashCode());
             return Task.FromResult(0);
         }
 

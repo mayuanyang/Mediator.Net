@@ -11,10 +11,8 @@ namespace Mediator.Net.Pipeline
 {
     public static class PipeHelper
     {
-        public static List<MessageBinding> GetHandlerBindings<TContext>(TContext context, bool messageTypeExactMatch, CancellationToken cancellationToken) where TContext : IContext<IMessage>
+        public static List<MessageBinding> GetHandlerBindings<TContext>(TContext context, bool messageTypeExactMatch) where TContext : IContext<IMessage>
         {
-            cancellationToken.ThrowIfCancellationRequested();
-
             var handlerBindings = messageTypeExactMatch ?
                 MessageHandlerRegistry.MessageBindings.Where(x => x.MessageType == context.Message.GetType()).ToList()
                 : MessageHandlerRegistry.MessageBindings.Where(x => x.MessageType.GetTypeInfo().IsAssignableFrom(context.Message.GetType().GetTypeInfo())).ToList();

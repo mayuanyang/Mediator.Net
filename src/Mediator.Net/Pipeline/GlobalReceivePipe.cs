@@ -48,7 +48,6 @@ namespace Mediator.Net.Pipeline
 
         private async Task<object> ConnectToPipe(TContext context, CancellationToken cancellationToken)
         {
-            cancellationToken.ThrowIfCancellationRequested();
             if (context.Message is ICommand)
             {
                 if (context.TryGetService(out ICommandReceivePipe<IReceiveContext<ICommand>> commandPipe))

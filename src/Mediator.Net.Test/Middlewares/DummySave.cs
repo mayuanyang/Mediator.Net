@@ -27,6 +27,7 @@ namespace Mediator.Net.Test.Middlewares
 
         public Task ExecuteBeforeConnect(TContext context, CancellationToken cancellationToken)
         {
+            TokenRecorder.Recorder.Add(cancellationToken.GetHashCode());
             return Task.FromResult(0);
         }
 
@@ -34,7 +35,7 @@ namespace Mediator.Net.Test.Middlewares
         {
             if (ShouldExecute(context, cancellationToken))
             {
-                Console.WriteLine("Before save to DB");
+                TokenRecorder.Recorder.Add(cancellationToken.GetHashCode());
                 RubishBox.Rublish.Add(nameof(DummySave.UseDummySave));
             }
             return Task.FromResult(0);
@@ -43,7 +44,7 @@ namespace Mediator.Net.Test.Middlewares
         public Task ExecuteAfterConnect(TContext context, CancellationToken cancellationToken)
         {
             if (ShouldExecute(context, cancellationToken))
-                Console.WriteLine("After save to DB");
+                TokenRecorder.Recorder.Add(cancellationToken.GetHashCode());
             return Task.FromResult(0);
         }
 
