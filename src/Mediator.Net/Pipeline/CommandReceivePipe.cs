@@ -1,11 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
-using Mediator.Net.Binding;
 using Mediator.Net.Context;
 using Mediator.Net.Contracts;
 
@@ -33,21 +30,12 @@ namespace Mediator.Net.Pipeline
             {
                 await _specification.ExecuteBeforeConnect(context, cancellationToken);
                 await _specification.Execute(context, cancellationToken);
-                if (Next != null)
-                {
-                    await Next.Connect(context, cancellationToken);
-                }
-                else
-                {
-                    await ConnectToHandler(context, cancellationToken);
-                }
-
+                await (Next?.Connect(context, cancellationToken) ?? ConnectToHandler(context, cancellationToken));
                 await _specification.ExecuteAfterConnect(context, cancellationToken);
             }
             catch (Exception e)
             {
                 _specification.OnException(e, context);
-
             }
             return null;
         }

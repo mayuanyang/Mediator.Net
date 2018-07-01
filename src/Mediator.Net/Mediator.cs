@@ -16,11 +16,13 @@ namespace Mediator.Net
         private readonly IGlobalReceivePipe<IReceiveContext<IMessage>> _globalPipe;
         private readonly IDependancyScope _scope;
 
-        public Mediator(ICommandReceivePipe<IReceiveContext<ICommand>> commandReceivePipe,
+        public Mediator(
+            ICommandReceivePipe<IReceiveContext<ICommand>> commandReceivePipe,
             IEventReceivePipe<IReceiveContext<IEvent>> eventReceivePipe,
             IRequestReceivePipe<IReceiveContext<IRequest>> requestPipe, 
             IPublishPipe<IPublishContext<IEvent>> publishPipe, 
-            IGlobalReceivePipe<IReceiveContext<IMessage>> globalPipe, IDependancyScope scope = null)
+            IGlobalReceivePipe<IReceiveContext<IMessage>> globalPipe, 
+            IDependancyScope scope = null)
         {
             _commandReceivePipe = commandReceivePipe;
             _eventReceivePipe = eventReceivePipe;

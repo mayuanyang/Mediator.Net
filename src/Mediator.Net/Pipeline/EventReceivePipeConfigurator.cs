@@ -20,8 +20,6 @@ namespace Mediator.Net.Pipeline
             _specifications = new List<IPipeSpecification<IReceiveContext<IEvent>>>();
         }
 
-
-
         public void AddPipeSpecification(IPipeSpecification<IReceiveContext<IEvent>> specification)
         {
             _specifications.Add(specification);
@@ -34,20 +32,9 @@ namespace Mediator.Net.Pipeline
             {
                 for (int i = _specifications.Count - 1; i >= 0; i--)
                 {
-                    if (i == _specifications.Count - 1)
-                    {
-                        var thisPipe =
-                            new EventReceivePipe<IReceiveContext<IEvent>>(_specifications[i], null, _resolver);
-                        current = thisPipe;
-                    }
-                    else
-                    {
-                        var thisPipe =
-                            new EventReceivePipe<IReceiveContext<IEvent>>(_specifications[i], current, _resolver);
-                        current = thisPipe;
-                    }
-
-
+                    current = i == _specifications.Count - 1
+                        ? new EventReceivePipe<IReceiveContext<IEvent>>(_specifications[i], null, _resolver)
+                        : new EventReceivePipe<IReceiveContext<IEvent>>(_specifications[i], current, _resolver);
                 }
             }
             else

@@ -7,12 +7,11 @@ namespace Mediator.Net.Pipeline
 {
     class GlobalRececivePipeConfigurator : IGlobalReceivePipeConfigurator
     {
-        private readonly IDependancyScope _resolver;
         private readonly IList<IPipeSpecification<IReceiveContext<IMessage>>> _specifications;
-        public IDependancyScope DependancyScope => _resolver;
-        public GlobalRececivePipeConfigurator(IDependancyScope resolver = null)
+        
+        public GlobalRececivePipeConfigurator(IDependancyScope dependancyScope)
         {
-            _resolver = resolver;
+            DependancyScope = dependancyScope;
             _specifications = new List<IPipeSpecification<IReceiveContext<IMessage>>>();
         }
         public IGlobalReceivePipe<IReceiveContext<IMessage>> Build()
@@ -25,22 +24,23 @@ namespace Mediator.Net.Pipeline
             _specifications.Add(specification);
         }
 
-        IGlobalReceivePipe<IReceiveContext<IMessage>> Chain()
+        public IDependancyScope DependancyScope { get; }
+
+        private IGlobalReceivePipe<IReceiveContext<IMessage>> Chain()
         {
             IGlobalReceivePipe<IReceiveContext<IMessage>> current = null;
             if (_specifications.Any())
             {
                 for (int i = _specifications.Count - 1; i >= 0; i--)
                 {
-                    current = i == _specifications.Count - 1 ? new GlobalReceivePipe<IReceiveContext<IMessage>>(_specifications[i], null) : new GlobalReceivePipe<IReceiveContext<IMessage>>(_specifications[i], current);
+                    current = i == _specifications.Count - 1 
+                        ? new GlobalReceivePipe<IReceiveContext<IMessage>>(_specifications[i], null) 
+                        : new GlobalReceivePipe<IReceiveContext<IMessage>>(_specifications[i], current);
                 }
-            }
-            else
-            {
-                current = new GlobalReceivePipe<IReceiveContext<IMessage>>(new EmptyPipeSpecification<IReceiveContext<IMessage>>(), null);
+                return current;
             }
 
-            return current;
+            return new GlobalReceivePipe<IReceiveContext<IMessage>>(new EmptyPipeSpecification<IReceiveContext<IMessage>>(), null);
         }
     }
 }
