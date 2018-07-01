@@ -11,7 +11,7 @@ namespace Mediator.Net.Test.CommandHandlers
     class TestBaseCommandHandler : ICommandHandler<TestBaseCommand>
     {
         
-        public Task Handle(ReceiveContext<TestBaseCommand> context, CancellationToken cancellationToken = default(CancellationToken))
+        public Task Handle(ReceiveContext<TestBaseCommand> context, CancellationToken cancellationToken)
         {
             Console.WriteLine(context.Message.Id);
             RubishBox.Rublish.Add(nameof(TestBaseCommandHandler));

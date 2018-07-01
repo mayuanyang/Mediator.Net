@@ -10,14 +10,14 @@ namespace Mediator.Net.Test.CommandHandlers
 {
     class MultiCommandsHandler : ICommandHandler<AnotherCommand>, ICommandHandler<DerivedTestBaseCommand>
     {
-        public Task Handle(ReceiveContext<AnotherCommand> context, CancellationToken cancellationToken = default(CancellationToken))
+        public Task Handle(ReceiveContext<AnotherCommand> context, CancellationToken cancellationToken)
         {
             RubishBox.Rublish.Add(nameof(MultiCommandsHandler));
             Console.WriteLine(context.Message.Id);
             return Task.FromResult(1);
         }
 
-        public async Task Handle(ReceiveContext<DerivedTestBaseCommand> context, CancellationToken cancellationToken = default(CancellationToken))
+        public async Task Handle(ReceiveContext<DerivedTestBaseCommand> context, CancellationToken cancellationToken)
         {
             RubishBox.Rublish.Add(nameof(MultiCommandsHandler));
             Console.WriteLine(context.Message.Id);

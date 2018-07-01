@@ -10,7 +10,7 @@ namespace Mediator.Net.Test.EventHandlers
 {
     class TestEventHandler : IEventHandler<TestEvent>
     {
-        public Task Handle(IReceiveContext<TestEvent> context, CancellationToken cancellationToken = default(CancellationToken))
+        public Task Handle(IReceiveContext<TestEvent> context, CancellationToken cancellationToken)
         {
             TokenRecorder.Recorder.Add(cancellationToken.GetHashCode());
             RubishBox.Rublish.Add(nameof(TestEventHandler));

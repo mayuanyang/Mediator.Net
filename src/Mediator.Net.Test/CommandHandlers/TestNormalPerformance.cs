@@ -33,7 +33,7 @@ namespace Mediator.Net.Test.CommandHandlers
             
             await console1.ExecuteBeforeConnect(context, default(CancellationToken));
             await console2.ExecuteBeforeConnect(context, default(CancellationToken));
-            await _handler.Handle(new ReceiveContext<TestBaseCommand>(cmd));
+            await _handler.Handle(new ReceiveContext<TestBaseCommand>(cmd), default(CancellationToken));
             await console1.ExecuteAfterConnect(context, default(CancellationToken));
             await console2.ExecuteAfterConnect(context, default(CancellationToken));
             _sw.Stop();

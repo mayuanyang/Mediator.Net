@@ -9,7 +9,7 @@ namespace Mediator.Net.Test.CommandHandlers
 {
     public class TestBaseCommandHandlerThrowException : ICommandHandler<TestBaseCommand>
     {
-        public Task Handle(ReceiveContext<TestBaseCommand> context, CancellationToken cancellationToken = default(CancellationToken))
+        public Task Handle(ReceiveContext<TestBaseCommand> context, CancellationToken cancellationToken)
         {
             throw new NotImplementedException();
         }

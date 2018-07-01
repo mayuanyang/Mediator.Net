@@ -7,6 +7,6 @@ namespace Mediator.Net.Contracts
     public interface IEventHandler<in TMessage> 
         where TMessage : IEvent
     {
-        Task Handle(IReceiveContext<TMessage> context, CancellationToken cancellationToken = default(CancellationToken));
+        Task Handle(IReceiveContext<TMessage> context, CancellationToken cancellationToken);
     }
 }

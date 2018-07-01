@@ -9,7 +9,7 @@ namespace Mediator.Net.Test.EventHandlers
 {
     class DerivedEventHandler : IEventHandler<DerivedEvent>
     {
-        public Task Handle(IReceiveContext<DerivedEvent> context, CancellationToken cancellationToken = default(CancellationToken))
+        public Task Handle(IReceiveContext<DerivedEvent> context, CancellationToken cancellationToken)
         {
             RubishBox.Rublish.Add(nameof(DerivedEventHandler));
             return Task.FromResult(1);

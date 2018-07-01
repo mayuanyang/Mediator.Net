@@ -15,7 +15,7 @@ namespace Mediator.Net.IoCTestUtil.Handlers
         {
             _service = service;
         }
-        public Task Handle(IReceiveContext<SimpleEvent> context, CancellationToken cancellationToken = default(CancellationToken))
+        public Task Handle(IReceiveContext<SimpleEvent> context, CancellationToken cancellationToken)
         {
             return Task.FromResult(0);
         }

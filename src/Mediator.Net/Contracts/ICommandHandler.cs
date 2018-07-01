@@ -7,6 +7,6 @@ namespace Mediator.Net.Contracts
     public interface ICommandHandler<TMessage>
         where TMessage : ICommand
     {
-        Task Handle(ReceiveContext<TMessage> context, CancellationToken cancellationToken = default(CancellationToken));
+        Task Handle(ReceiveContext<TMessage> context, CancellationToken cancellationToken);
     }
 }

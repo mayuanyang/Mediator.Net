@@ -8,6 +8,6 @@ namespace Mediator.Net.Pipeline
     public interface IRequestReceivePipe<TContext> : IPipe<TContext>
         where TContext : IContext<IRequest>
     {
-        new Task<object> Connect(TContext context, CancellationToken cancellationToken = default(CancellationToken));
+        new Task<object> Connect(TContext context, CancellationToken cancellationToken);
     }
 }
