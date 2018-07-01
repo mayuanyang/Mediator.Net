@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System.Threading;
+using System.Threading.Tasks;
 using Mediator.Net.Context;
 using Mediator.Net.Contracts;
 using Mediator.Net.IoCTestUtil.Messages;
@@ -14,7 +15,7 @@ namespace Mediator.Net.IoCTestUtil.Handlers
         {
             _service = service;
         }
-        public Task Handle(IReceiveContext<SimpleEvent> context)
+        public Task Handle(IReceiveContext<SimpleEvent> context, CancellationToken cancellationToken)
         {
             return Task.FromResult(0);
         }

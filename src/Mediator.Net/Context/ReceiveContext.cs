@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using System.Threading;
 using System.Threading.Tasks;
 using Mediator.Net.Contracts;
 using Mediator.Net.Pipeline;
@@ -47,31 +48,27 @@ namespace Mediator.Net.Context
             }
         }
 
-        public async Task PublishAsync(IEvent msg)
+        public async Task PublishAsync(IEvent msg, CancellationToken cancellationToken)
         {
-            IMediator mediator;
-            if (TryGetService(out mediator))
+            if (TryGetService(out IMediator mediator))
             {
                 var publishContext = (IPublishContext<IEvent>) Activator.CreateInstance(typeof(PublishContext), msg);
                 publishContext.RegisterService(mediator);
-                IPublishPipe<IPublishContext<IEvent>> publishPipe;
-                if (TryGetService(out publishPipe))
+                if (TryGetService(out IPublishPipe<IPublishContext<IEvent>> publishPipe))
                 {
                     var sendMethod = publishPipe.GetType().GetRuntimeMethods().Single(x => x.Name == "Connect");
-                    var task = (Task) sendMethod.Invoke(publishPipe, new object[] {publishContext});
+                    var task = (Task) sendMethod.Invoke(publishPipe, new object[] {publishContext, cancellationToken});
                     await task.ConfigureAwait(false);
                 }
                 else
                 {
                     throw new PipeIsNotAddedToContextException();
                 }
-
             }
             else
             {
                 throw new MediatorIsNotAddedToTheContextException();
             }
-            
         }
     }
 }

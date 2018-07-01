@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading;
 using System.Threading.Tasks;
 using Mediator.Net.Context;
 using Mediator.Net.Contracts;
@@ -15,11 +16,13 @@ namespace Mediator.Net
         private readonly IGlobalReceivePipe<IReceiveContext<IMessage>> _globalPipe;
         private readonly IDependancyScope _scope;
 
-        public Mediator(ICommandReceivePipe<IReceiveContext<ICommand>> commandReceivePipe,
+        public Mediator(
+            ICommandReceivePipe<IReceiveContext<ICommand>> commandReceivePipe,
             IEventReceivePipe<IReceiveContext<IEvent>> eventReceivePipe,
             IRequestReceivePipe<IReceiveContext<IRequest>> requestPipe, 
             IPublishPipe<IPublishContext<IEvent>> publishPipe, 
-            IGlobalReceivePipe<IReceiveContext<IMessage>> globalPipe, IDependancyScope scope = null)
+            IGlobalReceivePipe<IReceiveContext<IMessage>> globalPipe, 
+            IDependancyScope scope = null)
         {
             _commandReceivePipe = commandReceivePipe;
             _eventReceivePipe = eventReceivePipe;
@@ -30,57 +33,53 @@ namespace Mediator.Net
         }
 
 
-        public async Task SendAsync<TMessage>(TMessage cmd)
+        public async Task SendAsync<TMessage>(TMessage cmd, CancellationToken cancellationToken = default(CancellationToken))
             where TMessage : ICommand
         {
-            await SendMessage(cmd);           
+            await SendMessage(cmd, cancellationToken);
         }
 
-        public async Task PublishAsync<TMessage>(TMessage evt)
+        public async Task PublishAsync<TMessage>(TMessage evt, CancellationToken cancellationToken = default(CancellationToken))
             where TMessage : IEvent
         {
-            await SendMessage(evt);
+            await SendMessage(evt, cancellationToken);
         }
 
-        public async Task<TResponse> RequestAsync<TRequest, TResponse>(TRequest request)
+        public async Task<TResponse> RequestAsync<TRequest, TResponse>(TRequest request, CancellationToken cancellationToken = default(CancellationToken))
             where TRequest : IRequest
             where TResponse : IResponse
         {
-            var result = await SendMessage(request);
+            var result = await SendMessage(request, cancellationToken);
             return (TResponse)result;
         }
 
-        private async Task<object> SendMessage<TMessage>(TMessage msg)
+        private async Task<object> SendMessage<TMessage>(TMessage msg, CancellationToken cancellationToken)
             where TMessage : IMessage
         {
 
             var receiveContext = (IReceiveContext<TMessage>)Activator.CreateInstance(typeof(ReceiveContext<>).MakeGenericType(msg.GetType()), msg);
             receiveContext.RegisterService(this);
-            IPublishPipe<IPublishContext<IEvent>> publishPipeInContext;
-            if (!receiveContext.TryGetService(out publishPipeInContext))
+            if (!receiveContext.TryGetService(out IPublishPipe<IPublishContext<IEvent>> _))
             {
                 receiveContext.RegisterService(_publishPipe);
             }
 
-            ICommandReceivePipe<IReceiveContext<ICommand>> commandReceivePipeInContext;
-            if (!receiveContext.TryGetService(out commandReceivePipeInContext))
+            if (!receiveContext.TryGetService(out ICommandReceivePipe<IReceiveContext<ICommand>> _))
             {
                 receiveContext.RegisterService(_commandReceivePipe);
             }
 
-            IEventReceivePipe<IReceiveContext<IEvent>> eventReceivePipeInContext;
-            if (!receiveContext.TryGetService(out eventReceivePipeInContext))
+            if (!receiveContext.TryGetService(out IEventReceivePipe<IReceiveContext<IEvent>> _))
             {
                 receiveContext.RegisterService(_eventReceivePipe);
             }
 
-            IRequestReceivePipe<IReceiveContext<IRequest>> requestPipeInContext;
-            if (!receiveContext.TryGetService(out requestPipeInContext))
+            if (!receiveContext.TryGetService(out IRequestReceivePipe<IReceiveContext<IRequest>> _))
             {
                 receiveContext.RegisterService(_requestPipe);
             }
 
-            var task = _globalPipe.Connect((IReceiveContext<IMessage>) receiveContext);
+            var task = _globalPipe.Connect((IReceiveContext<IMessage>) receiveContext, cancellationToken);
             return await task.ConfigureAwait(false);
         }
 

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Diagnostics;
+using System.Threading;
 using System.Threading.Tasks;
 using Mediator.Net.Context;
 using Mediator.Net.Pipeline;
@@ -30,11 +31,11 @@ namespace Mediator.Net.Test.CommandHandlers
             var console2 = new EmptyPipeSpecification<IReceiveContext<TestBaseCommand>>();
             
             
-            await console1.ExecuteBeforeConnect(context);
-            await console2.ExecuteBeforeConnect(context);
-            await _handler.Handle(new ReceiveContext<TestBaseCommand>(cmd));
-            await console1.ExecuteAfterConnect(context);
-            await console2.ExecuteAfterConnect(context);
+            await console1.ExecuteBeforeConnect(context, default(CancellationToken));
+            await console2.ExecuteBeforeConnect(context, default(CancellationToken));
+            await _handler.Handle(new ReceiveContext<TestBaseCommand>(cmd), default(CancellationToken));
+            await console1.ExecuteAfterConnect(context, default(CancellationToken));
+            await console2.ExecuteAfterConnect(context, default(CancellationToken));
             _sw.Stop();
             Console.WriteLine($"It took {_sw.ElapsedMilliseconds} milliseconds");
         }

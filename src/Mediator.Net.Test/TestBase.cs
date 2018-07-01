@@ -11,6 +11,7 @@ namespace Mediator.Net.Test
         {
             MessageHandlerRegistry.MessageBindings.Clear();
             RubishBox.Rublish.Clear();
+            TokenRecorder.Recorder.Clear();
         }
     }
 }

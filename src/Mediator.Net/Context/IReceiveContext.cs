@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System.Threading;
+using System.Threading.Tasks;
 using Mediator.Net.Contracts;
 
 namespace Mediator.Net.Context
@@ -7,6 +8,6 @@ namespace Mediator.Net.Context
         IContext<TMessage> 
         where TMessage : IMessage
     {
-        Task PublishAsync(IEvent message);
+        Task PublishAsync(IEvent message, CancellationToken cancellationToken = default(CancellationToken));
     }
 }

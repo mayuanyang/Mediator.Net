@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading;
 using System.Threading.Tasks;
 using Mediator.Net.Context;
 using Mediator.Net.Contracts;
@@ -21,7 +22,7 @@ namespace Mediator.Net.Middlewares.Serilog
             _level = level;
             _shouldExcute = shouldExcute;
         }
-        public bool ShouldExecute(TContext context)
+        public bool ShouldExecute(TContext context, CancellationToken cancellationToken)
         {
             if (_shouldExcute == null)
             {
@@ -30,15 +31,20 @@ namespace Mediator.Net.Middlewares.Serilog
             return _shouldExcute.Invoke();
         }
 
-        public Task ExecuteBeforeConnect(TContext context)
+        public Task ExecuteBeforeConnect(TContext context, CancellationToken cancellationToken)
         {
-            if (ShouldExecute(context))
+            return Task.FromResult(0);
+        }
+
+        public Task Execute(TContext context, CancellationToken cancellationToken)
+        {
+            if (ShouldExecute(context, cancellationToken))
             {
                 switch (_level)
                 {
                     case LogEventLevel.Error:
                         _logger.Error("Receive message {@Message}", context.Message);
-                            break;
+                        break;
                     case LogEventLevel.Debug:
                         _logger.Debug("Receive message {@Message}", context.Message);
                         break;
@@ -46,7 +52,7 @@ namespace Mediator.Net.Middlewares.Serilog
                         _logger.Fatal("Receive message {@Message}", context.Message);
                         break;
                     case LogEventLevel.Information:
-                        _logger.Information("Receive message {@Message}", context.Message); 
+                        _logger.Information("Receive message {@Message}", context.Message);
                         break;
                     case LogEventLevel.Verbose:
                         _logger.Verbose("Receive message {@Message}", context.Message);
@@ -61,7 +67,7 @@ namespace Mediator.Net.Middlewares.Serilog
             return Task.FromResult(0);
         }
 
-        public Task ExecuteAfterConnect(TContext context)
+        public Task ExecuteAfterConnect(TContext context, CancellationToken cancellationToken)
         {
             return Task.FromResult(0);
         }

@@ -7,48 +7,40 @@ namespace Mediator.Net.Pipeline
 {
     class GlobalRececivePipeConfigurator : IGlobalReceivePipeConfigurator
     {
-        private readonly IDependancyScope _resolver;
         private readonly IList<IPipeSpecification<IReceiveContext<IMessage>>> _specifications;
-        public IDependancyScope DependancyScope => _resolver;
-        public GlobalRececivePipeConfigurator(IDependancyScope resolver = null)
+        
+        public GlobalRececivePipeConfigurator(IDependancyScope dependancyScope)
         {
-            _resolver = resolver;
+            DependancyScope = dependancyScope;
             _specifications = new List<IPipeSpecification<IReceiveContext<IMessage>>>();
         }
         public IGlobalReceivePipe<IReceiveContext<IMessage>> Build()
+        {
+            return Chain();
+        }
+
+        public void AddPipeSpecification(IPipeSpecification<IReceiveContext<IMessage>> specification)
+        {
+            _specifications.Add(specification);
+        }
+
+        public IDependancyScope DependancyScope { get; }
+
+        private IGlobalReceivePipe<IReceiveContext<IMessage>> Chain()
         {
             IGlobalReceivePipe<IReceiveContext<IMessage>> current = null;
             if (_specifications.Any())
             {
                 for (int i = _specifications.Count - 1; i >= 0; i--)
                 {
-                    if (i == _specifications.Count - 1)
-                    {
-                        var thisPipe =
-                            new GlobalReceivePipe<IReceiveContext<IMessage>>(_specifications[i], null, _resolver);
-                        current = thisPipe;
-                    }
-                    else
-                    {
-                        var thisPipe =
-                            new GlobalReceivePipe<IReceiveContext<IMessage>>(_specifications[i], current, _resolver);
-                        current = thisPipe;
-                    }
-
-
+                    current = i == _specifications.Count - 1 
+                        ? new GlobalReceivePipe<IReceiveContext<IMessage>>(_specifications[i], null) 
+                        : new GlobalReceivePipe<IReceiveContext<IMessage>>(_specifications[i], current);
                 }
-            }
-            else
-            {
-                current = new GlobalReceivePipe<IReceiveContext<IMessage>>(new EmptyPipeSpecification<IReceiveContext<IMessage>>(), null, _resolver);
+                return current;
             }
 
-            return current;
-        }
-
-        public void AddPipeSpecification(IPipeSpecification<IReceiveContext<IMessage>> specification)
-        {
-            _specifications.Add(specification);
+            return new GlobalReceivePipe<IReceiveContext<IMessage>>(new EmptyPipeSpecification<IReceiveContext<IMessage>>(), null);
         }
     }
 }
