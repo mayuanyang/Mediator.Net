@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFrameworks>netcoreapp2.0;net452;net46</TargetFrameworks>
+    <TargetFrameworks>netcoreapp1.1;netcoreapp2.0;net452;net46</TargetFrameworks>
     <AssemblyName>Mediator.Net.Autofac.Test</AssemblyName>
     <PackageId>Mediator.Net.Autofac.Test</PackageId>
     <GenerateRuntimeConfigurationFiles>true</GenerateRuntimeConfigurationFiles>
