@@ -5,7 +5,7 @@ namespace Mediator.Net.Binding
 {
     public class MessageHandlerRegistry
     {
-        [ThreadStatic] static IList<MessageBinding> _messageBindings;
+        static IList<MessageBinding> _messageBindings;
 
         public static IList<MessageBinding> MessageBindings
         {
