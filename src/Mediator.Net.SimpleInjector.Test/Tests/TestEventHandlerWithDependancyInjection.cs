@@ -41,10 +41,9 @@ namespace Mediator.Net.SimpleInjector.Test.Tests
             return Task.FromResult(0);
         }
 
-        Task ThenTheEventShouldReachItsHandler()
+        void ThenTheEventShouldReachItsHandler()
         {
             _task.Status.ShouldBe(TaskStatus.RanToCompletion);
-            return Task.FromResult(0);
         }
 
         [Fact]

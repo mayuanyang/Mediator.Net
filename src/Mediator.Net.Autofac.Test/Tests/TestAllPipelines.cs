@@ -55,10 +55,9 @@ namespace Mediator.Net.Autofac.Test.Tests
             await _mediator.RequestAsync<SimpleRequest, SimpleResponse>(new SimpleRequest("Hello"));
         }
 
-        Task ThenAllMiddlewaresInPipelinesShouldBeExecuted()
+        void ThenAllMiddlewaresInPipelinesShouldBeExecuted()
         {
             RubishBin.Rublish.Count.ShouldBe(6);
-            return Task.FromResult(0);
         }
 
         [Fact]

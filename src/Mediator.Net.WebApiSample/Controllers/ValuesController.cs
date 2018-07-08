@@ -16,9 +16,10 @@ namespace Mediator.Net.WebApiSample.Controllers
         }
         // GET api/values
         [HttpGet]
-        public async Task<SimpleResponse> Get()
+        [Route("{message}")]
+        public async Task<SimpleResponse> Get(string message)
         {
-            return await _mediator.RequestAsync<SimpleRequest, SimpleResponse>(new SimpleRequest("Hello world"));
+            return await _mediator.RequestAsync<SimpleRequest, SimpleResponse>(new SimpleRequest(message));
         }
 
         // POST api/values

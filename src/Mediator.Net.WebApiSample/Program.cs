@@ -21,5 +21,17 @@ namespace Mediator.Net.WebApiSample
             WebHost.CreateDefaultBuilder(args)
                 .UseStartup<Startup>()
                 .Build();
+
+        /// <summary>
+        /// This method is used by the Mediator.Net.WebApiSample.Test project
+        /// </summary>
+        /// <param name="args"></param>
+        /// <returns></returns>
+        public static IWebHostBuilder CreateWebHostBuilder(string[] args)
+        {
+            return new WebHostBuilder()
+                .UseKestrel()
+                .UseStartup<Startup>();
+        }
     }
 }

@@ -36,11 +36,10 @@ namespace Mediator.Net.Test.TestCommandHandlers
             await _mediator.SendAsync(new TestBaseCommand(Guid.NewGuid()));
         }
 
-        Task ThenItShouldReachTheRightHandler()
+        void ThenItShouldReachTheRightHandler()
         {
             RubishBox.Rublish.Contains(nameof(TestBaseCommandHandler)).ShouldBeTrue();
             RubishBox.Rublish.Count.ShouldBe(1);
-            return Task.FromResult(0);
         }
 
         [Fact]

@@ -47,12 +47,11 @@ namespace Mediator.Net.Test.TestCommandHandlers
         }
 
      
-        Task ThenItShouldPutSomeRubishIntoRublishBox()
+        void ThenItShouldPutSomeRubishIntoRublishBox()
         {
             RubishBox.Rublish.Contains(nameof(DummySave.UseDummySave)).ShouldBeTrue();
             RubishBox.Rublish.Contains(nameof(TestBaseCommandHandlerRaiseEvent)).ShouldBeTrue();
             RubishBox.Rublish.Contains(nameof(TestEventHandler)).ShouldBeTrue();
-            return Task.FromResult(0);
         }
 
         [Fact]

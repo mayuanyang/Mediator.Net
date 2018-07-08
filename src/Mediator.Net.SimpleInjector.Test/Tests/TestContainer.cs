@@ -38,10 +38,9 @@ namespace Mediator.Net.SimpleInjector.Test.Tests
             return Task.FromResult(0);
         }
 
-        Task ThenInterfaceTypeShouldBeResolved()
+        void ThenInterfaceTypeShouldBeResolved()
         {
             _mediator.ShouldNotBeNull();
-            return Task.FromResult(0);
         }
 
         [Fact]

@@ -23,6 +23,7 @@ test_script:
 - dotnet test "src\Mediator.Net.StructureMap.Test\Mediator.Net.StructureMap.Test.csproj" -c %CONFIGURATION%
 - dotnet test "src\Mediator.Net.SimpleInjector.Test\Mediator.Net.SimpleInjector.Test.csproj" -c %CONFIGURATION%
 - dotnet test "src\Mediator.Net.MicrosoftDependencyInjection.Test\Mediator.Net.MicrosoftDependencyInjection.Test.csproj" -c %CONFIGURATION%
+- dotnet test "src\Mediator.Net.WebApiSample.Test\Mediator.Net.WebApiSample.Test.csproj" -c %CONFIGURATION%
 
 artifacts:
 - path: \**\artifacts\**\*.*

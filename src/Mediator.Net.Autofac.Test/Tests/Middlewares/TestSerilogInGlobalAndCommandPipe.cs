@@ -47,12 +47,11 @@ namespace Mediator.Net.Autofac.Test.Tests.Middlewares
             await _mediator.RequestAsync<SimpleRequest, SimpleResponse>(new SimpleRequest("Hello"));
         }
 
-        Task ThenItShouldLogTheCommand()
+        void ThenItShouldLogTheCommand()
         {
             _logger.Received(2).Information(Arg.Any<string>(), Arg.Any<SimpleCommand>());
             _logger.Received(2).Information(Arg.Any<string>(), Arg.Any<SimpleEvent>());
             _logger.Received(2).Information(Arg.Any<string>(), Arg.Any<SimpleRequest>());
-            return Task.FromResult(0);
         }
 
         [Fact]

@@ -1,0 +1,20 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp2.0</TargetFramework>
+
+    <IsPackable>false</IsPackable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.Testing" Version="2.1.1" />
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="15.8.0-preview-20180610-02" />
+    <PackageReference Include="xunit" Version="2.4.0-rc.1.build4038" />
+    <PackageReference Include="xunit.runner.visualstudio" Version="2.4.0-rc.1.build4038" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Mediator.Net.WebApiSample\Mediator.Net.WebApiSample.csproj" />
+  </ItemGroup>
+
+</Project>

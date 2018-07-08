@@ -43,10 +43,9 @@ namespace Mediator.Net.StructureMap.Test.Tests
             return _task;
         }
 
-        Task ThenTheCommandShouldReachItsHandler()
+        void ThenTheCommandShouldReachItsHandler()
         {
             _task.Status.ShouldBe(TaskStatus.RanToCompletion);
-            return Task.FromResult(0);
         }
 
         [Fact]

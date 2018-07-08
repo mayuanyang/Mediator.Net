@@ -39,10 +39,9 @@ namespace Mediator.Net.MicrosoftDependencyInjection.Test.Tests
             return _task;
         }
 
-        Task ThenTheRequestShouldReachItsHandler()
+        void ThenTheRequestShouldReachItsHandler()
         {
             _task.Status.ShouldBe(TaskStatus.RanToCompletion);
-            return Task.CompletedTask;
         }
 
         [Fact]
