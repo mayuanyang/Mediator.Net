@@ -1,5 +1,4 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
-
   <PropertyGroup>
     <PackageVersion>1.0.0</PackageVersion>
     <Description>Use Autofac as the IoC container for Mediator.Net</Description>

@@ -1,24 +1,21 @@
-﻿using System;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using Mediator.Net.IoCTestUtil;
 using Mediator.Net.IoCTestUtil.Messages;
 using Mediator.Net.IoCTestUtil.Middlewares;
 using Mediator.Net.IoCTestUtil.Services;
+using Microsoft.Extensions.DependencyInjection;
 using Shouldly;
-using SimpleInjector;
-using SimpleInjector.Extensions.LifetimeScoping;
 using TestStack.BDDfy;
 using Xunit;
 
-namespace Mediator.Net.SimpleInjector.Test.Tests
+namespace Mediator.Net.MicrosoftDependencyInjection.Test.Tests
 {
-
-    public class TestCommandHandlerWithDependancyInjection : TestBase
+    public class TestRequestHandlerWithDependancyInjection : TestBase
     {
-        private Container _container = null;
+        private IServiceCollection _container = null;
         private IMediator _mediator;
         private Task _task;
-
+ 
         void GivenAContainer()
         {
             ClearBinding();
@@ -28,28 +25,25 @@ namespace Mediator.Net.SimpleInjector.Test.Tests
                 {
                     x.UseSimpleMiddleware();
                 });
-            _container = new Container();
-            _container.Options.DefaultScopedLifestyle = new LifetimeScopeLifestyle();
-            _container.Register<SimpleService>();
-            _container.Register<AnotherSimpleService>();
+            _container = new ServiceCollection()
+                .AddTransient<SimpleService>()
+                .AddTransient<AnotherSimpleService>();
 
             _container.RegisterMediator(mediaBuilder);
+
+
         }
 
-        void WhenACommandIsSent()
+        void WhenARequestIsSent()
         {
-            using (var scope = _container.BeginLifetimeScope())
-            {
-                _mediator = scope.GetInstance<IMediator>();
-                _task = _mediator.SendAsync(new SimpleCommand(Guid.NewGuid()));
-            }
-
+            _mediator = _container.BuildServiceProvider().GetService<IMediator>();
+            _task = _mediator.RequestAsync<SimpleRequest, SimpleResponse>(new SimpleRequest());
         }
 
-        void ThenTheCommandShouldReachItsHandler()
+        void ThenTheRequestShouldReachItsHandler()
         {
             _task.Status.ShouldBe(TaskStatus.RanToCompletion);
-
+            
         }
 
         [Fact]

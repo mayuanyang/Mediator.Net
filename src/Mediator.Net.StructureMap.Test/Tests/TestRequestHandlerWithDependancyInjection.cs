@@ -32,9 +32,7 @@ namespace Mediator.Net.StructureMap.Test.Tests
                 x.ForConcreteType<SimpleService>();
                 x.ForConcreteType<AnotherSimpleService>();
             });
-            StructureMapExtensions.Configure(mediaBuilder, _container);
-
-
+            _container.Configure(mediaBuilder);
         }
 
         void WhenARequestIsSent()

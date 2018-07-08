@@ -91,12 +91,12 @@ namespace Mediator.Net
             return BuildMediator();
         }
 
-        public IMediator Build(IDependancyScope scope)
+        public IMediator Build(IDependencyScope scope)
         {
             return BuildMediator(scope);
         }
 
-        private IMediator BuildMediator(IDependancyScope scope = null)
+        private IMediator BuildMediator(IDependencyScope scope = null)
         {
             var commandReceivePipeConfigurator = new CommandReceivePipeConfigurator(scope);
             _commandReceivePipeConfiguratorAction?.Invoke(commandReceivePipeConfigurator);

@@ -32,7 +32,7 @@ namespace Mediator.Net.SimpleInjector.Test.Tests
             _container.Register<SimpleService>();
             _container.Register<AnotherSimpleService>();
             
-            InjectHelper.RegisterMediator(_container, mediaBuilder);
+            _container.RegisterMediator(mediaBuilder);
         }
 
         void WhenARequestIsSent()

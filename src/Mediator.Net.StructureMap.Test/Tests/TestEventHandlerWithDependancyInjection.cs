@@ -25,13 +25,14 @@ namespace Mediator.Net.StructureMap.Test.Tests
                     x.UseSimpleMiddleware();
                 });
             _container = new Container();
-            StructureMapExtensions.Configure(mediaBuilder, _container);
+            _container.Configure(mediaBuilder);
         }
 
-        void WhenACommandIsSent()
+        Task WhenACommandIsSent()
         {
             _mediator = _container.GetInstance<IMediator>();
             _task = _mediator.PublishAsync(new SimpleEvent());
+            return _task;
         }
 
         void ThenTheEventShouldReachItsHandler()

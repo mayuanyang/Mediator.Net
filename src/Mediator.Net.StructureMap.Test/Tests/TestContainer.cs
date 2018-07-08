@@ -23,7 +23,7 @@ namespace Mediator.Net.StructureMap.Test.Tests
                 });
             _container = new Container();
            
-            StructureMapExtensions.Configure(mediaBuilder, _container);
+            _container.Configure(mediaBuilder);
         }
 
         void WhenTryToResolveTheInterfaceType()

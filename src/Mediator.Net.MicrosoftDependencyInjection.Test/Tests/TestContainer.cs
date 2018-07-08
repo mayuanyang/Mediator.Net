@@ -1,17 +1,16 @@
-﻿using Mediator.Net.IoCTestUtil;
+﻿using System.ComponentModel;
+using Mediator.Net.IoCTestUtil;
 using Mediator.Net.IoCTestUtil.Middlewares;
+using Microsoft.Extensions.DependencyInjection;
 using Shouldly;
-using SimpleInjector;
-using SimpleInjector.Extensions.LifetimeScoping;
 using TestStack.BDDfy;
 using Xunit;
 
-namespace Mediator.Net.SimpleInjector.Test.Tests
+namespace Mediator.Net.MicrosoftDependencyInjection.Test.Tests
 {
-
     public class TestContainer : TestBase
     {
-        private Container _container = null;
+        private IServiceCollection _container = null;
         private IMediator _mediator;
  
         void GivenAContainer()
@@ -23,17 +22,14 @@ namespace Mediator.Net.SimpleInjector.Test.Tests
                 {
                     x.UseSimpleMiddleware();
                 });
-            _container = new Container();
-            _container.Options.DefaultScopedLifestyle = new LifetimeScopeLifestyle();
+            _container = new ServiceCollection();
+           
             _container.RegisterMediator(mediaBuilder);
         }
 
         void WhenTryToResolveTheInterfaceType()
         {
-            using (var scope = _container.BeginLifetimeScope())
-            {
-                _mediator = scope.GetInstance<IMediator>();
-            }
+            _mediator = _container.BuildServiceProvider().GetService<IMediator>();
         }
 
         void ThenInterfaceTypeShouldBeResolved()

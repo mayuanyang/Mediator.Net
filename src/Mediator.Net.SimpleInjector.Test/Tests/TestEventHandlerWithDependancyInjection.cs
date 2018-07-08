@@ -28,7 +28,7 @@ namespace Mediator.Net.SimpleInjector.Test.Tests
                 });
             _container = new Container();
             _container.Options.DefaultScopedLifestyle = new LifetimeScopeLifestyle();
-            InjectHelper.RegisterMediator(_container, mediaBuilder);
+            _container.RegisterMediator(mediaBuilder);
         }
 
         void WhenACommandIsSent()

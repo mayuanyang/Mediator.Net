@@ -4,11 +4,11 @@ using SimpleInjector.Extensions.LifetimeScoping;
 
 namespace Mediator.Net.SimpleInjector
 {
-    class SimpleInjectorDependancyScope : IDependancyScope
+    class SimpleInjectorDependencyScope : IDependencyScope
     {
         private Container _container;
 
-        public SimpleInjectorDependancyScope(Container container)
+        public SimpleInjectorDependencyScope(Container container)
         {
             _container = container;
         }
@@ -19,7 +19,7 @@ namespace Mediator.Net.SimpleInjector
 
         public T Resolve<T>()  
         {
-            return (T) _container.GetInstance(typeof(T));
+            return (T) Resolve(typeof(T));
         }
 
         public object Resolve(Type t)
@@ -28,7 +28,7 @@ namespace Mediator.Net.SimpleInjector
         }
 
  
-        public IDependancyScope BeginScope()
+        public IDependencyScope BeginScope()
         {
            throw new NotSupportedException("No inner scope supported");
         }

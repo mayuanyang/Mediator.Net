@@ -1,10 +1,16 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
-
+<Project Sdk="Microsoft.NET.Sdk" ToolsVersion="15.0">
   <PropertyGroup>
     <PackageVersion>1.0.0</PackageVersion>
-    <TargetFrameworks>netcoreapp1.1;netcoreapp2.0;net45;net46</TargetFrameworks>
-    <AssemblyName>Mediator.Net.IoCTestUtil</AssemblyName>
-    <PackageId>Mediator.Net.IoCTestUtil</PackageId>
+    <Description>Use MicrosoftDependencyInjection as the IoC container for Mediator.Net</Description>
+    <AssemblyTitle>Mediator.Net MicrosoftDependencyInjection integration</AssemblyTitle>
+    <Authors>Yuan(Eddy) Ma</Authors>
+    <iconUrl>https://cloud.githubusercontent.com/assets/3387099/24353370/97f573f0-1330-11e7-890c-85855628a575.png</iconUrl>
+    <TargetFrameworks>netstandard2.0</TargetFrameworks>
+    <AssemblyName>Mediator.Net.MicrosoftDependencyInjection</AssemblyName>
+    <PackageId>Mediator.Net.MicrosoftDependencyInjection</PackageId>
+    <PackageTags>.NET;Mediator;Cqrs;DDD;Command;Event;Request;Response;MicrosoftDependencyInjection</PackageTags>
+    <PackageProjectUrl>https://github.com/mayuanyang/Mediator.Net</PackageProjectUrl>
+    <PackageLicenseUrl>http://www.apache.org/licenses/LICENSE-2.0</PackageLicenseUrl>
     <GenerateAssemblyTitleAttribute>false</GenerateAssemblyTitleAttribute>
     <GenerateAssemblyDescriptionAttribute>false</GenerateAssemblyDescriptionAttribute>
     <GenerateAssemblyConfigurationAttribute>false</GenerateAssemblyConfigurationAttribute>
@@ -14,28 +20,13 @@
     <GenerateAssemblyVersionAttribute>false</GenerateAssemblyVersionAttribute>
     <GenerateAssemblyFileVersionAttribute>false</GenerateAssemblyFileVersionAttribute>
   </PropertyGroup>
-
   <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net45|AnyCPU'">
     <LangVersion>latest</LangVersion>
   </PropertyGroup>
-
   <ItemGroup>
-    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="15.7.2" />
-    <PackageReference Include="Serilog.Sinks.Console" Version="3.1.1" />
-    <PackageReference Include="Shouldly" Version="3.0.0" />
-    <PackageReference Include="xunit" Version="2.3.1" />
-    <PackageReference Include="xunit.runner.visualstudio" Version="2.3.1" />
-    <PackageReference Include="TestStack.BDDfy" Version="4.3.2" />
-    <PackageReference Include="NSubstitute" Version="3.1.0" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="2.1.1" />
   </ItemGroup>
-
   <ItemGroup>
     <ProjectReference Include="..\Mediator.Net\Mediator.Net.csproj" />
   </ItemGroup>
-
-  <ItemGroup Condition=" '$(TargetFramework)' == 'net45' ">
-    <Reference Include="System" />
-    <Reference Include="Microsoft.CSharp" />
-  </ItemGroup>
-
 </Project>

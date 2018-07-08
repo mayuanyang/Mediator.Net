@@ -1,9 +1,9 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFrameworks>netcoreapp1.1;netcoreapp2.0;net452;net46</TargetFrameworks>
-    <AssemblyName>Mediator.Net.SimpleInjector.Test</AssemblyName>
-    <PackageId>Mediator.Net.SimpleInjector.Test</PackageId>
+    <TargetFrameworks>netcoreapp2.0</TargetFrameworks>
+    <AssemblyName>Mediator.Net.MicrosoftDependencyInjection.Test</AssemblyName>
+    <PackageId>Mediator.Net.MicrosoftDependencyInjection.Test</PackageId>
     <GenerateRuntimeConfigurationFiles>true</GenerateRuntimeConfigurationFiles>
     <GenerateAssemblyTitleAttribute>false</GenerateAssemblyTitleAttribute>
     <GenerateAssemblyDescriptionAttribute>false</GenerateAssemblyDescriptionAttribute>
@@ -13,19 +13,17 @@
     <GenerateAssemblyCopyrightAttribute>false</GenerateAssemblyCopyrightAttribute>
     <GenerateAssemblyVersionAttribute>false</GenerateAssemblyVersionAttribute>
     <GenerateAssemblyFileVersionAttribute>false</GenerateAssemblyFileVersionAttribute>
+    <ApplicationIcon />
+    <OutputType>Library</OutputType>
+    <StartupObject />
   </PropertyGroup>
 
-  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|netcoreapp2.0|AnyCPU'">
-    <LangVersion>latest</LangVersion>
-  </PropertyGroup>
+  <ItemGroup>
+    <Folder Include="Tests\" />
+  </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\Mediator.Net.IoCTestUtil\Mediator.Net.IoCTestUtil.csproj" />
-    <ProjectReference Include="..\Mediator.Net.SimpleInjector\Mediator.Net.SimpleInjector.csproj" />
-    <ProjectReference Include="..\Mediator.Net\Mediator.Net.csproj" />
-  </ItemGroup>
-  <ItemGroup>
-    <PackageReference Include="System.Interactive.Async" Version="3.1.1" />
-    <PackageReference Include="System.Reactive.Linq" Version="3.1.1" />
+    <ProjectReference Include="..\Mediator.Net.MicrosoftDependencyInjection\Mediator.Net.MicrosoftDependencyInjection.csproj" />
   </ItemGroup>
 </Project>

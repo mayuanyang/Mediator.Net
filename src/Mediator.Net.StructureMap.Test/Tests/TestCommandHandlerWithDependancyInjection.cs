@@ -33,13 +33,14 @@ namespace Mediator.Net.StructureMap.Test.Tests
                 x.ForConcreteType<SimpleService>();
                 x.ForConcreteType<AnotherSimpleService>();
             });
-            StructureMapExtensions.Configure(mediaBuilder, _container);
+            _container.Configure(mediaBuilder);
         }
 
-        void WhenACommandIsSent()
+        Task WhenACommandIsSent()
         {
             _mediator = _container.GetInstance<IMediator>();
             _task = _mediator.SendAsync(new SimpleCommand(Guid.NewGuid()));
+            return _task;
         }
 
         void ThenTheCommandShouldReachItsHandler()
