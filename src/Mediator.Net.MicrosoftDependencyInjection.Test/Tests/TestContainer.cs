@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel;
+using System.Threading.Tasks;
 using Mediator.Net.IoCTestUtil;
 using Mediator.Net.IoCTestUtil.Middlewares;
 using Microsoft.Extensions.DependencyInjection;
@@ -27,15 +28,16 @@ namespace Mediator.Net.MicrosoftDependencyInjection.Test.Tests
             _container.RegisterMediator(mediaBuilder);
         }
 
-        void WhenTryToResolveTheInterfaceType()
+        Task WhenTryToResolveTheInterfaceType()
         {
             _mediator = _container.BuildServiceProvider().GetService<IMediator>();
+            return Task.FromResult(0);
         }
 
-        void ThenInterfaceTypeShouldBeResolved()
+        Task ThenInterfaceTypeShouldBeResolved()
         {
             _mediator.ShouldNotBeNull();
-            
+            return Task.FromResult(0);
         }
 
         [Fact]

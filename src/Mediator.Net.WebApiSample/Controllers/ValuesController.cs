@@ -1,7 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
+using Mediator.Net.IoCTestUtil.Messages;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Mediator.Net.WebApiSample.Controllers
@@ -9,36 +8,34 @@ namespace Mediator.Net.WebApiSample.Controllers
     [Route("api/[controller]")]
     public class ValuesController : Controller
     {
+        private readonly IMediator _mediator;
+
+        public ValuesController(IMediator mediator)
+        {
+            _mediator = mediator;
+        }
         // GET api/values
         [HttpGet]
-        public IEnumerable<string> Get()
+        public async Task<SimpleResponse> Get()
         {
-            return new string[] { "value1", "value2" };
-        }
-
-        // GET api/values/5
-        [HttpGet("{id}")]
-        public string Get(int id)
-        {
-            return "value";
+            return await _mediator.RequestAsync<SimpleRequest, SimpleResponse>(new SimpleRequest("Hello world"));
         }
 
         // POST api/values
         [HttpPost]
-        public void Post([FromBody]string value)
+        [Route("command")]
+        public async Task Post([FromBody]string value)
         {
+            await _mediator.SendAsync(new SimpleCommand(Guid.NewGuid()));
         }
 
         // PUT api/values/5
-        [HttpPut("{id}")]
-        public void Put(int id, [FromBody]string value)
+        [HttpPost]
+        [Route(("event"))]
+        public async Task PostEvent(int id, [FromBody]string value)
         {
+            await _mediator.PublishAsync(new SimpleEvent());
         }
-
-        // DELETE api/values/5
-        [HttpDelete("{id}")]
-        public void Delete(int id)
-        {
-        }
+        
     }
 }

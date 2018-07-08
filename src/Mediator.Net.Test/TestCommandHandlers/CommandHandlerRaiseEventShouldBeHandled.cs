@@ -39,20 +39,20 @@ namespace Mediator.Net.Test.TestCommandHandlers
                     x.UseDummySave();
                 })
             .Build();
-
         }
 
-        void WhenACommandIsSent()
+        async Task WhenACommandIsSent()
         {
-           _mediator.SendAsync(new TestBaseCommand(Guid.NewGuid())).Wait();
+           await _mediator.SendAsync(new TestBaseCommand(Guid.NewGuid()));
         }
 
      
-        void ThenItShouldPutSomeRubishIntoRublishBox()
+        Task ThenItShouldPutSomeRubishIntoRublishBox()
         {
             RubishBox.Rublish.Contains(nameof(DummySave.UseDummySave)).ShouldBeTrue();
             RubishBox.Rublish.Contains(nameof(TestBaseCommandHandlerRaiseEvent)).ShouldBeTrue();
             RubishBox.Rublish.Contains(nameof(TestEventHandler)).ShouldBeTrue();
+            return Task.FromResult(0);
         }
 
         [Fact]

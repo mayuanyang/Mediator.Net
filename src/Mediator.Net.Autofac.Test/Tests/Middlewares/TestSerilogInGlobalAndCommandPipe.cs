@@ -39,20 +39,20 @@ namespace Mediator.Net.Autofac.Test.Tests.Middlewares
             _container = containerBuilder.Build();
         }
 
-        void WhenACommandAndEventAreSent()
+        async Task WhenACommandAndEventAreSent()
         {
             _mediator = _container.Resolve<IMediator>();
-            _mediator.SendAsync(new SimpleCommand(Guid.NewGuid())).Wait();
-            _mediator.PublishAsync(new SimpleEvent()).Wait();
-            _mediator.RequestAsync<SimpleRequest, SimpleResponse>(new SimpleRequest()).Wait();
+            await _mediator.SendAsync(new SimpleCommand(Guid.NewGuid()));
+            await _mediator.PublishAsync(new SimpleEvent());
+            await _mediator.RequestAsync<SimpleRequest, SimpleResponse>(new SimpleRequest("Hello"));
         }
 
-        void ThenItShouldLogTheCommand()
+        Task ThenItShouldLogTheCommand()
         {
             _logger.Received(2).Information(Arg.Any<string>(), Arg.Any<SimpleCommand>());
             _logger.Received(2).Information(Arg.Any<string>(), Arg.Any<SimpleEvent>());
             _logger.Received(2).Information(Arg.Any<string>(), Arg.Any<SimpleRequest>());
-
+            return Task.FromResult(0);
         }
 
         [Fact]

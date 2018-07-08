@@ -33,9 +33,9 @@ namespace Mediator.Net.Test.TestPipeline
 
         }
 
-        void WhenACommandIsSent()
+        async Task WhenACommandIsSent()
         {
-            _mediator.SendAsync(new TestBaseCommand(Guid.NewGuid())).Wait();
+            await _mediator.SendAsync(new TestBaseCommand(Guid.NewGuid()));
         }
 
         void ThenItShouldSkipTheUselessMiddleware()

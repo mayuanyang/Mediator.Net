@@ -30,20 +30,19 @@ namespace Mediator.Net.MicrosoftDependencyInjection.Test.Tests
                 .AddTransient<AnotherSimpleService>();
 
             _container.RegisterMediator(mediaBuilder);
-
-
         }
 
-        void WhenARequestIsSent()
+        Task WhenARequestIsSent()
         {
             _mediator = _container.BuildServiceProvider().GetService<IMediator>();
-            _task = _mediator.RequestAsync<SimpleRequest, SimpleResponse>(new SimpleRequest());
+            _task = _mediator.RequestAsync<SimpleRequest, SimpleResponse>(new SimpleRequest("Hello"));
+            return _task;
         }
 
-        void ThenTheRequestShouldReachItsHandler()
+        Task ThenTheRequestShouldReachItsHandler()
         {
             _task.Status.ShouldBe(TaskStatus.RanToCompletion);
-            
+            return Task.CompletedTask;
         }
 
         [Fact]

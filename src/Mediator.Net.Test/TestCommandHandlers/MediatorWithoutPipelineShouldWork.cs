@@ -29,12 +29,12 @@ namespace Mediator.Net.Test.TestCommandHandlers
                 var binding = new List<MessageBinding> { new MessageBinding(typeof(TestBaseCommand), typeof(AsyncTestBaseCommandHandler)) };
                 return binding;
             }).Build();
-
         }
 
-        void WhenACommandIsSent()
+        Task WhenACommandIsSent()
         {
             _task = _mediator.SendAsync(new TestBaseCommand(Guid.NewGuid()));
+            return _task;
         }
 
         void ThenItShouldReachTheRightHandler()

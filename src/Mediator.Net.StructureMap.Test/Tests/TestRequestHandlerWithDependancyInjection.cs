@@ -35,16 +35,17 @@ namespace Mediator.Net.StructureMap.Test.Tests
             _container.Configure(mediaBuilder);
         }
 
-        void WhenARequestIsSent()
+        Task WhenARequestIsSent()
         {
             _mediator = _container.GetInstance<IMediator>();
-            _task = _mediator.RequestAsync<SimpleRequest, SimpleResponse>(new SimpleRequest());
+            _task = _mediator.RequestAsync<SimpleRequest, SimpleResponse>(new SimpleRequest("Hello"));
+            return _task;
         }
 
-        void ThenTheRequestShouldReachItsHandler()
+        Task ThenTheRequestShouldReachItsHandler()
         {
             _task.Status.ShouldBe(TaskStatus.RanToCompletion);
-            
+            return Task.FromResult(0);
         }
 
         [Fact]

@@ -35,20 +35,20 @@ namespace Mediator.Net.SimpleInjector.Test.Tests
             _container.RegisterMediator(mediaBuilder);
         }
 
-        void WhenARequestIsSent()
+        Task WhenARequestIsSent()
         {
             using (var scope = _container.BeginLifetimeScope())
             {
                 _mediator = scope.GetInstance<IMediator>();
-                _task = _mediator.RequestAsync<SimpleRequest, SimpleResponse>(new SimpleRequest());
+                _task = _mediator.RequestAsync<SimpleRequest, SimpleResponse>(new SimpleRequest("Hello"));
+                return _task;
             }
-            
         }
 
-        void ThenTheRequestShouldReachItsHandler()
+        Task ThenTheRequestShouldReachItsHandler()
         {
             _task.Status.ShouldBe(TaskStatus.RanToCompletion);
-            
+            return Task.FromResult(0);
         }
 
         [Fact]

@@ -34,18 +34,21 @@ namespace Mediator.Net.Test.TestPerformance
 
         }
 
-        void When1000CommandIsSent()
+        Task When1000CommandIsSent()
         {
+            var allTasks = new List<Task>();
             var sw = new Stopwatch();
             sw.Start();
             for (int i = 0; i < 1000; i++)
             {
-                _mediator.SendAsync(new NoWorkCommand()).Wait();
+               allTasks.Add(_mediator.SendAsync(new NoWorkCommand()));
             }
-            
+
+            Task.WaitAll(allTasks.ToArray());
             sw.Stop();
             milliSeconds = sw.ElapsedMilliseconds;
             Console.WriteLine($"it took {milliSeconds} milliseconds");
+            return Task.FromResult(0);
         }
 
         void ThenItShouldNotTakeMoreThan50MilliSeconds()

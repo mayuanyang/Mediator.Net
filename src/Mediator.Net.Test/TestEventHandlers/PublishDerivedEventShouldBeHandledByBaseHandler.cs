@@ -27,16 +27,13 @@ namespace Mediator.Net.Test.TestEventHandlers
             _mediator = _builder.RegisterHandlers(typeof(PublishDerivedEventShouldBeHandledByBaseHandler).Assembly()).Build();
         }
 
-        void WhenAMoreDerivedEventIsPublished()
+        async Task WhenAMoreDerivedEventIsPublished()
         {
-            _task = _mediator.PublishAsync(new DerivedEvent(Guid.NewGuid(), "ddd"));
-            _task.Wait();
-
+            await _mediator.PublishAsync(new DerivedEvent(Guid.NewGuid(), "ddd"));
         }
 
         void ThenItShouldReachTheBaseEventHandler()
         {
-            _task.Status.ShouldBe(TaskStatus.RanToCompletion);
             RubishBox.Rublish.Count.ShouldBe(3);
             RubishBox.Rublish.Contains(nameof(TestEventHandler)).ShouldBeTrue();
             RubishBox.Rublish.Contains(nameof(DerivedEventHandler)).ShouldBeTrue();

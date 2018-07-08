@@ -1,4 +1,5 @@
-﻿using Mediator.Net.IoCTestUtil;
+﻿using System.Threading.Tasks;
+using Mediator.Net.IoCTestUtil;
 using Mediator.Net.IoCTestUtil.Middlewares;
 using Shouldly;
 using StructureMap;
@@ -22,19 +23,20 @@ namespace Mediator.Net.StructureMap.Test.Tests
                     x.UseSimpleMiddleware();
                 });
             _container = new Container();
-           
+
             _container.Configure(mediaBuilder);
         }
 
-        void WhenTryToResolveTheInterfaceType()
+        Task WhenTryToResolveTheInterfaceType()
         {
             _mediator = _container.GetInstance<IMediator>();
+            return Task.FromResult(0);
         }
 
-        void ThenInterfaceTypeShouldBeResolved()
+        Task ThenInterfaceTypeShouldBeResolved()
         {
             _mediator.ShouldNotBeNull();
-            
+            return Task.FromResult(0);
         }
 
         [Fact]

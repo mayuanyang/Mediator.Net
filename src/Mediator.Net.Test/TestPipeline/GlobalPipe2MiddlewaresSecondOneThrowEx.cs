@@ -38,11 +38,11 @@ namespace Mediator.Net.Test.TestPipeline
             .Build();
         }
 
-        void WhenACommandIsSent()
+        async Task WhenACommandIsSent()
         {
             try
             {
-                _mediator.SendAsync(new TestBaseCommand(Guid.NewGuid())).Wait();
+                await _mediator.SendAsync(new TestBaseCommand(Guid.NewGuid()));
             }
             catch (Exception)
             {

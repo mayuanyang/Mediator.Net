@@ -34,22 +34,16 @@ namespace Mediator.Net.Test.TestCommandHandlers
                 };
                 return binding;
             }).Build();
-
         }
 
-        void WhenTwoCommandsAreSent()
+        async Task WhenTwoCommandsAreSent()
         {
-            _task1 = _mediator.SendAsync(new TestBaseCommand(Guid.NewGuid()));
-            _task2 = _mediator.SendAsync(new DerivedTestBaseCommand(Guid.NewGuid()));
-
+            await _mediator.SendAsync(new TestBaseCommand(Guid.NewGuid()));
+            await _mediator.SendAsync(new DerivedTestBaseCommand(Guid.NewGuid()));
         }
 
         void ThenItShouldReachTheRightHandler()
         {
-            _task1.Wait();
-            _task2.Wait();
-            _task1.Status.ShouldBe(TaskStatus.RanToCompletion);
-            _task2.Status.ShouldBe(TaskStatus.RanToCompletion);
             RubishBox.Rublish.Contains(nameof(TestBaseCommandHandler)).ShouldBeTrue();
             RubishBox.Rublish.Contains(nameof(DerivedTestBaseCommandHandler)).ShouldBeTrue();
         }

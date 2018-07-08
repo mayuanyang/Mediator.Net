@@ -36,15 +36,13 @@ namespace Mediator.Net.Test.TestCommandHandlers
             
         }
 
-        void WhenAMoreDerivedCommandIsSent()
+        async Task WhenAMoreDerivedCommandIsSent()
         {
-            _task = _mediator.SendAsync(new DerivedTestBaseCommand(Guid.NewGuid()));
-            _task.Wait();
+            await _mediator.SendAsync(new DerivedTestBaseCommand(Guid.NewGuid()));
         }
 
         void ThenItShouldReachTheRightHandler()
         {
-            _task.Status.ShouldBe(TaskStatus.RanToCompletion);
             RubishBox.Rublish.Count.ShouldBe(1);
             RubishBox.Rublish.Contains(nameof(DerivedTestBaseCommandHandler)).ShouldBeTrue();
 

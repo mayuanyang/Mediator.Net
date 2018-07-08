@@ -5,6 +5,8 @@ using System.Threading.Tasks;
 using Mediator.Net.Binding;
 using Mediator.Net.Test.CommandHandlers;
 using Mediator.Net.Test.Messages;
+using Mediator.Net.Test.TestUtils;
+using Shouldly;
 using TestStack.BDDfy;
 using Xunit;
 
@@ -30,21 +32,16 @@ namespace Mediator.Net.Test.TestCommandHandlers
                 return binding;
             })
             .Build();
-
         }
 
-        void WhenACommandIsSent()
+        async Task WhenACommandIsSent()
         {
-            var sw = new Stopwatch();
-            sw.Start();
-            _mediator.SendAsync(new TestBaseCommand(Guid.NewGuid())).Wait();
-            sw.Stop();
-            Console.WriteLine($"it took {sw.ElapsedMilliseconds} milliseconds");
+            await _mediator.SendAsync(new TestBaseCommand(Guid.NewGuid()));
         }
 
         void ThenItShouldReachTheRightHandler()
         {
-
+            RubishBox.Rublish.Contains(nameof(AsyncTestBaseCommandHandler)).ShouldBe(true);
         }
 
         [Fact]

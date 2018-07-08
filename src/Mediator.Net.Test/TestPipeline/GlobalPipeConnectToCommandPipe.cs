@@ -43,10 +43,10 @@ namespace Mediator.Net.Test.TestPipeline
 
         }
 
-        void WhenACommandIsSent()
+        Task WhenACommandIsSent()
         {
             _commandTask = _mediator.SendAsync(new TestBaseCommand(Guid.NewGuid()));
-            
+            return _commandTask;
         }
 
         void ThenTheCommandShouldBeHandled()

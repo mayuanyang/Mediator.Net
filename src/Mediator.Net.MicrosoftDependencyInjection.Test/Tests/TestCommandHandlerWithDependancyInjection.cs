@@ -34,16 +34,17 @@ namespace Mediator.Net.MicrosoftDependencyInjection.Test.Tests
             _container.RegisterMediator(mediaBuilder);
         }
 
-        void WhenACommandIsSent()
+        Task WhenACommandIsSent()
         {
             _mediator = _container.BuildServiceProvider().GetService<IMediator>();
             _task = _mediator.SendAsync(new SimpleCommand(Guid.NewGuid()));
+            return _task;
         }
 
-        void ThenTheCommandShouldReachItsHandler()
+        Task ThenTheCommandShouldReachItsHandler()
         {
             _task.Status.ShouldBe(TaskStatus.RanToCompletion);
-            
+            return Task.FromResult(0);
         }
 
         [Fact]

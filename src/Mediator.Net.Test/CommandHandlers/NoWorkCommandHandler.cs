@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using Mediator.Net.Context;
 using Mediator.Net.Contracts;
 using Mediator.Net.Test.Messages;
+using Mediator.Net.Test.TestUtils;
 
 namespace Mediator.Net.Test.CommandHandlers
 {

@@ -28,13 +28,11 @@ namespace Mediator.Net.Test.TestPipeline
                 x.UseConsoleLogger2();
             })
             .Build();
-            
-           
         }
 
-        void WhenACommandIsSent()
+        async Task WhenACommandIsSent()
         {
-            _mediator.SendAsync(new TestBaseCommand(Guid.NewGuid())).Wait();
+            await _mediator.SendAsync(new TestBaseCommand(Guid.NewGuid()));
         }
 
         void ThenTheMiddlewaresShouldBeExecutedInOrder()
