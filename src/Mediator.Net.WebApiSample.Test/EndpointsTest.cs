@@ -18,7 +18,7 @@ namespace Mediator.Net.WebApiSample.Test
 
         [Theory]
         [InlineData("/api/values/how are you")]
-        public async Task Test1(string url)
+        public async Task RequestResponseTest(string url)
         {
             var client = _factory.CreateClient();
             var response = await client.GetAsync(url);
