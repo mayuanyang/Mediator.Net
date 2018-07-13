@@ -18,6 +18,7 @@ namespace Mediator.Net.WebApiSample.Test
         public EndpointsTest(WebApplicationFactory<Startup> factory)
         {
             _factory = factory;
+            Recorder.Values.Clear();
         }
 
         [Theory]
