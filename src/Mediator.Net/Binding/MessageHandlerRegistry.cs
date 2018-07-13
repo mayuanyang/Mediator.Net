@@ -5,12 +5,12 @@ namespace Mediator.Net.Binding
 {
     public class MessageHandlerRegistry
     {
-        static IList<MessageBinding> _messageBindings;
+        static HashSet<MessageBinding> _messageBindings;
 
-        public static IList<MessageBinding> MessageBindings
+        public static HashSet<MessageBinding> MessageBindings
         {
-            get { return _messageBindings ?? (_messageBindings = new List<MessageBinding>()); }
-            internal set { _messageBindings = value; }
+            get => _messageBindings ?? (_messageBindings = new HashSet<MessageBinding>());
+            internal set => _messageBindings = value;
         }
         
     }

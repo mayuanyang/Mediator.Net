@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace Mediator.Net.Test.TestUtils
+namespace Mediator.Net.IoCTestUtil.TestUtils
 {
-    class RubishBox
+    public static class RubishBox
     {
         [ThreadStatic] static IList<object> _rubish;
 

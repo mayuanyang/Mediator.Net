@@ -3,6 +3,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Mediator.Net.Context;
 using Mediator.Net.Contracts;
+using Mediator.Net.IoCTestUtil.TestUtils;
 using Mediator.Net.Test.Messages;
 using Mediator.Net.Test.TestUtils;
 

@@ -1,6 +1,8 @@
 ﻿using Mediator.Net.IoCTestUtil;
 using Mediator.Net.IoCTestUtil.Services;
 using Mediator.Net.MicrosoftDependencyInjection;
+using Mediator.Net.WebApiSample.Handlers.CommandHandler;
+using Mediator.Net.WebApiSample.Handlers.EventHandler;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -37,9 +39,13 @@ namespace Mediator.Net.WebApiSample
 
         void ConfigureMediator(IServiceCollection services)
         {
-            services.AddTransient<SimpleService>().AddTransient<AnotherSimpleService>();
+            services
+                .AddTransient<SimpleService>()
+                .AddTransient<AnotherSimpleService>()
+                .AddTransient<ICalculateService, CalculateService>()
+                .AddTransient<IBoardcastService, BoardcastService>();
             var mediatorBuilder = new MediatorBuilder();
-            mediatorBuilder.RegisterHandlers(TestUtilAssembly.Assembly);
+            mediatorBuilder.RegisterHandlers(TestUtilAssembly.Assembly, typeof(Startup).Assembly);
             services.RegisterMediator(mediatorBuilder);
         }
     }

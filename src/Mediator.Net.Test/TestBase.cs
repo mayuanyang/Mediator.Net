@@ -1,4 +1,5 @@
 ﻿using Mediator.Net.Binding;
+using Mediator.Net.IoCTestUtil.TestUtils;
 using Mediator.Net.Test.TestUtils;
 using Xunit;
 

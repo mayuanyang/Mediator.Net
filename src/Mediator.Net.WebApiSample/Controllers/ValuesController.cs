@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
 using Mediator.Net.IoCTestUtil.Messages;
+using Mediator.Net.WebApiSample.Handlers.CommandHandler;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Mediator.Net.WebApiSample.Controllers
@@ -25,18 +26,29 @@ namespace Mediator.Net.WebApiSample.Controllers
         // POST api/values
         [HttpPost]
         [Route("command")]
-        public async Task Post([FromBody]string value)
+        public async Task Post([FromBody]CommandData value)
         {
-            await _mediator.SendAsync(new SimpleCommand(Guid.NewGuid()));
+            await _mediator.SendAsync(new CalculateCommand(value.Left, value.Right));
         }
 
         // PUT api/values/5
         [HttpPost]
         [Route(("event"))]
-        public async Task PostEvent(int id, [FromBody]string value)
+        public async Task PostEvent(int id, [FromBody]EventData value)
         {
-            await _mediator.PublishAsync(new SimpleEvent());
+            await _mediator.PublishAsync(new ResultCalculatedEvent(value.Result));
         }
         
+    }
+
+    public class CommandData
+    {
+        public int Left { get; set; }
+        public int Right { get; set; }
+    }
+
+    public class EventData
+    {
+        public int Result { get; set; }
     }
 }
