@@ -32,21 +32,19 @@ namespace Mediator.Net.StructureMap.Test.Tests
                 x.ForConcreteType<SimpleService>();
                 x.ForConcreteType<AnotherSimpleService>();
             });
-            StructureMapExtensions.Configure(mediaBuilder, _container);
-
-
+            _container.Configure(mediaBuilder);
         }
 
-        void WhenARequestIsSent()
+        Task WhenARequestIsSent()
         {
             _mediator = _container.GetInstance<IMediator>();
-            _task = _mediator.RequestAsync<SimpleRequest, SimpleResponse>(new SimpleRequest());
+            _task = _mediator.RequestAsync<SimpleRequest, SimpleResponse>(new SimpleRequest("Hello"));
+            return _task;
         }
 
         void ThenTheRequestShouldReachItsHandler()
         {
             _task.Status.ShouldBe(TaskStatus.RanToCompletion);
-            
         }
 
         [Fact]

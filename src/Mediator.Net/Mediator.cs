@@ -14,7 +14,7 @@ namespace Mediator.Net
         private readonly IRequestReceivePipe<IReceiveContext<IRequest>> _requestPipe;
         private readonly IPublishPipe<IPublishContext<IEvent>> _publishPipe;
         private readonly IGlobalReceivePipe<IReceiveContext<IMessage>> _globalPipe;
-        private readonly IDependancyScope _scope;
+        private readonly IDependencyScope _scope;
 
         public Mediator(
             ICommandReceivePipe<IReceiveContext<ICommand>> commandReceivePipe,
@@ -22,7 +22,7 @@ namespace Mediator.Net
             IRequestReceivePipe<IReceiveContext<IRequest>> requestPipe, 
             IPublishPipe<IPublishContext<IEvent>> publishPipe, 
             IGlobalReceivePipe<IReceiveContext<IMessage>> globalPipe, 
-            IDependancyScope scope = null)
+            IDependencyScope scope = null)
         {
             _commandReceivePipe = commandReceivePipe;
             _eventReceivePipe = eventReceivePipe;

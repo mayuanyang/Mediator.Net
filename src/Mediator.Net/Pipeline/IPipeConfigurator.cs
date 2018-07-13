@@ -8,7 +8,7 @@ namespace Mediator.Net.Pipeline
         where TContext : IContext<IMessage>
     {
         void AddPipeSpecification(IPipeSpecification<TContext> specification);
-        IDependancyScope DependancyScope { get; }
+        IDependencyScope DependancyScope { get; }
 
     }
 }

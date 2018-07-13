@@ -1,4 +1,5 @@
-﻿using Autofac;
+﻿using System.Threading.Tasks;
+using Autofac;
 using Mediator.Net.IoCTestUtil;
 using Mediator.Net.IoCTestUtil.Middlewares;
 using Shouldly;
@@ -26,15 +27,15 @@ namespace Mediator.Net.Autofac.Test.Tests
             _container = containerBuilder.Build();
         }
 
-        void WhenTryToResolveTheInterfaceType()
+        Task WhenTryToResolveTheInterfaceType()
         {
             _mediator = _container.Resolve<IMediator>();
+            return Task.FromResult(0);
         }
 
         void ThenInterfaceTypeShouldBeResolved()
         {
             _mediator.ShouldNotBeNull();
-            
         }
 
         [Fact]

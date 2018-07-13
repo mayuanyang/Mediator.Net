@@ -9,10 +9,10 @@ namespace Mediator.Net.Autofac
         public static ContainerBuilder RegisterMediator(this ContainerBuilder containerBuilder, MediatorBuilder mediatorBuilder)
         {
             containerBuilder.RegisterInstance(mediatorBuilder).AsSelf().AsImplementedInterfaces().SingleInstance();
-            containerBuilder.RegisterType<AutofacDependancyScope>().AsImplementedInterfaces();
+            containerBuilder.RegisterType<AutofacDependencyScope>().AsImplementedInterfaces();
             containerBuilder.Register(x =>
             {
-                var resolver = x.Resolve<IDependancyScope>().BeginScope();
+                var resolver = x.Resolve<IDependencyScope>().BeginScope();
                 return mediatorBuilder.Build(resolver);
                 
             }).AsSelf().AsImplementedInterfaces().InstancePerLifetimeScope();

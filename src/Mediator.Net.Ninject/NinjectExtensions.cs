@@ -7,7 +7,7 @@ namespace Mediator.Net.Ninject
         public static void Configure(StandardKernel kernal, MediatorBuilder builder)
         {
             kernal.Bind<MediatorBuilder>().ToConstant(builder);
-            kernal.Bind<IDependancyScope>().ToMethod(x => new NinjectDependancyScope(kernal));
+            kernal.Bind<IDependencyScope>().ToMethod(x => new NinjectDependencyScope(kernal));
         }
     }
 }

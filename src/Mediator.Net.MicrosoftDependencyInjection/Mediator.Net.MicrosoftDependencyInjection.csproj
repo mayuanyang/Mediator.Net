@@ -1,0 +1,32 @@
+<Project Sdk="Microsoft.NET.Sdk" ToolsVersion="15.0">
+  <PropertyGroup>
+    <PackageVersion>1.0.0</PackageVersion>
+    <Description>Use MicrosoftDependencyInjection as the IoC container for Mediator.Net</Description>
+    <AssemblyTitle>Mediator.Net MicrosoftDependencyInjection integration</AssemblyTitle>
+    <Authors>Yuan(Eddy) Ma</Authors>
+    <iconUrl>https://cloud.githubusercontent.com/assets/3387099/24353370/97f573f0-1330-11e7-890c-85855628a575.png</iconUrl>
+    <TargetFrameworks>netstandard2.0</TargetFrameworks>
+    <AssemblyName>Mediator.Net.MicrosoftDependencyInjection</AssemblyName>
+    <PackageId>Mediator.Net.MicrosoftDependencyInjection</PackageId>
+    <PackageTags>.NET;Mediator;Cqrs;DDD;Command;Event;Request;Response;MicrosoftDependencyInjection</PackageTags>
+    <PackageProjectUrl>https://github.com/mayuanyang/Mediator.Net</PackageProjectUrl>
+    <PackageLicenseUrl>http://www.apache.org/licenses/LICENSE-2.0</PackageLicenseUrl>
+    <GenerateAssemblyTitleAttribute>false</GenerateAssemblyTitleAttribute>
+    <GenerateAssemblyDescriptionAttribute>false</GenerateAssemblyDescriptionAttribute>
+    <GenerateAssemblyConfigurationAttribute>false</GenerateAssemblyConfigurationAttribute>
+    <GenerateAssemblyCompanyAttribute>false</GenerateAssemblyCompanyAttribute>
+    <GenerateAssemblyProductAttribute>false</GenerateAssemblyProductAttribute>
+    <GenerateAssemblyCopyrightAttribute>false</GenerateAssemblyCopyrightAttribute>
+    <GenerateAssemblyVersionAttribute>false</GenerateAssemblyVersionAttribute>
+    <GenerateAssemblyFileVersionAttribute>false</GenerateAssemblyFileVersionAttribute>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net45|AnyCPU'">
+    <LangVersion>latest</LangVersion>
+  </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="2.1.1" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Mediator.Net\Mediator.Net.csproj" />
+  </ItemGroup>
+</Project>

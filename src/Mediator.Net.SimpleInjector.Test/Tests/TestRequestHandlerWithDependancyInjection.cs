@@ -32,23 +32,22 @@ namespace Mediator.Net.SimpleInjector.Test.Tests
             _container.Register<SimpleService>();
             _container.Register<AnotherSimpleService>();
             
-            InjectHelper.RegisterMediator(_container, mediaBuilder);
+            _container.RegisterMediator(mediaBuilder);
         }
 
-        void WhenARequestIsSent()
+        Task WhenARequestIsSent()
         {
             using (var scope = _container.BeginLifetimeScope())
             {
                 _mediator = scope.GetInstance<IMediator>();
-                _task = _mediator.RequestAsync<SimpleRequest, SimpleResponse>(new SimpleRequest());
+                _task = _mediator.RequestAsync<SimpleRequest, SimpleResponse>(new SimpleRequest("Hello"));
+                return _task;
             }
-            
         }
 
         void ThenTheRequestShouldReachItsHandler()
         {
             _task.Status.ShouldBe(TaskStatus.RanToCompletion);
-            
         }
 
         [Fact]

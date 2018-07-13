@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Mediator.Net.Binding;
+using Mediator.Net.IoCTestUtil.TestUtils;
 using Mediator.Net.Test.CommandHandlers;
 using Mediator.Net.Test.Messages;
 using Mediator.Net.Test.Middlewares;
@@ -38,11 +39,11 @@ namespace Mediator.Net.Test.TestPipeline
             .Build();
         }
 
-        void WhenACommandIsSent()
+        async Task WhenACommandIsSent()
         {
             try
             {
-                _mediator.SendAsync(new TestBaseCommand(Guid.NewGuid())).Wait();
+                await _mediator.SendAsync(new TestBaseCommand(Guid.NewGuid()));
             }
             catch (Exception)
             {

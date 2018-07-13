@@ -9,10 +9,10 @@ namespace Mediator.Net.Pipeline
 {
     public class RequestPipeConfigurator : IRequestPipeConfigurator<IReceiveContext<IRequest>>
     {
-        private readonly IDependancyScope _resolver;
+        private readonly IDependencyScope _resolver;
         private readonly IList<IPipeSpecification<IReceiveContext<IRequest>>> _specifications;
-        public IDependancyScope DependancyScope => _resolver;
-        public RequestPipeConfigurator(IDependancyScope resolver = null)
+        public IDependencyScope DependancyScope => _resolver;
+        public RequestPipeConfigurator(IDependencyScope resolver = null)
         {
             _resolver = resolver;
             _specifications = new List<IPipeSpecification<IReceiveContext<IRequest>>>();

@@ -17,7 +17,7 @@ namespace Mediator.Net.IoCTestUtil.Handlers
         }
         public Task<SimpleResponse> Handle(ReceiveContext<SimpleRequest> context, CancellationToken cancellationToken)
         {
-            return Task.FromResult(new SimpleResponse());
+            return Task.FromResult(new SimpleResponse(context.Message.Message));
         }
     }
 }

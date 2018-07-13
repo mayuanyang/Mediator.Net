@@ -14,9 +14,9 @@ namespace Mediator.Net.Pipeline
         where TContext : IReceiveContext<IRequest>
     {
         private readonly IPipeSpecification<TContext> _specification;
-        private readonly IDependancyScope _resolver;
+        private readonly IDependencyScope _resolver;
 
-        public RequestPipe(IPipeSpecification<TContext> specification, IPipe<TContext> next, IDependancyScope resolver)
+        public RequestPipe(IPipeSpecification<TContext> specification, IPipe<TContext> next, IDependencyScope resolver)
         {
             Next = next;
             _specification = specification;

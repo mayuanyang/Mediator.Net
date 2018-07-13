@@ -3,11 +3,11 @@ using StructureMap;
 
 namespace Mediator.Net.StructureMap
 {
-    public class StructureMapDependancyScope : IDependancyScope
+    public class StructureMapDependencyScope : IDependencyScope
     {
         private readonly IContainer _container;
 
-        public StructureMapDependancyScope(IContainer container)
+        public StructureMapDependencyScope(IContainer container)
         {
             _container = container;
         }
@@ -26,10 +26,9 @@ namespace Mediator.Net.StructureMap
             return _container.GetInstance(t);
         }
 
-        public IDependancyScope BeginScope()
+        public IDependencyScope BeginScope()
         {
-            var nested = new StructureMapDependancyScope(_container.GetNestedContainer("Mediator.Net"));
-            return nested;
+            return new StructureMapDependencyScope(_container.GetNestedContainer("Mediator.Net"));
         }
     }
 }

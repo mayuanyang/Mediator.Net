@@ -43,7 +43,7 @@ namespace Mediator.Net.Test.TestCommandHandlers
 
         void ThenItShouldThrowNoHandlerFoundException()
         {
-            _task.ShouldThrow<NoHandlerFoundException>();
+            Should.Throw<NoHandlerFoundException>(_task);
         }
 
         [Fact]

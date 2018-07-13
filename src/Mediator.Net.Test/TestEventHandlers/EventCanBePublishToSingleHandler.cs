@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Mediator.Net.Binding;
+using Mediator.Net.IoCTestUtil.TestUtils;
 using Mediator.Net.Test.EventHandlers;
 using Mediator.Net.Test.Messages;
-using Mediator.Net.Test.TestUtils;
 using Shouldly;
 using TestStack.BDDfy;
 using Xunit;
@@ -28,16 +28,13 @@ namespace Mediator.Net.Test.TestEventHandlers
             
         }
 
-        void WhenAEventIsPublished()
+        async Task WhenAEventIsPublished()
         {
-            _task = _mediator.PublishAsync(new TestEvent(Guid.NewGuid()));
-            _task.Wait();
-
+            await _mediator.PublishAsync(new TestEvent(Guid.NewGuid()));
         }
 
         void ThenItShouldReachTheRightHandler()
         {
-            _task.Status.ShouldBe(TaskStatus.RanToCompletion);
             RubishBox.Rublish.Contains(nameof(TestEventHandler)).ShouldBeTrue();
         }
 

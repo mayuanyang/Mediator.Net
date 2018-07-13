@@ -47,19 +47,17 @@ namespace Mediator.Net.Autofac.Test.Tests
             _container = containerBuilder.Build();
         }
 
-        void WhenAMessageIsSent()
+        async Task WhenAMessageIsSent()
         {
             _mediator = _container.Resolve<IMediator>();
-            _mediator.SendAsync(new SimpleCommand(Guid.NewGuid())).Wait();
-            _mediator.PublishAsync(new SimpleEvent()).Wait();
-            _mediator.RequestAsync<SimpleRequest, SimpleResponse>(new SimpleRequest()).Wait();
-
+            await _mediator.SendAsync(new SimpleCommand(Guid.NewGuid()));
+            await _mediator.PublishAsync(new SimpleEvent());
+            await _mediator.RequestAsync<SimpleRequest, SimpleResponse>(new SimpleRequest("Hello"));
         }
 
         void ThenAllMiddlewaresInPipelinesShouldBeExecuted()
         {
             RubishBin.Rublish.Count.ShouldBe(6);
-            
         }
 
         [Fact]

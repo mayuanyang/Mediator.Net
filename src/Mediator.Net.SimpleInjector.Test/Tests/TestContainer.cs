@@ -1,4 +1,5 @@
-﻿using Mediator.Net.IoCTestUtil;
+﻿using System.Threading.Tasks;
+using Mediator.Net.IoCTestUtil;
 using Mediator.Net.IoCTestUtil.Middlewares;
 using Shouldly;
 using SimpleInjector;
@@ -25,21 +26,21 @@ namespace Mediator.Net.SimpleInjector.Test.Tests
                 });
             _container = new Container();
             _container.Options.DefaultScopedLifestyle = new LifetimeScopeLifestyle();
-            InjectHelper.RegisterMediator(_container, mediaBuilder);
+            _container.RegisterMediator(mediaBuilder);
         }
 
-        void WhenTryToResolveTheInterfaceType()
+        Task WhenTryToResolveTheInterfaceType()
         {
             using (var scope = _container.BeginLifetimeScope())
             {
                 _mediator = scope.GetInstance<IMediator>();
             }
+            return Task.FromResult(0);
         }
 
         void ThenInterfaceTypeShouldBeResolved()
         {
             _mediator.ShouldNotBeNull();
-            
         }
 
         [Fact]

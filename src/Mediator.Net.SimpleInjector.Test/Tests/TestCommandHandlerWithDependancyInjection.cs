@@ -33,23 +33,22 @@ namespace Mediator.Net.SimpleInjector.Test.Tests
             _container.Register<SimpleService>();
             _container.Register<AnotherSimpleService>();
 
-            InjectHelper.RegisterMediator(_container, mediaBuilder);
+            _container.RegisterMediator(mediaBuilder);
         }
 
-        void WhenACommandIsSent()
+        Task WhenACommandIsSent()
         {
             using (var scope = _container.BeginLifetimeScope())
             {
                 _mediator = scope.GetInstance<IMediator>();
                 _task = _mediator.SendAsync(new SimpleCommand(Guid.NewGuid()));
+                return _task;
             }
-
         }
 
         void ThenTheCommandShouldReachItsHandler()
         {
             _task.Status.ShouldBe(TaskStatus.RanToCompletion);
-
         }
 
         [Fact]

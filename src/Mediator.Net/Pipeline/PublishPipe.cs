@@ -12,9 +12,9 @@ namespace Mediator.Net.Pipeline
     class PublishPipe<TContext> : IPublishPipe<TContext> where TContext : IPublishContext<IEvent>
     {
         private readonly IPipeSpecification<TContext> _specification;
-        private readonly IDependancyScope _resolver;
+        private readonly IDependencyScope _resolver;
 
-        public PublishPipe(IPipeSpecification<TContext> specification, IPipe<TContext> next, IDependancyScope resolver = null)
+        public PublishPipe(IPipeSpecification<TContext> specification, IPipe<TContext> next, IDependencyScope resolver = null)
         {
             Next = next;
             _specification = specification;

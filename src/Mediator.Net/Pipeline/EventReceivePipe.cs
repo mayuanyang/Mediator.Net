@@ -17,10 +17,10 @@ namespace Mediator.Net.Pipeline
         where TContext : IContext<IEvent>
     {
         private readonly IPipeSpecification<TContext> _specification;
-        private readonly IDependancyScope _resolver;
+        private readonly IDependencyScope _resolver;
 
 
-        public EventReceivePipe(IPipeSpecification<TContext> specification, IPipe<TContext> next, IDependancyScope resolver = null)
+        public EventReceivePipe(IPipeSpecification<TContext> specification, IPipe<TContext> next, IDependencyScope resolver = null)
         {
             _specification = specification;
             _resolver = resolver;

@@ -2,10 +2,10 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Mediator.Net.Binding;
+using Mediator.Net.IoCTestUtil.TestUtils;
 using Mediator.Net.Test.CommandHandlers;
 using Mediator.Net.Test.Messages;
 using Mediator.Net.Test.Middlewares;
-using Mediator.Net.Test.TestUtils;
 using Shouldly;
 using TestStack.BDDfy;
 using Xunit;
@@ -31,9 +31,9 @@ namespace Mediator.Net.Test.TestPipeline
  
         }
 
-        void WhenACommandIsSent()
+        async Task WhenACommandIsSent()
         {
-            _mediator.SendAsync(new TestBaseCommand(Guid.NewGuid())).Wait();
+            await _mediator.SendAsync(new TestBaseCommand(Guid.NewGuid()));
         }
 
         void ThenItShouldReachTheRightHandler()

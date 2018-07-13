@@ -44,13 +44,25 @@ namespace Mediator.Net
 
         public MediatorBuilder RegisterHandlers(IList<MessageBinding> messageHandlerPairs)
         {
-            MessageHandlerRegistry.MessageBindings = messageHandlerPairs;
+            var messageBindings = new HashSet<MessageBinding>(messageHandlerPairs);
+            return RegisterHandlers(messageBindings);
+        }
+
+        public MediatorBuilder RegisterHandlers(HashSet<MessageBinding> messageBindings)
+        {
+            MessageHandlerRegistry.MessageBindings = messageBindings;
             return this;
         }
 
         public MediatorBuilder RegisterHandlers(Func<IList<MessageBinding>> setupBindings)
         {
-            var result = setupBindings.Invoke();
+            var listBindings = setupBindings();
+            return RegisterHandlers(listBindings);
+        }
+
+        public MediatorBuilder RegisterHandlers(Func<HashSet<MessageBinding>> setupBindings)
+        {
+            var result = setupBindings();
             MessageHandlerRegistry.MessageBindings = result;
             return this;
         }
@@ -91,12 +103,12 @@ namespace Mediator.Net
             return BuildMediator();
         }
 
-        public IMediator Build(IDependancyScope scope)
+        public IMediator Build(IDependencyScope scope)
         {
             return BuildMediator(scope);
         }
 
-        private IMediator BuildMediator(IDependancyScope scope = null)
+        private IMediator BuildMediator(IDependencyScope scope = null)
         {
             var commandReceivePipeConfigurator = new CommandReceivePipeConfigurator(scope);
             _commandReceivePipeConfiguratorAction?.Invoke(commandReceivePipeConfigurator);

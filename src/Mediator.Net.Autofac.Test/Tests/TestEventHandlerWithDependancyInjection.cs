@@ -32,16 +32,16 @@ namespace Mediator.Net.Autofac.Test.Tests
             _container = containerBuilder.Build();
         }
 
-        void WhenACommandIsSent()
+        Task WhenACommandIsSent()
         {
             _mediator = _container.Resolve<IMediator>();
             _task = _mediator.PublishAsync(new SimpleEvent());
+            return _task;
         }
 
         void ThenTheEventShouldReachItsHandler()
         {
             _task.Status.ShouldBe(TaskStatus.RanToCompletion);
-            
         }
 
         [Fact]

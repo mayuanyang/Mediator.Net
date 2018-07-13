@@ -28,23 +28,22 @@ namespace Mediator.Net.SimpleInjector.Test.Tests
                 });
             _container = new Container();
             _container.Options.DefaultScopedLifestyle = new LifetimeScopeLifestyle();
-            InjectHelper.RegisterMediator(_container, mediaBuilder);
+            _container.RegisterMediator(mediaBuilder);
         }
 
-        void WhenACommandIsSent()
+        Task WhenACommandIsSent()
         {
             using (var scope = _container.BeginLifetimeScope())
             {
                 _mediator = scope.GetInstance<IMediator>();
             _task = _mediator.PublishAsync(new SimpleEvent());
             }
-            
+            return Task.FromResult(0);
         }
 
         void ThenTheEventShouldReachItsHandler()
         {
             _task.Status.ShouldBe(TaskStatus.RanToCompletion);
-            
         }
 
         [Fact]

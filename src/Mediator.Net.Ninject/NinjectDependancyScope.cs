@@ -3,11 +3,11 @@ using Ninject;
 
 namespace Mediator.Net.Ninject
 {
-    public class NinjectDependancyScope : IDependancyScope
+    public class NinjectDependencyScope : IDependencyScope
     {
         private readonly StandardKernel _kernal;
 
-        public NinjectDependancyScope(StandardKernel kernal)
+        public NinjectDependencyScope(StandardKernel kernal)
         {
             // TODO: A scope should be used rather than directly using the kernal
             _kernal = kernal;
@@ -28,9 +28,9 @@ namespace Mediator.Net.Ninject
             return _kernal.GetService(t);
         }
 
-        public IDependancyScope BeginScope()
+        public IDependencyScope BeginScope()
         {
-            return new NinjectDependancyScope(_kernal);
+            return new NinjectDependencyScope(_kernal);
         }
     }
 }

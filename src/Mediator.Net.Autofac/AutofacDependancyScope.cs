@@ -3,11 +3,11 @@ using Autofac;
 
 namespace Mediator.Net.Autofac
 {
-    class AutofacDependancyScope : IDependancyScope
+    class AutofacDependencyScope : IDependencyScope
     {
         private readonly ILifetimeScope _scope;
 
-        public AutofacDependancyScope(ILifetimeScope scope)
+        public AutofacDependencyScope(ILifetimeScope scope)
         {
             _scope = scope;
         }
@@ -26,9 +26,9 @@ namespace Mediator.Net.Autofac
             return _scope.Resolve(t);
         }
 
-        public IDependancyScope BeginScope()
+        public IDependencyScope BeginScope()
         {
-            return new AutofacDependancyScope(_scope.BeginLifetimeScope("Mediator.Net"));
+            return new AutofacDependencyScope(_scope.BeginLifetimeScope("Mediator.Net"));
         }
     }
 }

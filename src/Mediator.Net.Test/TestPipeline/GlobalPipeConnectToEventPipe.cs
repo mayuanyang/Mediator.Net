@@ -2,10 +2,10 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Mediator.Net.Binding;
+using Mediator.Net.IoCTestUtil.TestUtils;
 using Mediator.Net.Test.EventHandlers;
 using Mediator.Net.Test.Messages;
 using Mediator.Net.Test.Middlewares;
-using Mediator.Net.Test.TestUtils;
 using Shouldly;
 using TestStack.BDDfy;
 using Xunit;
@@ -13,11 +13,11 @@ using Xunit;
 
 namespace Mediator.Net.Test.TestPipeline
 {
-    
+
     public class GlobalPipeConnectToEventPipe : TestBase
     {
         private IMediator _mediator;
-        private Task _commandTask;
+        private Task _eventTask;
         private Guid _id = Guid.NewGuid();
         void GivenAMediator()
         {
@@ -44,15 +44,15 @@ namespace Mediator.Net.Test.TestPipeline
 
         }
 
-        void WhenACommandIsSent()
+        Task WhenACommandIsSent()
         {
-            _commandTask = _mediator.PublishAsync(new TestEvent(Guid.NewGuid()));
-            
+            _eventTask = _mediator.PublishAsync(new TestEvent(Guid.NewGuid()));
+            return _eventTask;
         }
 
         void ThenItShouldUseTheRightMiddlewares()
         {
-            _commandTask.Status.ShouldBe(TaskStatus.RanToCompletion);
+            _eventTask.Status.ShouldBe(TaskStatus.RanToCompletion);
             RubishBox.Rublish.Count.ShouldBe(3);
             RubishBox.Rublish.Contains(nameof(ConsoleLog1.UseConsoleLogger1)).ShouldBeTrue();
             RubishBox.Rublish.Contains(nameof(ConsoleLog2.UseConsoleLogger2)).ShouldBeTrue();
