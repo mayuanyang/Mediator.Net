@@ -2,10 +2,10 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Mediator.Net.Binding;
-using Mediator.Net.IoCTestUtil.TestUtils;
-using Mediator.Net.Test.CommandHandlers;
-using Mediator.Net.Test.Messages;
-using Mediator.Net.Test.Middlewares;
+using Mediator.Net.TestUtil.Handlers.CommandHandlers;
+using Mediator.Net.TestUtil.Messages;
+using Mediator.Net.TestUtil.Middlewares;
+using Mediator.Net.TestUtil.TestUtils;
 using Shouldly;
 using TestStack.BDDfy;
 using Xunit;
@@ -22,7 +22,7 @@ namespace Mediator.Net.Test.TestMetaData
             var builder = new MediatorBuilder();
             _mediator = builder.RegisterHandlers(() =>
             {
-                var binding = new List<MessageBinding> { new MessageBinding(typeof(TestBaseCommand), typeof(Simple2CommandHandler)) };
+                var binding = new List<MessageBinding> { new MessageBinding(typeof(TestBaseCommand), typeof(TestBaseCommandUseMetadataHandler)) };
                 return binding;
             })
             .ConfigureGlobalReceivePipe(x =>

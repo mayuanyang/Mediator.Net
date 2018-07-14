@@ -23,7 +23,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Mediator.Net.IoCTestUtil\Mediator.Net.IoCTestUtil.csproj" />
     <ProjectReference Include="..\Mediator.Net.MicrosoftDependencyInjection\Mediator.Net.MicrosoftDependencyInjection.csproj" />
+    <ProjectReference Include="..\Mediator.Net.TestUtil\Mediator.Net.TestUtil.csproj" />
+    <ProjectReference Include="..\Mediator.Net\Mediator.Net.csproj" />
   </ItemGroup>
 </Project>

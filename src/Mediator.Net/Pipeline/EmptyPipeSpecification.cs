@@ -14,7 +14,7 @@ namespace Mediator.Net.Pipeline
             return false;
         }
 
-        public Task ExecuteBeforeConnect(TContext context, CancellationToken cancellationToken)
+        public Task BeforeExecute(TContext context, CancellationToken cancellationToken)
         {
             return Task.FromResult(0);
         }
@@ -24,7 +24,7 @@ namespace Mediator.Net.Pipeline
             return Task.FromResult(0);
         }
 
-        public Task ExecuteAfterConnect(TContext context, CancellationToken cancellationToken)
+        public Task AfterExecute(TContext context, CancellationToken cancellationToken)
         {
             return Task.FromResult(0);
         }

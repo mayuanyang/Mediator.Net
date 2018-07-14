@@ -31,10 +31,10 @@ namespace Mediator.Net.Pipeline
         {
             try
             {
-                await _specification.ExecuteBeforeConnect(context, cancellationToken);
+                await _specification.BeforeExecute(context, cancellationToken);
                 await _specification.Execute(context, cancellationToken);
                 await (Next?.Connect(context, cancellationToken) ?? ConnectToHandler(context, cancellationToken));
-                await _specification.ExecuteAfterConnect(context, cancellationToken);
+                await _specification.AfterExecute(context, cancellationToken);
             }
             catch (Exception e)
             {

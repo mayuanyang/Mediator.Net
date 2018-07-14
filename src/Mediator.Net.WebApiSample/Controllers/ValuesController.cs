@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Threading.Tasks;
-using Mediator.Net.IoCTestUtil.Messages;
+using Mediator.Net.TestUtil.Messages;
 using Mediator.Net.WebApiSample.Handlers.CommandHandler;
 using Microsoft.AspNetCore.Mvc;
 

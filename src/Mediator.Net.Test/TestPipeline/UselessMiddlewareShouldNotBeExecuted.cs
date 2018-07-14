@@ -2,14 +2,13 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Mediator.Net.Binding;
-using Mediator.Net.IoCTestUtil.TestUtils;
-using Mediator.Net.Test.CommandHandlers;
-using Mediator.Net.Test.Messages;
-using Mediator.Net.Test.Middlewares;
-using Mediator.Net.Test.TestUtils;
+using Mediator.Net.TestUtil.Messages;
+using Mediator.Net.TestUtil.Middlewares;
+using Mediator.Net.TestUtil.TestUtils;
 using Shouldly;
 using TestStack.BDDfy;
 using Xunit;
+using Mediator.Net.TestUtil.Handlers.CommandHandlers;
 
 namespace Mediator.Net.Test.TestPipeline
 {
@@ -30,8 +29,6 @@ namespace Mediator.Net.Test.TestPipeline
                 x.UseUselessMiddleware();
             })
             .Build();
-            
-
         }
 
         async Task WhenACommandIsSent()

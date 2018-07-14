@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Mediator.Net.Binding;
-using Mediator.Net.Test.Messages;
-using Mediator.Net.Test.Middlewares;
-using Mediator.Net.Test.RequestHandlers;
+using Mediator.Net.TestUtil.Handlers.RequestHandlers;
+using Mediator.Net.TestUtil.Messages;
+using Mediator.Net.TestUtil.Middlewares;
 using Shouldly;
 using TestStack.BDDfy;
 using Xunit;

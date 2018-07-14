@@ -1,8 +1,9 @@
 ﻿using System;
 using System.Threading.Tasks;
-using Mediator.Net.IoCTestUtil.TestUtils;
-using Mediator.Net.Test.EventHandlers;
-using Mediator.Net.Test.Messages;
+using Mediator.Net.TestUtil;
+using Mediator.Net.TestUtil.Handlers.EventHandlers;
+using Mediator.Net.TestUtil.Messages;
+using Mediator.Net.TestUtil.TestUtils;
 using Shouldly;
 using TestStack.BDDfy;
 using Xunit;
@@ -24,7 +25,7 @@ namespace Mediator.Net.Test.TestEventHandlers
 
         void AndGivenTheEventIsRegisteredToItsBaseClassHandler()
         {
-            _mediator = _builder.RegisterHandlers(typeof(PublishDerivedEventShouldBeHandledByBaseHandler).Assembly()).Build();
+            _mediator = _builder.RegisterHandlers(TestUtilAssembly.Assembly).Build();
         }
 
         async Task WhenAMoreDerivedEventIsPublished()
@@ -37,7 +38,7 @@ namespace Mediator.Net.Test.TestEventHandlers
             RubishBox.Rublish.Count.ShouldBe(3);
             RubishBox.Rublish.Contains(nameof(TestEventHandler)).ShouldBeTrue();
             RubishBox.Rublish.Contains(nameof(DerivedEventHandler)).ShouldBeTrue();
-            RubishBox.Rublish.Contains(nameof(TestEventHandler2)).ShouldBeTrue();
+            RubishBox.Rublish.Contains(nameof(MultiTestEventHandlerHandleTheSameEvent)).ShouldBeTrue();
         }
 
         [Fact]

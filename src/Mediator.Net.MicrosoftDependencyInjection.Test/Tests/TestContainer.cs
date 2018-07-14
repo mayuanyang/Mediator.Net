@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel;
 using System.Threading.Tasks;
-using Mediator.Net.IoCTestUtil;
-using Mediator.Net.IoCTestUtil.Middlewares;
+using Mediator.Net.TestUtil;
+using Mediator.Net.TestUtil.Middlewares;
 using Microsoft.Extensions.DependencyInjection;
 using Shouldly;
 using TestStack.BDDfy;

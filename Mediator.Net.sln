@@ -15,7 +15,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Mediator.Net.Test", "src\Me
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Mediator.Net.Autofac", "src\Mediator.Net.Autofac\Mediator.Net.Autofac.csproj", "{838C1537-081C-4B3C-B5A6-5222174AD8B0}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Mediator.Net.IoCTestUtil", "src\Mediator.Net.IoCTestUtil\Mediator.Net.IoCTestUtil.csproj", "{C7EF3B6D-310B-4EF7-B2E7-97CB5141AD29}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Mediator.Net.TestUtil", "src\Mediator.Net.TestUtil\Mediator.Net.TestUtil.csproj", "{C7EF3B6D-310B-4EF7-B2E7-97CB5141AD29}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Mediator.Net.StructureMap", "src\Mediator.Net.StructureMap\Mediator.Net.StructureMap.csproj", "{5FCBEC1E-28BE-40E2-90F3-061D34082A55}"
 EndProject
@@ -37,7 +37,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Mediator.Net.MicrosoftDepen
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Mediator.Net.MicrosoftDependencyInjection.Test", "src\Mediator.Net.MicrosoftDependencyInjection.Test\Mediator.Net.MicrosoftDependencyInjection.Test.csproj", "{597616CF-5956-4C50-8EED-4F3219DEE25C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mediator.Net.WebApiSample.Test", "src\Mediator.Net.WebApiSample.Test\Mediator.Net.WebApiSample.Test.csproj", "{DEC0A155-71D9-46A7-871C-29885958FB8A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Mediator.Net.WebApiSample.Test", "src\Mediator.Net.WebApiSample.Test\Mediator.Net.WebApiSample.Test.csproj", "{DEC0A155-71D9-46A7-871C-29885958FB8A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

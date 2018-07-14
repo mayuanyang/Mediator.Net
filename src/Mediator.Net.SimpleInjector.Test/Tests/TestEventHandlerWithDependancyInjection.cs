@@ -1,7 +1,7 @@
 ﻿using System.Threading.Tasks;
-using Mediator.Net.IoCTestUtil;
-using Mediator.Net.IoCTestUtil.Messages;
-using Mediator.Net.IoCTestUtil.Middlewares;
+using Mediator.Net.TestUtil;
+using Mediator.Net.TestUtil.Messages;
+using Mediator.Net.TestUtil.Middlewares;
 using Shouldly;
 using SimpleInjector;
 using SimpleInjector.Extensions.LifetimeScoping;

@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Threading.Tasks;
 using Autofac;
-using Mediator.Net.IoCTestUtil;
-using Mediator.Net.IoCTestUtil.Messages;
-using Mediator.Net.IoCTestUtil.Services;
 using Mediator.Net.Middlewares.Serilog;
+using Mediator.Net.TestUtil;
+using Mediator.Net.TestUtil.Messages;
+using Mediator.Net.TestUtil.Services;
 using Serilog;
 using TestStack.BDDfy;
 using NSubstitute;

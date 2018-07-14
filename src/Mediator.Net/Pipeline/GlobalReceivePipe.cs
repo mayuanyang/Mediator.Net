@@ -25,7 +25,7 @@ namespace Mediator.Net.Pipeline
             object result = null;
             try
             {
-                await _specification.ExecuteBeforeConnect(context, cancellationToken);
+                await _specification.BeforeExecute(context, cancellationToken);
                 await _specification.Execute(context, cancellationToken);
                 if (Next != null)
                 {
@@ -36,7 +36,7 @@ namespace Mediator.Net.Pipeline
                     result = await ConnectToPipe(context, cancellationToken);
                 }
 
-                await _specification.ExecuteAfterConnect(context, cancellationToken);
+                await _specification.AfterExecute(context, cancellationToken);
                 return result;
             }
             catch (Exception e)
