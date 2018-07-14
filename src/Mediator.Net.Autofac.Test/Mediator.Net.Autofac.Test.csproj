@@ -23,7 +23,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Mediator.Net.IoCTestUtil\Mediator.Net.TestUtil.csproj" />
+    <ProjectReference Include="..\Mediator.Net.TestUtil\Mediator.Net.TestUtil.csproj" />
     <ProjectReference Include="..\Mediator.Net\Mediator.Net.csproj" />
     <ProjectReference Include="..\Mediator.Net.Autofac\Mediator.Net.Autofac.csproj" />
     <ProjectReference Include="..\Mediator.Net.Middlewares.Serilog\Mediator.Net.Middlewares.Serilog.csproj" />
