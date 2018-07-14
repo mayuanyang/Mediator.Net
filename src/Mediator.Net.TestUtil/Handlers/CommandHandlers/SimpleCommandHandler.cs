@@ -3,18 +3,27 @@ using System.Threading.Tasks;
 using Mediator.Net.Context;
 using Mediator.Net.Contracts;
 using Mediator.Net.TestUtil.Messages;
-using Mediator.Net.TestUtil.TestUtils;
+using Mediator.Net.TestUtil.Services;
 
 namespace Mediator.Net.TestUtil.Handlers.CommandHandlers
 {
-    public class SimpleCommandHandler : ICommandHandler<TestBaseCommand>
+    public class SimpleCommandHandler : ICommandHandler<SimpleCommand>
     {
-        public async Task Handle(ReceiveContext<TestBaseCommand> context, CancellationToken cancellationToken)
+        private readonly SimpleService _simpleService;
+
+        public SimpleCommandHandler(SimpleService simpleService)
         {
-            var value = context.MetaData.ContainsKey("something");
-            RubishBox.Rublish.Add(value);
-            
-            await Task.FromResult(0);
+            _simpleService = simpleService;
+        }
+        public Task Handle(ReceiveContext<SimpleCommand> context, CancellationToken cancellationToken)
+        {
+            _simpleService.DoWork();
+            DummyTransaction transaction;
+            if (context.TryGetService(out transaction))
+            {
+                transaction.Commit();
+            }
+            return Task.FromResult(0);
         }
     }
 }

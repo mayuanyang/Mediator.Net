@@ -6,9 +6,9 @@ using Mediator.Net.Contracts;
 using Mediator.Net.Pipeline;
 using Mediator.Net.TestUtil.TestUtils;
 
-namespace Mediator.Net.Test.Middlewares
+namespace Mediator.Net.TestUtil.Middlewares
 {
-    static class MiddlewareThrowExAfterConnect
+    public static class MiddlewareThrowExAfterConnect
     {
         public static void UseMiddlewareThrowExAfterConnect<TContext>(this IPipeConfigurator<TContext> configurator)
             where TContext : IContext<IMessage>
@@ -17,7 +17,7 @@ namespace Mediator.Net.Test.Middlewares
         }
     }
 
-    class MiddlewareThrowExAfterConnectSpecification<TContext> : IPipeSpecification<TContext> 
+    public class MiddlewareThrowExAfterConnectSpecification<TContext> : IPipeSpecification<TContext> 
         where TContext : IContext<IMessage>
     {
         public bool ShouldExecute(TContext context, CancellationToken cancellationToken)

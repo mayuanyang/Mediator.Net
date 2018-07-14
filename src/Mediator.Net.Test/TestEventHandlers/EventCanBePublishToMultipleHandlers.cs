@@ -25,7 +25,7 @@ namespace Mediator.Net.Test.TestEventHandlers
                 var binding = new List<MessageBinding>
                 {
                     new MessageBinding(typeof(TestEvent), typeof(TestEventHandler)),
-                    new MessageBinding(typeof(TestEvent), typeof(TestEventHandler2)),
+                    new MessageBinding(typeof(TestEvent), typeof(MultiTestEventHandlerHandleTheSameEvent)),
                 };
                 return binding;
             })
@@ -42,7 +42,7 @@ namespace Mediator.Net.Test.TestEventHandlers
         {
             RubishBox.Rublish.Count.ShouldBe(2);
             RubishBox.Rublish.Contains(nameof(TestEventHandler)).ShouldBeTrue();
-            RubishBox.Rublish.Contains(nameof(TestEventHandler2)).ShouldBeTrue();
+            RubishBox.Rublish.Contains(nameof(MultiTestEventHandlerHandleTheSameEvent)).ShouldBeTrue();
         }
 
         [Fact]

@@ -7,7 +7,7 @@ using Mediator.Net.TestUtil.TestUtils;
 
 namespace Mediator.Net.TestUtil.Handlers.CommandHandlers
 {
-    public class Simple2CommandHandler : ICommandHandler<TestBaseCommand>
+    public class TestBaseCommandUseMetadataHandler : ICommandHandler<TestBaseCommand>
     {
         public async Task Handle(ReceiveContext<TestBaseCommand> context, CancellationToken cancellationToken)
         {

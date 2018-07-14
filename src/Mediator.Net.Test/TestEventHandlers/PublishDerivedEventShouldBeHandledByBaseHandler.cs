@@ -38,7 +38,7 @@ namespace Mediator.Net.Test.TestEventHandlers
             RubishBox.Rublish.Count.ShouldBe(3);
             RubishBox.Rublish.Contains(nameof(TestEventHandler)).ShouldBeTrue();
             RubishBox.Rublish.Contains(nameof(DerivedEventHandler)).ShouldBeTrue();
-            RubishBox.Rublish.Contains(nameof(TestEventHandler2)).ShouldBeTrue();
+            RubishBox.Rublish.Contains(nameof(MultiTestEventHandlerHandleTheSameEvent)).ShouldBeTrue();
         }
 
         [Fact]

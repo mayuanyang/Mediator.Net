@@ -6,18 +6,18 @@ using Mediator.Net.Contracts;
 using Mediator.Net.Pipeline;
 using Mediator.Net.TestUtil.TestUtils;
 
-namespace Mediator.Net.Test.Middlewares
+namespace Mediator.Net.TestUtil.Middlewares
 {
-    static class ConsoleLog3
+    public static class ConsoleLog4
     {
-        public static void UseConsoleLogger3<TContext>(this IPipeConfigurator<TContext> configurator)
+        public static void UseConsoleLogger4<TContext>(this IPipeConfigurator<TContext> configurator)
             where TContext : IContext<IMessage>
         {
-            configurator.AddPipeSpecification(new ConsoleLogSpecification3<TContext>());
+            configurator.AddPipeSpecification(new ConsoleLogSpecification4<TContext>());
         }
     }
 
-    class ConsoleLogSpecification3<TContext> : IPipeSpecification<TContext> 
+    public class ConsoleLogSpecification4<TContext> : IPipeSpecification<TContext> 
         where TContext : IContext<IMessage>
     {
         public bool ShouldExecute(TContext context, CancellationToken cancellationToken)
@@ -36,7 +36,7 @@ namespace Mediator.Net.Test.Middlewares
             if (ShouldExecute(context, cancellationToken))
             {
                 TokenRecorder.Recorder.Add(cancellationToken.GetHashCode());
-                RubishBox.Rublish.Add(nameof(ConsoleLog3.UseConsoleLogger3));
+                RubishBox.Rublish.Add(nameof(ConsoleLog4.UseConsoleLogger4));
             }
             
             return Task.FromResult(0);
@@ -45,9 +45,7 @@ namespace Mediator.Net.Test.Middlewares
         public Task ExecuteAfterConnect(TContext context, CancellationToken cancellationToken)
         {
             if (ShouldExecute(context, cancellationToken))
-            {
-                TokenRecorder.Recorder.Add(cancellationToken.GetHashCode()); 
-            }
+                TokenRecorder.Recorder.Add(cancellationToken.GetHashCode());
             return Task.FromResult(0);
         }
 

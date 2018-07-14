@@ -4,20 +4,19 @@ using System.Threading.Tasks;
 using Mediator.Net.Context;
 using Mediator.Net.Contracts;
 using Mediator.Net.Pipeline;
-using Mediator.Net.TestUtil.TestUtils;
 
-namespace Mediator.Net.Test.Middlewares
+namespace Mediator.Net.TestUtil.Middlewares
 {
-    static class DummySave
+    public static class SecurityInfo
     {
-        public static void UseDummySave<TContext>(this IPipeConfigurator<TContext> configurator)
+        public static void UseSecurityInfo<TContext>(this IPipeConfigurator<TContext> configurator)
             where TContext : IContext<IMessage>
         {
-            configurator.AddPipeSpecification(new DummySaveSpecification<TContext>());
+            configurator.AddPipeSpecification(new SecurityInfoSpecification<TContext>());
         }
     }
 
-    class DummySaveSpecification<TContext> : IPipeSpecification<TContext> 
+    public class SecurityInfoSpecification<TContext> : IPipeSpecification<TContext>
         where TContext : IContext<IMessage>
     {
         public bool ShouldExecute(TContext context, CancellationToken cancellationToken)
@@ -27,24 +26,17 @@ namespace Mediator.Net.Test.Middlewares
 
         public Task ExecuteBeforeConnect(TContext context, CancellationToken cancellationToken)
         {
-            TokenRecorder.Recorder.Add(cancellationToken.GetHashCode());
+            context.MetaData["UserName"] = "hello";
             return Task.FromResult(0);
         }
 
         public Task Execute(TContext context, CancellationToken cancellationToken)
         {
-            if (ShouldExecute(context, cancellationToken))
-            {
-                TokenRecorder.Recorder.Add(cancellationToken.GetHashCode());
-                RubishBox.Rublish.Add(nameof(DummySave.UseDummySave));
-            }
             return Task.FromResult(0);
         }
 
         public Task ExecuteAfterConnect(TContext context, CancellationToken cancellationToken)
         {
-            if (ShouldExecute(context, cancellationToken))
-                TokenRecorder.Recorder.Add(cancellationToken.GetHashCode());
             return Task.FromResult(0);
         }
 

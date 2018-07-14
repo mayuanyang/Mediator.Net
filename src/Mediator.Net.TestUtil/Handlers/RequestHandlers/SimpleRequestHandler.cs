@@ -5,7 +5,7 @@ using Mediator.Net.Contracts;
 using Mediator.Net.TestUtil.Messages;
 using Mediator.Net.TestUtil.Services;
 
-namespace Mediator.Net.TestUtil.Handlers
+namespace Mediator.Net.TestUtil.Handlers.RequestHandlers
 {
     public class SimpleRequestHandler : IRequestHandler<SimpleRequest, SimpleResponse>
     {

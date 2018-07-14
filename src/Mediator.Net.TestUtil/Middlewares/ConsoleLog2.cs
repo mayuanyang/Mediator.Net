@@ -6,18 +6,18 @@ using Mediator.Net.Contracts;
 using Mediator.Net.Pipeline;
 using Mediator.Net.TestUtil.TestUtils;
 
-namespace Mediator.Net.Test.Middlewares
+namespace Mediator.Net.TestUtil.Middlewares
 {
-    static class MiddlewareThrowExBeforeConnect
+    public static class ConsoleLog2
     {
-        public static void UseMiddlewareThrowExBeforeConnect<TContext>(this IPipeConfigurator<TContext> configurator)
+        public static void UseConsoleLogger2<TContext>(this IPipeConfigurator<TContext> configurator)
             where TContext : IContext<IMessage>
         {
-            configurator.AddPipeSpecification(new MiddlewareThrowExBeforeConnectSpecification<TContext>());
+            configurator.AddPipeSpecification(new ConsoleLogSpecification2<TContext>());
         }
     }
 
-    class MiddlewareThrowExBeforeConnectSpecification<TContext> : IPipeSpecification<TContext> 
+    public class ConsoleLogSpecification2<TContext> : IPipeSpecification<TContext> 
         where TContext : IContext<IMessage>
     {
         public bool ShouldExecute(TContext context, CancellationToken cancellationToken)
@@ -27,18 +27,24 @@ namespace Mediator.Net.Test.Middlewares
 
         public Task ExecuteBeforeConnect(TContext context, CancellationToken cancellationToken)
         {
-            throw new Exception();
+            TokenRecorder.Recorder.Add(cancellationToken.GetHashCode());
+            return Task.FromResult(0);
         }
 
         public Task Execute(TContext context, CancellationToken cancellationToken)
         {
+            if (ShouldExecute(context, cancellationToken))
+            {
+                TokenRecorder.Recorder.Add(cancellationToken.GetHashCode());
+                RubishBox.Rublish.Add(nameof(ConsoleLog2.UseConsoleLogger2));
+            }
             return Task.FromResult(0);
         }
 
         public Task ExecuteAfterConnect(TContext context, CancellationToken cancellationToken)
         {
             if (ShouldExecute(context, cancellationToken))
-                Console.WriteLine($"After 1: {context.Message}");
+                TokenRecorder.Recorder.Add(cancellationToken.GetHashCode());
             return Task.FromResult(0);
         }
 

@@ -4,24 +4,25 @@ using System.Threading.Tasks;
 using Mediator.Net.Context;
 using Mediator.Net.Contracts;
 using Mediator.Net.Pipeline;
+using Mediator.Net.TestUtil.TestUtils;
 
-namespace Mediator.Net.Test.Middlewares
+namespace Mediator.Net.TestUtil.Middlewares
 {
-    static class NoWorkMiddleware
+    public static class UselessMiddleware
     {
-        public static void UseNoWorkMiddleware<TContext>(this IPipeConfigurator<TContext> configurator)
+        public static void UseUselessMiddleware<TContext>(this IPipeConfigurator<TContext> configurator)
             where TContext : IContext<IMessage>
         {
-            configurator.AddPipeSpecification(new NoWorkMiddlewareSpecification<TContext>());
+            configurator.AddPipeSpecification(new UselessMiddlewareSpecification<TContext>());
         }
     }
 
-    class NoWorkMiddlewareSpecification<TContext> : IPipeSpecification<TContext> 
+    public class UselessMiddlewareSpecification<TContext> : IPipeSpecification<TContext> 
         where TContext : IContext<IMessage>
     {
         public bool ShouldExecute(TContext context, CancellationToken cancellationToken)
         {
-            return true;
+            return false;
         }
 
         public Task ExecuteBeforeConnect(TContext context, CancellationToken cancellationToken)
@@ -31,11 +32,19 @@ namespace Mediator.Net.Test.Middlewares
 
         public Task Execute(TContext context, CancellationToken cancellationToken)
         {
+            if (ShouldExecute(context, cancellationToken))
+            {
+                Console.WriteLine($"you should never see me: {nameof(ExecuteBeforeConnect)}");
+                RubishBox.Rublish.Add(nameof(UselessMiddleware.UseUselessMiddleware));
+            }
+
             return Task.FromResult(0);
         }
 
         public Task ExecuteAfterConnect(TContext context, CancellationToken cancellationToken)
         {
+            if (ShouldExecute(context, cancellationToken))
+                Console.WriteLine($"you should never see me: {nameof(ExecuteAfterConnect)}");
             return Task.FromResult(0);
         }
 

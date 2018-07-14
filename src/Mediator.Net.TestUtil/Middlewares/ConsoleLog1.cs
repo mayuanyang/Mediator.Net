@@ -6,18 +6,18 @@ using Mediator.Net.Contracts;
 using Mediator.Net.Pipeline;
 using Mediator.Net.TestUtil.TestUtils;
 
-namespace Mediator.Net.Test.Middlewares
+namespace Mediator.Net.TestUtil.Middlewares
 {
-    static class ConsoleLog4
+    public static class ConsoleLog1
     {
-        public static void UseConsoleLogger4<TContext>(this IPipeConfigurator<TContext> configurator)
+        public static void UseConsoleLogger1<TContext>(this IPipeConfigurator<TContext> configurator)
             where TContext : IContext<IMessage>
         {
-            configurator.AddPipeSpecification(new ConsoleLogSpecification4<TContext>());
+            configurator.AddPipeSpecification(new ConsoleLogSpecification1<TContext>());
         }
     }
 
-    class ConsoleLogSpecification4<TContext> : IPipeSpecification<TContext> 
+    public class ConsoleLogSpecification1<TContext> : IPipeSpecification<TContext> 
         where TContext : IContext<IMessage>
     {
         public bool ShouldExecute(TContext context, CancellationToken cancellationToken)
@@ -36,9 +36,8 @@ namespace Mediator.Net.Test.Middlewares
             if (ShouldExecute(context, cancellationToken))
             {
                 TokenRecorder.Recorder.Add(cancellationToken.GetHashCode());
-                RubishBox.Rublish.Add(nameof(ConsoleLog4.UseConsoleLogger4));
+                RubishBox.Rublish.Add(nameof(ConsoleLog1.UseConsoleLogger1));
             }
-            
             return Task.FromResult(0);
         }
 
@@ -51,6 +50,7 @@ namespace Mediator.Net.Test.Middlewares
 
         public void OnException(Exception ex, TContext context)
         {
+            RubishBox.Rublish.Add(ex);
             throw ex;
         }
     }

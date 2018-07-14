@@ -6,27 +6,28 @@ using Mediator.Net.Contracts;
 using Mediator.Net.Pipeline;
 using Mediator.Net.TestUtil.TestUtils;
 
-namespace Mediator.Net.Test.Middlewares
+namespace Mediator.Net.TestUtil.Middlewares
 {
-    static class UselessMiddleware
+    public static class ConsoleLog3
     {
-        public static void UseUselessMiddleware<TContext>(this IPipeConfigurator<TContext> configurator)
+        public static void UseConsoleLogger3<TContext>(this IPipeConfigurator<TContext> configurator)
             where TContext : IContext<IMessage>
         {
-            configurator.AddPipeSpecification(new UselessMiddlewareSpecification<TContext>());
+            configurator.AddPipeSpecification(new ConsoleLogSpecification3<TContext>());
         }
     }
 
-    class UselessMiddlewareSpecification<TContext> : IPipeSpecification<TContext> 
+    public class ConsoleLogSpecification3<TContext> : IPipeSpecification<TContext> 
         where TContext : IContext<IMessage>
     {
         public bool ShouldExecute(TContext context, CancellationToken cancellationToken)
         {
-            return false;
+            return true;
         }
 
         public Task ExecuteBeforeConnect(TContext context, CancellationToken cancellationToken)
         {
+            TokenRecorder.Recorder.Add(cancellationToken.GetHashCode());
             return Task.FromResult(0);
         }
 
@@ -34,17 +35,19 @@ namespace Mediator.Net.Test.Middlewares
         {
             if (ShouldExecute(context, cancellationToken))
             {
-                Console.WriteLine($"you should never see me: {nameof(ExecuteBeforeConnect)}");
-                RubishBox.Rublish.Add(nameof(UselessMiddleware.UseUselessMiddleware));
+                TokenRecorder.Recorder.Add(cancellationToken.GetHashCode());
+                RubishBox.Rublish.Add(nameof(ConsoleLog3.UseConsoleLogger3));
             }
-
+            
             return Task.FromResult(0);
         }
 
         public Task ExecuteAfterConnect(TContext context, CancellationToken cancellationToken)
         {
             if (ShouldExecute(context, cancellationToken))
-                Console.WriteLine($"you should never see me: {nameof(ExecuteAfterConnect)}");
+            {
+                TokenRecorder.Recorder.Add(cancellationToken.GetHashCode()); 
+            }
             return Task.FromResult(0);
         }
 

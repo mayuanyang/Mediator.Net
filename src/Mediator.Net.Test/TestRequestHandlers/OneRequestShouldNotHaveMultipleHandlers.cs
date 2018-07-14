@@ -3,12 +3,12 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using Mediator.Net.Binding;
 using Mediator.Net.Pipeline;
-using Mediator.Net.Test.Middlewares;
 using Mediator.Net.TestUtil.Handlers.RequestHandlers;
 using Mediator.Net.TestUtil.Messages;
 using Shouldly;
 using TestStack.BDDfy;
 using Xunit;
+using Mediator.Net.TestUtil.Middlewares;
 
 namespace Mediator.Net.Test.TestRequestHandlers
 {
