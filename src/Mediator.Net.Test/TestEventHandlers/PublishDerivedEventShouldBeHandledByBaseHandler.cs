@@ -1,8 +1,9 @@
 ﻿using System;
 using System.Threading.Tasks;
-using Mediator.Net.IoCTestUtil.TestUtils;
-using Mediator.Net.Test.EventHandlers;
-using Mediator.Net.Test.Messages;
+using Mediator.Net.TestUtil;
+using Mediator.Net.TestUtil.Handlers.EventHandlers;
+using Mediator.Net.TestUtil.Messages;
+using Mediator.Net.TestUtil.TestUtils;
 using Shouldly;
 using TestStack.BDDfy;
 using Xunit;
@@ -24,7 +25,7 @@ namespace Mediator.Net.Test.TestEventHandlers
 
         void AndGivenTheEventIsRegisteredToItsBaseClassHandler()
         {
-            _mediator = _builder.RegisterHandlers(typeof(PublishDerivedEventShouldBeHandledByBaseHandler).Assembly()).Build();
+            _mediator = _builder.RegisterHandlers(TestUtilAssembly.Assembly).Build();
         }
 
         async Task WhenAMoreDerivedEventIsPublished()

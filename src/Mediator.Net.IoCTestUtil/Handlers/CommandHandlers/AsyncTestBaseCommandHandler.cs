@@ -2,12 +2,12 @@
 using System.Threading.Tasks;
 using Mediator.Net.Context;
 using Mediator.Net.Contracts;
-using Mediator.Net.IoCTestUtil.TestUtils;
-using Mediator.Net.Test.Messages;
+using Mediator.Net.TestUtil.Messages;
+using Mediator.Net.TestUtil.TestUtils;
 
-namespace Mediator.Net.Test.CommandHandlers
+namespace Mediator.Net.TestUtil.Handlers.CommandHandlers
 {
-    class AsyncTestBaseCommandHandler : ICommandHandler<TestBaseCommand>
+    public class AsyncTestBaseCommandHandler : ICommandHandler<TestBaseCommand>
     {
         public async Task Handle(ReceiveContext<TestBaseCommand> context, CancellationToken cancellationToken)
         {

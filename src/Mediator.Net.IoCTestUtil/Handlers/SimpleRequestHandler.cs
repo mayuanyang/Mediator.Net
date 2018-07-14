@@ -2,12 +2,12 @@
 using System.Threading.Tasks;
 using Mediator.Net.Context;
 using Mediator.Net.Contracts;
-using Mediator.Net.IoCTestUtil.Messages;
-using Mediator.Net.IoCTestUtil.Services;
+using Mediator.Net.TestUtil.Messages;
+using Mediator.Net.TestUtil.Services;
 
-namespace Mediator.Net.IoCTestUtil.Handlers
+namespace Mediator.Net.TestUtil.Handlers
 {
-    class SimpleRequestHandler : IRequestHandler<SimpleRequest, SimpleResponse>
+    public class SimpleRequestHandler : IRequestHandler<SimpleRequest, SimpleResponse>
     {
         private readonly SimpleService _simpleService;
 

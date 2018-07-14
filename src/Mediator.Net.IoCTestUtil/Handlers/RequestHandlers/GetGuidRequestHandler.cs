@@ -3,13 +3,12 @@ using System.Threading;
 using System.Threading.Tasks;
 using Mediator.Net.Context;
 using Mediator.Net.Contracts;
-using Mediator.Net.IoCTestUtil.TestUtils;
-using Mediator.Net.Test.Messages;
-using Mediator.Net.Test.TestUtils;
+using Mediator.Net.TestUtil.Messages;
+using Mediator.Net.TestUtil.TestUtils;
 
-namespace Mediator.Net.Test.RequestHandlers
+namespace Mediator.Net.TestUtil.Handlers.RequestHandlers
 {
-    class GetGuidRequestHandler : IRequestHandler<GetGuidRequest, GetGuidResponse>
+    public class GetGuidRequestHandler : IRequestHandler<GetGuidRequest, GetGuidResponse>
     {
         public Task<GetGuidResponse> Handle(ReceiveContext<GetGuidRequest> context, CancellationToken cancellationToken)
         {

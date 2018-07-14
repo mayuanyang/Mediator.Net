@@ -1,13 +1,13 @@
 ﻿using System;
 using Mediator.Net.Contracts;
 
-namespace Mediator.Net.Test.Messages
+namespace Mediator.Net.TestUtil.Messages
 {
-    class GetGuidRequest : IRequest
+    public class TestEvent : IEvent
     {
         public Guid Id { get; }
 
-        public GetGuidRequest(Guid id)
+        public TestEvent(Guid id)
         {
             Id = id;
         }

@@ -1,6 +1,6 @@
-﻿using Mediator.Net.IoCTestUtil;
-using Mediator.Net.IoCTestUtil.Services;
-using Mediator.Net.MicrosoftDependencyInjection;
+﻿using Mediator.Net.MicrosoftDependencyInjection;
+using Mediator.Net.TestUtil;
+using Mediator.Net.TestUtil.Services;
 using Mediator.Net.WebApiSample.Handlers.CommandHandler;
 using Mediator.Net.WebApiSample.Handlers.EventHandler;
 using Microsoft.AspNetCore.Builder;

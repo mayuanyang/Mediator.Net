@@ -1,8 +1,8 @@
 ﻿using System;
 
-namespace Mediator.Net.Test.Messages
+namespace Mediator.Net.TestUtil.Messages
 {
-    class DerivedEvent : TestEvent
+    public class DerivedEvent : TestEvent
     {
         public string Name { get; set; }
 

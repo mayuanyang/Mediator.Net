@@ -3,13 +3,12 @@ using System.Threading;
 using System.Threading.Tasks;
 using Mediator.Net.Context;
 using Mediator.Net.Contracts;
-using Mediator.Net.IoCTestUtil.TestUtils;
-using Mediator.Net.Test.Messages;
-using Mediator.Net.Test.TestUtils;
+using Mediator.Net.TestUtil.Messages;
+using Mediator.Net.TestUtil.TestUtils;
 
-namespace Mediator.Net.Test.EventHandlers
+namespace Mediator.Net.TestUtil.Handlers.EventHandlers
 {
-    class TestEventHandler2 : IEventHandler<TestEvent>
+    public class TestEventHandler2 : IEventHandler<TestEvent>
     {
         public Task Handle(IReceiveContext<TestEvent> context, CancellationToken cancellationToken)
         {

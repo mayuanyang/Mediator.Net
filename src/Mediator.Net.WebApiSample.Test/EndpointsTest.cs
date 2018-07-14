@@ -2,7 +2,7 @@ using System.Linq;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
-using Mediator.Net.IoCTestUtil.Messages;
+using Mediator.Net.TestUtil.Messages;
 using Mediator.Net.WebApiSample.Controllers;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Newtonsoft.Json;

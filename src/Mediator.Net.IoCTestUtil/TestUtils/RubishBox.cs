@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace Mediator.Net.IoCTestUtil.TestUtils
+namespace Mediator.Net.TestUtil.TestUtils
 {
     public static class RubishBox
     {

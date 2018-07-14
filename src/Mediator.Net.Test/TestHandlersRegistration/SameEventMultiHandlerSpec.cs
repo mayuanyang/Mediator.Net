@@ -1,6 +1,7 @@
 ﻿using System.Linq;
 using Mediator.Net.Binding;
-using Mediator.Net.Test.Messages;
+using Mediator.Net.TestUtil;
+using Mediator.Net.TestUtil.Messages;
 using Shouldly;
 using TestStack.BDDfy;
 using Xunit;
@@ -18,7 +19,7 @@ namespace Mediator.Net.Test.TestHandlersRegistration
         void WhenScanRegistrationIsExecuted()
         {
             var builder = new MediatorBuilder();
-            builder.RegisterHandlers(typeof(SameEventMultiHandlerSpec).Assembly()).Build();
+            builder.RegisterHandlers(TestUtilAssembly.Assembly).Build();
         }
 
         void ThenAllHandlersShouldBeRegistered()

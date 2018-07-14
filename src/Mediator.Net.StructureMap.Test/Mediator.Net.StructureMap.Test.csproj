@@ -20,8 +20,8 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Mediator.Net.IoCTestUtil\Mediator.Net.TestUtil.csproj" />
     <ProjectReference Include="..\Mediator.Net\Mediator.Net.csproj" />
-    <ProjectReference Include="..\Mediator.Net.IoCTestUtil\Mediator.Net.IoCTestUtil.csproj" />
     <ProjectReference Include="..\Mediator.Net.StructureMap\Mediator.Net.StructureMap.csproj" />
   </ItemGroup>
 

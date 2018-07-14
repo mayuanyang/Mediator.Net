@@ -2,7 +2,7 @@
 using Xunit;
 
 [assembly: CollectionBehavior(DisableTestParallelization = true)]
-namespace Mediator.Net.IoCTestUtil
+namespace Mediator.Net.TestUtil
 {
     public class TestUtilAssembly
     {

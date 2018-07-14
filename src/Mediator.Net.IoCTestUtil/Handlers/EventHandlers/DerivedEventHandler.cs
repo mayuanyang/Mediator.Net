@@ -2,12 +2,12 @@
 using System.Threading.Tasks;
 using Mediator.Net.Context;
 using Mediator.Net.Contracts;
-using Mediator.Net.IoCTestUtil.TestUtils;
-using Mediator.Net.Test.Messages;
+using Mediator.Net.TestUtil.Messages;
+using Mediator.Net.TestUtil.TestUtils;
 
-namespace Mediator.Net.Test.EventHandlers
+namespace Mediator.Net.TestUtil.Handlers.EventHandlers
 {
-    class DerivedEventHandler : IEventHandler<DerivedEvent>
+    public class DerivedEventHandler : IEventHandler<DerivedEvent>
     {
         public Task Handle(IReceiveContext<DerivedEvent> context, CancellationToken cancellationToken)
         {

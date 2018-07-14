@@ -1,9 +1,8 @@
 ﻿using System;
-using Mediator.Net.Contracts;
 
-namespace Mediator.Net.Test.Messages
+namespace Mediator.Net.TestUtil.Messages
 {
-    class DerivedTestBaseCommand : TestBaseCommand
+    public class DerivedTestBaseCommand : TestBaseCommand
     {
       
         public DerivedTestBaseCommand(Guid id) : base(id)

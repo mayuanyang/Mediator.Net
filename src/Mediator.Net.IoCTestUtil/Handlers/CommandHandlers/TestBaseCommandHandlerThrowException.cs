@@ -3,9 +3,9 @@ using System.Threading;
 using System.Threading.Tasks;
 using Mediator.Net.Context;
 using Mediator.Net.Contracts;
-using Mediator.Net.Test.Messages;
+using Mediator.Net.TestUtil.Messages;
 
-namespace Mediator.Net.Test.CommandHandlers
+namespace Mediator.Net.TestUtil.Handlers.CommandHandlers
 {
     public class TestBaseCommandHandlerThrowException : ICommandHandler<TestBaseCommand>
     {

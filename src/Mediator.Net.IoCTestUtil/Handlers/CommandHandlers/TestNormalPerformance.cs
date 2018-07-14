@@ -4,20 +4,19 @@ using System.Threading;
 using System.Threading.Tasks;
 using Mediator.Net.Context;
 using Mediator.Net.Pipeline;
-using Mediator.Net.Test.Messages;
+using Mediator.Net.TestUtil.Messages;
 using TestStack.BDDfy;
 using Xunit;
 
-namespace Mediator.Net.Test.CommandHandlers
+namespace Mediator.Net.TestUtil.Handlers.CommandHandlers
 {
-    public class TestNormalPerformance : TestBase
+    public class TestNormalPerformance
     {
         private TestBaseCommandHandler _handler;
         private Stopwatch _sw;
 
         void GivenAHandler()
         {
-            ClearBinding();
             _sw = new Stopwatch();
             _sw.Start();
             _handler = new TestBaseCommandHandler();

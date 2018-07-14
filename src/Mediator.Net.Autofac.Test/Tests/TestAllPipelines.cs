@@ -2,9 +2,9 @@
 using System.Threading.Tasks;
 using Autofac;
 using Mediator.Net.Autofac.Test.Middlewares;
-using Mediator.Net.IoCTestUtil;
-using Mediator.Net.IoCTestUtil.Messages;
-using Mediator.Net.IoCTestUtil.Services;
+using Mediator.Net.TestUtil;
+using Mediator.Net.TestUtil.Messages;
+using Mediator.Net.TestUtil.Services;
 using Shouldly;
 using TestStack.BDDfy;
 using Xunit;

@@ -2,12 +2,12 @@
 using System.Threading.Tasks;
 using Mediator.Net.Context;
 using Mediator.Net.Contracts;
-using Mediator.Net.IoCTestUtil.Messages;
-using Mediator.Net.IoCTestUtil.Services;
+using Mediator.Net.TestUtil.Messages;
+using Mediator.Net.TestUtil.Services;
 
-namespace Mediator.Net.IoCTestUtil.Handlers
+namespace Mediator.Net.TestUtil.Handlers
 {
-    class SimpleCommandHandler : ICommandHandler<SimpleCommand>
+    public class SimpleCommandHandler : ICommandHandler<SimpleCommand>
     {
         private readonly SimpleService _simpleService;
 

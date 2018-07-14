@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Mediator.Net.IoCTestUtil.Services
+namespace Mediator.Net.TestUtil.Services
 {
     public class SimpleService
     {

@@ -1,13 +1,13 @@
 ﻿using System;
 using Mediator.Net.Contracts;
 
-namespace Mediator.Net.Test.Messages
+namespace Mediator.Net.TestUtil.Messages
 {
-    class AnotherCommand : ICommand
+    public class GetGuidResponse : IResponse
     {
         public Guid Id { get; }
 
-        public AnotherCommand(Guid id)
+        public GetGuidResponse(Guid id)
         {
             Id = id;
         }

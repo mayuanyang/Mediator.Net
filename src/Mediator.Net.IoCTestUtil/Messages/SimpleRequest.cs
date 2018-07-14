@@ -1,6 +1,6 @@
 ﻿using Mediator.Net.Contracts;
 
-namespace Mediator.Net.IoCTestUtil.Messages
+namespace Mediator.Net.TestUtil.Messages
 {
     public class SimpleRequest : IRequest
     {

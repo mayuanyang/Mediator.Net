@@ -3,10 +3,10 @@ using System.Threading;
 using System.Threading.Tasks;
 using Mediator.Net.Context;
 using Mediator.Net.Contracts;
-using Mediator.Net.IoCTestUtil.Services;
 using Mediator.Net.Pipeline;
+using Mediator.Net.TestUtil.Services;
 
-namespace Mediator.Net.IoCTestUtil.Middlewares
+namespace Mediator.Net.TestUtil.Middlewares
 {
     public static class SimpleMiddleware
     {
