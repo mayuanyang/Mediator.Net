@@ -30,11 +30,11 @@ namespace Mediator.Net.TestUtil.Handlers.CommandHandlers
             var console2 = new EmptyPipeSpecification<IReceiveContext<TestBaseCommand>>();
             
             
-            await console1.ExecuteBeforeConnect(context, default(CancellationToken));
-            await console2.ExecuteBeforeConnect(context, default(CancellationToken));
+            await console1.BeforeExecute(context, default(CancellationToken));
+            await console2.BeforeExecute(context, default(CancellationToken));
             await _handler.Handle(new ReceiveContext<TestBaseCommand>(cmd), default(CancellationToken));
-            await console1.ExecuteAfterConnect(context, default(CancellationToken));
-            await console2.ExecuteAfterConnect(context, default(CancellationToken));
+            await console1.AfterExecute(context, default(CancellationToken));
+            await console2.AfterExecute(context, default(CancellationToken));
             _sw.Stop();
             Console.WriteLine($"It took {_sw.ElapsedMilliseconds} milliseconds");
         }

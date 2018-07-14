@@ -25,7 +25,7 @@ namespace Mediator.Net.TestUtil.Middlewares
             return true;
         }
 
-        public Task ExecuteBeforeConnect(TContext context, CancellationToken cancellationToken)
+        public Task BeforeExecute(TContext context, CancellationToken cancellationToken)
         {
             throw new Exception();
         }
@@ -35,7 +35,7 @@ namespace Mediator.Net.TestUtil.Middlewares
             return Task.FromResult(0);
         }
 
-        public Task ExecuteAfterConnect(TContext context, CancellationToken cancellationToken)
+        public Task AfterExecute(TContext context, CancellationToken cancellationToken)
         {
             if (ShouldExecute(context, cancellationToken))
                 Console.WriteLine($"After 1: {context.Message}");

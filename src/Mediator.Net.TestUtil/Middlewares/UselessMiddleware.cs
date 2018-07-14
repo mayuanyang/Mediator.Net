@@ -25,7 +25,7 @@ namespace Mediator.Net.TestUtil.Middlewares
             return false;
         }
 
-        public Task ExecuteBeforeConnect(TContext context, CancellationToken cancellationToken)
+        public Task BeforeExecute(TContext context, CancellationToken cancellationToken)
         {
             return Task.FromResult(0);
         }
@@ -34,17 +34,17 @@ namespace Mediator.Net.TestUtil.Middlewares
         {
             if (ShouldExecute(context, cancellationToken))
             {
-                Console.WriteLine($"you should never see me: {nameof(ExecuteBeforeConnect)}");
+                Console.WriteLine($"you should never see me: {nameof(BeforeExecute)}");
                 RubishBox.Rublish.Add(nameof(UselessMiddleware.UseUselessMiddleware));
             }
 
             return Task.FromResult(0);
         }
 
-        public Task ExecuteAfterConnect(TContext context, CancellationToken cancellationToken)
+        public Task AfterExecute(TContext context, CancellationToken cancellationToken)
         {
             if (ShouldExecute(context, cancellationToken))
-                Console.WriteLine($"you should never see me: {nameof(ExecuteAfterConnect)}");
+                Console.WriteLine($"you should never see me: {nameof(AfterExecute)}");
             return Task.FromResult(0);
         }
 
