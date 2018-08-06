@@ -1,8 +1,10 @@
 ﻿using System;
+using System.Linq;
 using System.Threading.Tasks;
 using Autofac;
 using Mediator.Net.Autofac.Test.Middlewares;
 using Mediator.Net.TestUtil;
+using Mediator.Net.TestUtil.Handlers.RequestHandlers;
 using Mediator.Net.TestUtil.Messages;
 using Mediator.Net.TestUtil.Services;
 using Shouldly;
@@ -20,7 +22,7 @@ namespace Mediator.Net.Autofac.Test.Tests
         {
             base.ClearBinding();
             var mediaBuilder = new MediatorBuilder();
-            mediaBuilder.RegisterHandlers(TestUtilAssembly.Assembly)
+            mediaBuilder.RegisterUnduplicatedHandlers()
                 .ConfigureGlobalReceivePipe(global =>
                 {
                     global.UseSimpleMiddleware1();
@@ -51,7 +53,7 @@ namespace Mediator.Net.Autofac.Test.Tests
         {
             _mediator = _container.Resolve<IMediator>();
             await _mediator.SendAsync(new SimpleCommand(Guid.NewGuid()));
-            await _mediator.PublishAsync(new SimpleEvent());
+            await _mediator.PublishAsync(new SimpleEvent(Guid.NewGuid()));
             await _mediator.RequestAsync<SimpleRequest, SimpleResponse>(new SimpleRequest("Hello"));
         }
 

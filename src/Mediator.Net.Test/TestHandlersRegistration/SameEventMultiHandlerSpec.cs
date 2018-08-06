@@ -19,7 +19,7 @@ namespace Mediator.Net.Test.TestHandlersRegistration
         void WhenScanRegistrationIsExecuted()
         {
             var builder = new MediatorBuilder();
-            builder.RegisterHandlers(TestUtilAssembly.Assembly).Build();
+            builder.RegisterUnduplicatedHandlers().Build();
         }
 
         void ThenAllHandlersShouldBeRegistered()

@@ -21,31 +21,24 @@ namespace Mediator.Net
         {
             foreach (var assembly in assemblies)
             {
-                var commandHandlers = assembly.DefinedTypes.Where(x => IsAssignableToGenericType(x.AsType(), typeof(ICommandHandler<>))).ToList();
-                foreach (var x in commandHandlers)
-                {
-                    MessageHandlerRegistry.MessageBindings.Add(new MessageBinding(x.ImplementedInterfaces.First().GenericTypeArguments[0], x.AsType()));
-                }
-                
-                var eventHandlers = assembly.DefinedTypes.Where(x => IsAssignableToGenericType(x.AsType(), typeof(IEventHandler<>))).ToList();
-                foreach (var x in eventHandlers)
-                {
-                    MessageHandlerRegistry.MessageBindings.Add(new MessageBinding(x.ImplementedInterfaces.First().GenericTypeArguments[0], x.AsType()));
-                }
-                
-                var requestHandlers = assembly.DefinedTypes.Where(x => IsAssignableToGenericType(x.AsType(), typeof(IRequestHandler<,>))).ToList();
-                foreach (var x in requestHandlers)
-                {
-                    MessageHandlerRegistry.MessageBindings.Add(new MessageBinding(x.ImplementedInterfaces.First().GenericTypeArguments[0], x.AsType()));
-                }
+                ScanRegistration(assembly.DefinedTypes);
             }
+            return this;
+        }
+
+        public MediatorBuilder RegisterHandlers(Func<Assembly, IEnumerable<TypeInfo>> filter, params Assembly[] assemblies)
+        {
+            foreach (var assembly in assemblies)
+            {
+                ScanRegistration(filter(assembly));
+            }
+
             return this;
         }
 
         public MediatorBuilder RegisterHandlers(IList<MessageBinding> messageHandlerPairs)
         {
-            var messageBindings = new HashSet<MessageBinding>(messageHandlerPairs);
-            return RegisterHandlers(messageBindings);
+            return RegisterHandlers(new HashSet<MessageBinding>(messageHandlerPairs));
         }
 
         public MediatorBuilder RegisterHandlers(HashSet<MessageBinding> messageBindings)
@@ -56,14 +49,12 @@ namespace Mediator.Net
 
         public MediatorBuilder RegisterHandlers(Func<IList<MessageBinding>> setupBindings)
         {
-            var listBindings = setupBindings();
-            return RegisterHandlers(listBindings);
+            return RegisterHandlers(setupBindings());
         }
 
         public MediatorBuilder RegisterHandlers(Func<HashSet<MessageBinding>> setupBindings)
         {
-            var result = setupBindings();
-            MessageHandlerRegistry.MessageBindings = result;
+            MessageHandlerRegistry.MessageBindings = setupBindings();
             return this;
         }
 
@@ -146,6 +137,23 @@ namespace Mediator.Net
 
             Type baseType = givenType.GetTypeInfo().BaseType;
             return baseType != null && IsAssignableToGenericType(baseType, genericType);
+        }
+
+        private void ScanRegistration(IEnumerable<TypeInfo> typeInfos)
+        {
+            var handlers = typeInfos.Where(x => IsAssignableToGenericType(x.AsType(), typeof(ICommandHandler<>)) ||
+                                                       IsAssignableToGenericType(x.AsType(), typeof(IEventHandler<>)) ||
+                                                       IsAssignableToGenericType(x.AsType(), typeof(IRequestHandler<,>))).ToList();
+            foreach (var handler in handlers)
+            {
+                foreach (var implementedInterface in handler.ImplementedInterfaces)
+                {
+                    if (IsAssignableToGenericType(implementedInterface, typeof(ICommandHandler<>)) || IsAssignableToGenericType(implementedInterface, typeof(IEventHandler<>)) || IsAssignableToGenericType(implementedInterface, typeof(IRequestHandler<,>)))
+                    {
+                        MessageHandlerRegistry.MessageBindings.Add(new MessageBinding(implementedInterface.GenericTypeArguments[0], handler.AsType()));
+                    } 
+                }
+            }
         }
     }
 }

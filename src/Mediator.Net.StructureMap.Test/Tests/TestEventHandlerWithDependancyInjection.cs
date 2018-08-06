@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 using Mediator.Net.TestUtil;
 using Mediator.Net.TestUtil.Messages;
 using Mediator.Net.TestUtil.Middlewares;
@@ -19,7 +20,7 @@ namespace Mediator.Net.StructureMap.Test.Tests
         {
             ClearBinding();
             var mediaBuilder = new MediatorBuilder();
-            mediaBuilder.RegisterHandlers(TestUtilAssembly.Assembly)
+            mediaBuilder.RegisterUnduplicatedHandlers()
                 .ConfigureCommandReceivePipe(x =>
                 {
                     x.UseSimpleMiddleware();
@@ -31,7 +32,7 @@ namespace Mediator.Net.StructureMap.Test.Tests
         Task WhenACommandIsSent()
         {
             _mediator = _container.GetInstance<IMediator>();
-            _task = _mediator.PublishAsync(new SimpleEvent());
+            _task = _mediator.PublishAsync(new SimpleEvent(Guid.NewGuid()));
             return _task;
         }
 
