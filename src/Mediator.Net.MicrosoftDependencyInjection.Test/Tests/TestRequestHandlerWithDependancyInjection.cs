@@ -20,7 +20,7 @@ namespace Mediator.Net.MicrosoftDependencyInjection.Test.Tests
         {
             ClearBinding();
             var mediaBuilder = new MediatorBuilder();
-            mediaBuilder.RegisterHandlers(TestUtilAssembly.Assembly)
+            mediaBuilder.RegisterUnduplicatedHandlers()
                 .ConfigureCommandReceivePipe(x =>
                 {
                     x.UseSimpleMiddleware();

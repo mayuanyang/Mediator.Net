@@ -1,6 +1,8 @@
-﻿using System.Threading.Tasks;
+﻿using System.Linq;
+using System.Threading.Tasks;
 using Autofac;
 using Mediator.Net.TestUtil;
+using Mediator.Net.TestUtil.Handlers.RequestHandlers;
 using Mediator.Net.TestUtil.Messages;
 using Mediator.Net.TestUtil.Middlewares;
 using Mediator.Net.TestUtil.Services;
@@ -20,7 +22,7 @@ namespace Mediator.Net.Autofac.Test.Tests
         {
             base.ClearBinding();
             var mediaBuilder = new MediatorBuilder();
-            mediaBuilder.RegisterHandlers(TestUtilAssembly.Assembly)
+            mediaBuilder.RegisterUnduplicatedHandlers()
                 .ConfigureRequestPipe(x =>
                 {
                     x.UseSimpleMiddleware();

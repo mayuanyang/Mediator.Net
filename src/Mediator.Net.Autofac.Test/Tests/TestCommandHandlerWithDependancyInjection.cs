@@ -21,7 +21,7 @@ namespace Mediator.Net.Autofac.Test.Tests
         {
             base.ClearBinding();
             var mediaBuilder = new MediatorBuilder();
-            mediaBuilder.RegisterHandlers(TestUtilAssembly.Assembly)
+            mediaBuilder.RegisterUnduplicatedHandlers()
                 .ConfigureCommandReceivePipe(x =>
                 {
                     x.UseSimpleMiddleware();

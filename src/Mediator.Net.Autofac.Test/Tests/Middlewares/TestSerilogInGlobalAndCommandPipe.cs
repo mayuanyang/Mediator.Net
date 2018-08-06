@@ -1,8 +1,10 @@
 ﻿using System;
+using System.Linq;
 using System.Threading.Tasks;
 using Autofac;
 using Mediator.Net.Middlewares.Serilog;
 using Mediator.Net.TestUtil;
+using Mediator.Net.TestUtil.Handlers.RequestHandlers;
 using Mediator.Net.TestUtil.Messages;
 using Mediator.Net.TestUtil.Services;
 using Serilog;
@@ -27,7 +29,7 @@ namespace Mediator.Net.Autofac.Test.Tests.Middlewares
 
             var mediaBuilder = new MediatorBuilder();
 
-            mediaBuilder.RegisterHandlers(TestUtilAssembly.Assembly)
+            mediaBuilder.RegisterUnduplicatedHandlers()
                 .ConfigureGlobalReceivePipe(x => x.UseSerilog())
                 .ConfigureCommandReceivePipe(y => y.UseSerilog())
                 .ConfigureEventReceivePipe(z => z.UseSerilog())
@@ -43,7 +45,7 @@ namespace Mediator.Net.Autofac.Test.Tests.Middlewares
         {
             _mediator = _container.Resolve<IMediator>();
             await _mediator.SendAsync(new SimpleCommand(Guid.NewGuid()));
-            await _mediator.PublishAsync(new SimpleEvent());
+            await _mediator.PublishAsync(new SimpleEvent(Guid.NewGuid()));
             await _mediator.RequestAsync<SimpleRequest, SimpleResponse>(new SimpleRequest("Hello"));
         }
 

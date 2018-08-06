@@ -1,5 +1,7 @@
-﻿using System.Threading.Tasks;
+﻿using System.Linq;
+using System.Threading.Tasks;
 using Mediator.Net.TestUtil;
+using Mediator.Net.TestUtil.Handlers.RequestHandlers;
 using Mediator.Net.TestUtil.Middlewares;
 using Shouldly;
 using SimpleInjector;
@@ -19,7 +21,7 @@ namespace Mediator.Net.SimpleInjector.Test.Tests
         {
             ClearBinding();
             var mediaBuilder = new MediatorBuilder();
-            mediaBuilder.RegisterHandlers(TestUtilAssembly.Assembly)
+            mediaBuilder.RegisterUnduplicatedHandlers()
                 .ConfigureCommandReceivePipe(x =>
                 {
                     x.UseSimpleMiddleware();

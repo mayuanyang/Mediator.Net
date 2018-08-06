@@ -1,5 +1,7 @@
-﻿using Mediator.Net.MicrosoftDependencyInjection;
+﻿using System.Linq;
+using Mediator.Net.MicrosoftDependencyInjection;
 using Mediator.Net.TestUtil;
+using Mediator.Net.TestUtil.Handlers.RequestHandlers;
 using Mediator.Net.TestUtil.Services;
 using Mediator.Net.WebApiSample.Handlers.CommandHandler;
 using Mediator.Net.WebApiSample.Handlers.EventHandler;
@@ -45,7 +47,7 @@ namespace Mediator.Net.WebApiSample
                 .AddTransient<ICalculateService, CalculateService>()
                 .AddTransient<IBoardcastService, BoardcastService>();
             var mediatorBuilder = new MediatorBuilder();
-            mediatorBuilder.RegisterHandlers(TestUtilAssembly.Assembly, typeof(Startup).Assembly);
+            mediatorBuilder.RegisterHandlers(assembly => assembly.DefinedTypes.Where(t => t.Name != nameof(MultiRequestsHandler)), TestUtilAssembly.Assembly, typeof(Startup).Assembly);
             services.RegisterMediator(mediatorBuilder);
         }
     }

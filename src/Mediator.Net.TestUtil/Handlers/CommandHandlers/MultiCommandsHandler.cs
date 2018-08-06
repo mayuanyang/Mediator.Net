@@ -12,15 +12,13 @@ namespace Mediator.Net.TestUtil.Handlers.CommandHandlers
     {
         public Task Handle(ReceiveContext<AnotherCommand> context, CancellationToken cancellationToken)
         {
-            RubishBox.Rublish.Add(nameof(MultiCommandsHandler));
-            Console.WriteLine(context.Message.Id);
+            RubishBox.Rublish.Add(context.Message.Id);
             return Task.FromResult(1);
         }
 
         public async Task Handle(ReceiveContext<DerivedTestBaseCommand> context, CancellationToken cancellationToken)
         {
-            RubishBox.Rublish.Add(nameof(MultiCommandsHandler));
-            Console.WriteLine(context.Message.Id);
+            RubishBox.Rublish.Add(context.Message.Id);
             await Task.FromResult(1);
         }
     }

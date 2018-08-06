@@ -25,7 +25,7 @@ namespace Mediator.Net.Test.TestEventHandlers
 
         void AndGivenTheEventIsRegisteredToItsBaseClassHandler()
         {
-            _mediator = _builder.RegisterHandlers(TestUtilAssembly.Assembly).Build();
+            _mediator = _builder.RegisterUnduplicatedHandlers().Build();
         }
 
         async Task WhenAMoreDerivedEventIsPublished()
