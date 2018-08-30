@@ -37,7 +37,6 @@ class TestBaseCommandHandler : ICommandHandler<TestBaseCommand>
     public Task Handle(ReceiveContext<TestBaseCommand> context)
     {
         Console.WriteLine(context.Message.Id);
-        RubishBox.Rublish.Add(nameof(TestBaseCommandHandler));
         return Task.FromResult(0);
     }
 }
@@ -47,7 +46,6 @@ class AsyncTestBaseCommandHandler : ICommandHandler<TestBaseCommand>
 {
     public async Task Handle(ReceiveContext<TestBaseCommand> context)
     {
-        RubishBox.Rublish.Add(nameof(AsyncTestBaseCommandHandler));
         Console.WriteLine(context.Message.Id);
         await Task.FromResult(0);
     }
@@ -79,19 +77,19 @@ There are 5 different type of pipelines you can use
 ![image](https://cloud.githubusercontent.com/assets/3387099/21959127/9a065420-db09-11e6-8dbc-ca0069894e1c.png)
 
 #### GlobalReceivePipeline
-This pipeline will be triggered whenever a message is sent, published or requested before it reach the next pipeline and handler
+This pipeline will be triggered whenever a message is sent, published or requested before it reaches the next pipeline and handler
 
 #### CommandReceivePipeline
-This pipeline will be triggered just after the GlobalReceivePipeline and before it reach its command handler, this pipeline will only used for ICommand
+This pipeline will be triggered just after the `GlobalReceivePipeline` and before it reaches its command handler, this pipeline will only be used for `ICommand`
 
 #### EventReceivePipeline
-This pipeline will be triggered just after the GlobalReceivePipeline and before it reach its event handler/handlers, this pipeline will only used for IEvent
+This pipeline will be triggered just after the `GlobalReceivePipeline` and before it reaches its event handler/handlers, this pipeline will only be used for `IEvent`
 
 #### RequestReceivePipeline
-This pipeline will be triggered just after the GlobalReceivePipeline and before it reach its request handler, this pipeline will only used for IRequest
+This pipeline will be triggered just after the `GlobalReceivePipeline` and before it reaches its request handler, this pipeline will only be used for `IRequest`
 
 #### PublishPipeline
-This pipeline will be triggered when an IEvent is published inside your handler, this pipeline will only used for IEvent, it is usually being used as outgoing interceptor
+This pipeline will be triggered when an `IEvent` is published inside your handler, this pipeline will only be used for `IEvent` and is usually being used as outgoing interceptor
 
 ### Setting up middlewares
 The most powerful thing for the pipelines above is you can add as many middlewares as you want.
@@ -100,9 +98,11 @@ Follow the following steps to setup a middlewaree
 * Add a public static extension method in that class you just added, usually follow the UseXxxx naming convention
 * Add another class for your middleware's specification, note that this is the implementation of your middleware
 
-Note that, in order to make the framework both both with IoC and without, you can either pass your instance in or resolve the instance by the provided DependancyScope from the IPipeConfigurator
+You might need some dependencies in your middleware, there are two ways to do it
+- Pass them in explicitly
+- Let the IoC container to resolve it for you (if you are using IoC)
 
-An example is shown below
+Here is a sample middleware
 
 ## Middleware class
 ```C#
@@ -111,11 +111,11 @@ public static class SerilogMiddleware
     public static void UseSerilog<TContext>(this IPipeConfigurator<TContext> configurator, LogEventLevel logAsLevel, ILogger logger = null)
         where TContext : IContext<IMessage>
     {
-        if (logger == null && configurator.DependancyScope == null)
+        if (logger == null && configurator.DependencyScope == null)
         {
-            throw new DependancyScopeNotConfiguredException($"{nameof(ILogger)} is not provided and IDependancyScope is not configured, Please ensure {nameof(ILogger)} is registered properly if you are using IoC container, otherwise please pass {nameof(ILogger)} as parameter");
+            throw new DependencyScopeNotConfiguredException($"{nameof(ILogger)} is not provided and IDependencyScope is not configured, Please ensure {nameof(ILogger)} is registered properly if you are using IoC container, otherwise please pass {nameof(ILogger)} as parameter");
         }
-        logger = logger ?? configurator.DependancyScope.Resolve<ILogger>();
+        logger = logger ?? configurator.DependencyScope.Resolve<ILogger>();
             
         configurator.AddPipeSpecification(new SerilogMiddlewareSpecification<TContext>(logger, logAsLevel));
     }
@@ -123,58 +123,73 @@ public static class SerilogMiddleware
 ```
 ## Specification class
 ```C#
-class SerilogMiddlewareSpecification<TContext> : IPipeSpecification<TContext>
-    where TContext : IContext<IMessage>
-{
-    private readonly ILogger _logger;
-    private readonly LogEventLevel _level;
+class SerilogMiddlewareSpecification<TContext> : IPipeSpecification<TContext> where TContext : IContext<IMessage>
+    {
+        private readonly ILogger _logger;
+        private readonly Func<bool> _shouldExcute;
+        private readonly LogEventLevel _level;
 
-    public SerilogMiddlewareSpecification(ILogger logger, LogEventLevel level)
-    {
-        _logger = logger;
-        _level = level;
-    }
-    public bool ShouldExecute(TContext context)
-    {
-        return true;
-    }
-
-    public Task ExecuteBeforeConnect(TContext context)
-    {
-        if (ShouldExecute(context))
+        public SerilogMiddlewareSpecification(ILogger logger, LogEventLevel level, Func<bool> shouldExcute )
         {
-            switch (_level)
-            {
-                case LogEventLevel.Error:
-                    _logger.Error("Receive message {@Message}", context.Message);
-                        break;
-                case LogEventLevel.Debug:
-                    _logger.Debug("Receive message {@Message}", context.Message);
-                    break;
-                case LogEventLevel.Fatal:
-                    _logger.Fatal("Receive message {@Message}", context.Message);
-                    break;
-                case LogEventLevel.Information:
-                    _logger.Information("Receive message {@Message}", context.Message); 
-                    break;
-                case LogEventLevel.Verbose:
-                    _logger.Verbose("Receive message {@Message}", context.Message);
-                    break;
-                case LogEventLevel.Warning:
-                    _logger.Verbose("Receive message {@Message}", context.Message);
-                    break;
-                default:
-                    throw new ArgumentOutOfRangeException();
-            }
+            _logger = logger;
+            _level = level;
+            _shouldExcute = shouldExcute;
         }
-        return Task.FromResult(0);
-    }
+        public bool ShouldExecute(TContext context, CancellationToken cancellationToken)
+        {
+            if (_shouldExcute == null)
+            {
+                return true;
+            }
+            return _shouldExcute.Invoke();
+        }
 
-    public Task ExecuteAfterConnect(TContext context)
-    {
-        return Task.FromResult(0);
+        public Task BeforeExecute(TContext context, CancellationToken cancellationToken)
+        {
+            return Task.FromResult(0);
+        }
+
+        public Task Execute(TContext context, CancellationToken cancellationToken)
+        {
+            if (ShouldExecute(context, cancellationToken))
+            {
+                switch (_level)
+                {
+                    case LogEventLevel.Error:
+                        _logger.Error("Receive message {@Message}", context.Message);
+                        break;
+                    case LogEventLevel.Debug:
+                        _logger.Debug("Receive message {@Message}", context.Message);
+                        break;
+                    case LogEventLevel.Fatal:
+                        _logger.Fatal("Receive message {@Message}", context.Message);
+                        break;
+                    case LogEventLevel.Information:
+                        _logger.Information("Receive message {@Message}", context.Message);
+                        break;
+                    case LogEventLevel.Verbose:
+                        _logger.Verbose("Receive message {@Message}", context.Message);
+                        break;
+                    case LogEventLevel.Warning:
+                        _logger.Verbose("Receive message {@Message}", context.Message);
+                        break;
+                    default:
+                        throw new ArgumentOutOfRangeException();
+                }
+            }
+            return Task.FromResult(0);
+        }
+
+        public Task AfterExecute(TContext context, CancellationToken cancellationToken)
+        {
+            return Task.FromResult(0);
+        }
+
+        public void OnException(Exception ex, TContext context)
+        {
+            throw ex;
+        }
     }
-}
 ```
 
 ### To hook up middlewares into pipelines
@@ -182,13 +197,12 @@ class SerilogMiddlewareSpecification<TContext> : IPipeSpecification<TContext>
 var builder = new MediatorBuilder();
 _mediator = builder.RegisterHandlers(() =>
     {
-        var binding = new List<MessageBinding>()
+        return new List<MessageBinding>()
         {
             new MessageBinding(typeof(TestBaseCommand), typeof(TestBaseCommandHandlerRaiseEvent)),
             new MessageBinding(typeof(TestEvent), typeof(TestEventHandler)),
             new MessageBinding(typeof(GetGuidRequest), typeof(GetGuidRequestHandler))
         };
-        return binding;
     })
     .ConfigureGlobalReceivePipe(x =>
     {
@@ -214,7 +228,7 @@ _mediator = builder.RegisterHandlers(() =>
 ```
 
 ### ReceiveContext in Handlers
-As you might already noticed, mediator will deliver ReceiveContext<T> to the handler and it has a property Message which is the original message sent, in some cases you might have one event being handled in multiple handlers and you might want to share something between, ReceiveContext would be a very good place that to register your service or instance. For example you can make a middleware and register the service from there.
+As you might already noticed, mediator will deliver ReceiveContext<T> to the handler and it has a property `Message` which is the original message sent, in some cases you might have one event being handled in multiple handlers and you might want to share something between, `ReceiveContext` would is good place that to register your service or instance. For example you can make a middleware and register the service from there.
 
 #### Register DummyTransaction from middleware
 ```C#
@@ -226,34 +240,33 @@ public class SimpleMiddlewareSpecification<TContext> : IPipeSpecification<TConte
         return true;
     }
 
-    public Task ExecuteBeforeConnect(TContext context)
+    public Task BeforeExecute(TContext context)
+    {
+        return Task.FromResult(0);
+    }
+
+    public Task Execute(TContext context)
     {
         if (ShouldExecute(context))
         {
-            Console.WriteLine($"Before 1: {context.Message}");
             context.RegisterService(new DummyTransaction());
         }
-
         return Task.FromResult(0);
-
     }
 
-    public Task ExecuteAfterConnect(TContext context)
+    public Task AfterExecute(TContext context)
     {
-        if (ShouldExecute(context))
-            Console.WriteLine($"After 1: {context.Message}");
         return Task.FromResult(0);
     }
 }
 ```
 
-#### Get the service from the handler
+#### Get the DummyTransaction registered in the middleware from the handler
 ```C#
 public Task Handle(ReceiveContext<SimpleCommand> context)
 {
     _simpleService.DoWork();
-    DummyTransaction transaction;
-    if (context.TryGetService(out transaction))
+    if (context.TryGetService(out DummyTransaction transaction))
     {
         transaction.Commit();
     }
@@ -261,7 +274,7 @@ public Task Handle(ReceiveContext<SimpleCommand> context)
 }
 ```
 
-### Using dependancy injection(IoC) frameworks
+### Using dependency injection(IoC) frameworks
 #### Autofac
 Install the nuget package Mediator.Net.Autofac
 ```C#
