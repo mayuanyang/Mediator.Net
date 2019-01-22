@@ -9,9 +9,9 @@ namespace Mediator.Net.Pipeline
     {
         private readonly IList<IPipeSpecification<IReceiveContext<IMessage>>> _specifications;
         
-        public GlobalRececivePipeConfigurator(IDependencyScope dependancyScope)
+        public GlobalRececivePipeConfigurator(IDependencyScope dependencyScope)
         {
-            DependancyScope = dependancyScope;
+            DependencyScope = dependencyScope;
             _specifications = new List<IPipeSpecification<IReceiveContext<IMessage>>>();
         }
         public IGlobalReceivePipe<IReceiveContext<IMessage>> Build()
@@ -24,7 +24,7 @@ namespace Mediator.Net.Pipeline
             _specifications.Add(specification);
         }
 
-        public IDependencyScope DependancyScope { get; }
+        public IDependencyScope DependencyScope { get; }
 
         private IGlobalReceivePipe<IReceiveContext<IMessage>> Chain()
         {

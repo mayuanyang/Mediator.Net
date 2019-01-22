@@ -1,18 +1,22 @@
 ﻿using System;
+using System.Linq;
 using System.Threading.Tasks;
 using Mediator.Net.TestUtil;
+using Mediator.Net.TestUtil.Handlers.RequestHandlers;
 using Mediator.Net.TestUtil.Messages;
 using Mediator.Net.TestUtil.Middlewares;
 using Shouldly;
-using StructureMap;
+using SimpleInjector;
+using SimpleInjector.Extensions.LifetimeScoping;
 using TestStack.BDDfy;
 using Xunit;
 
-namespace Mediator.Net.StructureMap.Test.Tests
+namespace Mediator.Net.SimpleInjector.Test.Tests
 {
-    public class TestEventHandlerWithDependancyInjection : TestBase
+
+    public class TestEventHandlerWithDependencyInjection : TestBase
     {
-        private IContainer _container = null;
+        private Container _container = null;
         private IMediator _mediator;
         private Task _task;
  
@@ -26,14 +30,18 @@ namespace Mediator.Net.StructureMap.Test.Tests
                     x.UseSimpleMiddleware();
                 });
             _container = new Container();
-            _container.Configure(mediaBuilder);
+            _container.Options.DefaultScopedLifestyle = new LifetimeScopeLifestyle();
+            _container.RegisterMediator(mediaBuilder);
         }
 
         Task WhenACommandIsSent()
         {
-            _mediator = _container.GetInstance<IMediator>();
+            using (var scope = _container.BeginLifetimeScope())
+            {
+                _mediator = scope.GetInstance<IMediator>();
             _task = _mediator.PublishAsync(new SimpleEvent(Guid.NewGuid()));
-            return _task;
+            }
+            return Task.FromResult(0);
         }
 
         void ThenTheEventShouldReachItsHandler()
