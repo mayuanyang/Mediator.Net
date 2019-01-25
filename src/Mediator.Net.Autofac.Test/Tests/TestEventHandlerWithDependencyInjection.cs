@@ -1,8 +1,7 @@
-﻿using System.Linq;
+﻿using System;
 using System.Threading.Tasks;
 using Autofac;
 using Mediator.Net.TestUtil;
-using Mediator.Net.TestUtil.Handlers.RequestHandlers;
 using Mediator.Net.TestUtil.Messages;
 using Mediator.Net.TestUtil.Middlewares;
 using Mediator.Net.TestUtil.Services;
@@ -12,7 +11,7 @@ using Xunit;
 
 namespace Mediator.Net.Autofac.Test.Tests
 {
-    public class TestRequestHandlerWithDependancyInjection : TestBase
+    public class TestEventHandlerWithDependencyInjection : TestBase
     {
         private IContainer _container = null;
         private IMediator _mediator;
@@ -23,7 +22,7 @@ namespace Mediator.Net.Autofac.Test.Tests
             base.ClearBinding();
             var mediaBuilder = new MediatorBuilder();
             mediaBuilder.RegisterUnduplicatedHandlers()
-                .ConfigureRequestPipe(x =>
+                .ConfigureCommandReceivePipe(x =>
                 {
                     x.UseSimpleMiddleware();
                 });
@@ -34,14 +33,14 @@ namespace Mediator.Net.Autofac.Test.Tests
             _container = containerBuilder.Build();
         }
 
-        Task WhenARequestIsSent()
+        Task WhenACommandIsSent()
         {
             _mediator = _container.Resolve<IMediator>();
-            _task = _mediator.RequestAsync<SimpleRequest, SimpleResponse>(new SimpleRequest("Hello"));
+            _task = _mediator.PublishAsync(new SimpleEvent(Guid.NewGuid()));
             return _task;
         }
 
-        void ThenTheRequestShouldReachItsHandler()
+        void ThenTheEventShouldReachItsHandler()
         {
             _task.Status.ShouldBe(TaskStatus.RanToCompletion);
         }

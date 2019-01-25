@@ -1,8 +1,6 @@
 ﻿using System;
-using System.Linq;
 using System.Threading.Tasks;
 using Mediator.Net.TestUtil;
-using Mediator.Net.TestUtil.Handlers.RequestHandlers;
 using Mediator.Net.TestUtil.Messages;
 using Mediator.Net.TestUtil.Middlewares;
 using Mediator.Net.TestUtil.Services;
@@ -15,7 +13,7 @@ using Xunit;
 namespace Mediator.Net.SimpleInjector.Test.Tests
 {
 
-    public class TestCommandHandlerWithDependancyInjection : TestBase
+    public class TestCommandHandlerWithDependencyInjection : TestBase
     {
         private Container _container = null;
         private IMediator _mediator;

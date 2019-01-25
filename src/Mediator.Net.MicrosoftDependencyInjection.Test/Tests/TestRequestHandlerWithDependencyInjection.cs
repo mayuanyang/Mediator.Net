@@ -1,46 +1,45 @@
-﻿using System;
-using System.Threading.Tasks;
-using Autofac;
+﻿using System.Threading.Tasks;
 using Mediator.Net.TestUtil;
 using Mediator.Net.TestUtil.Messages;
 using Mediator.Net.TestUtil.Middlewares;
 using Mediator.Net.TestUtil.Services;
+using Microsoft.Extensions.DependencyInjection;
 using Shouldly;
 using TestStack.BDDfy;
 using Xunit;
 
-namespace Mediator.Net.Autofac.Test.Tests
+namespace Mediator.Net.MicrosoftDependencyInjection.Test.Tests
 {
-    public class TestEventHandlerWithDependancyInjection : TestBase
+    public class TestRequestHandlerWithDependencyInjection : TestBase
     {
-        private IContainer _container = null;
+        private IServiceCollection _container = null;
         private IMediator _mediator;
         private Task _task;
  
         void GivenAContainer()
         {
-            base.ClearBinding();
+            ClearBinding();
             var mediaBuilder = new MediatorBuilder();
             mediaBuilder.RegisterUnduplicatedHandlers()
                 .ConfigureCommandReceivePipe(x =>
                 {
                     x.UseSimpleMiddleware();
                 });
-            var containerBuilder = new ContainerBuilder();
-            containerBuilder.RegisterType<SimpleService>().AsSelf();
-            containerBuilder.RegisterType<AnotherSimpleService>().AsSelf();
-            containerBuilder.RegisterMediator(mediaBuilder);
-            _container = containerBuilder.Build();
+            _container = new ServiceCollection()
+                .AddTransient<SimpleService>()
+                .AddTransient<AnotherSimpleService>();
+
+            _container.RegisterMediator(mediaBuilder);
         }
 
-        Task WhenACommandIsSent()
+        Task WhenARequestIsSent()
         {
-            _mediator = _container.Resolve<IMediator>();
-            _task = _mediator.PublishAsync(new SimpleEvent(Guid.NewGuid()));
+            _mediator = _container.BuildServiceProvider().GetService<IMediator>();
+            _task = _mediator.RequestAsync<SimpleRequest, SimpleResponse>(new SimpleRequest("Hello"));
             return _task;
         }
 
-        void ThenTheEventShouldReachItsHandler()
+        void ThenTheRequestShouldReachItsHandler()
         {
             _task.Status.ShouldBe(TaskStatus.RanToCompletion);
         }

@@ -3,16 +3,18 @@ using Mediator.Net.TestUtil;
 using Mediator.Net.TestUtil.Messages;
 using Mediator.Net.TestUtil.Middlewares;
 using Mediator.Net.TestUtil.Services;
-using Microsoft.Extensions.DependencyInjection;
 using Shouldly;
+using SimpleInjector;
+using SimpleInjector.Extensions.LifetimeScoping;
 using TestStack.BDDfy;
 using Xunit;
 
-namespace Mediator.Net.MicrosoftDependencyInjection.Test.Tests
+namespace Mediator.Net.SimpleInjector.Test.Tests
 {
-    public class TestRequestHandlerWithDependancyInjection : TestBase
+
+    public class TestRequestHandlerWithDependencyInjection : TestBase
     {
-        private IServiceCollection _container = null;
+        private Container _container = null;
         private IMediator _mediator;
         private Task _task;
  
@@ -25,18 +27,22 @@ namespace Mediator.Net.MicrosoftDependencyInjection.Test.Tests
                 {
                     x.UseSimpleMiddleware();
                 });
-            _container = new ServiceCollection()
-                .AddTransient<SimpleService>()
-                .AddTransient<AnotherSimpleService>();
-
+            _container = new Container();
+            _container.Options.DefaultScopedLifestyle = new LifetimeScopeLifestyle();
+            _container.Register<SimpleService>();
+            _container.Register<AnotherSimpleService>();
+            
             _container.RegisterMediator(mediaBuilder);
         }
 
         Task WhenARequestIsSent()
         {
-            _mediator = _container.BuildServiceProvider().GetService<IMediator>();
-            _task = _mediator.RequestAsync<SimpleRequest, SimpleResponse>(new SimpleRequest("Hello"));
-            return _task;
+            using (var scope = _container.BeginLifetimeScope())
+            {
+                _mediator = scope.GetInstance<IMediator>();
+                _task = _mediator.RequestAsync<SimpleRequest, SimpleResponse>(new SimpleRequest("Hello"));
+                return _task;
+            }
         }
 
         void ThenTheRequestShouldReachItsHandler()
