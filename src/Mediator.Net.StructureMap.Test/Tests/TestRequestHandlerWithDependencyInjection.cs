@@ -11,7 +11,7 @@ using Xunit;
 namespace Mediator.Net.StructureMap.Test.Tests
 {
 
-    public class TestRequestHandlerWithDependancyInjection : TestBase
+    public class TestRequestHandlerWithDependencyInjection : TestBase
     {
         private IContainer _container = null;
         private IMediator _mediator;

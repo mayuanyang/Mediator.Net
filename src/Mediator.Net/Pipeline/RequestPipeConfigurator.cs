@@ -11,7 +11,7 @@ namespace Mediator.Net.Pipeline
     {
         private readonly IDependencyScope _resolver;
         private readonly IList<IPipeSpecification<IReceiveContext<IRequest>>> _specifications;
-        public IDependencyScope DependancyScope => _resolver;
+        public IDependencyScope DependencyScope => _resolver;
         public RequestPipeConfigurator(IDependencyScope resolver = null)
         {
             _resolver = resolver;
