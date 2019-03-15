@@ -31,7 +31,7 @@ namespace Mediator.Net.Test.TestRequestHandlers
                 {
                     var binding = new List<MessageBinding>()
                     {
-                        new MessageBinding(typeof(GetGuidRequest), typeof(GetGuidRequestHandler))
+                        new MessageBinding(typeof(GetGuidInAsyncRequest), typeof(AsyncRequestHandler))
                     };
                     return binding;
                 })

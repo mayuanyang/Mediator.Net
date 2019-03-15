@@ -12,7 +12,7 @@ namespace Mediator.Net.TestUtil.Handlers.RequestHandlers
         public async Task<GetGuidResponse> Handle(ReceiveContext<GetGuidInAsyncRequest> context, CancellationToken cancellationToken)
         {
             await Task.Delay(100, cancellationToken);
-            return new GetGuidResponse(Guid.NewGuid());
+            return new GetGuidResponse(context.Message.Id);
         }
     }
 }
