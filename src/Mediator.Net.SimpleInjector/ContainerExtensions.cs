@@ -7,7 +7,7 @@ namespace Mediator.Net.SimpleInjector
     {
         public static void RegisterMediator(this Container container, MediatorBuilder mediatorBuilder)
         {
-            container.RegisterSingleton(mediatorBuilder);
+            container.RegisterInstance(mediatorBuilder);
             container.Register(() =>
             {
                 var resolver = new SimpleInjectorDependencyScope(container);
