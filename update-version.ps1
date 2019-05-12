@@ -14,7 +14,7 @@ if ($env:APPVEYOR_REPO_BRANCH -eq "master")
 else
 {
 	write-host "non master branch"
-    Update-AppveyorBuild -Version "$($env:APPVEYOR_BUILD_VERSION)-$($env:APPVEYOR_REPO_BRANCH)"
+    Update-AppveyorBuild -Version "$($env:APPVEYOR_BUILD_VERSION)"
 }
 $configFiles = Get-ChildItem . *.csproj -rec
 $versionString = "<PackageVersion>" + $env:APPVEYOR_BUILD_VERSION + "</PackageVersion>"
