@@ -18,6 +18,9 @@
   <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|netcoreapp2.0|AnyCPU'">
     <LangVersion>latest</LangVersion>
   </PropertyGroup>
+  <PropertyGroup>
+    <IsTestProject>true</IsTestProject>
+  </PropertyGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\Mediator.Net.SimpleInjector\Mediator.Net.SimpleInjector.csproj" />

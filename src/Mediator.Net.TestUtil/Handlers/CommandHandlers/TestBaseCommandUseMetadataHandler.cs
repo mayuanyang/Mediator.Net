@@ -9,7 +9,7 @@ namespace Mediator.Net.TestUtil.Handlers.CommandHandlers
 {
     public class TestBaseCommandUseMetadataHandler : ICommandHandler<TestBaseCommand>
     {
-        public async Task Handle(ReceiveContext<TestBaseCommand> context, CancellationToken cancellationToken)
+        public async Task Handle(IReceiveContext<TestBaseCommand> context, CancellationToken cancellationToken)
         {
             var userName = context.MetaData["UserName"];
             RubishBox.Rublish.Add(userName);

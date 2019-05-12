@@ -8,7 +8,7 @@ namespace Mediator.Net.TestUtil.Handlers.CommandHandlers
 {
     public class NoWorkCommandHandler : ICommandHandler<NoWorkCommand>
     {
-        public Task Handle(ReceiveContext<NoWorkCommand> context, CancellationToken cancellationToken)
+        public Task Handle(IReceiveContext<NoWorkCommand> context, CancellationToken cancellationToken)
         {
             return Task.FromResult(0);
         }
