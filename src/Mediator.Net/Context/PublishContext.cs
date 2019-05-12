@@ -6,7 +6,7 @@ using Mediator.Net.Contracts;
 
 namespace Mediator.Net.Context
 {
-    class PublishContext : IPublishContext<IEvent>
+    public class PublishContext : IPublishContext<IEvent>
     {
 
         private readonly IList<object> _registeredServices;

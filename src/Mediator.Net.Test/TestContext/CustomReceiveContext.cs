@@ -4,18 +4,18 @@ using System.Linq;
 using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
+using Mediator.Net.Context;
 using Mediator.Net.Contracts;
 using Mediator.Net.Pipeline;
 
-namespace Mediator.Net.Context
+namespace Mediator.Net.Test.TestContext
 {
-    public class ReceiveContext<TMessage> : IReceiveContext<TMessage>
-        where TMessage : IMessage
+    public class CustomReceiveContext<TMessage> : IReceiveContext<TMessage> where TMessage : IMessage
     {
-
         private readonly IList<object> _registeredServices;
         private Dictionary<string, object> _metaData;
-        public ReceiveContext(TMessage message)
+
+        public CustomReceiveContext(TMessage message)
         {
             Message = message;
             _registeredServices = new List<object>();
@@ -52,12 +52,12 @@ namespace Mediator.Net.Context
         {
             if (TryGetService(out IMediator mediator))
             {
-                var publishContext = (IPublishContext<IEvent>) Activator.CreateInstance(typeof(PublishContext), msg);
+                var publishContext = (IPublishContext<IEvent>)Activator.CreateInstance(typeof(PublishContext), msg);
                 publishContext.RegisterService(mediator);
                 if (TryGetService(out IPublishPipe<IPublishContext<IEvent>> publishPipe))
                 {
                     var sendMethod = publishPipe.GetType().GetRuntimeMethods().Single(x => x.Name == "Connect");
-                    var task = (Task) sendMethod.Invoke(publishPipe, new object[] {publishContext, cancellationToken});
+                    var task = (Task)sendMethod.Invoke(publishPipe, new object[] { publishContext, cancellationToken });
                     await task.ConfigureAwait(false);
                 }
                 else

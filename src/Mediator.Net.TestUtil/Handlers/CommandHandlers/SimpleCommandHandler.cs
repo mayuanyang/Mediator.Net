@@ -15,7 +15,7 @@ namespace Mediator.Net.TestUtil.Handlers.CommandHandlers
         {
             _simpleService = simpleService;
         }
-        public Task Handle(ReceiveContext<SimpleCommand> context, CancellationToken cancellationToken)
+        public Task Handle(IReceiveContext<SimpleCommand> context, CancellationToken cancellationToken)
         {
             _simpleService.DoWork();
             DummyTransaction transaction;

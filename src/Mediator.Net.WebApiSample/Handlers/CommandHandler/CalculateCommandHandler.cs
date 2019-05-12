@@ -28,7 +28,7 @@ namespace Mediator.Net.WebApiSample.Handlers.CommandHandler
         {
             _calculateService = calculateService;
         }
-        public async Task Handle(ReceiveContext<CalculateCommand> context, CancellationToken cancellationToken)
+        public async Task Handle(IReceiveContext<CalculateCommand> context, CancellationToken cancellationToken)
         {
             var result = _calculateService.Calculate(context.Message.Left, context.Message.Right);
             await context.PublishAsync(new ResultCalculatedEvent(result), CancellationToken.None);

@@ -39,6 +39,13 @@ namespace Mediator.Net
             await SendMessage(cmd, cancellationToken);
         }
 
+        public async Task SendAsync<TMessage>(IReceiveContext<TMessage> receiveContext,
+            CancellationToken cancellationToken = default(CancellationToken))
+        where TMessage : ICommand
+        {
+            await SendMessage(receiveContext, cancellationToken);
+        }
+
         public async Task PublishAsync<TMessage>(TMessage evt, CancellationToken cancellationToken = default(CancellationToken))
             where TMessage : IEvent
         {
@@ -58,6 +65,25 @@ namespace Mediator.Net
         {
 
             var receiveContext = (IReceiveContext<TMessage>)Activator.CreateInstance(typeof(ReceiveContext<>).MakeGenericType(msg.GetType()), msg);
+            RegisterServiceIfRequired(receiveContext);
+
+            var task = _globalPipe.Connect((IReceiveContext<IMessage>) receiveContext, cancellationToken);
+            return await task.ConfigureAwait(false);
+        }
+
+        private async Task<object> SendMessage<TMessage>(IReceiveContext<TMessage> customReceiveContext, CancellationToken cancellationToken)
+            where TMessage : IMessage
+        {
+
+            var receiveContext = customReceiveContext;
+            RegisterServiceIfRequired(receiveContext);
+
+            var task = _globalPipe.Connect((IReceiveContext<IMessage>)receiveContext, cancellationToken);
+            return await task.ConfigureAwait(false);
+        }
+
+        private void RegisterServiceIfRequired<TMessage>(IReceiveContext<TMessage> receiveContext) where  TMessage : IMessage
+        {
             receiveContext.RegisterService(this);
             if (!receiveContext.TryGetService(out IPublishPipe<IPublishContext<IEvent>> _))
             {
@@ -78,9 +104,6 @@ namespace Mediator.Net
             {
                 receiveContext.RegisterService(_requestPipe);
             }
-
-            var task = _globalPipe.Connect((IReceiveContext<IMessage>) receiveContext, cancellationToken);
-            return await task.ConfigureAwait(false);
         }
 
         public void Dispose()
