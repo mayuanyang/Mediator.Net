@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFrameworks>netcoreapp2.0</TargetFrameworks>
@@ -16,6 +16,9 @@
     <ApplicationIcon />
     <OutputType>Library</OutputType>
     <StartupObject />
+  </PropertyGroup>
+  <PropertyGroup>
+    <IsTestProject>true</IsTestProject>
   </PropertyGroup>
 
   <ItemGroup>
