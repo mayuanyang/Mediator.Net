@@ -52,11 +52,25 @@ namespace Mediator.Net
             await SendMessage(evt, cancellationToken);
         }
 
+        public async Task PublishAsync<TMessage>(IReceiveContext<TMessage> receiveContext, CancellationToken cancellationToken = default(CancellationToken))
+            where TMessage : IEvent
+        {
+            await SendMessage(receiveContext, cancellationToken);
+        }
+
         public async Task<TResponse> RequestAsync<TRequest, TResponse>(TRequest request, CancellationToken cancellationToken = default(CancellationToken))
             where TRequest : IRequest
             where TResponse : IResponse
         {
             var result = await SendMessage(request, cancellationToken);
+            return (TResponse)result;
+        }
+
+        public async Task<TResponse> RequestAsync<TRequest, TResponse>(IReceiveContext<TRequest> receiveContext, CancellationToken cancellationToken = default(CancellationToken))
+            where TRequest : IRequest
+            where TResponse : IResponse
+        {
+            var result = await SendMessage(receiveContext, cancellationToken);
             return (TResponse)result;
         }
 
@@ -74,11 +88,9 @@ namespace Mediator.Net
         private async Task<object> SendMessage<TMessage>(IReceiveContext<TMessage> customReceiveContext, CancellationToken cancellationToken)
             where TMessage : IMessage
         {
+            RegisterServiceIfRequired(customReceiveContext);
 
-            var receiveContext = customReceiveContext;
-            RegisterServiceIfRequired(receiveContext);
-
-            var task = _globalPipe.Connect((IReceiveContext<IMessage>)receiveContext, cancellationToken);
+            var task = _globalPipe.Connect((IReceiveContext<IMessage>)customReceiveContext, cancellationToken);
             return await task.ConfigureAwait(false);
         }
 

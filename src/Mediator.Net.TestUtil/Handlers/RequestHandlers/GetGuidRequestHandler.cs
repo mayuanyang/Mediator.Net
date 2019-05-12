@@ -10,7 +10,7 @@ namespace Mediator.Net.TestUtil.Handlers.RequestHandlers
 {
     public class GetGuidRequestHandler : IRequestHandler<GetGuidRequest, GetGuidResponse>
     {
-        public Task<GetGuidResponse> Handle(ReceiveContext<GetGuidRequest> context, CancellationToken cancellationToken)
+        public Task<GetGuidResponse> Handle(IReceiveContext<GetGuidRequest> context, CancellationToken cancellationToken)
         {
             TokenRecorder.Recorder.Add(cancellationToken.GetHashCode());
             RubishBox.Rublish.Add(nameof(GetGuidRequestHandler));
