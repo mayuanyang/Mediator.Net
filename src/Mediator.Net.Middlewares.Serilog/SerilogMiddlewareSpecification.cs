@@ -33,7 +33,7 @@ namespace Mediator.Net.Middlewares.Serilog
 
         public Task BeforeExecute(TContext context, CancellationToken cancellationToken)
         {
-            return Task.FromResult(0);
+            return Task.WhenAll();
         }
 
         public Task Execute(TContext context, CancellationToken cancellationToken)
@@ -64,16 +64,17 @@ namespace Mediator.Net.Middlewares.Serilog
                         throw new ArgumentOutOfRangeException();
                 }
             }
-            return Task.FromResult(0);
+            return Task.WhenAll();
         }
 
         public Task AfterExecute(TContext context, CancellationToken cancellationToken)
         {
-            return Task.FromResult(0);
+            return Task.WhenAll();
         }
 
         public void OnException(Exception ex, TContext context)
         {
+            _logger.Error("Error has occured:", ex);
             throw ex;
         }
     }
