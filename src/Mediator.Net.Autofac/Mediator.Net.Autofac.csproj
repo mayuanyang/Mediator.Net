@@ -31,7 +31,7 @@
 
   <ItemGroup>
     <PackageReference Include="Autofac" Version="4.8.1" />
-    <PackageReference Include="Mediator.Net" Version="1.1.23" />
+    <PackageReference Include="Mediator.Net" Version="3.0.0-dev3" />
   </ItemGroup>
 
   <ItemGroup Condition=" '$(TargetFramework)' == 'net45' ">
