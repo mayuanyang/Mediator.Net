@@ -33,7 +33,7 @@ deploy:
   on:
     branch: /^(master|dev)$/
   api_key:
-    secure: oy2jmfz3uuo7w4gnolkqznie2bop6pwuzf577l4jjqjr64
+    secure: lAque1EJcfEPn4dgqBGPqjUXvzkI/SN7STwu4lzFwu3EsT+ojV/EaMritH4Ii5C6
   skip_symbols: true
   artifact: /.*\.nupkg/
   
