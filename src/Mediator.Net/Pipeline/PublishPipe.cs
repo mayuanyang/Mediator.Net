@@ -47,7 +47,7 @@ namespace Mediator.Net.Pipeline
             }
             catch (Exception e)
             {
-                _specification.OnException(e, context);
+                await _specification.OnException(e, context);
             }
             return null;
         }

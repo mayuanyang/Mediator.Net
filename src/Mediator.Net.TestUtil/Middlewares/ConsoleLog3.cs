@@ -51,7 +51,7 @@ namespace Mediator.Net.TestUtil.Middlewares
             return Task.FromResult(0);
         }
 
-        public void OnException(Exception ex, TContext context)
+        public Task OnException(Exception ex, TContext context)
         {
             throw ex;
         }
