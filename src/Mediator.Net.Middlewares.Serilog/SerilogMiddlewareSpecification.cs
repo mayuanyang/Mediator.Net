@@ -72,7 +72,7 @@ namespace Mediator.Net.Middlewares.Serilog
             return Task.WhenAll();
         }
 
-        public void OnException(Exception ex, TContext context)
+        public Task OnException(Exception ex, TContext context)
         {
             _logger.Error("Error has occured:", ex);
             throw ex;

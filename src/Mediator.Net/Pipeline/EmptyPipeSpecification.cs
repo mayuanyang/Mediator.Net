@@ -30,7 +30,7 @@ namespace Mediator.Net.Pipeline
         }
 
         
-        public void OnException(Exception ex, TContext context)
+        public Task OnException(Exception ex, TContext context)
         {
             throw ex;
         }

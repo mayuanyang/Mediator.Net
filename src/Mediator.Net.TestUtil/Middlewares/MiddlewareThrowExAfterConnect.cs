@@ -40,7 +40,7 @@ namespace Mediator.Net.TestUtil.Middlewares
             throw new Exception();
         }
 
-        public void OnException(Exception ex, TContext context)
+        public Task OnException(Exception ex, TContext context)
         {
             RubishBox.Rublish.Add(ex);
             throw ex;
