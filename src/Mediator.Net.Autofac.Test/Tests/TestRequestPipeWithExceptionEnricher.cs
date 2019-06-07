@@ -13,13 +13,13 @@ using Xunit;
 
 namespace Mediator.Net.Autofac.Test.Tests
 {
-    public class TestAllPipelines : TestBase
+    public class TestRequestPipeWithExceptionEnricherMiddleware : TestBase
     {
         private IContainer _container = null;
         private IMediator _mediator;
         private SimpleResponse _simpleResponse;
         
-        void GivenAMediatorBuildConnectsToAllPipelines()
+        void GivenAMediatorConnectsToPipelines()
         {
             base.ClearBinding();
             var mediaBuilder = new MediatorBuilder();
@@ -28,40 +28,26 @@ namespace Mediator.Net.Autofac.Test.Tests
                 {
                     global.UseSimpleMiddleware1();
                 })
-                .ConfigureCommandReceivePipe(x =>
+                .ConfigureRequestPipe(r =>
                 {
-                    x.UseSimpleMiddleware1();
-                })
-                .ConfigureEventReceivePipe(e =>
-                {
-                    e.UseSimpleMiddleware1();
-                })
-                .ConfigurePublishPipe(p =>
-                {
-                    p.UseSimpleMiddleware1();
-                }).ConfigureRequestPipe(r =>
-                {
-                    r.UseSimpleMiddleware1();
+                    r.UseEnrichResultOnException();
                 });
             var containerBuilder = new ContainerBuilder();
+            containerBuilder.RegisterMediator(mediaBuilder);
             containerBuilder.RegisterType<SimpleService>().AsSelf();
             containerBuilder.RegisterType<AnotherSimpleService>().AsSelf();
-            containerBuilder.RegisterMediator(mediaBuilder);
             _container = containerBuilder.Build();
         }
 
         async Task WhenAMessageIsSent()
         {
             _mediator = _container.Resolve<IMediator>();
-            await _mediator.SendAsync(new SimpleCommand(Guid.NewGuid()));
-            await _mediator.PublishAsync(new SimpleEvent(Guid.NewGuid()));
-            _simpleResponse = await _mediator.RequestAsync<SimpleRequest, SimpleResponse>(new SimpleRequest("Hello"));
+            _simpleResponse = await _mediator.RequestAsync<SimpleRequestWillThrow, SimpleResponse>(new SimpleRequestWillThrow("Hello"));
         }
 
         void ThenAllMiddlewaresInPipelinesShouldBeExecuted()
         {
-            RubishBin.Rublish.Count.ShouldBe(6);
-            _simpleResponse.EchoMessage.ShouldBe("Hello");
+            _simpleResponse.EchoMessage.ShouldBe("Error has occured");
         }
 
         [Fact]

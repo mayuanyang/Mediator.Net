@@ -35,7 +35,8 @@ namespace Mediator.Net.Pipeline
             }
             catch (Exception e)
             {
-                await _specification.OnException(e, context);
+                var task = _specification.OnException(e, context);
+                result = PipeHelper.GetResultFromTask(task);
             }
             return result;
         }
@@ -61,10 +62,11 @@ namespace Mediator.Net.Pipeline
             var task = (Task)handleMethod.Invoke(handler, new object[] { context, cancellationToken });
             await task.ConfigureAwait(false);
 
-            return task.GetType().GetTypeInfo().GetDeclaredProperty("Result").GetValue(task);
+            return PipeHelper.GetResultFromTask(task);
         }
 
 
         public IPipe<TContext> Next { get; }
+
     }
 }

@@ -41,7 +41,8 @@ namespace Mediator.Net.Pipeline
             }
             catch (Exception e)
             {
-                await _specification.OnException(e, context);
+                var task = _specification.OnException(e, context);
+                result = PipeHelper.GetResultFromTask(task);
             }
             return result;
         }
