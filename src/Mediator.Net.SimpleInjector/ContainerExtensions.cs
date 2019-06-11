@@ -14,13 +14,13 @@ namespace Mediator.Net.SimpleInjector
                 return mediatorBuilder.Build(resolver);
             }, Lifestyle.Scoped);
             
-            RegisterHandlers(container);
+            RegisterHandlers(container, mediatorBuilder);
            
         }
 
-        private static void RegisterHandlers(Container containerBuilder)
+        private static void RegisterHandlers(Container containerBuilder, MediatorBuilder builder)
         {
-            foreach (var binding in MessageHandlerRegistry.MessageBindings)
+            foreach (var binding in builder.MessageHandlerRegistry.MessageBindings)
             {
                 containerBuilder.Register(binding.HandlerType);
             }

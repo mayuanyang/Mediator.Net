@@ -16,7 +16,7 @@ namespace Mediator.Net.MicrosoftDependencyInjection
                 return mediatorBuilder.Build(dependencyScope);
             });
 
-            foreach (var binding in MessageHandlerRegistry.MessageBindings)
+            foreach (var binding in mediatorBuilder.MessageHandlerRegistry.MessageBindings)
             {
                 services.AddScoped(binding.HandlerType);
             }

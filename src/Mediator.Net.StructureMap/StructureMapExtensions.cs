@@ -13,7 +13,7 @@ namespace Mediator.Net.StructureMap
                 x.For<IDependencyScope>().Use(() => new StructureMapDependencyScope(container).BeginScope());
                 
                 x.For<IMediator>().Use(context => builder.Build(context.GetInstance<IDependencyScope>()));
-                foreach (var binding in MessageHandlerRegistry.MessageBindings)
+                foreach (var binding in builder.MessageHandlerRegistry.MessageBindings)
                 {
                     x.AddType(binding.HandlerType, binding.HandlerType);
                 }

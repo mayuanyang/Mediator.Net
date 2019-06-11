@@ -15,12 +15,14 @@ namespace Mediator.Net.Pipeline
     {
         private readonly IPipeSpecification<TContext> _specification;
         private readonly IDependencyScope _resolver;
+        private readonly MessageHandlerRegistry _messageHandlerRegistry;
 
-        public RequestPipe(IPipeSpecification<TContext> specification, IPipe<TContext> next, IDependencyScope resolver)
+        public RequestPipe(IPipeSpecification<TContext> specification, IPipe<TContext> next, IDependencyScope resolver, MessageHandlerRegistry messageHandlerRegistry)
         {
             Next = next;
             _specification = specification;
             _resolver = resolver;
+            _messageHandlerRegistry = messageHandlerRegistry;
         }
 
         public async Task<object> Connect(TContext context, CancellationToken cancellationToken)
@@ -43,7 +45,7 @@ namespace Mediator.Net.Pipeline
 
         private async Task<object> ConnectToHandler(TContext context, CancellationToken cancellationToken)
         {
-            var handlers = PipeHelper.GetHandlerBindings(context, true);
+            var handlers = PipeHelper.GetHandlerBindings(context, true, _messageHandlerRegistry);
 
             if (handlers.Count() > 1)
             {

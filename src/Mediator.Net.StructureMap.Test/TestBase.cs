@@ -5,10 +5,6 @@ namespace Mediator.Net.StructureMap.Test
 {
     [Collection("StructureMap test")]
     public class TestBase
-    {
-        public void ClearBinding()
-        {
-            MessageHandlerRegistry.MessageBindings.Clear();
-        }
+    { 
     }
 }
