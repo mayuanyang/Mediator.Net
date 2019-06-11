@@ -15,7 +15,6 @@ namespace Mediator.Net.StructureMap.Test.Tests
  
         void GivenAContainer()
         {
-            ClearBinding();
             var mediaBuilder = new MediatorBuilder();
             mediaBuilder.RegisterUnduplicatedHandlers()
                 .ConfigureCommandReceivePipe(x =>

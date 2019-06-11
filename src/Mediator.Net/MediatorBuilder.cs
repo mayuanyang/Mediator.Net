@@ -17,6 +17,13 @@ namespace Mediator.Net
         private Action<IEventReceivePipeConfigurator> _eventReceivePipeConfiguratorAction;
         private Action<IRequestPipeConfigurator<IReceiveContext<IRequest>>> _requestPipeConfiguratorAction;
         private Action<IPublishPipeConfigurator> _publishPipeConfiguratorAction;
+        public MessageHandlerRegistry MessageHandlerRegistry {get;}
+
+        public MediatorBuilder()
+        {
+            MessageHandlerRegistry = new MessageHandlerRegistry();
+        }
+
         public MediatorBuilder RegisterHandlers(params Assembly[] assemblies)
         {
             foreach (var assembly in assemblies)
@@ -101,16 +108,16 @@ namespace Mediator.Net
 
         private IMediator BuildMediator(IDependencyScope scope = null)
         {
-            var commandReceivePipeConfigurator = new CommandReceivePipeConfigurator(scope);
+            var commandReceivePipeConfigurator = new CommandReceivePipeConfigurator(MessageHandlerRegistry, scope);
             _commandReceivePipeConfiguratorAction?.Invoke(commandReceivePipeConfigurator);
             var commandReceivePipe = commandReceivePipeConfigurator.Build();
 
-            var eventReceivePipeConfigurator = new EventReceivePipeConfigurator(scope);
+            var eventReceivePipeConfigurator = new EventReceivePipeConfigurator(MessageHandlerRegistry, scope);
             _eventReceivePipeConfiguratorAction?.Invoke(eventReceivePipeConfigurator);
             var eventReceivePipe = eventReceivePipeConfigurator.Build();
 
 
-            var requestPipeConfigurator = new RequestPipeConfigurator(scope);
+            var requestPipeConfigurator = new RequestPipeConfigurator(MessageHandlerRegistry, scope);
             _requestPipeConfiguratorAction?.Invoke(requestPipeConfigurator);
             var requestPipe = requestPipeConfigurator.Build();
 

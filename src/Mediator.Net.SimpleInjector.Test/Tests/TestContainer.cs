@@ -19,7 +19,6 @@ namespace Mediator.Net.SimpleInjector.Test.Tests
  
         void GivenAContainer()
         {
-            ClearBinding();
             var mediaBuilder = new MediatorBuilder();
             mediaBuilder.RegisterUnduplicatedHandlers()
                 .ConfigureCommandReceivePipe(x =>

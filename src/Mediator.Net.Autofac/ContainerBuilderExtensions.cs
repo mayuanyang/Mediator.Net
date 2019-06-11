@@ -17,14 +17,14 @@ namespace Mediator.Net.Autofac
                 
             }).AsSelf().AsImplementedInterfaces().InstancePerLifetimeScope();
             
-            RegisterHandlers(containerBuilder);
+            RegisterHandlers(containerBuilder, mediatorBuilder);
             
             return containerBuilder;
         }
 
-        private static void RegisterHandlers(ContainerBuilder containerBuilder)
+        private static void RegisterHandlers(ContainerBuilder containerBuilder, MediatorBuilder builder)
         {
-            foreach (var binding in MessageHandlerRegistry.MessageBindings)
+            foreach (var binding in builder.MessageHandlerRegistry.MessageBindings)
             {
                 containerBuilder.RegisterType(binding.HandlerType).AsSelf();
             }

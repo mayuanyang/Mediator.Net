@@ -8,7 +8,7 @@ namespace Mediator.Net.Autofac.Test
     {
         public void ClearBinding()
         {
-            MessageHandlerRegistry.MessageBindings.Clear();
+            //MessageHandlerRegistry.MessageBindings.Clear();
         }
     }
 }
