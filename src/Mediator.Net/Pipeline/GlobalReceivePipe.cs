@@ -29,7 +29,7 @@ namespace Mediator.Net.Pipeline
                 await _specification.Execute(context, cancellationToken);
                 if (Next != null)
                 {
-                    await Next.Connect(context, cancellationToken);
+                    result = await Next.Connect(context, cancellationToken);
                 }
                 else
                 {
