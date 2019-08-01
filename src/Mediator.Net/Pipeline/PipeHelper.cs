@@ -30,7 +30,12 @@ namespace Mediator.Net.Pipeline
 
         public static object GetResultFromTask(Task task)
         {
-            return task.GetType().GetTypeInfo().GetDeclaredProperty("Result").GetValue(task);
+            if (!task.GetType().GetTypeInfo().IsGenericType)
+            {
+                throw new Exception("A task without a result is returned");
+            }
+            var result = task.GetType().GetRuntimeProperty("Result").GetMethod;
+            return result.Invoke(task, new object[] { });
         }
     }
 }
