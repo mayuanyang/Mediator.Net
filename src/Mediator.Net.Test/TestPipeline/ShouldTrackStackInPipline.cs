@@ -44,7 +44,7 @@ namespace Mediator.Net.Test.TestPipeline
             }
         }
 
-        void ExceptionShouldThroughValidation()
+        void ThenExceptionShouldThroughValidation()
         {
             _exception.ShouldNotBeNull();
             _exception.InnerException.StackTrace.ShouldContain(nameof(TrackStackTestCommandHandler));

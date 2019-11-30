@@ -34,7 +34,7 @@ namespace Mediator.Net.Pipeline
         public Task OnException(Exception ex, TContext context)
         {
             ExceptionDispatchInfo.Capture(ex).Throw();
-            return Task.WhenAll();
+            throw ex;
         }
     }
 }
