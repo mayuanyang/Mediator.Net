@@ -7,10 +7,10 @@ using Mediator.Net.TestUtil.TestUtils;
 
 namespace Mediator.Net.TestUtil.Handlers.CommandHandlers
 {
-    public abstract class InheritanceBaseCommandHandler : ICommandHandler<SimpleCommand>
+    public abstract class InheritanceBaseCommandHandler : ICommandHandler<InheritanceCommand>
     {
         public abstract Task DoWork(string thing);
-        public async Task Handle(IReceiveContext<SimpleCommand> context, CancellationToken cancellationToken)
+        public async Task Handle(IReceiveContext<InheritanceCommand> context, CancellationToken cancellationToken)
         {
             RubishBox.Rublish.Add(context.Message.Id);
 

@@ -27,11 +27,11 @@ namespace Mediator.Net.Test.TestInheritance
             var builder = new MediatorBuilder();
             _mediator = builder.RegisterHandlers(() =>
             {
-                var binding = new List<MessageBinding> { new MessageBinding(typeof(SimpleCommand), typeof(ChildCommandHandler)) };
+                var binding = new List<MessageBinding> { new MessageBinding(typeof(InheritanceCommand), typeof(ChildCommandHandler)) };
                 return binding;
             }).Build();
 
-            await _mediator.SendAsync(new SimpleCommand(_id));
+            await _mediator.SendAsync(new InheritanceCommand(_id));
 
             RubishBox.Rublish.Count.ShouldBe(2);
             RubishBox.Rublish[0].ShouldBe(_id);
