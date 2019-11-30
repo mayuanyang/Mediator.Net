@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Runtime.ExceptionServices;
 using System.Threading;
 using System.Threading.Tasks;
 using Mediator.Net.Context;
@@ -43,8 +44,9 @@ namespace Mediator.Net.Autofac.Test.Middlewares
             return Task.FromResult(0);
         }
 
-        public void OnException(Exception ex, TContext context)
+        public Task OnException(Exception ex, TContext context)
         {
+            ExceptionDispatchInfo.Capture(ex).Throw();
             throw ex;
         }
     }

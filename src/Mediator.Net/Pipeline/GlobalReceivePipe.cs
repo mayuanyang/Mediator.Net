@@ -29,7 +29,7 @@ namespace Mediator.Net.Pipeline
                 await _specification.Execute(context, cancellationToken);
                 if (Next != null)
                 {
-                    await Next.Connect(context, cancellationToken);
+                    result = await Next.Connect(context, cancellationToken);
                 }
                 else
                 {
@@ -41,37 +41,41 @@ namespace Mediator.Net.Pipeline
             }
             catch (Exception e)
             {
-                _specification.OnException(e, context);
+                var task = _specification.OnException(e, context);
+                result = PipeHelper.GetResultFromTask(task);
             }
             return result;
         }
 
         private async Task<object> ConnectToPipe(TContext context, CancellationToken cancellationToken)
         {
-            if (context.Message is ICommand)
+            switch (context.Message)
             {
-                if (context.TryGetService(out ICommandReceivePipe<IReceiveContext<ICommand>> commandPipe))
+                case ICommand _:
                 {
-                    await commandPipe.Connect((IReceiveContext<ICommand>)context, cancellationToken);
+                    if (context.TryGetService(out ICommandReceivePipe<IReceiveContext<ICommand>> commandPipe))
+                    {
+                        await commandPipe.Connect((IReceiveContext<ICommand>)context, cancellationToken);
+                    }
+
+                    break;
                 }
 
-            }
-            else if (context.Message is IEvent)
-            {
-                if (context.TryGetService(out IEventReceivePipe<IReceiveContext<IEvent>> eventPipe))
+                case IEvent _:
                 {
-                    await eventPipe.Connect((IReceiveContext<IEvent>)context, cancellationToken);
+                    if (context.TryGetService(out IEventReceivePipe<IReceiveContext<IEvent>> eventPipe))
+                    {
+                        await eventPipe.Connect((IReceiveContext<IEvent>)context, cancellationToken);
+                    }
+
+                    break;
                 }
-            }
-            else if (context.Message is IRequest)
-            {
-                if (context.TryGetService(out IRequestReceivePipe<IReceiveContext<IRequest>> requestPipe))
-                {
+
+                case IRequest _ when context.TryGetService(out IRequestReceivePipe<IReceiveContext<IRequest>> requestPipe):
                     return await requestPipe.Connect((IReceiveContext<IRequest>)context, cancellationToken);
-                }
             }
 
-            return Task.FromResult((object)null);
+            return (object)null;
         }
     }
 }

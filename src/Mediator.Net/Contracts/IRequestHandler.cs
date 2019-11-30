@@ -8,6 +8,6 @@ namespace Mediator.Net.Contracts
         where TRequest : class, IRequest
         where TResponse : class , IResponse
     {
-        Task<TResponse> Handle(ReceiveContext<TRequest> context, CancellationToken cancellationToken);
+        Task<TResponse> Handle(IReceiveContext<TRequest> context, CancellationToken cancellationToken);
     }
 }

@@ -17,6 +17,7 @@ namespace Mediator.Net.Autofac.Test.Tests
     {
         private IContainer _container = null;
         private IMediator _mediator;
+        private SimpleResponse _simpleResponse;
         
         void GivenAMediatorBuildConnectsToAllPipelines()
         {
@@ -54,12 +55,13 @@ namespace Mediator.Net.Autofac.Test.Tests
             _mediator = _container.Resolve<IMediator>();
             await _mediator.SendAsync(new SimpleCommand(Guid.NewGuid()));
             await _mediator.PublishAsync(new SimpleEvent(Guid.NewGuid()));
-            await _mediator.RequestAsync<SimpleRequest, SimpleResponse>(new SimpleRequest("Hello"));
+            _simpleResponse = await _mediator.RequestAsync<SimpleRequest, SimpleResponse>(new SimpleRequest("Hello"));
         }
 
         void ThenAllMiddlewaresInPipelinesShouldBeExecuted()
         {
             RubishBin.Rublish.Count.ShouldBe(6);
+            _simpleResponse.EchoMessage.ShouldBe("Hello");
         }
 
         [Fact]

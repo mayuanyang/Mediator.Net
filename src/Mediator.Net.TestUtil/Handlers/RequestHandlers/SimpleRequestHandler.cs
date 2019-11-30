@@ -15,9 +15,21 @@ namespace Mediator.Net.TestUtil.Handlers.RequestHandlers
         {
             _simpleService = simpleService;
         }
-        public Task<SimpleResponse> Handle(ReceiveContext<SimpleRequest> context, CancellationToken cancellationToken)
+
+        public Task<SimpleResponse> Handle(IReceiveContext<SimpleRequest> context, CancellationToken cancellationToken)
         {
             return Task.FromResult(new SimpleResponse(context.Message.Message));
+        }
+
+        
+    }
+
+    public class SimpleRequestWillThrowHandler : IRequestHandler<SimpleRequestWillThrow, SimpleResponse>
+    {
+        public Task<SimpleResponse> Handle(IReceiveContext<SimpleRequestWillThrow> context,
+            CancellationToken cancellationToken)
+        {
+            throw new System.NotImplementedException();
         }
     }
 }

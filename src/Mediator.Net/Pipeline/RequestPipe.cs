@@ -15,12 +15,14 @@ namespace Mediator.Net.Pipeline
     {
         private readonly IPipeSpecification<TContext> _specification;
         private readonly IDependencyScope _resolver;
+        private readonly MessageHandlerRegistry _messageHandlerRegistry;
 
-        public RequestPipe(IPipeSpecification<TContext> specification, IPipe<TContext> next, IDependencyScope resolver)
+        public RequestPipe(IPipeSpecification<TContext> specification, IPipe<TContext> next, IDependencyScope resolver, MessageHandlerRegistry messageHandlerRegistry)
         {
             Next = next;
             _specification = specification;
             _resolver = resolver;
+            _messageHandlerRegistry = messageHandlerRegistry;
         }
 
         public async Task<object> Connect(TContext context, CancellationToken cancellationToken)
@@ -35,14 +37,15 @@ namespace Mediator.Net.Pipeline
             }
             catch (Exception e)
             {
-                _specification.OnException(e, context);
+                var task = _specification.OnException(e, context);
+                result = PipeHelper.GetResultFromTask(task);
             }
             return result;
         }
 
         private async Task<object> ConnectToHandler(TContext context, CancellationToken cancellationToken)
         {
-            var handlers = PipeHelper.GetHandlerBindings(context, true);
+            var handlers = PipeHelper.GetHandlerBindings(context, true, _messageHandlerRegistry);
 
             if (handlers.Count() > 1)
             {
@@ -61,10 +64,11 @@ namespace Mediator.Net.Pipeline
             var task = (Task)handleMethod.Invoke(handler, new object[] { context, cancellationToken });
             await task.ConfigureAwait(false);
 
-            return task.GetType().GetTypeInfo().GetDeclaredProperty("Result").GetValue(task);
+            return PipeHelper.GetResultFromTask(task);
         }
 
 
         public IPipe<TContext> Next { get; }
+
     }
 }

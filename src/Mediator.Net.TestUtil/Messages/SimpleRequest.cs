@@ -11,4 +11,14 @@ namespace Mediator.Net.TestUtil.Messages
             Message = message;
         }
     }
+
+    public class SimpleRequestWillThrow : IRequest
+    {
+        public string Message { get; }
+
+        public SimpleRequestWillThrow(string message)
+        {
+            Message = message;
+        }
+    }
 }

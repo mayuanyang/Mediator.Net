@@ -9,18 +9,18 @@ using Mediator.Net.Pipeline;
 
 namespace Mediator.Net.Context
 {
-    public class ReceiveContext<TMessasge> : IReceiveContext<TMessasge>
-        where TMessasge : IMessage
+    public class ReceiveContext<TMessage> : IReceiveContext<TMessage>
+        where TMessage : IMessage
     {
 
         private readonly IList<object> _registeredServices;
         private Dictionary<string, object> _metaData;
-        public ReceiveContext(TMessasge message)
+        public ReceiveContext(TMessage message)
         {
             Message = message;
             _registeredServices = new List<object>();
         }
-        public TMessasge Message { get; }
+        public TMessage Message { get; }
         public void RegisterService<T>(T service)
         {
             _registeredServices.Add(service);

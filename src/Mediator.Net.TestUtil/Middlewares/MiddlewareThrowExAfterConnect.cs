@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Runtime.ExceptionServices;
 using System.Threading;
 using System.Threading.Tasks;
 using Mediator.Net.Context;
@@ -40,9 +41,10 @@ namespace Mediator.Net.TestUtil.Middlewares
             throw new Exception();
         }
 
-        public void OnException(Exception ex, TContext context)
+        public Task OnException(Exception ex, TContext context)
         {
             RubishBox.Rublish.Add(ex);
+            ExceptionDispatchInfo.Capture(ex).Throw();
             throw ex;
         }
     }

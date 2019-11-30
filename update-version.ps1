@@ -2,19 +2,19 @@ if ($env:APPVEYOR_REPO_BRANCH -eq "master")
 {
 	write-host "It is master branch, update the version as a actual release"
 	$ver = "$($env:APPVEYOR_BUILD_VERSION)"
-	$verForRelease = $ver.SubString(0,$ver.lastIndexOf("+"))
+	$verForRelease = $ver.SubString(0,$ver.lastIndexOf("-"))
 	$parts = $verForRelease.Split(".")
-	$lastPart = [int]$parts[2]
-	$lastPart = $lastPart + 1
-	$verForRelease = $verForRelease.SubString(0,$verForRelease.lastIndexOf(".")) 
-	$verForRelease = $verForRelease + "." + $lastPart
+	$major = $parts[0]
+	$minor = $parts[1]
+	$patch = $parts[2]
+	$verForRelease = $major + "." + $minor + "." + $patch
 	write-host "The version is now $verForRelease"
     Update-AppveyorBuild -Version "$verForRelease"
 }
 else
 {
 	write-host "non master branch"
-    Update-AppveyorBuild -Version "$($env:APPVEYOR_BUILD_VERSION)-$($env:APPVEYOR_REPO_BRANCH)"
+    Update-AppveyorBuild -Version "$($env:APPVEYOR_BUILD_VERSION)"
 }
 $configFiles = Get-ChildItem . *.csproj -rec
 $versionString = "<PackageVersion>" + $env:APPVEYOR_BUILD_VERSION + "</PackageVersion>"
