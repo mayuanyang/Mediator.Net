@@ -63,7 +63,7 @@ namespace Mediator.Net.Test.TestPipeline
             RubishBox.Rublish.Count(x => x.ToString() == nameof(ConsoleLog1.UseConsoleLogger1)).ShouldBe(2);
             RubishBox.Rublish.Contains(nameof(ConsoleLog2.UseConsoleLogger2)).ShouldBeTrue();
             RubishBox.Rublish.Contains(nameof(ConsoleLog3.UseConsoleLogger3)).ShouldBeTrue();
-            RubishBox.Rublish.Contains(nameof(TestBaseCommandHandler)).ShouldBeTrue();
+            RubishBox.Rublish.Contains(nameof(TestBaseCommandHandlerRaiseEvent)).ShouldBeTrue();
         }
 
     
