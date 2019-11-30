@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Runtime.ExceptionServices;
 using System.Threading;
 using System.Threading.Tasks;
 using Mediator.Net.Context;
@@ -32,6 +33,7 @@ namespace Mediator.Net.Pipeline
         
         public Task OnException(Exception ex, TContext context)
         {
+            ExceptionDispatchInfo.Capture(ex).Throw();
             throw ex;
         }
     }

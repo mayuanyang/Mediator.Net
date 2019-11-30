@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Runtime.ExceptionServices;
 using System.Threading;
 using System.Threading.Tasks;
 using Mediator.Net.Context;
@@ -75,6 +76,7 @@ namespace Mediator.Net.Middlewares.Serilog
         public Task OnException(Exception ex, TContext context)
         {
             _logger.Error(ex, "Error has occured: {@Exception}");
+            ExceptionDispatchInfo.Capture(ex).Throw();
             throw ex;
         }
     }
