@@ -75,7 +75,7 @@ namespace Mediator.Net.Middlewares.Serilog
 
         public Task OnException(Exception ex, TContext context)
         {
-            _logger.Error(ex, "Error has occured: {@Exception}");
+            _logger.Error(ex);
             ExceptionDispatchInfo.Capture(ex).Throw();
             throw ex;
         }
