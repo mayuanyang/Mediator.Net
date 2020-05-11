@@ -375,7 +375,8 @@ using (var scope = _container.BeginLifetimeScope())
 
 ## Middlewares
 One of the key feature for Mediator.Net is you can plug as many middlewares as you like, we have implemented some common one as below
-###Mediator.Net.Middlewares.UnitOfWork
+
+### Mediator.Net.Middlewares.UnitOfWork
 ```
 Install-Package Mediator.Net.Middlewares.UnitOfWork
 ```
