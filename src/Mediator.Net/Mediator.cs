@@ -36,33 +36,33 @@ namespace Mediator.Net
         public async Task SendAsync<TMessage>(TMessage cmd, CancellationToken cancellationToken = default(CancellationToken))
             where TMessage : ICommand
         {
-            await SendMessage(cmd, cancellationToken);
+            await SendMessage(cmd, cancellationToken).ConfigureAwait(false);
         }
 
         public async Task SendAsync<TMessage>(IReceiveContext<TMessage> receiveContext,
             CancellationToken cancellationToken = default(CancellationToken))
         where TMessage : ICommand
         {
-            await SendMessage(receiveContext, cancellationToken);
+            await SendMessage(receiveContext, cancellationToken).ConfigureAwait(false);
         }
 
         public async Task PublishAsync<TMessage>(TMessage evt, CancellationToken cancellationToken = default(CancellationToken))
             where TMessage : IEvent
         {
-            await SendMessage(evt, cancellationToken);
+            await SendMessage(evt, cancellationToken).ConfigureAwait(false);
         }
 
         public async Task PublishAsync<TMessage>(IReceiveContext<TMessage> receiveContext, CancellationToken cancellationToken = default(CancellationToken))
             where TMessage : IEvent
         {
-            await SendMessage(receiveContext, cancellationToken);
+            await SendMessage(receiveContext, cancellationToken).ConfigureAwait(false);
         }
 
         public async Task<TResponse> RequestAsync<TRequest, TResponse>(TRequest request, CancellationToken cancellationToken = default(CancellationToken))
             where TRequest : IRequest
             where TResponse : IResponse
         {
-            var result = await SendMessage(request, cancellationToken);
+            var result = await SendMessage(request, cancellationToken).ConfigureAwait(false);
             return (TResponse)result;
         }
 
@@ -70,7 +70,7 @@ namespace Mediator.Net
             where TRequest : IRequest
             where TResponse : IResponse
         {
-            var result = await SendMessage(receiveContext, cancellationToken);
+            var result = await SendMessage(receiveContext, cancellationToken).ConfigureAwait(false);
             return (TResponse)result;
         }
 

@@ -25,18 +25,18 @@ namespace Mediator.Net.Pipeline
             object result = null;
             try
             {
-                await _specification.BeforeExecute(context, cancellationToken);
-                await _specification.Execute(context, cancellationToken);
+                await _specification.BeforeExecute(context, cancellationToken).ConfigureAwait(false);
+                await _specification.Execute(context, cancellationToken).ConfigureAwait(false);
                 if (Next != null)
                 {
-                    result = await Next.Connect(context, cancellationToken);
+                    result = await Next.Connect(context, cancellationToken).ConfigureAwait(false);
                 }
                 else
                 {
-                    result = await ConnectToPipe(context, cancellationToken);
+                    result = await ConnectToPipe(context, cancellationToken).ConfigureAwait(false);
                 }
 
-                await _specification.AfterExecute(context, cancellationToken);
+                await _specification.AfterExecute(context, cancellationToken).ConfigureAwait(false);
                 return result;
             }
             catch (Exception e)
@@ -55,7 +55,7 @@ namespace Mediator.Net.Pipeline
                 {
                     if (context.TryGetService(out ICommandReceivePipe<IReceiveContext<ICommand>> commandPipe))
                     {
-                        await commandPipe.Connect((IReceiveContext<ICommand>)context, cancellationToken);
+                        await commandPipe.Connect((IReceiveContext<ICommand>)context, cancellationToken).ConfigureAwait(false);
                     }
 
                     break;
@@ -65,14 +65,14 @@ namespace Mediator.Net.Pipeline
                 {
                     if (context.TryGetService(out IEventReceivePipe<IReceiveContext<IEvent>> eventPipe))
                     {
-                        await eventPipe.Connect((IReceiveContext<IEvent>)context, cancellationToken);
+                        await eventPipe.Connect((IReceiveContext<IEvent>)context, cancellationToken).ConfigureAwait(false);
                     }
 
                     break;
                 }
 
                 case IRequest _ when context.TryGetService(out IRequestReceivePipe<IReceiveContext<IRequest>> requestPipe):
-                    return await requestPipe.Connect((IReceiveContext<IRequest>)context, cancellationToken);
+                    return await requestPipe.Connect((IReceiveContext<IRequest>)context, cancellationToken).ConfigureAwait(false);
             }
 
             return (object)null;
