@@ -30,14 +30,15 @@ namespace Mediator.Net.Pipeline
             object result = null;
             try
             {
-                await _specification.BeforeExecute(context, cancellationToken);
-                await _specification.Execute(context, cancellationToken);
-                result = await (Next?.Connect(context, cancellationToken) ?? ConnectToHandler(context, cancellationToken));
-                await _specification.AfterExecute(context, cancellationToken);
+                await _specification.BeforeExecute(context, cancellationToken).ConfigureAwait(false);
+                await _specification.Execute(context, cancellationToken).ConfigureAwait(false);
+                result = await (Next?.Connect(context, cancellationToken) ?? ConnectToHandler(context, cancellationToken)).ConfigureAwait(false);
+                await _specification.AfterExecute(context, cancellationToken).ConfigureAwait(false);
             }
             catch (Exception e)
             {
                 var task = _specification.OnException(e, context);
+                await task.ConfigureAwait(false);
                 result = PipeHelper.GetResultFromTask(task);
             }
             return result;

@@ -31,14 +31,14 @@ namespace Mediator.Net.Pipeline
         {
             try
             {
-                await _specification.BeforeExecute(context, cancellationToken);
-                await _specification.Execute(context, cancellationToken);
-                await (Next?.Connect(context, cancellationToken) ?? ConnectToHandler(context, cancellationToken));
-                await _specification.AfterExecute(context, cancellationToken);
+                await _specification.BeforeExecute(context, cancellationToken).ConfigureAwait(false);
+                await _specification.Execute(context, cancellationToken).ConfigureAwait(false);
+                await (Next?.Connect(context, cancellationToken) ?? ConnectToHandler(context, cancellationToken)).ConfigureAwait(false);
+                await _specification.AfterExecute(context, cancellationToken).ConfigureAwait(false);
             }
             catch (Exception e)
             {
-                await _specification.OnException(e, context);
+                await _specification.OnException(e, context).ConfigureAwait(false);
             }
             return null;
         }

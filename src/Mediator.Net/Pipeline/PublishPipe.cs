@@ -25,17 +25,17 @@ namespace Mediator.Net.Pipeline
         {
             try
             {
-                await _specification.BeforeExecute(context, cancellationToken);
-                await _specification.Execute(context, cancellationToken);
+                await _specification.BeforeExecute(context, cancellationToken).ConfigureAwait(false);
+                await _specification.Execute(context, cancellationToken).ConfigureAwait(false);
                 if (Next != null)
                 {
-                    await Next.Connect(context, cancellationToken);
+                    await Next.Connect(context, cancellationToken).ConfigureAwait(false);
                 }
                 else
                 {
                     if (context.TryGetService(out IMediator mediator))
                     {
-                        await mediator.PublishAsync(context.Message, cancellationToken);
+                        await mediator.PublishAsync(context.Message, cancellationToken).ConfigureAwait(false);
                     }
                     else
                     {
@@ -43,11 +43,11 @@ namespace Mediator.Net.Pipeline
                     }
                 }
 
-                await _specification.AfterExecute(context, cancellationToken);
+                await _specification.AfterExecute(context, cancellationToken).ConfigureAwait(false);
             }
             catch (Exception e)
             {
-                await _specification.OnException(e, context);
+                await _specification.OnException(e, context).ConfigureAwait(false);
             }
             return null;
         }
