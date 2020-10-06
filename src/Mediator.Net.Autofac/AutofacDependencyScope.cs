@@ -28,7 +28,7 @@ namespace Mediator.Net.Autofac
 
         public IDependencyScope BeginScope()
         {
-            return new AutofacDependencyScope(_scope.BeginLifetimeScope("Mediator.Net"));
+            return new AutofacDependencyScope(_scope.BeginLifetimeScope());
         }
     }
 }
