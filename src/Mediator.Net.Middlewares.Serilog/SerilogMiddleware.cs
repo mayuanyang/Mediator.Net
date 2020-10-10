@@ -9,7 +9,11 @@ namespace Mediator.Net.Middlewares.Serilog
 {
     public static class SerilogMiddleware
     {
-        public static void UseSerilog<TContext>(this IPipeConfigurator<TContext> configurator, LogEventLevel logAsLevel = LogEventLevel.Information, ILogger logger = null, Func<bool> shouldExecute = null )
+        public static void UseSerilog<TContext>(
+            this IPipeConfigurator<TContext> configurator, 
+            LogEventLevel logAsLevel = LogEventLevel.Information, 
+            ILogger logger = null, 
+            Func<TContext, bool> shouldExecute = null )
             where TContext : IContext<IMessage>
         {
             if (logger == null && configurator.DependencyScope == null)
