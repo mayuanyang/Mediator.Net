@@ -12,7 +12,7 @@ namespace Mediator.Net.Autofac
             containerBuilder.RegisterType<AutofacDependencyScope>().AsImplementedInterfaces();
             containerBuilder.Register(x =>
             {
-                var resolver = x.Resolve<IDependencyScope>().BeginScope();
+                var resolver = x.Resolve<IDependencyScope>();
                 return mediatorBuilder.Build(resolver);
                 
             }).AsSelf().AsImplementedInterfaces().InstancePerLifetimeScope();
