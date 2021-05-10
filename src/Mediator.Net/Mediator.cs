@@ -39,6 +39,12 @@ namespace Mediator.Net
             await SendMessage(cmd, cancellationToken).ConfigureAwait(false);
         }
 
+        public async Task<TResponse> SendAsync<TMessage, TResponse>(TMessage cmd, CancellationToken cancellationToken = default(CancellationToken)) where TMessage : ICommand where TResponse : IResponse
+        {
+            var result = await SendMessage(cmd, cancellationToken).ConfigureAwait(false);
+            return (TResponse)result;
+        }
+
         public async Task SendAsync<TMessage>(IReceiveContext<TMessage> receiveContext,
             CancellationToken cancellationToken = default(CancellationToken))
         where TMessage : ICommand

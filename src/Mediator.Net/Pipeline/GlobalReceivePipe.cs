@@ -55,7 +55,7 @@ namespace Mediator.Net.Pipeline
                 {
                     if (context.TryGetService(out ICommandReceivePipe<IReceiveContext<ICommand>> commandPipe))
                     {
-                        await commandPipe.Connect((IReceiveContext<ICommand>)context, cancellationToken).ConfigureAwait(false);
+                        return await commandPipe.Connect((IReceiveContext<ICommand>)context, cancellationToken).ConfigureAwait(false);
                     }
 
                     break;

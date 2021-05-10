@@ -29,42 +29,45 @@ namespace Mediator.Net.Pipeline
 
         public async Task<object> Connect(TContext context, CancellationToken cancellationToken)
         {
+            object result = null;
             try
             {
                 await _specification.BeforeExecute(context, cancellationToken).ConfigureAwait(false);
                 await _specification.Execute(context, cancellationToken).ConfigureAwait(false);
-                await (Next?.Connect(context, cancellationToken) ?? ConnectToHandler(context, cancellationToken)).ConfigureAwait(false);
+                result = await (Next?.Connect(context, cancellationToken) ?? ConnectToHandler(context, cancellationToken)).ConfigureAwait(false);
                 await _specification.AfterExecute(context, cancellationToken).ConfigureAwait(false);
             }
             catch (Exception e)
             {
                 await _specification.OnException(e, context).ConfigureAwait(false);
             }
-            return null;
+            return result;
         }
 
         public IPipe<TContext> Next { get; }
 
-        private async Task ConnectToHandler(TContext context, CancellationToken cancellationToken)
+        private async Task<object> ConnectToHandler(TContext context, CancellationToken cancellationToken)
         {
-            var handlerBindings = PipeHelper.GetHandlerBindings(context, true, _messageHandlerRegistry);
+            var handlers = PipeHelper.GetHandlerBindings(context, true, _messageHandlerRegistry);
 
-            if (handlerBindings.Count() > 1)
+            if (handlers.Count() > 1)
             {
                 throw new MoreThanOneHandlerException(context.Message.GetType());
             }
 
-            var handlerBinging = handlerBindings.Single();
-            var handlerType = handlerBinging.HandlerType;
+            var binding = handlers.Single();
+
+            var handlerType = binding.HandlerType;
             var messageType = context.Message.GetType();
 
-            var handleMethod = handlerType.GetRuntimeMethods()
-                .Single(m => PipeHelper.IsHandleMethod(m, messageType));
+            var handleMethod = handlerType.GetRuntimeMethods().Single(m => PipeHelper.IsHandleMethod(m, messageType));
 
             var handler = (_resolver == null) ? Activator.CreateInstance(handlerType) : _resolver.Resolve(handlerType);
+
             var task = (Task)handleMethod.Invoke(handler, new object[] { context, cancellationToken });
             await task.ConfigureAwait(false);
 
+            return PipeHelper.GetResultFromTask(task);
         }
     }
 }
