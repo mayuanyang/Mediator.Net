@@ -43,5 +43,7 @@ namespace Mediator.Net.Context
                 return _metaData;
             }
         }
+
+        public IResponse Result { get; set; }
     }
 }

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using System.Reflection;
+using System.Runtime.ExceptionServices;
 using System.Threading;
 using System.Threading.Tasks;
 using Mediator.Net.Binding;
@@ -34,14 +35,23 @@ namespace Mediator.Net.Pipeline
             {
                 await _specification.BeforeExecute(context, cancellationToken).ConfigureAwait(false);
                 await _specification.Execute(context, cancellationToken).ConfigureAwait(false);
-                result = await (Next?.Connect(context, cancellationToken) ?? ConnectToHandler(context, cancellationToken)).ConfigureAwait(false);
+                result = await (Next?.Connect(context, cancellationToken) ??
+                                    ConnectToHandler(context, cancellationToken)).ConfigureAwait(false);
+
+                context.Result = result as IResponse;
                 await _specification.AfterExecute(context, cancellationToken).ConfigureAwait(false);
+                
+            }
+            catch (TargetInvocationException e)
+            {
+                await _specification.OnException(e.InnerException, context).ConfigureAwait(false);
             }
             catch (Exception e)
             {
                 await _specification.OnException(e, context).ConfigureAwait(false);
             }
-            return result;
+
+            return context.Result ?? result;
         }
 
         public IPipe<TContext> Next { get; }

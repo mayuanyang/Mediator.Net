@@ -88,7 +88,10 @@ namespace Mediator.Net
             RegisterServiceIfRequired(receiveContext);
 
             var task = _globalPipe.Connect((IReceiveContext<IMessage>) receiveContext, cancellationToken);
-            return await task.ConfigureAwait(false);
+            
+            var result = await task.ConfigureAwait(false);
+
+            return receiveContext.Result ?? result;
         }
 
         private async Task<object> SendMessage<TMessage>(IReceiveContext<TMessage> customReceiveContext, CancellationToken cancellationToken)

@@ -32,8 +32,15 @@ namespace Mediator.Net.Pipeline
             {
                 await _specification.BeforeExecute(context, cancellationToken).ConfigureAwait(false);
                 await _specification.Execute(context, cancellationToken).ConfigureAwait(false);
-                result = await (Next?.Connect(context, cancellationToken) ?? ConnectToHandler(context, cancellationToken)).ConfigureAwait(false);
+                result = await (Next?.Connect(context, cancellationToken) ??
+                                ConnectToHandler(context, cancellationToken)).ConfigureAwait(false);
                 await _specification.AfterExecute(context, cancellationToken).ConfigureAwait(false);
+            }
+            catch (TargetInvocationException e)
+            {
+                var task = _specification.OnException(e.InnerException, context);
+                await task.ConfigureAwait(false);
+                result = PipeHelper.GetResultFromTask(task);
             }
             catch (Exception e)
             {
@@ -41,7 +48,7 @@ namespace Mediator.Net.Pipeline
                 await task.ConfigureAwait(false);
                 result = PipeHelper.GetResultFromTask(task);
             }
-            return result;
+            return context.Result ?? result;
         }
 
         private async Task<object> ConnectToHandler(TContext context, CancellationToken cancellationToken)

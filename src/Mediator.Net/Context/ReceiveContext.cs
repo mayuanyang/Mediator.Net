@@ -48,6 +48,8 @@ namespace Mediator.Net.Context
             }
         }
 
+        public IResponse Result { get; set; }
+
         public async Task PublishAsync(IEvent msg, CancellationToken cancellationToken = default(CancellationToken))
         {
             if (TryGetService(out IMediator mediator))

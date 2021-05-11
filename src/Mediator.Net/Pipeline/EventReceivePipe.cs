@@ -31,12 +31,18 @@ namespace Mediator.Net.Pipeline
 
         public async Task<object> Connect(TContext context, CancellationToken cancellationToken)
         {
+            object result = null;
             try
             {
                 await _specification.BeforeExecute(context, cancellationToken).ConfigureAwait(false);
                 await _specification.Execute(context, cancellationToken).ConfigureAwait(false);
-                await (Next?.Connect(context, cancellationToken) ?? ConnectToHandler(context, cancellationToken)).ConfigureAwait(false);
+                await (Next?.Connect(context, cancellationToken) ?? ConnectToHandler(context, cancellationToken))
+                    .ConfigureAwait(false);
                 await _specification.AfterExecute(context, cancellationToken).ConfigureAwait(false);
+            }
+            catch (TargetInvocationException e)
+            {
+                await _specification.OnException(e.InnerException, context).ConfigureAwait(false);
             }
             catch (Exception e)
             {
