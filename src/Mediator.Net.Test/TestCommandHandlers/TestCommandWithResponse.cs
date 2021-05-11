@@ -43,22 +43,6 @@ namespace Mediator.Net.Test.TestCommandHandlers
             response.Error.Message.ShouldBe("An error has occured");
         }
         
-        [Theory]
-        [InlineData("RequestPipe")]
-        [InlineData("GlobalPipe")]
-        public async Task TestRequestWithUnifiedResult(string whichPipe)
-        {
-            var builder = SetupMediatorBuilderWithMiddleware(whichPipe);
-            var mediator = SetupCommandMediatorWithUnifiedResultMiddleware(builder);
-            var response = await 
-                mediator.SendAsync<TestCommandWithResponse, UnifiedResponse>(
-                    new TestCommandWithResponse());
-            
-            response.Result.ShouldBeNull();
-            response.Error.Code.ShouldBe(12345);
-            response.Error.Message.ShouldBe("An error has occured");
-        }
-
         MediatorBuilder SetupMediatorBuilderWithMiddleware(string whichPipe)
         {
             var builder = new MediatorBuilder();
