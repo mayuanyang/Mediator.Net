@@ -1,4 +1,6 @@
 using System.Collections.Generic;
+using System.Linq;
+using System.Reflection;
 using System.Threading.Tasks;
 using Mediator.Net.Binding;
 using Mediator.Net.TestUtil.Handlers.CommandHandlers;
@@ -20,6 +22,17 @@ namespace Mediator.Net.Test.TestCommandHandlers
         public async Task CommandCanHaveResponse()
         {
             var mediator = SetupCommandMediatorWithExplicitBindings();
+            var response = await 
+                mediator.SendAsync<TestCommandWithResponse, TestCommandResponse>(
+                    new TestCommandWithResponse());
+            
+            response.Thing.ShouldBe("Hello world");
+        }
+
+        [Fact]
+        public async Task TestCommandWithResponseRegistration()
+        {
+            var mediator = SetupCommandMediatorWithScan();
             var response = await 
                 mediator.SendAsync<TestCommandWithResponse, TestCommandResponse>(
                     new TestCommandWithResponse());
@@ -86,6 +99,14 @@ namespace Mediator.Net.Test.TestCommandHandlers
                 };
                 return binding;
             }).Build();
+        }
+
+        IMediator SetupCommandMediatorWithScan()
+        {
+            var builder = new MediatorBuilder();
+            return builder
+                .RegisterHandlers(assembly => assembly.DefinedTypes.Where(t => t.Name == nameof(TestCommandWithResponseHandler)),
+                    typeof(TestCommandWithResponse).GetTypeInfo().Assembly).Build();
         }
     }
 }

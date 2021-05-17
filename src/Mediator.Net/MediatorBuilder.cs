@@ -149,13 +149,17 @@ namespace Mediator.Net
         private void ScanRegistration(IEnumerable<TypeInfo> typeInfos)
         {
             var handlers = typeInfos.Where(x => !x.IsAbstract && (IsAssignableToGenericType(x.AsType(), typeof(ICommandHandler<>)) ||
-                                                       IsAssignableToGenericType(x.AsType(), typeof(IEventHandler<>)) ||
-                                                       IsAssignableToGenericType(x.AsType(), typeof(IRequestHandler<,>)))).ToList();
+                                                                  IsAssignableToGenericType(x.AsType(), typeof(ICommandHandler<,>)) ||
+                                                                  IsAssignableToGenericType(x.AsType(), typeof(IEventHandler<>)) ||
+                                                                  IsAssignableToGenericType(x.AsType(), typeof(IRequestHandler<,>)))).ToList();
             foreach (var handler in handlers)
             {
                 foreach (var implementedInterface in handler.ImplementedInterfaces)
                 {
-                    if (IsAssignableToGenericType(implementedInterface, typeof(ICommandHandler<>)) || IsAssignableToGenericType(implementedInterface, typeof(IEventHandler<>)) || IsAssignableToGenericType(implementedInterface, typeof(IRequestHandler<,>)))
+                    if (IsAssignableToGenericType(implementedInterface, typeof(ICommandHandler<>)) || 
+                        IsAssignableToGenericType(implementedInterface, typeof(ICommandHandler<,>)) || 
+                        IsAssignableToGenericType(implementedInterface, typeof(IEventHandler<>)) || 
+                        IsAssignableToGenericType(implementedInterface, typeof(IRequestHandler<,>)))
                     {
                         MessageHandlerRegistry.MessageBindings.Add(new MessageBinding(implementedInterface.GenericTypeArguments[0], handler.AsType()));
                     } 
