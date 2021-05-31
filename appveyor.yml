@@ -1,33 +1,32 @@
 image: Visual Studio 2019
 configuration: Release
 before_build:
-- cmd: Nuget restore
-- ps: ./update-version.ps1
+  - cmd: Nuget restore
+  - ps: ./update-version.ps1
 build:
   project: Mediator.Net.sln
   verbosity: minimal
 
 after_build:
-- dotnet pack "src\Mediator.Net" -c %CONFIGURATION% --no-build -o artifacts
-- dotnet pack "src\Mediator.Net.Autofac" -c %CONFIGURATION% --no-build -o artifacts
-- dotnet pack "src\Mediator.Net.StructureMap" -c %CONFIGURATION% --no-build -o artifacts
-- dotnet pack "src\Mediator.Net.Ninject" -c %CONFIGURATION% --no-build -o artifacts
-- dotnet pack "src\Mediator.Net.SimpleInjector" -c %CONFIGURATION% --no-build -o artifacts
-- dotnet pack "src\Mediator.Net.Middlewares.Serilog" -c %CONFIGURATION% --no-build -o artifacts
-- dotnet pack "src\Mediator.Net.TestUtil" -c %CONFIGURATION% --no-build -o artifacts
-- dotnet pack "src\Mediator.Net.MicrosoftDependencyInjection" -c %CONFIGURATION% --no-build -o artifacts
+  - dotnet pack "src\Mediator.Net" -c %CONFIGURATION% --no-build -o artifacts
+  - dotnet pack "src\Mediator.Net.Autofac" -c %CONFIGURATION% --no-build -o artifacts
+  - dotnet pack "src\Mediator.Net.StructureMap" -c %CONFIGURATION% --no-build -o artifacts
+  - dotnet pack "src\Mediator.Net.Ninject" -c %CONFIGURATION% --no-build -o artifacts
+  - dotnet pack "src\Mediator.Net.SimpleInjector" -c %CONFIGURATION% --no-build -o artifacts
+  - dotnet pack "src\Mediator.Net.Middlewares.Serilog" -c %CONFIGURATION% --no-build -o artifacts
+  - dotnet pack "src\Mediator.Net.TestUtil" -c %CONFIGURATION% --no-build -o artifacts
+  - dotnet pack "src\Mediator.Net.MicrosoftDependencyInjection" -c %CONFIGURATION% --no-build -o artifacts
 
 test_script:
-- dotnet test src\Mediator.Net.Test\Mediator.Net.Test.csproj -c %CONFIGURATION%
-- dotnet test "src\Mediator.Net.Autofac.Test\Mediator.Net.Autofac.Test.csproj" -c %CONFIGURATION%
-- dotnet test "src\Mediator.Net.StructureMap.Test\Mediator.Net.StructureMap.Test.csproj" -c %CONFIGURATION%
-- dotnet test "src\Mediator.Net.SimpleInjector.Test\Mediator.Net.SimpleInjector.Test.csproj" -c %CONFIGURATION%
-- dotnet test "src\Mediator.Net.MicrosoftDependencyInjection.Test\Mediator.Net.MicrosoftDependencyInjection.Test.csproj" -c %CONFIGURATION%
-- dotnet test "src\Mediator.Net.WebApiSample.Test\Mediator.Net.WebApiSample.Test.csproj" -c %CONFIGURATION%
+  - dotnet test src\Mediator.Net.Test\Mediator.Net.Test.csproj -c %CONFIGURATION%
+  - dotnet test "src\Mediator.Net.Autofac.Test\Mediator.Net.Autofac.Test.csproj" -c %CONFIGURATION%
+  - dotnet test "src\Mediator.Net.StructureMap.Test\Mediator.Net.StructureMap.Test.csproj" -c %CONFIGURATION%
+  - dotnet test "src\Mediator.Net.SimpleInjector.Test\Mediator.Net.SimpleInjector.Test.csproj" -c %CONFIGURATION%
+  - dotnet test "src\Mediator.Net.MicrosoftDependencyInjection.Test\Mediator.Net.MicrosoftDependencyInjection.Test.csproj" -c %CONFIGURATION%
 
 artifacts:
-- path: \**\artifacts\**\*.*
-  
+  - path: \**\artifacts\**\*.*
+
 cache:
-- '%USERPROFILE%\.nuget\packages'
+  - '%USERPROFILE%\.nuget\packages'
 on_finish: # Done
