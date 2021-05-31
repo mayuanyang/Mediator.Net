@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFrameworks>netcoreapp1.1;netcoreapp2.0;net452;net46</TargetFrameworks>
+    <TargetFrameworks>netcoreapp2.0;netcoreapp3.1</TargetFrameworks>
     <AssemblyName>Mediator.Net.StructureMap.Test</AssemblyName>
     <PackageId>Mediator.Net.StructureMap.Test</PackageId>
     <GenerateRuntimeConfigurationFiles>true</GenerateRuntimeConfigurationFiles>
@@ -14,10 +14,7 @@
     <GenerateAssemblyVersionAttribute>false</GenerateAssemblyVersionAttribute>
     <GenerateAssemblyFileVersionAttribute>false</GenerateAssemblyFileVersionAttribute>
   </PropertyGroup>
-
-  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|netcoreapp2.0|AnyCPU'">
-    <LangVersion>latest</LangVersion>
-  </PropertyGroup>
+  
   <PropertyGroup>
     <IsTestProject>true</IsTestProject>
   </PropertyGroup>

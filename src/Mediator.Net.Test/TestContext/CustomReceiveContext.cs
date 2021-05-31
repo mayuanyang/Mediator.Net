@@ -49,6 +49,7 @@ namespace Mediator.Net.Test.TestContext
         }
 
         public object Result { get; set; }
+        public Type[] ResultGenericArguments { get; set; }
 
         public async Task PublishAsync(IEvent msg, CancellationToken cancellationToken = default(CancellationToken))
         {

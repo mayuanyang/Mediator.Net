@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFrameworks>netcoreapp1.1;netcoreapp2.0</TargetFrameworks>
+    <TargetFrameworks>netcoreapp2.0;netcoreapp3.1</TargetFrameworks>
     <AssemblyName>Mediator.Net.Autofac.Test</AssemblyName>
     <PackageId>Mediator.Net.Autofac.Test</PackageId>
     <GenerateRuntimeConfigurationFiles>true</GenerateRuntimeConfigurationFiles>
@@ -18,11 +18,7 @@
     <StartupObject />
   </PropertyGroup>
 
-  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|netcoreapp2.0|AnyCPU'">
-    <LangVersion>latest</LangVersion>
-  </PropertyGroup>
-
-  <ItemGroup>
+    <ItemGroup>
     <ProjectReference Include="..\Mediator.Net.TestUtil\Mediator.Net.TestUtil.csproj" />
     <ProjectReference Include="..\Mediator.Net\Mediator.Net.csproj" />
     <ProjectReference Include="..\Mediator.Net.Autofac\Mediator.Net.Autofac.csproj" />

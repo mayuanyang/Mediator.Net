@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Reflection;
 using System.Runtime.ExceptionServices;
 using System.Threading;
@@ -14,6 +15,12 @@ namespace Mediator.Net.TestUtil.Middlewares
     public class UnifiedResponse: IResponse
     {
         public object Result { get; set; }
+        public Error Error { get; set; }
+    }
+    
+    public class GenericUnifiedResponse<T>: IResponse
+    {
+        public T Result { get; set; }
         public Error Error { get; set; }
     }
 
@@ -78,8 +85,12 @@ namespace Mediator.Net.TestUtil.Middlewares
             }
             
             var businessException = ex as BusinessException;
-            var unifiedTypeInstance = (UnifiedResponse)Activator.CreateInstance(_unifiedType);
-            unifiedTypeInstance.Result = context.Result;
+            
+            var tArgs = context.ResultGenericArguments;
+            var targetType = tArgs != null && tArgs.Any() ? _unifiedType.MakeGenericType(tArgs) : _unifiedType;
+            
+            var unifiedTypeInstance = Activator.CreateInstance(targetType) as dynamic;
+            
             unifiedTypeInstance.Error = new Error()
             {
                 Code = businessException.Code,

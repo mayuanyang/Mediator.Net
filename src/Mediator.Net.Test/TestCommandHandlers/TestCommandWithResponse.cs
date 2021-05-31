@@ -56,6 +56,20 @@ namespace Mediator.Net.Test.TestCommandHandlers
             response.Error.Message.ShouldBe("An error has occured");
         }
         
+        [Fact]
+        public async Task TestCommandWithGenericUnifiedResult()
+        {
+            var builder = SetupMediatorBuilderWithMiddleware("GenericCommandPipe");
+            var mediator = SetupCommandMediatorWithUnifiedResultMiddleware(builder);
+            var response = await 
+                mediator.SendAsync<TestCommandWithResponse, GenericUnifiedResponse<string>>(
+                    new TestCommandWithResponse());
+            
+            response.Result.ShouldBeNull();
+            response.Error.Code.ShouldBe(12345);
+            response.Error.Message.ShouldBe("An error has occured");
+        }
+        
         MediatorBuilder SetupMediatorBuilderWithMiddleware(string whichPipe)
         {
             var builder = new MediatorBuilder();
@@ -69,6 +83,9 @@ namespace Mediator.Net.Test.TestCommandHandlers
                     break;
                 case "GlobalPipe":
                     builder.ConfigureGlobalReceivePipe(config => config.UseUnifyResultMiddleware(typeof(UnifiedResponse)));
+                    break;
+                case "GenericCommandPipe":
+                    builder.ConfigureCommandReceivePipe(config => config.UseUnifyResultMiddleware(typeof(GenericUnifiedResponse<>)));
                     break;
             }
 

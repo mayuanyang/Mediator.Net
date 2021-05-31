@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <PackageVersion>1.0.0</PackageVersion>
-    <TargetFrameworks>netcoreapp1.1;netcoreapp2.0;net45;net46</TargetFrameworks>
+    <TargetFrameworks>netstandard2.0;netstandard2.1</TargetFrameworks>
     <AssemblyName>Mediator.Net.IoCTestUtil</AssemblyName>
     <PackageId>Mediator.Net.IoCTestUtil</PackageId>
     <GenerateAssemblyTitleAttribute>false</GenerateAssemblyTitleAttribute>
@@ -15,11 +15,7 @@
     <GenerateAssemblyFileVersionAttribute>false</GenerateAssemblyFileVersionAttribute>
   </PropertyGroup>
 
-  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net45|AnyCPU'">
-    <LangVersion>latest</LangVersion>
-  </PropertyGroup>
-
-  <ItemGroup>
+    <ItemGroup>
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="15.7.2" />
     <PackageReference Include="Serilog.Sinks.Console" Version="3.1.1" />
     <PackageReference Include="Shouldly" Version="3.0.0" />
@@ -32,10 +28,5 @@
   <ItemGroup>
     <ProjectReference Include="..\Mediator.Net\Mediator.Net.csproj" />
   </ItemGroup>
-
-  <ItemGroup Condition=" '$(TargetFramework)' == 'net45' ">
-    <Reference Include="System" />
-    <Reference Include="Microsoft.CSharp" />
-  </ItemGroup>
-
+  
 </Project>

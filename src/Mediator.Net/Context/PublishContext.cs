@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.Linq;
@@ -45,5 +46,6 @@ namespace Mediator.Net.Context
         }
 
         public object Result { get; set; }
+        public Type[] ResultGenericArguments { get; set; }
     }
 }
