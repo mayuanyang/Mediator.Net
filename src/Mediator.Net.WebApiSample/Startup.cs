@@ -7,6 +7,7 @@ using Mediator.Net.WebApiSample.Handlers.CommandHandler;
 using Mediator.Net.WebApiSample.Handlers.EventHandler;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -25,7 +26,7 @@ namespace Mediator.Net.WebApiSample
         public void ConfigureServices(IServiceCollection services)
         {
             ConfigureMediator(services);
-            services.AddMvc();
+            services.AddMvc(options => options.EnableEndpointRouting = false);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
