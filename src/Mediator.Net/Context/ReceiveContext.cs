@@ -48,7 +48,7 @@ namespace Mediator.Net.Context
             }
         }
 
-        public IResponse Result { get; set; }
+        public object Result { get; set; }
 
         public async Task PublishAsync(IEvent msg, CancellationToken cancellationToken = default(CancellationToken))
         {

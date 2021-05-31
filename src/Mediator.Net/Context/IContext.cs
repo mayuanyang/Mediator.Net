@@ -11,7 +11,7 @@ namespace Mediator.Net.Context
         void RegisterService<T>(T service);
         bool TryGetService<T>(out T service);
         Dictionary<string, object> MetaData { get; }
-        IResponse Result { get; set; }
+        object Result { get; set; }
         
     }
 }

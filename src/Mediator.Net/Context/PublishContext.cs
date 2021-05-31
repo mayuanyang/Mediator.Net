@@ -44,6 +44,6 @@ namespace Mediator.Net.Context
             }
         }
 
-        public IResponse Result { get; set; }
+        public object Result { get; set; }
     }
 }
