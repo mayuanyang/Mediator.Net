@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Linq;
-using System.Reflection;
 using System.Runtime.ExceptionServices;
 using System.Threading;
 using System.Threading.Tasks;
@@ -8,17 +6,16 @@ using Mediator.Net.Context;
 using Mediator.Net.Contracts;
 using Mediator.Net.Pipeline;
 using Mediator.Net.TestUtil.Services;
-using Xunit.Sdk;
 
 namespace Mediator.Net.TestUtil.Middlewares
 {
-    public class UnifiedResponse: IResponse
+    public class UnifiedResponse : IResponse
     {
         public object Result { get; set; }
         public Error Error { get; set; }
     }
-    
-    public class GenericUnifiedResponse<T>: IResponse
+
+    public class GenericUnifiedResponse<T> : IResponse
     {
         public T Result { get; set; }
         public Error Error { get; set; }
@@ -29,10 +26,11 @@ namespace Mediator.Net.TestUtil.Middlewares
         public int Code { get; set; }
         public string Message { get; set; }
     }
-    
+
     public static class UnifyResultMiddleware
     {
-        public static void UseUnifyResultMiddleware<TContext>(this IPipeConfigurator<TContext> configurator, Type unifiedType)  
+        public static void UseUnifyResultMiddleware<TContext>(this IPipeConfigurator<TContext> configurator,
+            Type unifiedType)
             where TContext : IContext<IMessage>
         {
             configurator.AddPipeSpecification(new UnifyResultMiddlewareSpecification<TContext>(unifiedType));
@@ -66,6 +64,7 @@ namespace Mediator.Net.TestUtil.Middlewares
                 Console.WriteLine($"Before 1: {context.Message}");
                 context.RegisterService(new DummyTransaction());
             }
+
             return Task.FromResult(0);
         }
 
@@ -74,34 +73,39 @@ namespace Mediator.Net.TestUtil.Middlewares
             return Task.FromResult(0);
         }
 
-        
+
         public Task OnException(Exception ex, TContext context)
         {
-            
-            if (_unifiedType == null || ex.GetType() != typeof(BusinessException))
+            if (_unifiedType == null || ex.GetType() != typeof(BusinessException) || context.Message is IEvent)
             {
                 ExceptionDispatchInfo.Capture(ex).Throw();
-                throw ex;   
+                throw ex;
             }
-            
+
+
             var businessException = ex as BusinessException;
-            
-            var tArgs = context.ResultGenericArguments;
-            var targetType = tArgs != null && tArgs.Any() ? _unifiedType.MakeGenericType(tArgs) : _unifiedType;
-            
+
+            var targetType = context.ResultDataType != null && context.ResultDataType.IsGenericType
+                ?
+                _unifiedType.MakeGenericType(context.ResultDataType.GenericTypeArguments)
+                : _unifiedType.IsGenericType
+                    ? _unifiedType.MakeGenericType(_unifiedType.GenericTypeArguments)
+                    : _unifiedType;
+
             var unifiedTypeInstance = Activator.CreateInstance(targetType) as dynamic;
-            
+
             unifiedTypeInstance.Error = new Error()
             {
                 Code = businessException.Code,
                 Message = businessException.Error
             };
             context.Result = unifiedTypeInstance;
+
             return Task.FromResult(0);
         }
     }
 
-    public class BusinessException: Exception
+    public class BusinessException : Exception
     {
         public int Code { get; set; }
         public string Error { get; set; }

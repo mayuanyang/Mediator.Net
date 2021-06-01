@@ -13,7 +13,7 @@ namespace Mediator.Net.Context
         Dictionary<string, object> MetaData { get; }
         object Result { get; set; }
         
-        Type[] ResultGenericArguments { get; set; }
+        Type ResultDataType { get; set; }
         
     }
 }

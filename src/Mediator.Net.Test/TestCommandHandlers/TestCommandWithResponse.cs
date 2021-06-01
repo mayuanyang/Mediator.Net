@@ -4,6 +4,7 @@ using System.Reflection;
 using System.Threading.Tasks;
 using Mediator.Net.Binding;
 using Mediator.Net.TestUtil.Handlers.CommandHandlers;
+using Mediator.Net.TestUtil.Handlers.EventHandlers;
 using Mediator.Net.TestUtil.Messages;
 using Mediator.Net.TestUtil.Middlewares;
 using Shouldly;
@@ -41,35 +42,82 @@ namespace Mediator.Net.Test.TestCommandHandlers
         }
         
         [Theory]
-        [InlineData("CommandPipe")]
-        [InlineData("GlobalPipe")]
-        public async Task TestCommandWithUnifiedResult(string whichPipe)
+        [InlineData("CommandPipe", true, "", false, false, 12345, "An error has occured")]
+        [InlineData("GlobalPipe", true, "", false, false, 12345, "An error has occured")]
+        [InlineData("GenericCommandPipe", true, "", false, false, 12345, "An error has occured")]
+        [InlineData("GenericGlobalPipe", true, "", false, false, 12345, "An error has occured")]
+        [InlineData("CommandPipe", false, "1", false, false, 12345, "")]
+        [InlineData("GlobalPipe", false, "2", false, false, 12345, "")]
+        [InlineData("GenericCommandPipe", false, "3", false, false, 12345, "")]
+        [InlineData("GenericGlobalPipe", false, "4", false, false, 12345, "")]
+        [InlineData("GenericGlobalPipe", false, "4", true, false, 12345, "An error has occured")]
+        [InlineData("GenericGlobalPipe", false, "4", true, true, 50002, "Error from event handler")]
+        public async Task TestCommandWithUnifiedResult(
+            string whichPipe, 
+            bool shouldThrow, 
+            string request, 
+            bool shouldPublishEvent, 
+            bool shouldEventHandlerThrow,
+            int errorCode,
+            string errorMessage)
         {
             var builder = SetupMediatorBuilderWithMiddleware(whichPipe);
-            var mediator = SetupCommandMediatorWithUnifiedResultMiddleware(builder);
-            var response = await 
-                mediator.SendAsync<TestCommandWithResponse, UnifiedResponse>(
-                    new TestCommandWithResponse());
-            
-            response.Result.ShouldBeNull();
-            response.Error.Code.ShouldBe(12345);
-            response.Error.Message.ShouldBe("An error has occured");
+            var mediator = SetupCommandMediatorWithUnifiedResultMiddleware(builder, whichPipe.Contains("Generic"));
+
+            if (whichPipe.Contains("Generic"))
+            {
+                var response = await 
+                    mediator.SendAsync<TestCommandWithResponse, GenericUnifiedResponse<string>>(
+                        new TestCommandWithResponse()
+                        {
+                            ShouldThrow = shouldThrow, 
+                            Request = request,
+                            ShouldPublishEvent = shouldPublishEvent,
+                            ShouldEventHandlerThrow = shouldEventHandlerThrow
+                        });
+                if (shouldThrow || shouldEventHandlerThrow)
+                {
+                    response.Result.ShouldBeNull();
+                    AssertErrorResult(response.Error, errorCode, errorMessage);    
+                }
+                else
+                {
+                    response.Error.ShouldBeNull();
+                    response.Result.ShouldBe(request + "Result");
+                }
+            }
+            else
+            {
+                var response = await 
+                    mediator.SendAsync<TestCommandWithResponse, UnifiedResponse>(
+                        new TestCommandWithResponse()
+                        {
+                            ShouldThrow = shouldThrow, 
+                            Request = request,
+                            ShouldPublishEvent = shouldPublishEvent,
+                            ShouldEventHandlerThrow = shouldEventHandlerThrow
+
+                        });
+                if (shouldThrow)
+                {
+                    response.Result.ShouldBeNull();
+                    AssertErrorResult(response.Error, errorCode, errorMessage);    
+                }
+                else
+                {
+                    response.Error.ShouldBeNull();
+                    response.Result.ShouldBe(request + "Result");
+                }
+                
+            }
+
+            void AssertErrorResult(Error error, int expectedErrorCode, string expectedErrorMessage)
+            {
+                error.Code.ShouldBe(expectedErrorCode);
+                error.Message.ShouldBe(expectedErrorMessage);
+            }
         }
-        
-        [Fact]
-        public async Task TestCommandWithGenericUnifiedResult()
-        {
-            var builder = SetupMediatorBuilderWithMiddleware("GenericCommandPipe");
-            var mediator = SetupCommandMediatorWithUnifiedResultMiddleware(builder);
-            var response = await 
-                mediator.SendAsync<TestCommandWithResponse, GenericUnifiedResponse<string>>(
-                    new TestCommandWithResponse());
-            
-            response.Result.ShouldBeNull();
-            response.Error.Code.ShouldBe(12345);
-            response.Error.Message.ShouldBe("An error has occured");
-        }
-        
+
         MediatorBuilder SetupMediatorBuilderWithMiddleware(string whichPipe)
         {
             var builder = new MediatorBuilder();
@@ -87,19 +135,25 @@ namespace Mediator.Net.Test.TestCommandHandlers
                 case "GenericCommandPipe":
                     builder.ConfigureCommandReceivePipe(config => config.UseUnifyResultMiddleware(typeof(GenericUnifiedResponse<>)));
                     break;
+                case "GenericGlobalPipe":
+                    builder.ConfigureGlobalReceivePipe(config => config.UseUnifyResultMiddleware(typeof(GenericUnifiedResponse<>)));
+                    break;
             }
 
             return builder;
         }
         
-        IMediator SetupCommandMediatorWithUnifiedResultMiddleware(MediatorBuilder builder)
+        IMediator SetupCommandMediatorWithUnifiedResultMiddleware(MediatorBuilder builder, bool isGeneric)
         {
             return builder.RegisterHandlers(() =>
             {
-                var binding = new List<MessageBinding>
-                {
-                    new MessageBinding(typeof(TestCommandWithResponse), typeof(TestCommandWithResponseThatThrowBusinessExceptionHandler)),
-                };
+                var binding = new List<MessageBinding>();
+                binding.Add(isGeneric
+                    ? new MessageBinding(typeof(TestCommandWithResponse),
+                        typeof(TestCommandWithGenericHandler))
+                    : new MessageBinding(typeof(TestCommandWithResponse), typeof(TestCommandWithResponseThatThrowBusinessExceptionHandler)));
+
+                binding.Add(new MessageBinding(typeof(TestEvent), typeof(TestEventHandler)));
                 return binding;
             }).Build();
         }

@@ -3,7 +3,6 @@ using System.Threading.Tasks;
 using Mediator.Net.Context;
 using Mediator.Net.Contracts;
 using Mediator.Net.TestUtil.Messages;
-using Mediator.Net.TestUtil.Middlewares;
 
 namespace Mediator.Net.TestUtil.Handlers.CommandHandlers
 {
@@ -13,18 +12,6 @@ namespace Mediator.Net.TestUtil.Handlers.CommandHandlers
         {
             var response = new TestCommandResponse() { Thing = "Hello world"};
             return Task.FromResult(response);
-        }
-    }
-    
-    public class TestCommandWithResponseThatThrowBusinessExceptionHandler : ICommandHandler<TestCommandWithResponse, TestCommandResponse>
-    {
-        public Task<TestCommandResponse> Handle(IReceiveContext<TestCommandWithResponse> context, CancellationToken cancellationToken)
-        {
-            throw new BusinessException()
-            {
-                Code = 12345,
-                Error = "An error has occured"
-            };
         }
     }
 }

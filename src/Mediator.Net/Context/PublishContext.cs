@@ -46,6 +46,7 @@ namespace Mediator.Net.Context
         }
 
         public object Result { get; set; }
-        public Type[] ResultGenericArguments { get; set; }
+        
+        public Type ResultDataType { get; set; }
     }
 }

@@ -85,8 +85,8 @@ namespace Mediator.Net
 
             var receiveContext = (IReceiveContext<TMessage>)Activator.CreateInstance(typeof(ReceiveContext<>).MakeGenericType(msg.GetType()), msg);
             RegisterServiceIfRequired(receiveContext);
-            if (typeof(TResponse).IsGenericType)
-                receiveContext.ResultGenericArguments = typeof(TResponse).GetGenericArguments();
+            
+            receiveContext.ResultDataType = typeof(TResponse);
             
             var task = _globalPipe.Connect((IReceiveContext<IMessage>) receiveContext, cancellationToken);
             
@@ -102,6 +102,8 @@ namespace Mediator.Net
             var receiveContext = (IReceiveContext<TMessage>)Activator.CreateInstance(typeof(ReceiveContext<>).MakeGenericType(msg.GetType()), msg);
             RegisterServiceIfRequired(receiveContext);
 
+            receiveContext.ResultDataType = typeof(object);
+            
             var task = _globalPipe.Connect((IReceiveContext<IMessage>) receiveContext, cancellationToken);
             
             var result = await task.ConfigureAwait(false);
