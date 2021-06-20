@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
 using Mediator.Net.Context;
@@ -39,6 +40,11 @@ namespace Mediator.Net
             await SendMessage(cmd, cancellationToken).ConfigureAwait(false);
         }
 
+        public async Task<TResponse> SendAsync<TMessage, TResponse>(TMessage cmd, CancellationToken cancellationToken = default(CancellationToken)) where TMessage : ICommand where TResponse : IResponse
+        {
+            return await SendMessage<TMessage, TResponse>(cmd, cancellationToken).ConfigureAwait(false);
+        }
+
         public async Task SendAsync<TMessage>(IReceiveContext<TMessage> receiveContext,
             CancellationToken cancellationToken = default(CancellationToken))
         where TMessage : ICommand
@@ -62,8 +68,7 @@ namespace Mediator.Net
             where TRequest : IRequest
             where TResponse : IResponse
         {
-            var result = await SendMessage(request, cancellationToken).ConfigureAwait(false);
-            return (TResponse)result;
+            return await SendMessage<TRequest, TResponse>(request, cancellationToken).ConfigureAwait(false);
         }
 
         public async Task<TResponse> RequestAsync<TRequest, TResponse>(IReceiveContext<TRequest> receiveContext, CancellationToken cancellationToken = default(CancellationToken))
@@ -74,6 +79,22 @@ namespace Mediator.Net
             return (TResponse)result;
         }
 
+        private async Task<TResponse> SendMessage<TMessage, TResponse>(TMessage msg, CancellationToken cancellationToken)
+            where TMessage : IMessage
+        {
+
+            var receiveContext = (IReceiveContext<TMessage>)Activator.CreateInstance(typeof(ReceiveContext<>).MakeGenericType(msg.GetType()), msg);
+            RegisterServiceIfRequired(receiveContext);
+            
+            receiveContext.ResultDataType = typeof(TResponse);
+            
+            var task = _globalPipe.Connect((IReceiveContext<IMessage>) receiveContext, cancellationToken);
+            
+            var result = await task.ConfigureAwait(false);
+
+            return (TResponse)(receiveContext.Result ?? result);
+        }
+        
         private async Task<object> SendMessage<TMessage>(TMessage msg, CancellationToken cancellationToken)
             where TMessage : IMessage
         {
@@ -81,8 +102,13 @@ namespace Mediator.Net
             var receiveContext = (IReceiveContext<TMessage>)Activator.CreateInstance(typeof(ReceiveContext<>).MakeGenericType(msg.GetType()), msg);
             RegisterServiceIfRequired(receiveContext);
 
+            receiveContext.ResultDataType = typeof(object);
+            
             var task = _globalPipe.Connect((IReceiveContext<IMessage>) receiveContext, cancellationToken);
-            return await task.ConfigureAwait(false);
+            
+            var result = await task.ConfigureAwait(false);
+
+            return receiveContext.Result ?? result;
         }
 
         private async Task<object> SendMessage<TMessage>(IReceiveContext<TMessage> customReceiveContext, CancellationToken cancellationToken)

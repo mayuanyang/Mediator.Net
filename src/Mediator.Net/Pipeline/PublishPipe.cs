@@ -45,6 +45,10 @@ namespace Mediator.Net.Pipeline
 
                 await _specification.AfterExecute(context, cancellationToken).ConfigureAwait(false);
             }
+            catch (TargetInvocationException e)
+            {
+                await _specification.OnException(e, context).ConfigureAwait(false);
+            }
             catch (Exception e)
             {
                 await _specification.OnException(e, context).ConfigureAwait(false);

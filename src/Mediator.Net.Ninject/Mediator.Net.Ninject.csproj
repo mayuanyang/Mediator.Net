@@ -7,7 +7,7 @@
     <VersionPrefix>1.0.0-beta</VersionPrefix>
     <Authors>Yuan(Eddy) Ma</Authors>
     <iconUrl>https://cloud.githubusercontent.com/assets/3387099/24353370/97f573f0-1330-11e7-890c-85855628a575.png</iconUrl>
-    <TargetFrameworks>net45;netstandard1.3;netstandard2.0</TargetFrameworks>
+    <TargetFrameworks>netstandard2.0;netstandard2.1</TargetFrameworks>
     <AssemblyName>Mediator.Net.Ninject</AssemblyName>
     <PackageId>Mediator.Net.Ninject</PackageId>
     <PackageTags>.NET;Mediator;Cqrs;DDD;Command;Event;Request;Response;Ninject</PackageTags>
@@ -18,22 +18,12 @@
     <GenerateAssemblyProductAttribute>false</GenerateAssemblyProductAttribute>
   </PropertyGroup>
 
-  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net45|AnyCPU'">
-    <LangVersion>latest</LangVersion>
-  </PropertyGroup>
-
-  <ItemGroup>
+    <ItemGroup>
     <ProjectReference Include="..\Mediator.Net\Mediator.Net.csproj" />
   </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="Ninject" Version="4.0.0-beta-0134" />
-    <PackageReference Include="Mediator.Net" Version="3.0.0-dev13" />
-  </ItemGroup>
-
-  <ItemGroup Condition=" '$(TargetFramework)' == 'net45' ">
-    <Reference Include="System" />
-    <Reference Include="Microsoft.CSharp" />
   </ItemGroup>
 
 </Project>

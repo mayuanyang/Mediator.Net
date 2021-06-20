@@ -5,7 +5,7 @@
     <AssemblyTitle>Mediator.Net Autofac integration</AssemblyTitle>
     <Authors>Yuan(Eddy) Ma</Authors>
     <iconUrl>https://cloud.githubusercontent.com/assets/3387099/24353370/97f573f0-1330-11e7-890c-85855628a575.png</iconUrl>
-    <TargetFrameworks>net45;net46;netstandard1.1;netstandard2.0;netstandard2.1</TargetFrameworks>
+    <TargetFrameworks>netstandard2.0;netstandard2.1</TargetFrameworks>
     <AssemblyName>Mediator.Net.Autofac</AssemblyName>
     <PackageId>Mediator.Net.Autofac</PackageId>
     <PackageTags>.NET;Mediator;Cqrs;DDD;Command;Event;Request;Response;Autofac</PackageTags>
@@ -21,21 +21,12 @@
     <GenerateAssemblyFileVersionAttribute>false</GenerateAssemblyFileVersionAttribute>
   </PropertyGroup>
 
-  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net45|AnyCPU'">
-    <LangVersion>latest</LangVersion>
-  </PropertyGroup>
-
-  <ItemGroup>
+    <ItemGroup>
     <ProjectReference Include="..\Mediator.Net\Mediator.Net.csproj" />
   </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="Autofac" Version="4.8.1" />
-  </ItemGroup>
-
-  <ItemGroup Condition=" '$(TargetFramework)' == 'net45' ">
-    <Reference Include="System" />
-    <Reference Include="Microsoft.CSharp" />
   </ItemGroup>
 
 </Project>

@@ -12,7 +12,6 @@ namespace Mediator.Net.Context
     public class ReceiveContext<TMessage> : IReceiveContext<TMessage>
         where TMessage : IMessage
     {
-
         private readonly IList<object> _registeredServices;
         private Dictionary<string, object> _metaData;
         public ReceiveContext(TMessage message)
@@ -48,6 +47,10 @@ namespace Mediator.Net.Context
             }
         }
 
+        public object Result { get; set; }
+        
+        public Type ResultDataType { get; set; }
+        
         public async Task PublishAsync(IEvent msg, CancellationToken cancellationToken = default(CancellationToken))
         {
             if (TryGetService(out IMediator mediator))

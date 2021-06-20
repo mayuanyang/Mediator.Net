@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.Linq;
@@ -43,5 +44,9 @@ namespace Mediator.Net.Context
                 return _metaData;
             }
         }
+
+        public object Result { get; set; }
+        
+        public Type ResultDataType { get; set; }
     }
 }

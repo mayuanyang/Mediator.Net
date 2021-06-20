@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Diagnostics;
+using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
 using Mediator.Net.Context;
@@ -39,12 +40,17 @@ namespace Mediator.Net.Pipeline
                 await _specification.AfterExecute(context, cancellationToken).ConfigureAwait(false);
                 return result;
             }
+            catch (TargetInvocationException e)
+            {
+                var task = _specification.OnException(e.InnerException, context);
+                result = PipeHelper.GetResultFromTask(task);
+            }
             catch (Exception e)
             {
                 var task = _specification.OnException(e, context);
                 result = PipeHelper.GetResultFromTask(task);
             }
-            return result;
+            return context.Result ?? result;
         }
 
         private async Task<object> ConnectToPipe(TContext context, CancellationToken cancellationToken)
@@ -55,7 +61,7 @@ namespace Mediator.Net.Pipeline
                 {
                     if (context.TryGetService(out ICommandReceivePipe<IReceiveContext<ICommand>> commandPipe))
                     {
-                        await commandPipe.Connect((IReceiveContext<ICommand>)context, cancellationToken).ConfigureAwait(false);
+                        return await commandPipe.Connect((IReceiveContext<ICommand>)context, cancellationToken).ConfigureAwait(false);
                     }
 
                     break;

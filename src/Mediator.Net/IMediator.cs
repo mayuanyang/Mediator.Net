@@ -10,6 +10,7 @@ namespace Mediator.Net
     {
 
         Task SendAsync<TMessage>(TMessage cmd, CancellationToken cancellationToken = default(CancellationToken)) where TMessage : ICommand;
+        Task<TResponse> SendAsync<TMessage, TResponse>(TMessage cmd, CancellationToken cancellationToken = default(CancellationToken)) where TMessage : ICommand where TResponse : IResponse;
 
         Task SendAsync<TMessage>(IReceiveContext<TMessage> receiveContext, CancellationToken cancellationToken = default(CancellationToken)) where TMessage : ICommand;
         Task PublishAsync<TMessage>(TMessage evt, CancellationToken cancellationToken = default(CancellationToken)) where TMessage : IEvent;
