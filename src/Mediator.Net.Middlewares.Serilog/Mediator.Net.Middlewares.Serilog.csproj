@@ -5,7 +5,7 @@
     <Description>Log message by using Serilog</Description>
     <AssemblyTitle>Serilog middleware for Mediator.NET</AssemblyTitle>
     <Authors>Yuan(Eddy) Ma</Authors>
-    <TargetFrameworks>netstandard2.0;netstandard2.1</TargetFrameworks>
+    <TargetFrameworks>netstandard2.0;netstandard2.1;net5.0;net6.0</TargetFrameworks>
     <AssemblyName>Mediator.Net.Middlewares.Serilog</AssemblyName>
     <PackageId>Mediator.Net.Middlewares.Serilog</PackageId>
     <PackageTags>.NET;Mediator;Cqrs;DDD;Command;Event;Request;Response;Serilog</PackageTags>

@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
-    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <TargetFramework>net6.0</TargetFramework>
   </PropertyGroup>
 
   <ItemGroup>
@@ -9,10 +9,6 @@
     <Folder Include="wwwroot\" />
   </ItemGroup>
   
-  <ItemGroup>
-    <DotNetCliToolReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Tools" Version="2.0.0" />
-  </ItemGroup>
-
   <ItemGroup>
     <ProjectReference Include="..\Mediator.Net.MicrosoftDependencyInjection.Test\Mediator.Net.MicrosoftDependencyInjection.Test.csproj" />
     <ProjectReference Include="..\Mediator.Net.MicrosoftDependencyInjection\Mediator.Net.MicrosoftDependencyInjection.csproj" />
