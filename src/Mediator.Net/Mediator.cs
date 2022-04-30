@@ -81,11 +81,17 @@ namespace Mediator.Net
             return (TResponse)result;
         }
 
-        public IAsyncEnumerable<TResponse> CreateStream<TRequest, TResponse>(
+        public IAsyncEnumerable<object> CreateStream<TRequest, TResponse>(
             IReceiveContext<TRequest> receiveContext,
             CancellationToken cancellationToken = default(CancellationToken)) where TRequest : IRequest where TResponse : IResponse
         {
-            return  (IAsyncEnumerable<TResponse>)CreateStreamInternal(receiveContext, cancellationToken);
+            return  (IAsyncEnumerable<object>)CreateStreamInternal(receiveContext, cancellationToken);
+        }
+
+        public IAsyncEnumerable<object> CreateStream<TRequest, TResponse>(TRequest request,
+            CancellationToken cancellationToken = default(CancellationToken)) where TRequest : IRequest where TResponse : IResponse
+        {
+            return CreateStreamInternal(request, cancellationToken);
         }
 
         private async Task<TResponse> SendMessage<TMessage, TResponse>(TMessage msg, CancellationToken cancellationToken)
@@ -111,6 +117,18 @@ namespace Mediator.Net
 
             var task = _globalPipe.Connect((IReceiveContext<IMessage>)customReceiveContext, cancellationToken);
             yield return await task.ConfigureAwait(false);
+        }
+        
+        private async IAsyncEnumerable<object> CreateStreamInternal<TMessage>(TMessage msg, [EnumeratorCancellation] CancellationToken cancellationToken)
+            where TMessage : IMessage
+        {
+            var receiveContext = (IReceiveContext<TMessage>)Activator.CreateInstance(typeof(ReceiveContext<>).MakeGenericType(msg.GetType()), msg);
+            RegisterServiceIfRequired(receiveContext);
+
+            var task = _globalPipe.Connect((IReceiveContext<IMessage>)receiveContext, cancellationToken);
+            var result = await task.ConfigureAwait(false);
+
+            yield return result;
         }
         
         private async Task<object> SendMessage<TMessage>(TMessage msg, CancellationToken cancellationToken)

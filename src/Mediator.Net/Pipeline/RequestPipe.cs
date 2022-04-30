@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
@@ -70,10 +71,21 @@ namespace Mediator.Net.Pipeline
 
             var handler = (_resolver == null) ? Activator.CreateInstance(handlerType) : _resolver.Resolve(handlerType);
 
-            var task = (Task)handleMethod.Invoke(handler, new object[] { context, cancellationToken });
-            await task.ConfigureAwait(false);
+            var taskOrAsynEnumerable = handleMethod.Invoke(handler, new object[] { context, cancellationToken });
+            switch (taskOrAsynEnumerable)
+            {
+                case Task task:
+                    await task.ConfigureAwait(false);
+                    return PipeHelper.GetResultFromTask(task);
+                case IAsyncEnumerable<object> list:
+                {
+                    await foreach (var r in list)
+                        return Task.FromResult(r);
+                    break;
+                }
+            }
 
-            return PipeHelper.GetResultFromTask(task);
+            return null;
         }
 
 
