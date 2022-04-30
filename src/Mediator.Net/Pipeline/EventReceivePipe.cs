@@ -31,7 +31,6 @@ namespace Mediator.Net.Pipeline
 
         public async Task<object> Connect(TContext context, CancellationToken cancellationToken)
         {
-            object result = null;
             try
             {
                 await _specification.BeforeExecute(context, cancellationToken).ConfigureAwait(false);

@@ -151,7 +151,9 @@ namespace Mediator.Net
             var handlers = typeInfos.Where(x => !x.IsAbstract && (IsAssignableToGenericType(x.AsType(), typeof(ICommandHandler<>)) ||
                                                                   IsAssignableToGenericType(x.AsType(), typeof(ICommandHandler<,>)) ||
                                                                   IsAssignableToGenericType(x.AsType(), typeof(IEventHandler<>)) ||
-                                                                  IsAssignableToGenericType(x.AsType(), typeof(IRequestHandler<,>)))).ToList();
+                                                                  IsAssignableToGenericType(x.AsType(), typeof(IRequestHandler<,>)) ||
+                                                                  IsAssignableToGenericType(x.AsType(), typeof(IStreamRequestHandler<,>)) 
+                                                                  )).ToList();
             foreach (var handler in handlers)
             {
                 foreach (var implementedInterface in handler.ImplementedInterfaces)
@@ -159,7 +161,9 @@ namespace Mediator.Net
                     if (IsAssignableToGenericType(implementedInterface, typeof(ICommandHandler<>)) || 
                         IsAssignableToGenericType(implementedInterface, typeof(ICommandHandler<,>)) || 
                         IsAssignableToGenericType(implementedInterface, typeof(IEventHandler<>)) || 
-                        IsAssignableToGenericType(implementedInterface, typeof(IRequestHandler<,>)))
+                        IsAssignableToGenericType(implementedInterface, typeof(IRequestHandler<,>)) ||
+                        IsAssignableToGenericType(implementedInterface, typeof(IStreamRequestHandler<,>))
+                        )
                     {
                         MessageHandlerRegistry.MessageBindings.Add(new MessageBinding(implementedInterface.GenericTypeArguments[0], handler.AsType()));
                     } 

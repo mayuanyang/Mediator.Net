@@ -14,7 +14,7 @@ namespace Mediator.Net.Test.TestEventHandlers
     public class PublishDerivedEventShouldBeHandledByBaseHandler : TestBase
     {
         private IMediator _mediator;
-        private Task _task;
+        
         private MediatorBuilder _builder;
         void GivenAMediatorBuilder()
         {
