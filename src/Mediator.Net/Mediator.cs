@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Reflection;
+using System.Runtime.CompilerServices;
 using System.Threading;
 using System.Threading.Tasks;
 using Mediator.Net.Context;
@@ -79,6 +81,13 @@ namespace Mediator.Net
             return (TResponse)result;
         }
 
+        public IAsyncEnumerable<TResponse> CreateStream<TRequest, TResponse>(
+            IReceiveContext<TRequest> receiveContext,
+            CancellationToken cancellationToken = default(CancellationToken)) where TRequest : IRequest where TResponse : IResponse
+        {
+            return  (IAsyncEnumerable<TResponse>)CreateStreamInternal(receiveContext, cancellationToken);
+        }
+
         private async Task<TResponse> SendMessage<TMessage, TResponse>(TMessage msg, CancellationToken cancellationToken)
             where TMessage : IMessage
         {
@@ -93,6 +102,15 @@ namespace Mediator.Net
             var result = await task.ConfigureAwait(false);
 
             return (TResponse)(receiveContext.Result ?? result);
+        }
+        
+        private async IAsyncEnumerable<object> CreateStreamInternal<TMessage>(IReceiveContext<TMessage> customReceiveContext, [EnumeratorCancellation] CancellationToken cancellationToken)
+            where TMessage : IMessage
+        {
+            RegisterServiceIfRequired(customReceiveContext);
+
+            var task = _globalPipe.Connect((IReceiveContext<IMessage>)customReceiveContext, cancellationToken);
+            yield return await task.ConfigureAwait(false);
         }
         
         private async Task<object> SendMessage<TMessage>(TMessage msg, CancellationToken cancellationToken)

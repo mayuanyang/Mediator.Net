@@ -22,7 +22,12 @@
     <GenerateAssemblyFileVersionAttribute>false</GenerateAssemblyFileVersionAttribute>
     <PackageIconUrl>https://cloud.githubusercontent.com/assets/3387099/24353370/97f573f0-1330-11e7-890c-85855628a575.png</PackageIconUrl>
     <RepositoryUrl>https://github.com/mayuanyang/Mediator.Net</RepositoryUrl>
+    <LangVersion>Latest</LangVersion>
   </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="System.Interactive.Async" Version="6.0.1" />
+  </ItemGroup>
 
   
   <Target Name="AddAssemblyAliasToReactiveAsync" AfterTargets="ResolveAssemblyReferences">
