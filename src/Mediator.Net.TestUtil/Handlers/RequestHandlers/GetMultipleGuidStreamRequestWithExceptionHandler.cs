@@ -19,8 +19,8 @@ namespace Mediator.Net.TestUtil.Handlers.RequestHandlers
             TokenRecorder.Recorder.Add(cancellationToken.GetHashCode());
             RubishBox.Rublish.Add(nameof(GetGuidRequestHandler));
 
-            yield return await Task.FromResult(new GetGuidResponse(Guid.NewGuid()));
-            yield return await Task.FromResult(new GetGuidResponse(Guid.NewGuid()));
+            yield return await Task.FromResult(new GetGuidResponse(Guid.NewGuid()){ Index = 0});
+            yield return await Task.FromResult(new GetGuidResponse(Guid.NewGuid()){ Index = 1});
             throw new Exception("Exception after 2 response");
 
         }
