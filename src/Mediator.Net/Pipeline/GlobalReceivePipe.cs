@@ -14,20 +14,20 @@ namespace Mediator.Net.Pipeline
         private readonly IPipeSpecification<TContext> _specification;
 
 
-        public async IAsyncEnumerable<object> ConnectStream(TContext context, CancellationToken cancellationToken)
+        public async IAsyncEnumerable<TResponse> ConnectStream<TResponse>(TContext context, CancellationToken cancellationToken)
         {
-            IAsyncEnumerable<object> result = null;
+            IAsyncEnumerable<TResponse> result = null;
             try
             {
                 await _specification.BeforeExecute(context, cancellationToken).ConfigureAwait(false);
                 await _specification.Execute(context, cancellationToken).ConfigureAwait(false);
                 if (Next != null)
                 {
-                    result = Next.ConnectStream(context, cancellationToken);
+                    result = Next.ConnectStream<TResponse>(context, cancellationToken);
                 }
                 else
                 {
-                    result = ConnectToStreamPipe(context, cancellationToken);
+                    result = ConnectToStreamPipe<TResponse>(context, cancellationToken);
                 }
 
                 await _specification.AfterExecute(context, cancellationToken).ConfigureAwait(false);
@@ -119,7 +119,7 @@ namespace Mediator.Net.Pipeline
             return (object)null;
         }
         
-        private IAsyncEnumerable<object> ConnectToStreamPipe(TContext context, CancellationToken cancellationToken)
+        private IAsyncEnumerable<TResponse> ConnectToStreamPipe<TResponse>(TContext context, CancellationToken cancellationToken)
         {
             switch (context.Message)
             {
@@ -127,7 +127,7 @@ namespace Mediator.Net.Pipeline
                 {
                     if (context.TryGetService(out ICommandReceivePipe<IReceiveContext<ICommand>> commandPipe))
                     {
-                        return commandPipe.ConnectStream((IReceiveContext<ICommand>)context, cancellationToken);
+                        return commandPipe.ConnectStream<TResponse>((IReceiveContext<ICommand>)context, cancellationToken);
                     }
 
                     break;
@@ -139,7 +139,7 @@ namespace Mediator.Net.Pipeline
                 }
 
                 case IRequest _ when context.TryGetService(out IRequestReceivePipe<IReceiveContext<IRequest>> requestPipe):
-                    return requestPipe.ConnectStream((IReceiveContext<IRequest>)context, cancellationToken);
+                    return requestPipe.ConnectStream<TResponse>((IReceiveContext<IRequest>)context, cancellationToken);
             }
 
             return null;

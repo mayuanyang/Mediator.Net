@@ -57,10 +57,11 @@ namespace Mediator.Net.Pipeline
             return null;
         }
 
-        public IAsyncEnumerable<object> ConnectStream(TContext context, CancellationToken cancellationToken)
+        public IAsyncEnumerable<TResponse> ConnectStream<TResponse>(TContext context, CancellationToken cancellationToken)
         {
-            throw new NotImplementedException();
+            throw new NotSupportedException("Stream is not supported in event pipeline");
         }
+
 
         public IPipe<TContext> Next { get; }
     }

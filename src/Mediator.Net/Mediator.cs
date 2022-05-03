@@ -81,17 +81,17 @@ namespace Mediator.Net
             return (TResponse)result;
         }
 
-        public IAsyncEnumerable<object> CreateStream<TRequest, TResponse>(
+        public IAsyncEnumerable<TResponse> CreateStream<TRequest, TResponse>(
             IReceiveContext<TRequest> receiveContext,
             CancellationToken cancellationToken = default(CancellationToken)) where TRequest : IRequest where TResponse : IResponse
         {
-            return  CreateStreamInternal(receiveContext, cancellationToken);
+            return  CreateStreamInternal<TRequest,TResponse>(receiveContext, cancellationToken);
         }
 
-        public IAsyncEnumerable<object> CreateStream<TRequest, TResponse>(TRequest request,
+        public IAsyncEnumerable<TResponse> CreateStream<TRequest, TResponse>(TRequest request,
             CancellationToken cancellationToken = default) where TRequest : IRequest where TResponse : IResponse
         {
-            return CreateStreamInternal(request, cancellationToken);
+            return CreateStreamInternal<TRequest,TResponse>(request, cancellationToken);
         }
 
         private async Task<TResponse> SendMessage<TMessage, TResponse>(TMessage msg, CancellationToken cancellationToken)
@@ -110,21 +110,21 @@ namespace Mediator.Net
             return (TResponse)(receiveContext.Result ?? result);
         }
         
-        private IAsyncEnumerable<object> CreateStreamInternal<TMessage>(IReceiveContext<TMessage> customReceiveContext, [EnumeratorCancellation] CancellationToken cancellationToken)
+        private IAsyncEnumerable<TResponse> CreateStreamInternal<TMessage, TResponse>(IReceiveContext<TMessage> customReceiveContext, [EnumeratorCancellation] CancellationToken cancellationToken)
             where TMessage : IMessage
         {
             RegisterServiceIfRequired(customReceiveContext);
 
-            return _globalPipe.ConnectStream((IReceiveContext<IMessage>)customReceiveContext, cancellationToken);
+            return _globalPipe.ConnectStream<TResponse>((IReceiveContext<IMessage>)customReceiveContext, cancellationToken);
         }
         
-        private IAsyncEnumerable<object> CreateStreamInternal<TMessage>(TMessage msg, [EnumeratorCancellation] CancellationToken cancellationToken)
+        private IAsyncEnumerable<TResponse> CreateStreamInternal<TMessage, TResponse>(TMessage msg, [EnumeratorCancellation] CancellationToken cancellationToken)
             where TMessage : IMessage
         {
             var receiveContext = (IReceiveContext<TMessage>)Activator.CreateInstance(typeof(ReceiveContext<>).MakeGenericType(msg.GetType()), msg);
             RegisterServiceIfRequired(receiveContext);
 
-            return _globalPipe.ConnectStream((IReceiveContext<IMessage>)receiveContext, cancellationToken);
+            return _globalPipe.ConnectStream<TResponse>((IReceiveContext<IMessage>)receiveContext, cancellationToken);
         }
         
         private async Task<object> SendMessage<TMessage>(TMessage msg, CancellationToken cancellationToken)

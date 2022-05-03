@@ -11,7 +11,7 @@ namespace Mediator.Net.Pipeline
     {
         Task<object> Connect(TContext context, CancellationToken cancellationToken);
 
-        IAsyncEnumerable<object> ConnectStream(TContext context, CancellationToken cancellationToken);
+        IAsyncEnumerable<TResponse> ConnectStream<TResponse>(TContext context, CancellationToken cancellationToken);
         IPipe<TContext> Next { get; }
 
     }
