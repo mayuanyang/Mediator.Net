@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Threading;
@@ -54,6 +55,11 @@ namespace Mediator.Net.Pipeline
                 await _specification.OnException(e, context).ConfigureAwait(false);
             }
             return null;
+        }
+
+        public IAsyncEnumerable<object> ConnectStream(TContext context, CancellationToken cancellationToken)
+        {
+            throw new NotImplementedException();
         }
 
         public IPipe<TContext> Next { get; }

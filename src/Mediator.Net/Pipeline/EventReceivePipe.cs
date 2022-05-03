@@ -50,6 +50,11 @@ namespace Mediator.Net.Pipeline
             return null;
         }
 
+        public IAsyncEnumerable<object> ConnectStream(TContext context, CancellationToken cancellationToken)
+        {
+            throw new NotImplementedException();
+        }
+
         public IPipe<TContext> Next { get; }
 
         private async Task ConnectToHandler(TContext context, CancellationToken cancellationToken)

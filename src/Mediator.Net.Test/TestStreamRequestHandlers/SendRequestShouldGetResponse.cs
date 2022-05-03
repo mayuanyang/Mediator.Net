@@ -9,15 +9,24 @@ using Mediator.Net.TestUtil.Middlewares;
 using Shouldly;
 using TestStack.BDDfy;
 using Xunit;
+using Xunit.Abstractions;
 
 namespace Mediator.Net.Test.TestStreamRequestHandlers
 {
     
     public class SendRequestShouldGetMultipleResponse : TestBase
     {
+        private readonly ITestOutputHelper _testOutputHelper;
+
         private IMediator _mediator;
         private IAsyncEnumerable<object> _result;
         private readonly Guid _guid = Guid.NewGuid();
+
+        public SendRequestShouldGetMultipleResponse(ITestOutputHelper testOutputHelper)
+        {
+            _testOutputHelper = testOutputHelper;
+        }
+        
         void GivenAMediatorAndTwoMiddlewares()
         {
             ClearBinding();
@@ -53,15 +62,15 @@ namespace Mediator.Net.Test.TestStreamRequestHandlers
 
         async Task ThenTheResultShouldBeReturn()
         {
-            
             var counter = 0;
-            for(var i = 0; i< 10; i++)
+            await foreach (var r in _result)
             {
-                if (await _result.GetAsyncEnumerator().MoveNextAsync())
-                    counter++;
+                _testOutputHelper.WriteLine(counter.ToString());
+                counter++;
             }
             
-            counter.ShouldBe(10);
+            counter.ShouldBe(5);
+            
         }
 
         [Fact]

@@ -53,6 +53,40 @@ namespace Mediator.Net.Pipeline
             return context.Result ?? result;
         }
 
+        public async IAsyncEnumerable<object> ConnectStream(TContext context, CancellationToken cancellationToken)
+        {
+            IAsyncEnumerable<object> result = null;
+            try
+            {
+                await _specification.BeforeExecute(context, cancellationToken).ConfigureAwait(false);
+                await _specification.Execute(context, cancellationToken).ConfigureAwait(false);
+                if (Next != null)
+                {
+                    result = Next.ConnectStream(context, cancellationToken);
+                }
+                else
+                {
+                    result = ConnectToStreamHandler(context, cancellationToken);
+                }
+
+                await _specification.AfterExecute(context, cancellationToken).ConfigureAwait(false);
+            }
+            catch (TargetInvocationException e)
+            {
+                await _specification.OnException(e.InnerException, context).ConfigureAwait(false);
+            }
+            catch (Exception e)
+            {
+                await _specification.OnException(e, context).ConfigureAwait(false);
+            }
+
+            if (result == null) yield break;
+            await foreach (var item in result.WithCancellation(cancellationToken).ConfigureAwait(false))
+            {
+                yield return item;
+            }
+        }
+
         private async Task<object> ConnectToHandler(TContext context, CancellationToken cancellationToken)
         {
             var handlers = PipeHelper.GetHandlerBindings(context, true, _messageHandlerRegistry);
@@ -91,5 +125,27 @@ namespace Mediator.Net.Pipeline
 
         public IPipe<TContext> Next { get; }
 
+        private IAsyncEnumerable<object> ConnectToStreamHandler(TContext context, CancellationToken cancellationToken)
+        {
+            var handlers = PipeHelper.GetHandlerBindings(context, true, _messageHandlerRegistry);
+
+            if (handlers.Count() > 1)
+            {
+                throw new MoreThanOneHandlerException(context.Message.GetType());
+            }
+
+            var binding = handlers.Single();
+
+            var handlerType = binding.HandlerType;
+            var messageType = context.Message.GetType();
+
+            var handleMethod = handlerType.GetRuntimeMethods().Single(m => PipeHelper.IsHandleMethod(m, messageType));
+
+            var handler = (_resolver == null) ? Activator.CreateInstance(handlerType) : _resolver.Resolve(handlerType);
+
+            var result =  handleMethod.Invoke(handler, new object[] { context, cancellationToken }) as IAsyncEnumerable<object>;
+
+            return result;
+        }
     }
 }
