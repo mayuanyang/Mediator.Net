@@ -19,7 +19,7 @@ namespace Mediator.Net.Test.TestStreamRequestHandlers
         private readonly ITestOutputHelper _testOutputHelper;
 
         private IMediator _mediator;
-        private IAsyncEnumerable<object> _result;
+        private IAsyncEnumerable<GetGuidResponse> _result;
         private readonly Guid _guid = Guid.NewGuid();
 
         public SendRequestShouldGetMultipleResponse(ITestOutputHelper testOutputHelper)
@@ -65,6 +65,7 @@ namespace Mediator.Net.Test.TestStreamRequestHandlers
             var counter = 0;
             await foreach (var r in _result)
             {
+                r.Index.ShouldBe(counter);
                 _testOutputHelper.WriteLine(counter.ToString());
                 counter++;
             }

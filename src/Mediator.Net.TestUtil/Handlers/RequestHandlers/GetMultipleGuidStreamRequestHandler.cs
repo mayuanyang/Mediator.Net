@@ -22,7 +22,7 @@ namespace Mediator.Net.TestUtil.Handlers.RequestHandlers
             for (var i = 0; i < 5; i++)
             {
                 await Task.Delay(100, cancellationToken);
-                yield return await Task.FromResult(new GetGuidResponse(Guid.NewGuid()));
+                yield return await Task.FromResult(new GetGuidResponse(Guid.NewGuid() ){Index = i});
             }
                 
             

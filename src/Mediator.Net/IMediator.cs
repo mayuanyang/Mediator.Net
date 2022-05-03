@@ -19,7 +19,8 @@ namespace Mediator.Net
         Task<TResponse> RequestAsync<TRequest, TResponse>(TRequest request, CancellationToken cancellationToken = default(CancellationToken)) where TRequest : IRequest where TResponse : IResponse;
         Task<TResponse> RequestAsync<TRequest, TResponse>(IReceiveContext<TRequest> receiveContext, CancellationToken cancellationToken = default(CancellationToken)) where TRequest : IRequest where TResponse : IResponse;
         
-        IAsyncEnumerable<TResponse> CreateStream<TRequest, TResponse>(IReceiveContext<TRequest> receiveContext, CancellationToken cancellationToken = default(CancellationToken)) where TRequest : IRequest where TResponse : IResponse;
-        IAsyncEnumerable<TResponse> CreateStream<TRequest, TResponse>(TRequest request, CancellationToken cancellationToken = default(CancellationToken)) where TRequest : IRequest where TResponse : IResponse;
+        IAsyncEnumerable<TResponse> CreateStream<TRequest, TResponse>(IReceiveContext<TRequest> receiveContext, CancellationToken cancellationToken = default(CancellationToken)) where TRequest : IMessage  where TResponse : IResponse;
+        IAsyncEnumerable<TResponse> CreateStream<TRequest, TResponse>(TRequest request, CancellationToken cancellationToken = default(CancellationToken)) where TRequest : IMessage where TResponse : IResponse;
+        
     }
 }

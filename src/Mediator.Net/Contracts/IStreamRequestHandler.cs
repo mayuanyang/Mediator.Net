@@ -5,7 +5,7 @@ using Mediator.Net.Context;
 
 namespace Mediator.Net.Contracts
 {
-    public interface IStreamRequestHandler<TRequest, TResponse>
+    public interface IStreamRequestHandler<in TRequest, out TResponse>
         where TRequest : class, IRequest
         where TResponse : class, IResponse
     {

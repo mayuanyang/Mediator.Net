@@ -1,8 +1,8 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using Mediator.Net.Binding;
+using Mediator.Net.TestUtil.Handlers.CommandHandlers;
 using Mediator.Net.TestUtil.Handlers.RequestHandlers;
 using Mediator.Net.TestUtil.Messages;
 using Mediator.Net.TestUtil.Middlewares;
@@ -11,21 +11,13 @@ using TestStack.BDDfy;
 using Xunit;
 using Xunit.Abstractions;
 
-namespace Mediator.Net.Test.TestStreamRequestHandlers
+namespace Mediator.Net.Test.TestCommandStreamHandlers
 {
-    
-    public class SendRequestShouldHandleException : TestBase
+    public class CommandCanHaveStreamResponse: TestBase
     {
-        private readonly ITestOutputHelper _testOutputHelper;
-
         private IMediator _mediator;
-        private IAsyncEnumerable<GetGuidResponse> _result;
-        private readonly Guid _guid = Guid.NewGuid();
-
-        public SendRequestShouldHandleException(ITestOutputHelper testOutputHelper)
-        {
-            _testOutputHelper = testOutputHelper;
-        }
+        private IAsyncEnumerable<TestCommandResponse> _result;
+        
         
         void GivenAMediatorAndTwoMiddlewares()
         {
@@ -35,7 +27,7 @@ namespace Mediator.Net.Test.TestStreamRequestHandlers
                 {
                     var binding = new List<MessageBinding>()
                     {
-                        new MessageBinding(typeof(GetGuidRequest), typeof(GetMultipleGuidStreamRequestWithExceptionHandler))
+                        new MessageBinding(typeof(TestCommandWithResponse), typeof(TestCommandWithResponseStreamHandler)),
                     };
                     return binding;
                 })
@@ -48,14 +40,12 @@ namespace Mediator.Net.Test.TestStreamRequestHandlers
                 {
                     x.UseConsoleLogger3();
                 })
-            .Build();
-
-
+                .Build();
         }
 
-        Task WhenARequestIsSent()
+        Task WhenACommandIsSent()
         {
-            _result = _mediator.CreateStream<GetGuidRequest, GetGuidResponse>(new GetGuidRequest(_guid));
+            _result = _mediator.CreateStream<TestCommandWithResponse, TestCommandResponse>(new TestCommandWithResponse());
             
             return Task.CompletedTask;
         }
@@ -63,20 +53,14 @@ namespace Mediator.Net.Test.TestStreamRequestHandlers
         async Task ThenTheResultShouldBeReturn()
         {
             var counter = 0;
-            try
+            await foreach (var r in _result)
             {
-                await foreach (var r in _result)
-                {
-                    r.Index.ShouldBe(counter);
-                    _testOutputHelper.WriteLine(counter.ToString());
-                    counter++;
-                }
+                r.Thing.ShouldBe(counter.ToString());
+                counter++;
             }
-            catch (Exception e)
-            {
-                counter.ShouldBe(2);
-                e.Message.ShouldBe("Exception after 2 response");
-            }
+            
+            counter.ShouldBe(5);
+            
         }
 
         [Fact]

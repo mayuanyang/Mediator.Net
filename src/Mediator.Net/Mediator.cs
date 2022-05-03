@@ -83,13 +83,13 @@ namespace Mediator.Net
 
         public IAsyncEnumerable<TResponse> CreateStream<TRequest, TResponse>(
             IReceiveContext<TRequest> receiveContext,
-            CancellationToken cancellationToken = default(CancellationToken)) where TRequest : IRequest where TResponse : IResponse
+            CancellationToken cancellationToken = default(CancellationToken)) where TRequest : IMessage where TResponse : IResponse
         {
             return  CreateStreamInternal<TRequest,TResponse>(receiveContext, cancellationToken);
         }
 
         public IAsyncEnumerable<TResponse> CreateStream<TRequest, TResponse>(TRequest request,
-            CancellationToken cancellationToken = default) where TRequest : IRequest where TResponse : IResponse
+            CancellationToken cancellationToken = default) where TRequest : IMessage where TResponse : IResponse
         {
             return CreateStreamInternal<TRequest,TResponse>(request, cancellationToken);
         }
