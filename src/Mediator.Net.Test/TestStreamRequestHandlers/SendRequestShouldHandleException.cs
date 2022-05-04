@@ -33,24 +33,20 @@ namespace Mediator.Net.Test.TestStreamRequestHandlers
                     };
                     return binding;
                 })
-                .ConfigureCommandReceivePipe(x =>
+                .ConfigureGlobalReceivePipe(x =>
                 {
-                    x.UseConsoleLogger1();
-                    x.UseConsoleLogger2();
+                    x.UseConsoleLogger3();
                 })
                 .ConfigureRequestPipe(x =>
                 {
                     x.UseConsoleLogger3();
                 })
             .Build();
-
-
         }
 
         Task WhenARequestIsSent()
         {
             _result = _mediator.CreateStream<GetGuidRequest, GetGuidResponse>(new GetGuidRequest(_guid));
-            
             return Task.CompletedTask;
         }
 
@@ -67,7 +63,7 @@ namespace Mediator.Net.Test.TestStreamRequestHandlers
             }
             catch (Exception e)
             {
-                RubishBox.Rublish.Count.ShouldBe(2);
+                RubishBox.Rublish.Count.ShouldBe(3);
                 counter.ShouldBe(2);
                 e.Message.ShouldBe("Exception after 2 response");
             }
@@ -76,7 +72,8 @@ namespace Mediator.Net.Test.TestStreamRequestHandlers
 
         Task AndThenTheMiddlewareShouldOnlyRunOnce()
         {
-            RubishBox.Rublish.Count.ShouldBe(2);
+            TokenRecorder.Recorder.Count.ShouldBe(7);
+            RubishBox.Rublish.Count.ShouldBe(3);
             return Task.CompletedTask;
         }
 
