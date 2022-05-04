@@ -121,6 +121,9 @@ namespace Mediator.Net
         private IAsyncEnumerable<TResponse> CreateStreamInternal<TMessage, TResponse>(TMessage msg, [EnumeratorCancellation] CancellationToken cancellationToken)
             where TMessage : IMessage
         {
+            if (msg is IEvent)
+                throw new NotSupportedException("IEvent is not supported for CreateStream");
+            
             var receiveContext = (IReceiveContext<TMessage>)Activator.CreateInstance(typeof(ReceiveContext<>).MakeGenericType(msg.GetType()), msg);
             RegisterServiceIfRequired(receiveContext);
 
