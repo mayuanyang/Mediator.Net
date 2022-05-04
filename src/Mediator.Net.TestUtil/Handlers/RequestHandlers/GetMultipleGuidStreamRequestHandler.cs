@@ -24,10 +24,6 @@ namespace Mediator.Net.TestUtil.Handlers.RequestHandlers
                 await Task.Delay(100, cancellationToken);
                 yield return await Task.FromResult(new GetGuidResponse(Guid.NewGuid() ){Index = i});
             }
-                
-            
         }
     }
-    
-    
 }
