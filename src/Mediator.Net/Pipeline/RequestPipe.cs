@@ -105,6 +105,12 @@ namespace Mediator.Net.Pipeline
 
             var handler = (_resolver == null) ? Activator.CreateInstance(handlerType) : _resolver.Resolve(handlerType);
 
+            if (TypeUtil.IsAssignableToGenericType(handlerType, typeof(IStreamRequestHandler<,>)))
+            {
+                throw new NotSupportedException(
+                    "Connecting to a IStreamRequestHandler should use the method of mediator.CreateStream");
+            }
+            
             var taskOrAsynEnumerable = handleMethod.Invoke(handler, new object[] { context, cancellationToken });
             switch (taskOrAsynEnumerable)
             {

@@ -132,37 +132,24 @@ namespace Mediator.Net
             return new Mediator(commandReceivePipe, eventReceivePipe, requestPipe, publishPipe, globalReceivePipe, scope);
         }
 
-        private bool IsAssignableToGenericType(Type givenType, Type genericType)
-        {
-            var interfaceTypes = givenType.GetTypeInfo().ImplementedInterfaces;
-
-            if (interfaceTypes.Any(it => it.GetTypeInfo().IsGenericType && it.GetGenericTypeDefinition() == genericType))
-                return true;
-
-            if (givenType.GetTypeInfo().IsGenericType && givenType.GetGenericTypeDefinition() == genericType)
-                return true;
-
-            Type baseType = givenType.GetTypeInfo().BaseType;
-            return baseType != null && IsAssignableToGenericType(baseType, genericType);
-        }
-
+        
         private void ScanRegistration(IEnumerable<TypeInfo> typeInfos)
         {
-            var handlers = typeInfos.Where(x => !x.IsAbstract && (IsAssignableToGenericType(x.AsType(), typeof(ICommandHandler<>)) ||
-                                                                  IsAssignableToGenericType(x.AsType(), typeof(ICommandHandler<,>)) ||
-                                                                  IsAssignableToGenericType(x.AsType(), typeof(IEventHandler<>)) ||
-                                                                  IsAssignableToGenericType(x.AsType(), typeof(IRequestHandler<,>)) ||
-                                                                  IsAssignableToGenericType(x.AsType(), typeof(IStreamRequestHandler<,>)) 
+            var handlers = typeInfos.Where(x => !x.IsAbstract && (TypeUtil.IsAssignableToGenericType(x.AsType(), typeof(ICommandHandler<>)) ||
+                                                                  TypeUtil.IsAssignableToGenericType(x.AsType(), typeof(ICommandHandler<,>)) ||
+                                                                  TypeUtil.IsAssignableToGenericType(x.AsType(), typeof(IEventHandler<>)) ||
+                                                                  TypeUtil.IsAssignableToGenericType(x.AsType(), typeof(IRequestHandler<,>)) ||
+                                                                  TypeUtil.IsAssignableToGenericType(x.AsType(), typeof(IStreamRequestHandler<,>)) 
                                                                   )).ToList();
             foreach (var handler in handlers)
             {
                 foreach (var implementedInterface in handler.ImplementedInterfaces)
                 {
-                    if (IsAssignableToGenericType(implementedInterface, typeof(ICommandHandler<>)) || 
-                        IsAssignableToGenericType(implementedInterface, typeof(ICommandHandler<,>)) || 
-                        IsAssignableToGenericType(implementedInterface, typeof(IEventHandler<>)) || 
-                        IsAssignableToGenericType(implementedInterface, typeof(IRequestHandler<,>)) ||
-                        IsAssignableToGenericType(implementedInterface, typeof(IStreamRequestHandler<,>))
+                    if (TypeUtil.IsAssignableToGenericType(implementedInterface, typeof(ICommandHandler<>)) || 
+                        TypeUtil.IsAssignableToGenericType(implementedInterface, typeof(ICommandHandler<,>)) || 
+                        TypeUtil.IsAssignableToGenericType(implementedInterface, typeof(IEventHandler<>)) || 
+                        TypeUtil.IsAssignableToGenericType(implementedInterface, typeof(IRequestHandler<,>)) ||
+                        TypeUtil.IsAssignableToGenericType(implementedInterface, typeof(IStreamRequestHandler<,>))
                         )
                     {
                         MessageHandlerRegistry.MessageBindings.Add(new MessageBinding(implementedInterface.GenericTypeArguments[0], handler.AsType()));

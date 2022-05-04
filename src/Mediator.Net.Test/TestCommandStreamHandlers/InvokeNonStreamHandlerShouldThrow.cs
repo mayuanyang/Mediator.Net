@@ -1,26 +1,24 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using Mediator.Net.Binding;
+using Mediator.Net.TestUtil.Handlers.CommandHandlers;
 using Mediator.Net.TestUtil.Handlers.RequestHandlers;
 using Mediator.Net.TestUtil.Messages;
 using Mediator.Net.TestUtil.Middlewares;
-using Mediator.Net.TestUtil.TestUtils;
 using Shouldly;
 using TestStack.BDDfy;
 using Xunit;
 using Xunit.Abstractions;
 
-namespace Mediator.Net.Test.TestStreamRequestHandlers
+namespace Mediator.Net.Test.TestCommandStreamHandlers
 {
-    
-    public class SendRequestShouldHandleException : TestBase
+    public class InvokeNonStreamHandlerShouldThrow: TestBase
     {
         private IMediator _mediator;
-        private IAsyncEnumerable<GetGuidResponse> _result;
-        private readonly Guid _guid = Guid.NewGuid();
-
+        private Func<Task<TestCommandResponse>> _invokation;
+        
+        
         void GivenAMediatorAndTwoMiddlewares()
         {
             ClearBinding();
@@ -29,7 +27,7 @@ namespace Mediator.Net.Test.TestStreamRequestHandlers
                 {
                     var binding = new List<MessageBinding>()
                     {
-                        new MessageBinding(typeof(GetGuidRequest), typeof(GetMultipleGuidStreamRequestWithExceptionHandler))
+                        new MessageBinding(typeof(TestCommandWithResponse), typeof(TestCommandWithResponseStreamHandler)),
                     };
                     return binding;
                 })
@@ -42,42 +40,23 @@ namespace Mediator.Net.Test.TestStreamRequestHandlers
                 {
                     x.UseConsoleLogger3();
                 })
-            .Build();
-
-
+                .Build();
         }
 
-        Task WhenARequestIsSent()
+        Task WhenACommandIsSent()
         {
-            _result = _mediator.CreateStream<GetGuidRequest, GetGuidResponse>(new GetGuidRequest(_guid));
+            _invokation = () => _mediator.SendAsync<TestCommandWithResponse, TestCommandResponse>(new TestCommandWithResponse());
             
             return Task.CompletedTask;
         }
 
-        async Task ThenTheResultShouldBeReturn()
+        Task ThenItShouldThrowNotSupportedException()
         {
-            var counter = 0;
-            try
-            {
-                await foreach (var r in _result)
-                {
-                    r.Index.ShouldBe(counter);
-                    counter++;
-                }
-            }
-            catch (Exception e)
-            {
-                RubishBox.Rublish.Count.ShouldBe(2);
-                counter.ShouldBe(2);
-                e.Message.ShouldBe("Exception after 2 response");
-            }
-            
-        }
+            _invokation.ShouldThrow<NotSupportedException>(
+                "Connecting to a IStreamRequestHandler should use the method of mediator.CreateStream");
 
-        Task AndThenTheMiddlewareShouldOnlyRunOnce()
-        {
-            RubishBox.Rublish.Count.ShouldBe(2);
             return Task.CompletedTask;
+            
         }
 
         [Fact]
