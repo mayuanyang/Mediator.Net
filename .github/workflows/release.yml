@@ -2,9 +2,10 @@ name: Pack and release
 
 on:
   push:
+    branches:
+      - dev*
     tags:
       - *
-
 jobs:
   pack_and_release:
     runs-on: ubuntu-latest
