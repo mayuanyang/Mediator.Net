@@ -24,8 +24,13 @@ jobs:
         run: dotnet build --configuration Release --no-restore
       - name: Test
         run: dotnet test src\Mediator.Net.Test\Mediator.Net.Test.csproj -c Release --verbosity normal
+      - name: Test Autofac
         run: dotnet test src\Mediator.Net.Autofac.Test\Mediator.Net.Autofac.Test.csproj -c Release --verbosity normal
+      - name: Test StructureMap
         run: dotnet test src\Mediator.Net.StructureMap.Test\Mediator.Net.StructureMap.Test.csproj -c Release --verbosity normal
+      - name: Test SimpleInjector
         run: dotnet test src\Mediator.Net.SimpleInjector.Test\Mediator.Net.SimpleInjector.Test.csproj -c Release --verbosity normal
+      - name: Test MicrosoftDependencyInjection
         run: dotnet test src\Mediator.Net.MicrosoftDependencyInjection.Test\Mediator.Net.MicrosoftDependencyInjection.Test.csproj -c Release --verbosity normal
+      - name: Test WebApiSample
         run: dotnet test src\Mediator.Net.WebApiSample.Test\Mediator.Net.WebApiSample.Test.csproj -c Release --verbosity normal
