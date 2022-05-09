@@ -22,8 +22,14 @@ jobs:
         run: dotnet restore Mediator.Net.sln
       - name: Build
         run: dotnet build --configuration Release --no-restore
-      - name: Test with cover
-        run: dotnet test Mediator.Net.sln --configuration Release --no-build --verbosity normal --collect:"XPlat Code Coverage" --results-directory ./coverage
+      - name: Test
+        run: |
+          dotnet test "src\Mediator.Net.Test\Mediator.Net.Test.csproj" -c Debug --verbosity normal --collect:"XPlat Code Coverage" --results-directory ./coverage
+          dotnet test "src\Mediator.Net.Autofac.Test\Mediator.Net.Autofac.Test.csproj" -c Release --verbosity normal --collect:"XPlat Code Coverage" --results-directory ./coverage
+          dotnet test "src\Mediator.Net.StructureMap.Test\Mediator.Net.StructureMap.Test.csproj" -c Release --verbosity normal --collect:"XPlat Code Coverage" --results-directory ./coverage
+          dotnet test "src\Mediator.Net.SimpleInjector.Test\Mediator.Net.SimpleInjector.Test.csproj" -c Release --verbosity normal --collect:"XPlat Code Coverage" --results-directory ./coverage
+          dotnet test "src\Mediator.Net.MicrosoftDependencyInjection.Test\Mediator.Net.MicrosoftDependencyInjection.Test.csproj" -c Release --verbosity normal --collect:"XPlat Code Coverage" --results-directory ./coverage
+          dotnet test "src\Mediator.Net.WebApiSample.Test\Mediator.Net.WebApiSample.Test.csproj" -c Release --verbosity normal --collect:"XPlat Code Coverage" --results-directory ./coverage
       - name: Copy Coverage To Predictable Location
         run: cp coverage/**/coverage.cobertura.xml coverage.cobertura.xml
       - name: Code Coverage Summary Report
