@@ -1,0 +1,38 @@
+name: Pack and release
+
+on: [push]
+
+jobs:
+  build_and_test:
+    runs-on: ubuntu-latest
+    env:
+      DOTNET_CLI_TELEMETRY_OPTOUT: 1
+      DOTNET_SKIP_FIRST_TIME_EXPERIENCE: 1
+      NUGET_XMLDOC_MODE: skip
+    steps:
+      - uses: actions/checkout@v3
+      - name: Setup .NET Core 3.1
+        uses: actions/setup-dotnet@v2
+        with:
+          dotnet-version: |
+            3.1.x
+            5.0.x
+            6.0.x
+      - name: Install dependencies
+        run: dotnet restore Mediator.Net.sln
+      - name: Build
+        run: dotnet build --configuration Release --no-restore
+      - name: Pack
+        run: |
+          dotnet pack "src\Mediator.Net" -c Release --no-build -o artifacts
+          dotnet pack "src\Mediator.Net.Autofac" -c Release --no-build -o artifacts
+          dotnet pack "src\Mediator.Net.StructureMap" -c Release --no-build -o artifacts
+          dotnet pack "src\Mediator.Net.Ninject" -c Release --no-build -o artifacts
+          dotnet pack "src\Mediator.Net.SimpleInjector" -c Release --no-build -o artifacts
+          dotnet pack "src\Mediator.Net.Middlewares.Serilog" -c Release --no-build -o artifacts
+          dotnet pack "src\Mediator.Net.TestUtil" -c Release --no-build -o artifacts
+          dotnet pack "src\Mediator.Net.MicrosoftDependencyInjection" -c Release --no-build -o artifacts
+      - name: Push to nuget
+        run: dotnet nuget push **/artifacts/*.nupkg --source https://api.nuget.org/v3/index.json --api-key ${NUGET_API_KEY} --skip-duplicate
+        env:
+          NUGET_API_KEY: ${{ secrets.NUGET_API_KEY }}
