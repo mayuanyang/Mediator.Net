@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Reflection;
 using System.Threading;
@@ -12,6 +13,40 @@ namespace Mediator.Net.Pipeline
     {
         private readonly IPipeSpecification<TContext> _specification;
 
+
+        public async IAsyncEnumerable<TResponse> ConnectStream<TResponse>(TContext context, CancellationToken cancellationToken)
+        {
+            IAsyncEnumerable<TResponse> result = null;
+            try
+            {
+                await _specification.BeforeExecute(context, cancellationToken).ConfigureAwait(false);
+                await _specification.Execute(context, cancellationToken).ConfigureAwait(false);
+                if (Next != null)
+                {
+                    result = Next.ConnectStream<TResponse>(context, cancellationToken);
+                }
+                else
+                {
+                    result = ConnectToStreamPipe<TResponse>(context, cancellationToken);
+                }
+
+                await _specification.AfterExecute(context, cancellationToken).ConfigureAwait(false);
+            }
+            catch (TargetInvocationException e)
+            {
+                await _specification.OnException(e.InnerException, context).ConfigureAwait(false);
+            }
+            catch (Exception e)
+            {
+                await _specification.OnException(e, context).ConfigureAwait(false);
+            }
+
+            if (result == null) yield break;
+            await foreach (var item in result.WithCancellation(cancellationToken).ConfigureAwait(false))
+            {
+                yield return item;
+            }
+        }
 
         public IPipe<TContext> Next { get; }
 
@@ -82,6 +117,32 @@ namespace Mediator.Net.Pipeline
             }
 
             return (object)null;
+        }
+        
+        private IAsyncEnumerable<TResponse> ConnectToStreamPipe<TResponse>(TContext context, CancellationToken cancellationToken)
+        {
+            switch (context.Message)
+            {
+                case ICommand _:
+                {
+                    if (context.TryGetService(out ICommandReceivePipe<IReceiveContext<ICommand>> commandPipe))
+                    {
+                        return commandPipe.ConnectStream<TResponse>((IReceiveContext<ICommand>)context, cancellationToken);
+                    }
+
+                    break;
+                }
+
+                case IEvent _:
+                {
+                    throw new NotSupportedException("Stream is not supported for IEvent");
+                }
+
+                case IRequest _ when context.TryGetService(out IRequestReceivePipe<IReceiveContext<IRequest>> requestPipe):
+                    return requestPipe.ConnectStream<TResponse>((IReceiveContext<IRequest>)context, cancellationToken);
+            }
+
+            return null;
         }
     }
 }

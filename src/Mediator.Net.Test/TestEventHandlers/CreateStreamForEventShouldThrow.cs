@@ -12,10 +12,11 @@ using Xunit;
 namespace Mediator.Net.Test.TestEventHandlers
 {
     
-    public class EventCanBePublishToSingleHandler : TestBase
+    public class CreateStreamForEventShouldThrow : TestBase
     {
         private IMediator _mediator;
-        
+        private Func<IAsyncEnumerable<TestCommandResponse>> _invokation;
+
         void GivenAMediator()
         {
             ClearBinding();
@@ -28,14 +29,15 @@ namespace Mediator.Net.Test.TestEventHandlers
             
         }
 
-        async Task WhenAEventIsPublished()
+        Task WhenAEventIsPublished()
         {
-            await _mediator.PublishAsync(new TestEvent(Guid.NewGuid()));
+            _invokation = () => _mediator.CreateStream<TestEvent, TestCommandResponse>(new TestEvent(Guid.NewGuid()));
+            return Task.CompletedTask;
         }
 
-        void ThenItShouldReachTheRightHandler()
+        void ThenItShouldThrow()
         {
-            RubishBox.Rublish.Contains(nameof(TestEventHandler)).ShouldBeTrue();
+            _invokation.ShouldThrow<NotSupportedException>("IEvent is not supported for CreateStream");
         }
 
         [Fact]

@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Reflection;
+using System.Runtime.CompilerServices;
 using System.Threading;
 using System.Threading.Tasks;
 using Mediator.Net.Context;
@@ -79,6 +81,19 @@ namespace Mediator.Net
             return (TResponse)result;
         }
 
+        public IAsyncEnumerable<TResponse> CreateStream<TRequest, TResponse>(
+            IReceiveContext<TRequest> receiveContext,
+            CancellationToken cancellationToken = default(CancellationToken)) where TRequest : IMessage where TResponse : IResponse
+        {
+            return  CreateStreamInternal<TRequest,TResponse>(receiveContext, cancellationToken);
+        }
+
+        public IAsyncEnumerable<TResponse> CreateStream<TRequest, TResponse>(TRequest request,
+            CancellationToken cancellationToken = default) where TRequest : IMessage where TResponse : IResponse
+        {
+            return CreateStreamInternal<TRequest,TResponse>(request, cancellationToken);
+        }
+
         private async Task<TResponse> SendMessage<TMessage, TResponse>(TMessage msg, CancellationToken cancellationToken)
             where TMessage : IMessage
         {
@@ -93,6 +108,26 @@ namespace Mediator.Net
             var result = await task.ConfigureAwait(false);
 
             return (TResponse)(receiveContext.Result ?? result);
+        }
+        
+        private IAsyncEnumerable<TResponse> CreateStreamInternal<TMessage, TResponse>(IReceiveContext<TMessage> customReceiveContext, [EnumeratorCancellation] CancellationToken cancellationToken)
+            where TMessage : IMessage
+        {
+            RegisterServiceIfRequired(customReceiveContext);
+
+            return _globalPipe.ConnectStream<TResponse>((IReceiveContext<IMessage>)customReceiveContext, cancellationToken);
+        }
+        
+        private IAsyncEnumerable<TResponse> CreateStreamInternal<TMessage, TResponse>(TMessage msg, [EnumeratorCancellation] CancellationToken cancellationToken)
+            where TMessage : IMessage
+        {
+            if (msg is IEvent)
+                throw new NotSupportedException("IEvent is not supported for CreateStream");
+            
+            var receiveContext = (IReceiveContext<TMessage>)Activator.CreateInstance(typeof(ReceiveContext<>).MakeGenericType(msg.GetType()), msg);
+            RegisterServiceIfRequired(receiveContext);
+
+            return _globalPipe.ConnectStream<TResponse>((IReceiveContext<IMessage>)receiveContext, cancellationToken);
         }
         
         private async Task<object> SendMessage<TMessage>(TMessage msg, CancellationToken cancellationToken)

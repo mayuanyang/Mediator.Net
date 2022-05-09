@@ -62,6 +62,40 @@ public async Task Handle(IReceiveContext<DerivedTestBaseCommand> context, Cancel
 }
 ```
 
+### Create stream of responses
+
+Sometimes you might want to get multiple reponses by one request or command, you can do that by using the `CreateStream` method
+
+```
+// Define a StreamHandler by implementing the IStreamRequestHandler or IStreamCommandHandler interfaces for IRequest and ICommand
+public class GetMultipleGuidStreamRequestHandler : IStreamRequestHandler<GetGuidRequest, GetGuidResponse>
+{
+    public async IAsyncEnumerable<GetGuidResponse> Handle(IReceiveContext<GetGuidRequest> context, [EnumeratorCancellation] CancellationToken cancellationToken)
+    {
+        for (var i = 0; i < 5; i++)
+        {
+            await Task.Delay(100, cancellationToken);
+            yield return await Task.FromResult(new GetGuidResponse(Guid.NewGuid() ){Index = i});
+        }
+    }
+}
+
+// You can now get multiple reponses back by using this
+IAsyncEnumerable<GetGuiResponse> result = mediator.CreateStream<GetGuidRequest, GetGuidResponse>(new GetGuidRequest(_guid));
+
+await foreach (var r in result)
+{
+  Console.WriteLine(r.Id.ToString());
+}
+
+```
+
+How about EventHandler?
+What would be the use cases of a stream of events? So it is currently not supported
+
+How about middleware?
+You can use middleware as normal, keep in mind that middleware will only get invoked once for each IRequest or ICommand thought that multiple reponses might return
+
 ### Handling message from handler
 
 Once a message is sent, it will reach its handlers, you can only have one handler for ICommand and IRequest and can have multi handlers for IEvent. ReceiveContext<T> will be delivered to the handler.

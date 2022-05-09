@@ -31,7 +31,6 @@ namespace Mediator.Net.Pipeline
 
         public async Task<object> Connect(TContext context, CancellationToken cancellationToken)
         {
-            object result = null;
             try
             {
                 await _specification.BeforeExecute(context, cancellationToken).ConfigureAwait(false);
@@ -49,6 +48,11 @@ namespace Mediator.Net.Pipeline
                 await _specification.OnException(e, context).ConfigureAwait(false);
             }
             return null;
+        }
+
+        public IAsyncEnumerable<TResponse> ConnectStream<TResponse>(TContext context, CancellationToken cancellationToken)
+        {
+            throw new NotSupportedException("Stream is not supported in EventReceivePipe");
         }
 
         public IPipe<TContext> Next { get; }

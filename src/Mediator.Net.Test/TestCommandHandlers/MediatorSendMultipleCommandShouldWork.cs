@@ -15,8 +15,6 @@ namespace Mediator.Net.Test.TestCommandHandlers
     public class MediatorSendMultipleCommandShouldWork : TestBase
     {
         private IMediator _mediator;
-        private Task _task1;
-        private Task _task2;
 
         public MediatorSendMultipleCommandShouldWork()
         {

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Threading;
@@ -55,6 +56,12 @@ namespace Mediator.Net.Pipeline
             }
             return null;
         }
+
+        public IAsyncEnumerable<TResponse> ConnectStream<TResponse>(TContext context, CancellationToken cancellationToken)
+        {
+            throw new NotSupportedException("Stream is not supported in event pipeline");
+        }
+
 
         public IPipe<TContext> Next { get; }
     }

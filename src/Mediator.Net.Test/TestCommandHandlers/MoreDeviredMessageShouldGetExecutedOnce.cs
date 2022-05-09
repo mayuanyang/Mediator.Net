@@ -15,8 +15,7 @@ namespace Mediator.Net.Test.TestCommandHandlers
     public class MoreDeviredMessageShouldGetExecutedOnce : TestBase
     {
         private IMediator _mediator;
-        private Task _task;
-
+        
         public MoreDeviredMessageShouldGetExecutedOnce()
         {
             ClearBinding();

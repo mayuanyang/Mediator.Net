@@ -29,7 +29,7 @@ namespace Mediator.Net.TestUtil.Middlewares
         public Task BeforeExecute(TContext context, CancellationToken cancellationToken)
         {
             TokenRecorder.Recorder.Add(cancellationToken.GetHashCode());
-            return Task.FromResult(0);
+            return Task.CompletedTask;
         }
 
         public Task Execute(TContext context, CancellationToken cancellationToken)
@@ -39,14 +39,14 @@ namespace Mediator.Net.TestUtil.Middlewares
                 TokenRecorder.Recorder.Add(cancellationToken.GetHashCode());
                 RubishBox.Rublish.Add(nameof(ConsoleLog1.UseConsoleLogger1));
             }
-            return Task.FromResult(0);
+            return Task.CompletedTask;
         }
 
         public Task AfterExecute(TContext context, CancellationToken cancellationToken)
         {
             if (ShouldExecute(context, cancellationToken))
                 TokenRecorder.Recorder.Add(cancellationToken.GetHashCode());
-            return Task.FromResult(0);
+            return Task.CompletedTask;
         }
 
         public Task OnException(Exception ex, TContext context)
