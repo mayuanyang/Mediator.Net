@@ -2,8 +2,6 @@ name: Pack and release
 
 on:
   push:
-    branches:
-      - dev*
     tags:
       - *
 
