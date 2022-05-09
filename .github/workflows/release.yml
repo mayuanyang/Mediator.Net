@@ -2,10 +2,13 @@ name: Pack and release
 
 on:
   push:
+    # Sequence of patterns matched against refs/heads
     branches:
-      - dev*
+      - "main"
+      - "dev*"
+    # Sequence of patterns matched against refs/tags
     tags:
-      - *
+      - "*"
 jobs:
   pack_and_release:
     runs-on: ubuntu-latest
