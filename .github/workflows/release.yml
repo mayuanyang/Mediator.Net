@@ -1,9 +1,14 @@
 name: Pack and release
 
-on: [push]
+on:
+  push:
+    branches:
+      - dev*
+    tags:
+      - *
 
 jobs:
-  build_and_test:
+  pack_and_release:
     runs-on: ubuntu-latest
     env:
       DOTNET_CLI_TELEMETRY_OPTOUT: 1
