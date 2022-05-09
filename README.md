@@ -3,6 +3,7 @@
 ![Build status](https://ci.appveyor.com/api/projects/status/j42okw862yjgdeo9?svg=true)
 ![example workflow](https://github.com/mayuanyang/Mediator.Net/actions/workflows/ci.yml/badge.svg)
 ![example workflow](https://github.com/mayuanyang/Mediator.Net/actions/workflows/release.yml/badge.svg)
+[![codecov](https://codecov.io/gh/mayuanyang/Mediator.Net/branch/master/graph/badge.svg?token=MuQkMlLAcG)](https://codecov.io/gh/mayuanyang/Mediator.Net)
 
 # Mediator.Net
 
