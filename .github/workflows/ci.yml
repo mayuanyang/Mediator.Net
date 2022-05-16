@@ -1,0 +1,37 @@
+name: Build and Test
+
+on: [push]
+
+jobs:
+  build_and_test:
+    runs-on: ubuntu-latest
+    env:
+      DOTNET_CLI_TELEMETRY_OPTOUT: 1
+      DOTNET_SKIP_FIRST_TIME_EXPERIENCE: 1
+      NUGET_XMLDOC_MODE: skip
+    steps:
+      - uses: actions/checkout@v3
+      - name: Setup .NET Core 3.1
+        uses: actions/setup-dotnet@v2
+        with:
+          dotnet-version: |
+            3.1.x
+            5.0.x
+            6.0.x
+      - name: Install dependencies
+        run: dotnet restore Mediator.Net.sln
+      - name: Build
+        run: dotnet build --configuration Release --no-restore
+      - name: Test
+        run: |
+          dotnet test "src\Mediator.Net.Test\Mediator.Net.Test.csproj" -c Debug --verbosity normal --collect:"XPlat Code Coverage" --results-directory ./coverage
+          dotnet test "src\Mediator.Net.Autofac.Test\Mediator.Net.Autofac.Test.csproj" -c Release --verbosity normal --collect:"XPlat Code Coverage" --results-directory ./coverage
+          dotnet test "src\Mediator.Net.StructureMap.Test\Mediator.Net.StructureMap.Test.csproj" -c Release --verbosity normal --collect:"XPlat Code Coverage" --results-directory ./coverage
+          dotnet test "src\Mediator.Net.SimpleInjector.Test\Mediator.Net.SimpleInjector.Test.csproj" -c Release --verbosity normal --collect:"XPlat Code Coverage" --results-directory ./coverage
+          dotnet test "src\Mediator.Net.MicrosoftDependencyInjection.Test\Mediator.Net.MicrosoftDependencyInjection.Test.csproj" -c Release --verbosity normal --collect:"XPlat Code Coverage" --results-directory ./coverage
+          dotnet test "src\Mediator.Net.WebApiSample.Test\Mediator.Net.WebApiSample.Test.csproj" -c Release --verbosity normal --collect:"XPlat Code Coverage" --results-directory ./coverage
+      - name: Upload coverage to Codecov
+        uses: codecov/codecov-action@v2
+        with:
+          directory: ./coverage/
+          verbose: true
