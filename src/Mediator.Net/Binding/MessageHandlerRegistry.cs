@@ -9,7 +9,7 @@ namespace Mediator.Net.Binding
 
         public HashSet<MessageBinding> MessageBindings
         {
-            get => _messageBindings ?? (_messageBindings = new HashSet<MessageBinding>());
+            get => _messageBindings ??= new HashSet<MessageBinding>();
             internal set => _messageBindings = value;
         }
         
