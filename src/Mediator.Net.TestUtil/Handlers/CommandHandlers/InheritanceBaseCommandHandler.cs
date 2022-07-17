@@ -17,14 +17,4 @@ namespace Mediator.Net.TestUtil.Handlers.CommandHandlers
             await DoWork("From parent");
         }
     }
-
-    public class ChildCommandHandler : InheritanceBaseCommandHandler
-    {
-        public override async Task DoWork(string thing)
-        {
-            RubishBox.Rublish.Add(thing);
-            await Task.WhenAll();
-        }
-    }
-
 }

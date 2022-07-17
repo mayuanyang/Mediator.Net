@@ -105,7 +105,7 @@ namespace Mediator.Net.Pipeline
             var handlerType = binding.HandlerType;
             var messageType = context.Message.GetType();
 
-            var handleMethod = handlerType.GetRuntimeMethods().Single(m => PipeHelper.IsHandleMethod(m, messageType));
+            var handleMethod = handlerType.GetRuntimeMethods().Single(m => PipeHelper.IsHandleMethod(m, messageType, false));
 
             var handler = (_resolver == null) ? Activator.CreateInstance(handlerType) : _resolver.Resolve(handlerType);
 
@@ -134,7 +134,7 @@ namespace Mediator.Net.Pipeline
             var handlerType = binding.HandlerType;
             var messageType = context.Message.GetType();
 
-            var handleMethod = handlerType.GetRuntimeMethods().Single(m => PipeHelper.IsHandleMethod(m, messageType));
+            var handleMethod = handlerType.GetRuntimeMethods().Single(m => PipeHelper.IsHandleMethod(m, messageType, false));
 
             var handler = (_resolver == null) ? Activator.CreateInstance(handlerType) : _resolver.Resolve(handlerType);
 
