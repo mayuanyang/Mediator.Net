@@ -9,6 +9,23 @@ namespace Mediator.Net.TestUtil.Messages
         {
             Id = id;
         }
+
         public Guid Id { get; set; }
     }
+
+    public class ChildCommand : InheritanceCommand
+    {
+        public ChildCommand(Guid id): base(id)
+        {
+            
+        }
+        
+    }
+
+    public class InheritanceCombinedResponse : IResponse
+    {
+        public Guid Id { get; set; }
+    }
+
+
 }
