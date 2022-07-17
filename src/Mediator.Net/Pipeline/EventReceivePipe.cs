@@ -66,11 +66,14 @@ namespace Mediator.Net.Pipeline
                 var handlerType = handlerBinding.HandlerType;
                 var messageType = context.Message.GetType();
 
-                var handleMethod = handlerType.GetRuntimeMethods().Single(m => PipeHelper.IsHandleMethod(m, messageType));
+                var handleMethods = handlerType.GetRuntimeMethods().Where(m => PipeHelper.IsHandleMethod(m, messageType, true));
 
-                var handler = (_resolver == null) ? Activator.CreateInstance(handlerType) : _resolver.Resolve(handlerType);
-                var task = (Task)handleMethod.Invoke(handler, new object[] { context, cancellationToken });
-                await task.ConfigureAwait(false);
+                foreach (var handleMethod in handleMethods)
+                {
+                    var handler = (_resolver == null) ? Activator.CreateInstance(handlerType) : _resolver.Resolve(handlerType);
+                    var task = (Task)handleMethod.Invoke(handler, new object[] { context, cancellationToken });
+                    await task.ConfigureAwait(false);    
+                }
             }
         }
     }

@@ -12,6 +12,16 @@ namespace Mediator.Net.TestUtil.Messages
 
         public Guid Id { get; set; }
     }
+    
+    public class ParentCommand : ICommand
+    {
+        public ParentCommand(Guid id)
+        {
+            Id = id;
+        }
+
+        public Guid Id { get; set; }
+    }
 
     public class ChildCommand : InheritanceCommand
     {

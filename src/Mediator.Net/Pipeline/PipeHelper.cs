@@ -22,10 +22,21 @@ namespace Mediator.Net.Pipeline
             return handlerBindings;
         }
 
-        public static bool IsHandleMethod(MethodInfo m, Type messageType)
+        public static bool IsHandleMethod(MethodInfo m, Type messageType, bool isForEvent)
         {
+            var exactMatch = m.Name == "Handle" && m.IsPublic && m.GetParameters().Any()
+                             && (m.GetParameters()[0].ParameterType.GenericTypeArguments.Contains(messageType) ||
+                                 m.GetParameters()[0].ParameterType.GenericTypeArguments.First().GetTypeInfo()
+                                     .Equals(messageType.GetTypeInfo()));
+            if (!isForEvent) return exactMatch;
+            
+            if (exactMatch)
+                return true;
             return m.Name == "Handle" && m.IsPublic && m.GetParameters().Any()
-                   && (m.GetParameters()[0].ParameterType.GenericTypeArguments.Contains(messageType) || m.GetParameters()[0].ParameterType.GenericTypeArguments.First().GetTypeInfo().Equals(messageType.GetTypeInfo()));
+                   && (m.GetParameters()[0].ParameterType.GenericTypeArguments.Contains(messageType) ||
+                       m.GetParameters()[0].ParameterType.GenericTypeArguments.First().GetTypeInfo()
+                           .IsAssignableFrom(messageType.GetTypeInfo()));
+
         }
 
         public static object GetResultFromTask(Task task)

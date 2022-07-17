@@ -31,7 +31,7 @@ namespace Mediator.Net.Test.TestCommandHandlers
 
             var parentId = Guid.NewGuid();
 
-            await mediator.SendAsync(new InheritanceCommand(parentId));
+            await mediator.SendAsync(new ParentCommand(parentId));
             RubishBox.Rublish.Single(x => (Guid)x == parentId);
         }
 
@@ -43,7 +43,7 @@ namespace Mediator.Net.Test.TestCommandHandlers
             var parentId = Guid.NewGuid();
             var childId = Guid.NewGuid();
 
-            var parentResponse = await mediator.SendAsync<InheritanceCommand, InheritanceCombinedResponse>(new InheritanceCommand(parentId));
+            var parentResponse = await mediator.SendAsync<ParentCommand, InheritanceCombinedResponse>(new ParentCommand(parentId));
             var childResponse = await mediator.SendAsync<ChildCommand, InheritanceCombinedResponse>(new ChildCommand(childId));
             
             parentResponse.Id.ShouldBe(parentId);
@@ -54,18 +54,17 @@ namespace Mediator.Net.Test.TestCommandHandlers
         {
             var builder = new MediatorBuilder();
 
-            builder.RegisterHandlers(() =>
+            return builder.RegisterHandlers(() =>
             {
                 var binding = new List<MessageBinding>
                 {
-                    new MessageBinding(typeof(InheritanceCommand), withResponse ? typeof(InheritanceCombinedWithResponseHandler) : typeof(InheritanceCombinedHandler)),
-                    new MessageBinding(typeof(ChildCommand), withResponse ? typeof(InheritanceCombinedWithResponseHandler) : typeof(InheritanceCombinedHandler)),
+                    new MessageBinding(typeof(ParentCommand), withResponse ? typeof(ParentAndChildCommandCombinedWithResponseHandler) : typeof(ParentAndChildCommandCombinedHandler)),
+                    new MessageBinding(typeof(ChildCommand), withResponse ? typeof(ParentAndChildCommandCombinedWithResponseHandler) : typeof(ParentAndChildCommandCombinedHandler)),
                 };
 
 
                 return binding;
             }).Build();
-            return builder.Build();
         }
     }
 }

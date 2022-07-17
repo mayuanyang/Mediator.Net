@@ -27,6 +27,7 @@ namespace Mediator.Net.SimpleInjector.Test.Tests
                     x.UseSimpleMiddleware();
                 });
             _container = new Container();
+            _container.Options.AllowOverridingRegistrations = true;
             _container.Options.DefaultScopedLifestyle = new LifetimeScopeLifestyle();
             _container.Register<SimpleService>();
             _container.Register<AnotherSimpleService>();
