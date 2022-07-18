@@ -34,9 +34,9 @@ namespace Mediator.Net.TestUtil.Handlers.RequestHandlers
         }
     }
 
-    public class SimpleRequestThrowArgumentExceptionHandler : IRequestHandler<SimpleRequest, SimpleResponse>
+    public class SimpleRequestThrowArgumentExceptionHandler : IRequestHandler<SimpleRequest2, SimpleResponse>
     {
-        public Task<SimpleResponse> Handle(IReceiveContext<SimpleRequest> context, CancellationToken cancellationToken)
+        public Task<SimpleResponse> Handle(IReceiveContext<SimpleRequest2> context, CancellationToken cancellationToken)
         {
             throw new ArgumentException("cba");
         }

@@ -53,7 +53,7 @@ namespace Mediator.Net.Test.TestException
             {
                 var binding = new List<MessageBinding>
                 {
-                    new MessageBinding(typeof(SimpleRequest), typeof(SimpleRequestThrowArgumentExceptionHandler)),
+                    new MessageBinding(typeof(SimpleRequest2), typeof(SimpleRequestThrowArgumentExceptionHandler)),
                 };
                 return binding;
             }).Build();
@@ -61,7 +61,7 @@ namespace Mediator.Net.Test.TestException
             bool testChecked = false;
             try
             {
-                await mediator.RequestAsync<SimpleRequest, SimpleResponse>(new SimpleRequest("test"));
+                await mediator.RequestAsync<SimpleRequest2, SimpleResponse>(new SimpleRequest2());
             }
             catch (ArgumentException e)
             {
@@ -81,7 +81,7 @@ namespace Mediator.Net.Test.TestException
             {
                 var binding = new List<MessageBinding>
                 {
-                    new MessageBinding(typeof(SimpleEvent), typeof(SimpleEventThrowArgumentExceptionHandler)),
+                    new MessageBinding(typeof(SimpleEvent2), typeof(SimpleEventThrowArgumentExceptionHandler)),
                 };
                 return binding;
             }).Build();
@@ -89,7 +89,7 @@ namespace Mediator.Net.Test.TestException
             bool testChecked = false;
             try
             {
-                await mediator.PublishAsync(new SimpleEvent(Guid.NewGuid()));
+                await mediator.PublishAsync(new SimpleEvent2());
             }
             catch (ArgumentException e)
             {

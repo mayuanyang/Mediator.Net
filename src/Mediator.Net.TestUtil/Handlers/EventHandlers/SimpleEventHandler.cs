@@ -22,9 +22,9 @@ namespace Mediator.Net.TestUtil.Handlers.EventHandlers
         }
     }
     
-    public class SimpleEventThrowArgumentExceptionHandler : IEventHandler<SimpleEvent>
+    public class SimpleEventThrowArgumentExceptionHandler : IEventHandler<SimpleEvent2>
     {
-        public async Task Handle(IReceiveContext<SimpleEvent> context, CancellationToken cancellationToken)
+        public async Task Handle(IReceiveContext<SimpleEvent2> context, CancellationToken cancellationToken)
         {
             throw new ArgumentException("aaa");
         }
