@@ -49,8 +49,9 @@ namespace Mediator.Net.TestUtil.Middlewares
             return Task.CompletedTask;
         }
 
-        public Task OnException(Exception ex, TContext context)
+        public async Task OnException(Exception ex, TContext context)
         {
+            await Task.CompletedTask;
             RubishBox.Rublish.Add(ex);
             ExceptionDispatchInfo.Capture(ex).Throw();
             throw ex;

@@ -78,11 +78,13 @@ namespace Mediator.Net.Pipeline
             catch (TargetInvocationException e)
             {
                 var task = _specification.OnException(e.InnerException, context);
+                await task.ConfigureAwait(false);
                 result = PipeHelper.GetResultFromTask(task);
             }
             catch (Exception e)
             {
                 var task = _specification.OnException(e, context);
+                await task.ConfigureAwait(false);
                 result = PipeHelper.GetResultFromTask(task);
             }
             return context.Result ?? result;
