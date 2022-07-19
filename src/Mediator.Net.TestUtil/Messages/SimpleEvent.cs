@@ -12,4 +12,9 @@ namespace Mediator.Net.TestUtil.Messages
             Id = id;
         }
     }
+
+    public class SimpleEvent2 : IEvent
+    {
+        
+    }
 }

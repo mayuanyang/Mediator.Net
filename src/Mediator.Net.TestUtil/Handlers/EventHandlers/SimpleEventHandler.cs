@@ -1,4 +1,5 @@
-﻿using System.Threading;
+﻿using System;
+using System.Threading;
 using System.Threading.Tasks;
 using Mediator.Net.Context;
 using Mediator.Net.Contracts;
@@ -18,6 +19,14 @@ namespace Mediator.Net.TestUtil.Handlers.EventHandlers
         public Task Handle(IReceiveContext<SimpleEvent> context, CancellationToken cancellationToken)
         {
             return Task.FromResult(0);
+        }
+    }
+    
+    public class SimpleEventThrowArgumentExceptionHandler : IEventHandler<SimpleEvent2>
+    {
+        public async Task Handle(IReceiveContext<SimpleEvent2> context, CancellationToken cancellationToken)
+        {
+            throw new ArgumentException("aaa");
         }
     }
 }

@@ -1,4 +1,5 @@
-﻿using System.Threading;
+﻿using System;
+using System.Threading;
 using System.Threading.Tasks;
 using Mediator.Net.Context;
 using Mediator.Net.Contracts;
@@ -30,6 +31,14 @@ namespace Mediator.Net.TestUtil.Handlers.RequestHandlers
             CancellationToken cancellationToken)
         {
             throw new System.NotImplementedException();
+        }
+    }
+
+    public class SimpleRequestThrowArgumentExceptionHandler : IRequestHandler<SimpleRequest2, SimpleResponse>
+    {
+        public Task<SimpleResponse> Handle(IReceiveContext<SimpleRequest2> context, CancellationToken cancellationToken)
+        {
+            throw new ArgumentException("cba");
         }
     }
 }

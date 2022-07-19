@@ -1,3 +1,4 @@
+using System;
 using System.Threading;
 using System.Threading.Tasks;
 using Mediator.Net.Context;
@@ -12,6 +13,14 @@ namespace Mediator.Net.TestUtil.Handlers.CommandHandlers
         {
             var response = new TestCommandResponse() { Thing = "Hello world"};
             return Task.FromResult(response);
+        }
+    }
+    
+    public class TestCommandWithResponseThatThrowHandler : ICommandHandler<TestCommandWithResponse, TestCommandResponse>
+    {
+        public Task<TestCommandResponse> Handle(IReceiveContext<TestCommandWithResponse> context, CancellationToken cancellationToken)
+        {
+            throw new ArgumentException("abc");
         }
     }
 }
