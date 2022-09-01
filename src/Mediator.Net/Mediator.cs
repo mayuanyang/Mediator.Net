@@ -18,6 +18,7 @@ namespace Mediator.Net
         private readonly IPublishPipe<IPublishContext<IEvent>> _publishPipe;
         private readonly IGlobalReceivePipe<IReceiveContext<IMessage>> _globalPipe;
         private readonly IDependencyScope _scope;
+        private readonly int? _defaultCancellationTimeoutInMinutes;
 
         public Mediator(
             ICommandReceivePipe<IReceiveContext<ICommand>> commandReceivePipe,
@@ -25,7 +26,8 @@ namespace Mediator.Net
             IRequestReceivePipe<IReceiveContext<IRequest>> requestPipe, 
             IPublishPipe<IPublishContext<IEvent>> publishPipe, 
             IGlobalReceivePipe<IReceiveContext<IMessage>> globalPipe, 
-            IDependencyScope scope = null)
+            IDependencyScope scope = null,
+            int? defaultCancellationTimeoutInMinutes = null)
         {
             _commandReceivePipe = commandReceivePipe;
             _eventReceivePipe = eventReceivePipe;
@@ -33,6 +35,7 @@ namespace Mediator.Net
             _publishPipe = publishPipe;
             _globalPipe = globalPipe;
             _scope = scope;
+            _defaultCancellationTimeoutInMinutes = defaultCancellationTimeoutInMinutes;
         }
 
 
@@ -149,6 +152,11 @@ namespace Mediator.Net
         private async Task<object> SendMessage<TMessage>(IReceiveContext<TMessage> customReceiveContext, CancellationToken cancellationToken)
             where TMessage : IMessage
         {
+            if (_defaultCancellationTimeoutInMinutes.HasValue && _defaultCancellationTimeoutInMinutes.Value > 0)
+            {
+                
+            }
+            
             RegisterServiceIfRequired(customReceiveContext);
 
             var task = _globalPipe.Connect((IReceiveContext<IMessage>)customReceiveContext, cancellationToken);

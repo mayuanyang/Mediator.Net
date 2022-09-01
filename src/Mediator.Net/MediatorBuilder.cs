@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using System.Threading;
 using Mediator.Net.Binding;
 using Mediator.Net.Context;
 using Mediator.Net.Contracts;
@@ -17,6 +18,7 @@ namespace Mediator.Net
         private Action<IEventReceivePipeConfigurator> _eventReceivePipeConfiguratorAction;
         private Action<IRequestPipeConfigurator<IReceiveContext<IRequest>>> _requestPipeConfiguratorAction;
         private Action<IPublishPipeConfigurator> _publishPipeConfiguratorAction;
+        private int _defaultCancellationTimeoutInMinutes;
         public MessageHandlerRegistry MessageHandlerRegistry {get;}
 
         public MediatorBuilder()
@@ -95,6 +97,12 @@ namespace Mediator.Net
             return this;
         }
 
+        
+        public MediatorBuilder WithReplaceCancellationTokenTimeout(int timeoutMinutes)
+        {
+            _defaultCancellationTimeoutInMinutes = timeoutMinutes;
+            return this;
+        }
 
         public IMediator Build()
         {

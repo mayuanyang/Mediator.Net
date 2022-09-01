@@ -92,5 +92,17 @@ namespace Mediator.Net.Test.Cancellation
             TokenRecorder.Recorder.Count.ShouldBe(7);
 
         }
+        
+        [Fact]
+        public void CanReplaceToken()
+        {
+            CancellationTokenSource source = new CancellationTokenSource();
+            source.CancelAfter(TimeSpan.FromMinutes(10));
+            CancellationToken token = source.Token;
+            
+            CancellationTokenSource source2 = new CancellationTokenSource();
+            CancellationToken token2 = source2.Token;
+            
+        }
     }
 }
