@@ -33,25 +33,25 @@ var mediator = mediaBuilder.RegisterHandlers(typeof(this).Assembly).Build();
 
 ### Sending a command with no response
 
-```
+```C#
 await _mediator.SendAsync(new TestBaseCommand(Guid.NewGuid()));
 ```
 
 ### Sending a command with response
 
-```
+```C#
 var pong = await _mediator.SendAsync<Ping, Pong>(new Ping());
 ```
 
 ### Sending request with response
 
-```
+```C#
 var result = await _mediator.RequestAsync<GetGuidRequest, GetGuidResponse>(new GetGuidRequest(_guid));
 ```
 
 ### Publishing an event
 
-```
+```C#
 await _mediator.Publish(new OrderPlacedEvent);
 ```
 
@@ -59,7 +59,7 @@ await _mediator.Publish(new OrderPlacedEvent);
 
 Inside a command handler.Handle method, a IReceiveContext<T> expose a method of Publish
 
-```
+```C#
 public async Task Handle(IReceiveContext<DerivedTestBaseCommand> context, CancellationToken cancellationToken)
 {
     // Do you work
@@ -71,7 +71,7 @@ public async Task Handle(IReceiveContext<DerivedTestBaseCommand> context, Cancel
 
 Sometimes you might want to get multiple reponses by one request or command, you can do that by using the `CreateStream` method
 
-```
+```C#
 // Define a StreamHandler by implementing the IStreamRequestHandler or IStreamCommandHandler interfaces for IRequest and ICommand
 public class GetMultipleGuidStreamRequestHandler : IStreamRequestHandler<GetGuidRequest, GetGuidResponse>
 {
