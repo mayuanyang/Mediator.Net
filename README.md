@@ -69,7 +69,7 @@ public async Task Handle(IReceiveContext<DerivedTestBaseCommand> context, Cancel
 
 ### Create stream of responses
 
-Sometimes you might want to get multiple reponses by one request or command, you can do that by using the `CreateStream` method
+Sometimes you might want to get multiple responses by one request or command, you can do that by using the `CreateStream` method
 
 ```C#
 // Define a StreamHandler by implementing the IStreamRequestHandler or IStreamCommandHandler interfaces for IRequest and ICommand
@@ -85,7 +85,7 @@ public class GetMultipleGuidStreamRequestHandler : IStreamRequestHandler<GetGuid
     }
 }
 
-// You can now get multiple reponses back by using this
+// You can now get multiple responses back by using this
 IAsyncEnumerable<GetGuiResponse> result = mediator.CreateStream<GetGuidRequest, GetGuidResponse>(new GetGuidRequest(_guid));
 
 await foreach (var r in result)
@@ -99,7 +99,7 @@ How about EventHandler?
 What would be the use cases of a stream of events? So it is currently not supported
 
 How about middleware?
-You can use middleware as normal, keep in mind that middleware will only get invoked once for each IRequest or ICommand thought that multiple reponses might return
+You can use middleware as normal, keep in mind that middleware will only get invoked once for each IRequest or ICommand thought that multiple responses might return
 
 ### Handling message from handler
 
@@ -177,7 +177,7 @@ This pipeline will be triggered when an `IEvent` is published inside your handle
 ### Setting up middlewares
 
 The most powerful thing for the pipelines above is you can add as many middlewares as you want.
-Follow the following steps to setup a middlewaree
+Follow the following steps to setup a middleware
 
 - Add a static class for your middleware
 - Add a public static extension method in that class you just added, usually follow the UseXxxx naming convention
@@ -215,22 +215,22 @@ public static class SerilogMiddleware
 class SerilogMiddlewareSpecification<TContext> : IPipeSpecification<TContext> where TContext : IContext<IMessage>
     {
         private readonly ILogger _logger;
-        private readonly Func<bool> _shouldExcute;
+        private readonly Func<bool> _shouldExecute;
         private readonly LogEventLevel _level;
 
-        public SerilogMiddlewareSpecification(ILogger logger, LogEventLevel level, Func<bool> shouldExcute )
+        public SerilogMiddlewareSpecification(ILogger logger, LogEventLevel level, Func<bool> shouldExecute )
         {
             _logger = logger;
             _level = level;
-            _shouldExcute = shouldExcute;
+            _shouldExecute = shouldExecute;
         }
         public bool ShouldExecute(TContext context, CancellationToken cancellationToken)
         {
-            if (_shouldExcute == null)
+            if (_shouldExecute == null)
             {
                 return true;
             }
-            return _shouldExcute.Invoke();
+            return _shouldExecute.Invoke();
         }
 
         public Task BeforeExecute(TContext context, CancellationToken cancellationToken)
@@ -446,7 +446,7 @@ _container = new UnityContainer();
 _container.RegisterType<SimpleService>();
 _container.RegisterType<AnotherSimpleService>();
 
-UnityExtensioins.Configure(mediaBuilder, _container);
+UnityExtensions.Configure(mediaBuilder, _container);
 ```
 
 #### SimpleInjector
@@ -509,5 +509,5 @@ This middleware logs every message by using Serilog
 Install-Package Mediator.Net.Middlewares.EventStore
 ```
 
-Middleware for Mediator.Net to write event to GetEventStore, it is a Middleware for Mediator.Net that plugs intothe publish pipeline
+Middleware for Mediator.Net to write events to GetEventStore, it is a Middleware for Mediator.Net that plugs into the publish pipeline
 [Mediator.Net.Middlewares.UnitOfWork](https://github.com/mayuanyang/Mediator.Net.Middlewares.EventStore) - Middleware for Mediator.Net to persist event to EventStore.
