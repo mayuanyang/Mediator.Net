@@ -31,8 +31,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="StructureMap" Version="4.6.1" />
-    <PackageReference Include="Mediator.Net" Version="3.0.0-dev13" />
+    <PackageReference Include="StructureMap" Version="4.7.1" />
+    <PackageReference Include="Mediator.Net" Version="4.7.0" />
   </ItemGroup>
 
   <ItemGroup Condition=" '$(TargetFramework)' == 'net45' ">
