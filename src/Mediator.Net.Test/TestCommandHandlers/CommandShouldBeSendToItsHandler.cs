@@ -11,7 +11,6 @@ using Xunit;
 
 namespace Mediator.Net.Test.TestCommandHandlers
 {
-    
     public class CommandShouldBeSendToItsHandler : TestBase
     {
         private IMediator _mediator;
@@ -20,12 +19,15 @@ namespace Mediator.Net.Test.TestCommandHandlers
         {
             ClearBinding();
         }
+        
         void GivenAMediatorWithNoPipeline()
         {
             var builder = new MediatorBuilder();
+            
             _mediator = builder.RegisterHandlers(() =>
             {
                 var binding = new List<MessageBinding> { new MessageBinding(typeof(TestBaseCommand), typeof(TestBaseCommandHandler)) };
+                
                 return binding;
             }).Build();
 

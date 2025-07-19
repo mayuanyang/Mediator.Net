@@ -4,7 +4,6 @@ using Xunit;
 
 namespace Mediator.Net.MicrosoftDependencyInjection.Test
 {
-
     [Collection("MicrosoftDependencyInjection test")]
     public class TestBase
     {

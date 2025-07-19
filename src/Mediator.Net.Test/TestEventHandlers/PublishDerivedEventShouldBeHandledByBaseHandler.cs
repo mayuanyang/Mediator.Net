@@ -10,17 +10,17 @@ using Xunit;
 
 namespace Mediator.Net.Test.TestEventHandlers
 {
-    
     public class PublishDerivedEventShouldBeHandledByBaseHandler : TestBase
     {
         private IMediator _mediator;
         
         private MediatorBuilder _builder;
+        
         void GivenAMediatorBuilder()
         {
             ClearBinding();
-            _builder = new MediatorBuilder();
             
+            _builder = new MediatorBuilder();
         }
 
         void AndGivenTheEventIsRegisteredToItsBaseClassHandler()

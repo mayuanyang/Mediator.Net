@@ -7,6 +7,6 @@ namespace Mediator.Net.Autofac.Test
     {
         [ThreadStatic] static IList<object> _rubish;
 
-        public static IList<object> Rublish => _rubish ?? (_rubish = new List<object>());
+        public static IList<object> Rublish => _rubish ??= new List<object>();
     }
 }

@@ -12,7 +12,6 @@ using Xunit;
 
 namespace Mediator.Net.SimpleInjector.Test.Tests
 {
-
     public class TestCommandHandlerWithDependencyInjection : TestBase
     {
         private Container _container = null;
@@ -22,11 +21,13 @@ namespace Mediator.Net.SimpleInjector.Test.Tests
         void GivenAContainer()
         {
             var mediaBuilder = new MediatorBuilder();
+            
             mediaBuilder.RegisterUnduplicatedHandlers()
                 .ConfigureCommandReceivePipe(x =>
                 {
                     x.UseSimpleMiddleware();
                 });
+            
             _container = new Container();
             _container.Options.AllowOverridingRegistrations = true;
             _container.Options.DefaultScopedLifestyle = new LifetimeScopeLifestyle();
@@ -42,6 +43,7 @@ namespace Mediator.Net.SimpleInjector.Test.Tests
             {
                 _mediator = scope.GetInstance<IMediator>();
                 _task = _mediator.SendAsync(new SimpleCommand(Guid.NewGuid()));
+                
                 return _task;
             }
         }

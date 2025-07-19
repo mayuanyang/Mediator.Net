@@ -12,16 +12,18 @@ using Mediator.Net.TestUtil.Middlewares;
 
 namespace Mediator.Net.Test.TestRequestHandlers
 {
-    
     public class OneRequestShouldNotHaveMultipleHandlers : TestBase
     {
         private IMediator _mediator;
         private Task _task;
         private readonly Guid _guid = Guid.NewGuid();
+        
         void GivenAMediatorAndTwoMiddlewares()
         {
             ClearBinding();
+            
             var builder = new MediatorBuilder();
+            
             _mediator = builder.RegisterHandlers(() =>
                 {
                     var binding = new List<MessageBinding>()
@@ -29,6 +31,7 @@ namespace Mediator.Net.Test.TestRequestHandlers
                         new MessageBinding(typeof(GetGuidRequest), typeof(GetGuidRequestHandler)),
                         new MessageBinding(typeof(GetGuidRequest), typeof(GetGuidRequestHandler2))
                     };
+                    
                     return binding;
                 })
                 .ConfigureCommandReceivePipe(x =>
@@ -41,13 +44,12 @@ namespace Mediator.Net.Test.TestRequestHandlers
                     x.UseConsoleLogger3();
                 })
             .Build();
-
-
         }
 
         Task WhenARequestIsSent()
         {
             _task = _mediator.RequestAsync<GetGuidRequest, GetGuidResponse>(new GetGuidRequest(_guid));
+            
             return Task.FromResult(0);
         }
 

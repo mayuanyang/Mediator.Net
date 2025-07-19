@@ -8,6 +8,7 @@ public class ChildCommandHandler : InheritanceBaseCommandHandler
     public override async Task DoWork(string thing)
     {
         RubishBox.Rublish.Add(thing);
+        
         await Task.WhenAll();
     }
 }

@@ -1,6 +1,4 @@
 ﻿using Autofac;
-using Autofac.Core;
-using Mediator.Net.Binding;
 
 namespace Mediator.Net.Autofac
 {
@@ -13,12 +11,12 @@ namespace Mediator.Net.Autofac
             containerBuilder.Register(x =>
             {
                 var resolver = x.Resolve<IDependencyScope>();
+
                 return mediatorBuilder.Build(resolver);
-                
             }).AsSelf().AsImplementedInterfaces().InstancePerLifetimeScope();
-            
+
             RegisterHandlers(containerBuilder, mediatorBuilder);
-            
+
             return containerBuilder;
         }
 

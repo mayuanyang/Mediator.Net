@@ -1,15 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
 using System.Threading.Tasks;
 using Mediator.Net.Binding;
 using Mediator.Net.TestUtil.Handlers.CommandHandlers;
 using Mediator.Net.TestUtil.Handlers.RequestHandlers;
 using Mediator.Net.TestUtil.Messages;
-using Mediator.Net.TestUtil.Middlewares;
 using Mediator.Net.TestUtil.TestUtils;
 using Shouldly;
-using TestStack.BDDfy;
 using Xunit;
 
 namespace Mediator.Net.Test.TestInheritance
@@ -18,16 +15,18 @@ namespace Mediator.Net.Test.TestInheritance
     {
         private  Guid _id = Guid.NewGuid();
         private IMediator _mediator;
-       
-
+        
         [Fact]
         public async Task TestCommandHandler()
         {
             ClearBinding();
+            
             var builder = new MediatorBuilder();
+            
             _mediator = builder.RegisterHandlers(() =>
             {
                 var binding = new List<MessageBinding> { new MessageBinding(typeof(InheritanceCommand), typeof(ChildCommandHandler)) };
+                
                 return binding;
             }).Build();
 
@@ -42,10 +41,13 @@ namespace Mediator.Net.Test.TestInheritance
         public async Task TestRequestHandler()
         {
             ClearBinding();
+            
             var builder = new MediatorBuilder();
+            
             _mediator = builder.RegisterHandlers(() =>
             {
                 var binding = new List<MessageBinding> { new MessageBinding(typeof(InheritanceRequest), typeof(ChildRequestHandler)) };
+                
                 return binding;
             }).Build();
 

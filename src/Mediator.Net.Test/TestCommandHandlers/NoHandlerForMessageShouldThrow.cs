@@ -21,16 +21,19 @@ namespace Mediator.Net.Test.TestCommandHandlers
         {
             ClearBinding();
         }
+        
         void GivenAMediator()
         {
             var builder = new MediatorBuilder();
+            
             _mediator = builder.RegisterHandlers(() =>
             {
-                var binding = new List<MessageBinding>()
+                var binding = new List<MessageBinding>
                 {
-                    new MessageBinding(typeof(TestBaseCommand), typeof(TestBaseCommandHandler)),
+                    new MessageBinding(typeof(TestBaseCommand), typeof(TestBaseCommandHandler))
                 
                 };
+                
                 return binding;
             }).Build();
            

@@ -1,5 +1,4 @@
-﻿using Mediator.Net.Binding;
-using Microsoft.Extensions.DependencyInjection;
+﻿using Microsoft.Extensions.DependencyInjection;
 
 namespace Mediator.Net.MicrosoftDependencyInjection
 {
@@ -12,7 +11,9 @@ namespace Mediator.Net.MicrosoftDependencyInjection
             services.AddScoped(x =>
             {
                 var scope = x.CreateScope();
+                
                 var dependencyScope = new MicrosoftDependencyScope(scope);
+                
                 return mediatorBuilder.Build(dependencyScope);
             });
 

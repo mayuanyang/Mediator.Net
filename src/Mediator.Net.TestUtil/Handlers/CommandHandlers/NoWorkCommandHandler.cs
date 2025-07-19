@@ -4,13 +4,12 @@ using Mediator.Net.Context;
 using Mediator.Net.Contracts;
 using Mediator.Net.TestUtil.Messages;
 
-namespace Mediator.Net.TestUtil.Handlers.CommandHandlers
+namespace Mediator.Net.TestUtil.Handlers.CommandHandlers;
+
+public class NoWorkCommandHandler : ICommandHandler<NoWorkCommand>
 {
-    public class NoWorkCommandHandler : ICommandHandler<NoWorkCommand>
+    public Task Handle(IReceiveContext<NoWorkCommand> context, CancellationToken cancellationToken)
     {
-        public Task Handle(IReceiveContext<NoWorkCommand> context, CancellationToken cancellationToken)
-        {
-            return Task.FromResult(0);
-        }
+        return Task.FromResult(0);
     }
 }

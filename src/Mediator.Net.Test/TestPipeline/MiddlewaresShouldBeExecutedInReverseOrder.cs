@@ -12,15 +12,17 @@ using Xunit;
 
 namespace Mediator.Net.Test.TestPipeline
 {
-    
     public class MiddlewaresShouldBeExecutedInReverseOrder : TestBase
     {
         private IMediator _mediator;
+        
         void GivenAMediator()
         {
             ClearBinding();
-            var binding = new List<MessageBinding>() { new MessageBinding( typeof(TestBaseCommand), typeof(TestBaseCommandHandler) ) };
+            
+            var binding = new List<MessageBinding> { new MessageBinding( typeof(TestBaseCommand), typeof(TestBaseCommandHandler) ) };
             var builder = new MediatorBuilder();
+            
             _mediator = builder.RegisterHandlers(binding)
                 .ConfigureCommandReceivePipe(x =>
             {
@@ -28,7 +30,6 @@ namespace Mediator.Net.Test.TestPipeline
                 x.UseConsoleLogger1();
             })
             .Build();
- 
         }
 
         async Task WhenACommandIsSent()
@@ -40,7 +41,6 @@ namespace Mediator.Net.Test.TestPipeline
         {
             RubishBox.Rublish[0].ShouldBe(nameof(ConsoleLog2.UseConsoleLogger2));
             RubishBox.Rublish[1].ShouldBe(nameof(ConsoleLog1.UseConsoleLogger1));
-            
         }
 
         [Fact]

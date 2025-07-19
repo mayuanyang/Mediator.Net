@@ -17,6 +17,7 @@ public class TypeUtil
             return true;
 
         Type baseType = givenType.GetTypeInfo().BaseType;
+        
         return baseType != null && IsAssignableToGenericType(baseType, genericType);
     }
 }

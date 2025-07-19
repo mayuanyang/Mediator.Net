@@ -1,7 +1,6 @@
-namespace Mediator.Net.Contracts
+namespace Mediator.Net.Contracts;
+
+public interface IStreamRequest : IMessage
 {
-    public interface IStreamRequest : IMessage
-    {
-        
-    }
+    
 }

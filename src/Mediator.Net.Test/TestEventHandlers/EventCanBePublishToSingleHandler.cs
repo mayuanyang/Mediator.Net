@@ -11,7 +11,6 @@ using Xunit;
 
 namespace Mediator.Net.Test.TestEventHandlers
 {
-    
     public class EventCanBePublishToSingleHandler : TestBase
     {
         private IMediator _mediator;
@@ -19,13 +18,15 @@ namespace Mediator.Net.Test.TestEventHandlers
         void GivenAMediator()
         {
             ClearBinding();
+            
             var builder = new MediatorBuilder();
+            
             _mediator = builder.RegisterHandlers(() =>
             {
                 var binding = new List<MessageBinding> { new MessageBinding(typeof(TestEvent), typeof(TestEventHandler)) };
+                
                 return binding;
             }).Build();
-            
         }
 
         async Task WhenAEventIsPublished()

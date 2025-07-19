@@ -1,8 +1,7 @@
 ﻿using System;
 
-namespace Mediator.Net
+namespace Mediator.Net;
+
+public class PipeIsNotAddedToContextException : Exception
 {
-    public class PipeIsNotAddedToContextException : Exception
-    {
-    }
 }

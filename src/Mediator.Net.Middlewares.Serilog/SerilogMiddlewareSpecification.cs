@@ -17,18 +17,17 @@ namespace Mediator.Net.Middlewares.Serilog
         private readonly LogEventLevel _level;
         private readonly Func<TContext, bool> _shouldExcute;
 
-        public SerilogMiddlewareSpecification(ILogger logger, LogEventLevel level, Func<TContext, bool> shouldExcute )
+        public SerilogMiddlewareSpecification(ILogger logger, LogEventLevel level, Func<TContext, bool> shouldExcute)
         {
             _logger = logger;
             _level = level;
             _shouldExcute = shouldExcute;
         }
+        
         public bool ShouldExecute(TContext context, CancellationToken cancellationToken)
         {
-            if (_shouldExcute == null)
-            {
-                return true;
-            }
+            if (_shouldExcute == null) return true;
+            
             return _shouldExcute.Invoke(context);
         }
 
@@ -65,6 +64,7 @@ namespace Mediator.Net.Middlewares.Serilog
                         throw new ArgumentOutOfRangeException();
                 }
             }
+            
             return Task.WhenAll();
         }
 
@@ -76,7 +76,9 @@ namespace Mediator.Net.Middlewares.Serilog
         public Task OnException(Exception ex, TContext context)
         {
             _logger.Error(ex, ex.Message);
+            
             ExceptionDispatchInfo.Capture(ex).Throw();
+            
             throw ex;
         }
     }

@@ -1,6 +1,5 @@
 ﻿using System;
 using SimpleInjector;
-using SimpleInjector.Extensions.LifetimeScoping;
 
 namespace Mediator.Net.SimpleInjector
 {
@@ -14,7 +13,6 @@ namespace Mediator.Net.SimpleInjector
         }
         public void Dispose()
         {
-            
         }
 
         public T Resolve<T>()  
@@ -26,7 +24,6 @@ namespace Mediator.Net.SimpleInjector
         {
             return _container.GetInstance(t);
         }
-
  
         public IDependencyScope BeginScope()
         {

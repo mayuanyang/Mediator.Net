@@ -6,39 +6,36 @@ using Mediator.Net.Contracts;
 using Mediator.Net.TestUtil.Messages;
 using Mediator.Net.TestUtil.Services;
 
-namespace Mediator.Net.TestUtil.Handlers.RequestHandlers
+namespace Mediator.Net.TestUtil.Handlers.RequestHandlers;
+
+public class SimpleRequestHandler : IRequestHandler<SimpleRequest, SimpleResponse>
 {
-    public class SimpleRequestHandler : IRequestHandler<SimpleRequest, SimpleResponse>
+    private readonly SimpleService _simpleService;
+
+    public SimpleRequestHandler(SimpleService simpleService)
     {
-        private readonly SimpleService _simpleService;
-
-        public SimpleRequestHandler(SimpleService simpleService)
-        {
-            _simpleService = simpleService;
-        }
-
-        public Task<SimpleResponse> Handle(IReceiveContext<SimpleRequest> context, CancellationToken cancellationToken)
-        {
-            return Task.FromResult(new SimpleResponse(context.Message.Message));
-        }
-
-        
+        _simpleService = simpleService;
     }
 
-    public class SimpleRequestWillThrowHandler : IRequestHandler<SimpleRequestWillThrow, SimpleResponse>
+    public Task<SimpleResponse> Handle(IReceiveContext<SimpleRequest> context, CancellationToken cancellationToken)
     {
-        public Task<SimpleResponse> Handle(IReceiveContext<SimpleRequestWillThrow> context,
-            CancellationToken cancellationToken)
-        {
-            throw new System.NotImplementedException();
-        }
+        return Task.FromResult(new SimpleResponse(context.Message.Message));
     }
+}
 
-    public class SimpleRequestThrowArgumentExceptionHandler : IRequestHandler<SimpleRequest2, SimpleResponse>
+public class SimpleRequestWillThrowHandler : IRequestHandler<SimpleRequestWillThrow, SimpleResponse>
+{
+    public Task<SimpleResponse> Handle(IReceiveContext<SimpleRequestWillThrow> context,
+        CancellationToken cancellationToken)
     {
-        public Task<SimpleResponse> Handle(IReceiveContext<SimpleRequest2> context, CancellationToken cancellationToken)
-        {
-            throw new ArgumentException("cba");
-        }
+        throw new System.NotImplementedException();
+    }
+}
+
+public class SimpleRequestThrowArgumentExceptionHandler : IRequestHandler<SimpleRequest2, SimpleResponse>
+{
+    public Task<SimpleResponse> Handle(IReceiveContext<SimpleRequest2> context, CancellationToken cancellationToken)
+    {
+        throw new ArgumentException("cba");
     }
 }

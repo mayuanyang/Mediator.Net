@@ -20,7 +20,9 @@ namespace Mediator.Net.Test.TestContext
         public TestUseCustomReceiveContext()
         {
             ClearBinding();
+            
             var builder = new MediatorBuilder();
+            
             _mediator = builder.RegisterHandlers(() =>
                 {
                     var binding = new List<MessageBinding>
@@ -32,7 +34,6 @@ namespace Mediator.Net.Test.TestContext
                     return binding;
                 })
                 .Build();
-
         }
 
 
@@ -40,7 +41,9 @@ namespace Mediator.Net.Test.TestContext
         public async Task CanSendCommand()
         {
             var context = new CustomReceiveContext<TestBaseCommand>(new TestBaseCommand(Guid.NewGuid()));
+            
             await _mediator.SendAsync<TestBaseCommand>(context);
+            
             RubishBox.Rublish.Contains(nameof(AsyncTestBaseCommandHandler)).ShouldBe(true);
         }
 
@@ -48,7 +51,9 @@ namespace Mediator.Net.Test.TestContext
         public async Task CanPublishEvent()
         {
             var context = new CustomReceiveContext<TestEvent>(new TestEvent(Guid.NewGuid()));
+            
             await _mediator.PublishAsync<TestEvent>(context);
+            
             RubishBox.Rublish.Contains(nameof(TestEventHandler)).ShouldBeTrue();
         }
 
@@ -58,6 +63,7 @@ namespace Mediator.Net.Test.TestContext
             var guid = Guid.NewGuid();
             var context = new CustomReceiveContext<GetGuidRequest>(new GetGuidRequest(guid));
             var result = await _mediator.RequestAsync<GetGuidRequest, GetGuidResponse>(context);
+            
             result.Id.ShouldBe(guid);
         }
     }

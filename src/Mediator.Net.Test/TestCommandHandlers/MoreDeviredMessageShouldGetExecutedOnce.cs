@@ -11,7 +11,6 @@ using Xunit;
 
 namespace Mediator.Net.Test.TestCommandHandlers
 {
-    
     public class MoreDeviredMessageShouldGetExecutedOnce : TestBase
     {
         private IMediator _mediator;
@@ -20,16 +19,19 @@ namespace Mediator.Net.Test.TestCommandHandlers
         {
             ClearBinding();
         }
+        
         void GivenAMediator()
         {
             var builder = new MediatorBuilder();
+            
             _mediator = builder.RegisterHandlers(() =>
             {
-                var binding = new List<MessageBinding>()
+                var binding = new List<MessageBinding>
                 {
                     new MessageBinding(typeof(TestBaseCommand), typeof(TestBaseCommandHandler)),
-                    new MessageBinding(typeof(DerivedTestBaseCommand), typeof(DerivedTestBaseCommandHandler)),
+                    new MessageBinding(typeof(DerivedTestBaseCommand), typeof(DerivedTestBaseCommandHandler))
                 };
+                
                 return binding;
             }).Build();
             
@@ -44,7 +46,6 @@ namespace Mediator.Net.Test.TestCommandHandlers
         {
             RubishBox.Rublish.Count.ShouldBe(1);
             RubishBox.Rublish.Contains(nameof(DerivedTestBaseCommandHandler)).ShouldBeTrue();
-
         }
 
         [Fact]

@@ -11,7 +11,6 @@ using Xunit;
 
 namespace Mediator.Net.Test.TestCommandHandlers
 {
-    
     public class MediatorWithoutPipelineShouldWork : TestBase
     {
         private IMediator _mediator;
@@ -21,12 +20,15 @@ namespace Mediator.Net.Test.TestCommandHandlers
         {
             ClearBinding();
         }
+        
         void GivenAMediator()
         {
             var builder = new MediatorBuilder();
+            
             _mediator = builder.RegisterHandlers(() =>
             {
                 var binding = new List<MessageBinding> { new MessageBinding(typeof(TestBaseCommand), typeof(AsyncTestBaseCommandHandler)) };
+                
                 return binding;
             }).Build();
         }
@@ -34,12 +36,14 @@ namespace Mediator.Net.Test.TestCommandHandlers
         Task WhenACommandIsSent()
         {
             _task = _mediator.SendAsync(new TestBaseCommand(Guid.NewGuid()));
+            
             return _task;
         }
 
         void ThenItShouldReachTheRightHandler()
         {
             _task.Status.ShouldBe(TaskStatus.RanToCompletion);
+            
             RubishBox.Rublish.Contains(nameof(AsyncTestBaseCommandHandler)).ShouldBeTrue();
         }
 

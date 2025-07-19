@@ -11,22 +11,25 @@ using Xunit;
 
 namespace Mediator.Net.Test.TestRequestHandlers
 {
-    
     public class SendRequestShouldGetResponse : TestBase
     {
         private IMediator _mediator;
         private GetGuidResponse _result;
         private readonly Guid _guid = Guid.NewGuid();
+        
         void GivenAMediatorAndTwoMiddlewares()
         {
             ClearBinding();
+            
             var builder = new MediatorBuilder();
+            
             _mediator = builder.RegisterHandlers(() =>
                 {
                     var binding = new List<MessageBinding>()
                     {
                         new MessageBinding(typeof(GetGuidRequest), typeof(GetGuidRequestHandler))
                     };
+                    
                     return binding;
                 })
                 .ConfigureCommandReceivePipe(x =>
@@ -39,8 +42,6 @@ namespace Mediator.Net.Test.TestRequestHandlers
                     x.UseConsoleLogger3();
                 })
             .Build();
-
-
         }
 
         async Task WhenARequestIsSent()

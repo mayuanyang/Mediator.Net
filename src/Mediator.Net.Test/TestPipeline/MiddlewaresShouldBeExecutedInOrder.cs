@@ -12,15 +12,17 @@ using Xunit;
 
 namespace Mediator.Net.Test.TestPipeline
 {
-    
     public class MiddlewaresShouldBeExecutedInOrder : TestBase
     {
         private IMediator _mediator;
+        
         void GivenAMediatorAndTwoMiddlewares()
         {
             ClearBinding();
-            var binding = new List<MessageBinding>() { new MessageBinding( typeof(TestBaseCommand), typeof(TestBaseCommandHandler) )};
+            
+            var binding = new List<MessageBinding> { new MessageBinding( typeof(TestBaseCommand), typeof(TestBaseCommandHandler) )};
             var builder = new MediatorBuilder();
+            
             _mediator = builder.RegisterHandlers(binding)
                 .ConfigureCommandReceivePipe(x =>
             {

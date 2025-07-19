@@ -1,17 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
-namespace Mediator.Net.Binding
+namespace Mediator.Net.Binding;
+
+public class MessageHandlerRegistry
 {
-    public class MessageHandlerRegistry
-    {
-        HashSet<MessageBinding> _messageBindings;
+    HashSet<MessageBinding> _messageBindings;
 
-        public HashSet<MessageBinding> MessageBindings
-        {
-            get => _messageBindings ??= new HashSet<MessageBinding>();
-            internal set => _messageBindings = value;
-        }
-        
+    public HashSet<MessageBinding> MessageBindings
+    {
+        get => _messageBindings ??= new HashSet<MessageBinding>();
+        internal set => _messageBindings = value;
     }
 }

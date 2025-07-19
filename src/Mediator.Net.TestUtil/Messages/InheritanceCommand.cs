@@ -1,41 +1,36 @@
 ﻿using System;
 using Mediator.Net.Contracts;
 
-namespace Mediator.Net.TestUtil.Messages
+namespace Mediator.Net.TestUtil.Messages;
+
+public class InheritanceCommand : ICommand
 {
-    public class InheritanceCommand : ICommand
+    public InheritanceCommand(Guid id)
     {
-        public InheritanceCommand(Guid id)
-        {
-            Id = id;
-        }
-
-        public Guid Id { get; set; }
+        Id = id;
     }
+
+    public Guid Id { get; set; }
+}
     
-    public class ParentCommand : ICommand
+public class ParentCommand : ICommand
+{
+    public ParentCommand(Guid id)
     {
-        public ParentCommand(Guid id)
-        {
-            Id = id;
-        }
-
-        public Guid Id { get; set; }
+        Id = id;
     }
 
-    public class ChildCommand : InheritanceCommand
+    public Guid Id { get; set; }
+}
+
+public class ChildCommand : InheritanceCommand
+{
+    public ChildCommand(Guid id): base(id)
     {
-        public ChildCommand(Guid id): base(id)
-        {
-            
-        }
-        
     }
+}
 
-    public class InheritanceCombinedResponse : IResponse
-    {
-        public Guid Id { get; set; }
-    }
-
-
+public class InheritanceCombinedResponse : IResponse
+{
+    public Guid Id { get; set; }
 }

@@ -11,7 +11,6 @@ using Xunit;
 
 namespace Mediator.Net.Test.TestCommandHandlers
 {
-    
     public class MediatorSendMultipleCommandShouldWork : TestBase
     {
         private IMediator _mediator;
@@ -20,9 +19,11 @@ namespace Mediator.Net.Test.TestCommandHandlers
         {
             ClearBinding();
         }
+        
         void GivenAMediator()
         {
             var builder = new MediatorBuilder();
+            
             _mediator = builder.RegisterHandlers(() =>
             {
                 var binding = new List<MessageBinding>
@@ -30,6 +31,7 @@ namespace Mediator.Net.Test.TestCommandHandlers
                     new MessageBinding(typeof(TestBaseCommand), typeof(TestBaseCommandHandler)),
                     new MessageBinding(typeof(DerivedTestBaseCommand), typeof(DerivedTestBaseCommandHandler))
                 };
+                
                 return binding;
             }).Build();
         }

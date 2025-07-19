@@ -1,37 +1,37 @@
-﻿using System;
-using System.Threading;
+﻿using System.Threading;
 using System.Threading.Tasks;
 using Mediator.Net.Context;
 using Mediator.Net.Contracts;
 using Mediator.Net.WebApiSample.Handlers.CommandHandler;
 
-namespace Mediator.Net.WebApiSample.Handlers.EventHandler
+namespace Mediator.Net.WebApiSample.Handlers.EventHandler;
+
+public interface IBoardcastService
 {
-    public interface IBoardcastService
+    void Boardcast(int result);
+}
+
+class BoardcastService : IBoardcastService
+{
+    public void Boardcast(int result)
     {
-        void Boardcast(int result);
+        Recorder.Add(result);
     }
+}
 
-    class BoardcastService : IBoardcastService
+public class ResultCalculatedEventHandler: IEventHandler<ResultCalculatedEvent>
+{
+    private readonly IBoardcastService _boardcastService;
+
+    public ResultCalculatedEventHandler(IBoardcastService boardcastService)
     {
-        public void Boardcast(int result)
-        {
-            Recorder.Add(result);
-        }
+        _boardcastService = boardcastService;
     }
-
-    public class ResultCalculatedEventHandler: IEventHandler<ResultCalculatedEvent>
+    
+    public Task Handle(IReceiveContext<ResultCalculatedEvent> context, CancellationToken cancellationToken)
     {
-        private readonly IBoardcastService _boardcastService;
-
-        public ResultCalculatedEventHandler(IBoardcastService boardcastService)
-        {
-            _boardcastService = boardcastService;
-        }
-        public Task Handle(IReceiveContext<ResultCalculatedEvent> context, CancellationToken cancellationToken)
-        {
-            _boardcastService.Boardcast(context.Message.Result);
-            return Task.FromResult(0);
-        }
+        _boardcastService.Boardcast(context.Message.Result);
+        
+        return Task.FromResult(0);
     }
 }

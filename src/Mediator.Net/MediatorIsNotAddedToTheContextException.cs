@@ -1,8 +1,7 @@
 ﻿using System;
 
-namespace Mediator.Net
+namespace Mediator.Net;
+
+public class MediatorIsNotAddedToTheContextException : Exception
 {
-    public class MediatorIsNotAddedToTheContextException : Exception
-    {
-    }
 }

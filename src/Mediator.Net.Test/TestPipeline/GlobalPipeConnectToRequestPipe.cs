@@ -12,22 +12,25 @@ using Xunit;
 
 namespace Mediator.Net.Test.TestPipeline
 {
-    
     public class GlobalPipeConnectToRequestPipe : TestBase
     {
         private IMediator _mediator;
         private GetGuidResponse _response;
         private Guid _id = Guid.NewGuid();
+        
         void GivenAMediator()
         {
             ClearBinding();
+            
            var builder = new MediatorBuilder();
+           
             _mediator = builder.RegisterHandlers(() =>
                 {
-                    var binding = new List<MessageBinding>()
+                    var binding = new List<MessageBinding>
                     {
                         new MessageBinding(typeof(GetGuidRequest), typeof(GetGuidRequestHandler))
                     };
+                    
                     return binding;
                 })
                 .ConfigureGlobalReceivePipe(x =>
@@ -39,8 +42,6 @@ namespace Mediator.Net.Test.TestPipeline
                     x.UseConsoleLogger3();
                 })
             .Build();
-
-
         }
 
         async Task WhenARequestIsSent()
@@ -51,13 +52,13 @@ namespace Mediator.Net.Test.TestPipeline
         void ThenTheRequestShouldBeHandled()
         {
             _response.Id.ShouldBe(_id);
+            
             RubishBox.Rublish.Count.ShouldBe(3);
             RubishBox.Rublish.Contains(nameof(ConsoleLog1.UseConsoleLogger1)).ShouldBeTrue();
             RubishBox.Rublish.Contains(nameof(ConsoleLog3.UseConsoleLogger3)).ShouldBeTrue();
             RubishBox.Rublish.Contains(nameof(GetGuidRequestHandler)).ShouldBeTrue();
         }
-
-    
+        
         [Fact]
         public void Run()
         {

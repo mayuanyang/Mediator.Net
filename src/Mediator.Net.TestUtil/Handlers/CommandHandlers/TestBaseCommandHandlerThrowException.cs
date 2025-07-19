@@ -5,13 +5,12 @@ using Mediator.Net.Context;
 using Mediator.Net.Contracts;
 using Mediator.Net.TestUtil.Messages;
 
-namespace Mediator.Net.TestUtil.Handlers.CommandHandlers
+namespace Mediator.Net.TestUtil.Handlers.CommandHandlers;
+
+public class TestBaseCommandHandlerThrowException : ICommandHandler<TestBaseCommand>
 {
-    public class TestBaseCommandHandlerThrowException : ICommandHandler<TestBaseCommand>
+    public Task Handle(IReceiveContext<TestBaseCommand> context, CancellationToken cancellationToken)
     {
-        public Task Handle(IReceiveContext<TestBaseCommand> context, CancellationToken cancellationToken)
-        {
-            throw new NotImplementedException();
-        }
+        throw new NotImplementedException();
     }
 }
