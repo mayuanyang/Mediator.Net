@@ -18,6 +18,10 @@ jobs:
             3.1.x
             5.0.x
             6.0.x
+      - name: Install libssl3
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y libssl3
       - name: Install dependencies
         run: dotnet restore Mediator.Net.sln
       - name: Build
