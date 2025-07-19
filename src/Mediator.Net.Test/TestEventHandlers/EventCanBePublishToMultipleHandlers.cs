@@ -11,7 +11,6 @@ using Xunit;
 
 namespace Mediator.Net.Test.TestEventHandlers
 {
-    
     public class EventCanBePublishToMultipleHandlers : TestBase
     {
         private IMediator _mediator;
@@ -19,7 +18,9 @@ namespace Mediator.Net.Test.TestEventHandlers
         void GivenAMediator()
         {
             ClearBinding();
+            
             var builder = new MediatorBuilder();
+            
             _mediator = builder.RegisterHandlers(() =>
             {
                 var binding = new List<MessageBinding>
@@ -27,10 +28,10 @@ namespace Mediator.Net.Test.TestEventHandlers
                     new MessageBinding(typeof(TestEvent), typeof(TestEventHandler)),
                     new MessageBinding(typeof(TestEvent), typeof(MultiTestEventHandlerHandleTheSameEvent)),
                 };
+                
                 return binding;
             })
             .Build();
-            
         }
 
         async Task WhenAEventIsSent()

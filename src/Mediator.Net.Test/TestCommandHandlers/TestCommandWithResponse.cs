@@ -68,16 +68,18 @@ namespace Mediator.Net.Test.TestCommandHandlers
             {
                 var response = await 
                     mediator.SendAsync<TestCommandWithResponse, GenericUnifiedResponse<string>>(
-                        new TestCommandWithResponse()
+                        new TestCommandWithResponse
                         {
                             ShouldThrow = shouldThrow, 
                             Request = request,
                             ShouldPublishEvent = shouldPublishEvent,
                             ShouldEventHandlerThrow = shouldEventHandlerThrow
                         });
+                
                 if (shouldThrow || shouldEventHandlerThrow)
                 {
                     response.Result.ShouldBeNull();
+                    
                     AssertErrorResult(response.Error, errorCode, errorMessage);    
                 }
                 else
@@ -90,7 +92,7 @@ namespace Mediator.Net.Test.TestCommandHandlers
             {
                 var response = await 
                     mediator.SendAsync<TestCommandWithResponse, UnifiedResponse>(
-                        new TestCommandWithResponse()
+                        new TestCommandWithResponse
                         {
                             ShouldThrow = shouldThrow, 
                             Request = request,
@@ -98,9 +100,11 @@ namespace Mediator.Net.Test.TestCommandHandlers
                             ShouldEventHandlerThrow = shouldEventHandlerThrow
 
                         });
+                
                 if (shouldThrow)
                 {
                     response.Result.ShouldBeNull();
+                    
                     AssertErrorResult(response.Error, errorCode, errorMessage);    
                 }
                 else
@@ -108,7 +112,6 @@ namespace Mediator.Net.Test.TestCommandHandlers
                     response.Error.ShouldBeNull();
                     response.Result.ShouldBe(request + "Result");
                 }
-                
             }
 
             void AssertErrorResult(Error error, int expectedErrorCode, string expectedErrorMessage)
@@ -121,6 +124,7 @@ namespace Mediator.Net.Test.TestCommandHandlers
         MediatorBuilder SetupMediatorBuilderWithMiddleware(string whichPipe)
         {
             var builder = new MediatorBuilder();
+            
             switch (whichPipe)
             {
                 case "CommandPipe":
@@ -148,12 +152,14 @@ namespace Mediator.Net.Test.TestCommandHandlers
             return builder.RegisterHandlers(() =>
             {
                 var binding = new List<MessageBinding>();
+                
                 binding.Add(isGeneric
                     ? new MessageBinding(typeof(TestCommandWithResponse),
                         typeof(TestCommandWithGenericHandler))
                     : new MessageBinding(typeof(TestCommandWithResponse), typeof(TestCommandWithResponseThatThrowBusinessExceptionHandler)));
 
                 binding.Add(new MessageBinding(typeof(TestEvent), typeof(TestEventHandler)));
+                
                 return binding;
             }).Build();
         }
@@ -161,13 +167,16 @@ namespace Mediator.Net.Test.TestCommandHandlers
         IMediator SetupCommandMediatorWithExplicitBindings()
         {
             var builder = new MediatorBuilder();
+            
             builder.ConfigureCommandReceivePipe(config => config.UseConsoleLogger1());
+            
             return builder.RegisterHandlers(() =>
             {
                 var binding = new List<MessageBinding>
                 {
-                    new MessageBinding(typeof(TestCommandWithResponse), typeof(TestCommandWithResponseHandler)),
+                    new MessageBinding(typeof(TestCommandWithResponse), typeof(TestCommandWithResponseHandler))
                 };
+                
                 return binding;
             }).Build();
         }
@@ -175,6 +184,7 @@ namespace Mediator.Net.Test.TestCommandHandlers
         IMediator SetupCommandMediatorWithScan()
         {
             var builder = new MediatorBuilder();
+            
             return builder
                 .RegisterHandlers(assembly => assembly.DefinedTypes.Where(t => t.Name == nameof(TestCommandWithResponseHandler)),
                     typeof(TestCommandWithResponse).GetTypeInfo().Assembly).Build();

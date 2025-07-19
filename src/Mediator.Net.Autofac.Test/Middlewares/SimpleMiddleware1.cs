@@ -33,9 +33,8 @@ namespace Mediator.Net.Autofac.Test.Middlewares
         public Task Execute(TContext context, CancellationToken cancellationToken)
         {
             if (ShouldExecute(context, cancellationToken))
-            {
                 RubishBin.Rublish.Add(new object());
-            }
+            
             return Task.FromResult(0);
         }
 
@@ -47,6 +46,7 @@ namespace Mediator.Net.Autofac.Test.Middlewares
         public Task OnException(Exception ex, TContext context)
         {
             ExceptionDispatchInfo.Capture(ex).Throw();
+            
             throw ex;
         }
     }

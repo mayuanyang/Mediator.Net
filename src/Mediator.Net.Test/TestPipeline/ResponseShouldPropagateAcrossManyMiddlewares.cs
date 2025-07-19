@@ -11,18 +11,20 @@ using Xunit;
 
 namespace Mediator.Net.Test.TestPipeline
 {
-    
     public class ResponseShouldPropagateAcrossManyMiddlewares : TestBase
     {
         private IMediator _mediator;
         private GetGuidResponse _result;
         private readonly Guid _id = Guid.NewGuid();
+        
         void GivenAMediatorAndTwoMiddlewares()
         {
             ClearBinding();
+            
             var builder = new MediatorBuilder();
+            
             _mediator = builder
-                .RegisterHandlers(() => new List<MessageBinding>()
+                .RegisterHandlers(() => new List<MessageBinding>
                 {
                     new MessageBinding(typeof(GetGuidRequest), typeof(GetGuidRequestHandler))
                 })

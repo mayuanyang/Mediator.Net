@@ -3,13 +3,11 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using Mediator.Net.Binding;
 using Mediator.Net.TestUtil.Handlers.CommandHandlers;
-using Mediator.Net.TestUtil.Handlers.RequestHandlers;
 using Mediator.Net.TestUtil.Messages;
 using Mediator.Net.TestUtil.Middlewares;
 using Shouldly;
 using TestStack.BDDfy;
 using Xunit;
-using Xunit.Abstractions;
 
 namespace Mediator.Net.Test.TestCommandStreamHandlers
 {
@@ -18,17 +16,19 @@ namespace Mediator.Net.Test.TestCommandStreamHandlers
         private IMediator _mediator;
         private Func<Task<TestCommandResponse>> _invokation;
         
-        
         void GivenAMediatorAndTwoMiddlewares()
         {
             ClearBinding();
+            
             var builder = new MediatorBuilder();
+            
             _mediator = builder.RegisterHandlers(() =>
                 {
                     var binding = new List<MessageBinding>()
                     {
                         new MessageBinding(typeof(TestCommandWithResponse), typeof(TestCommandWithResponseStreamHandler)),
                     };
+                    
                     return binding;
                 })
                 .ConfigureCommandReceivePipe(x =>
@@ -56,7 +56,6 @@ namespace Mediator.Net.Test.TestCommandStreamHandlers
                 "Connecting to a IStreamRequestHandler should use the method of mediator.CreateStream");
 
             return Task.CompletedTask;
-            
         }
 
         [Fact]

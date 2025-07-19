@@ -12,15 +12,17 @@ using Mediator.Net.TestUtil.Handlers.CommandHandlers;
 
 namespace Mediator.Net.Test.TestPipeline
 {
-    
     public class UselessMiddlewareShouldNotBeExecuted : TestBase
     {
         private IMediator _mediator;
+        
         void GivenAMediator()
         {
             ClearBinding();
+            
             var binding = new List<MessageBinding>() { new MessageBinding( typeof(TestBaseCommand), typeof(TestBaseCommandHandler) ) };
             var builder = new MediatorBuilder();
+            
             _mediator = builder.RegisterHandlers(binding)
                 .ConfigureCommandReceivePipe(x =>
             {

@@ -13,26 +13,28 @@ using Shouldly;
 using TestStack.BDDfy;
 using Xunit;
 
-
 namespace Mediator.Net.Test.TestPipeline
 {
-    
     public class ConnectAllPipelines : TestBase
     {
         private IMediator _mediator;
         private Guid _id = Guid.NewGuid();
+        
         void GivenAMediator()
         {
             ClearBinding();
+            
            var builder = new MediatorBuilder();
+           
             _mediator = builder.RegisterHandlers(() =>
                 {
-                    var binding = new List<MessageBinding>()
+                    var binding = new List<MessageBinding>
                     {
                         new MessageBinding(typeof(TestBaseCommand), typeof(TestBaseCommandHandlerRaiseEvent)),
                         new MessageBinding(typeof(TestEvent), typeof(TestEventHandler)),
                         new MessageBinding(typeof(GetGuidRequest), typeof(GetGuidRequestHandler))
                     };
+                    
                     return binding;
                 })
                 .ConfigureGlobalReceivePipe(x =>
@@ -63,12 +65,10 @@ namespace Mediator.Net.Test.TestPipeline
             await _mediator.SendAsync(new TestBaseCommand(Guid.NewGuid()));
             await _mediator.PublishAsync(new TestEvent(Guid.NewGuid()));
             await _mediator.RequestAsync<GetGuidRequest, GetGuidResponse>(new GetGuidRequest(Guid.NewGuid()));
-            
         }
 
         void ThenTheRightMiddlewaresShouldBeUsed()
         {
-            
             RubishBox.Rublish.Count.ShouldBe(13);
             RubishBox.Rublish.Contains(nameof(DummySave.UseDummySave)).ShouldBeTrue();
             RubishBox.Rublish.Contains(nameof(ConsoleLog1.UseConsoleLogger1)).ShouldBeTrue();
@@ -87,7 +87,6 @@ namespace Mediator.Net.Test.TestPipeline
             RubishBox.Rublish.Count(x => x.ToString() == nameof(TestBaseCommandHandlerRaiseEvent)).ShouldBe(1);
             RubishBox.Rublish.Count(x => x.ToString() == nameof(TestEventHandler)).ShouldBe(2);
             RubishBox.Rublish.Count(x => x.ToString() == nameof(GetGuidRequestHandler)).ShouldBe(1);
-          
         }
 
         void AndTheMiddlewaresShouldBeUsedInTheCorrectOrder()
@@ -109,8 +108,7 @@ namespace Mediator.Net.Test.TestPipeline
             RubishBox.Rublish[11].ShouldBe(nameof(ConsoleLog3.UseConsoleLogger3));
             RubishBox.Rublish[12].ShouldBe(nameof(GetGuidRequestHandler));
         }
-
-    
+        
         [Fact]
         public void Run()
         {

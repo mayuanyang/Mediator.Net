@@ -5,14 +5,14 @@ using Mediator.Net.Contracts;
 using Mediator.Net.TestUtil.Messages;
 using Mediator.Net.TestUtil.TestUtils;
 
-namespace Mediator.Net.TestUtil.Handlers.EventHandlers
+namespace Mediator.Net.TestUtil.Handlers.EventHandlers;
+
+public class DerivedEventHandler : IEventHandler<DerivedEvent>
 {
-    public class DerivedEventHandler : IEventHandler<DerivedEvent>
+    public Task Handle(IReceiveContext<DerivedEvent> context, CancellationToken cancellationToken)
     {
-        public Task Handle(IReceiveContext<DerivedEvent> context, CancellationToken cancellationToken)
-        {
-            RubishBox.Rublish.Add(nameof(DerivedEventHandler));
-            return Task.FromResult(1);
-        }
+        RubishBox.Rublish.Add(nameof(DerivedEventHandler));
+        
+        return Task.FromResult(1);
     }
 }

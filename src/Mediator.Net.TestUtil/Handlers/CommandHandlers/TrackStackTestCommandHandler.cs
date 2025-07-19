@@ -5,13 +5,12 @@ using System;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Mediator.Net.TestUtil.Handlers.CommandHandlers
+namespace Mediator.Net.TestUtil.Handlers.CommandHandlers;
+
+public class TrackStackTestCommandHandler : ICommandHandler<TrackStackTestCommand>
 {
-    public class TrackStackTestCommandHandler : ICommandHandler<TrackStackTestCommand>
+    public Task Handle(IReceiveContext<TrackStackTestCommand> context, CancellationToken cancellationToken)
     {
-        public Task Handle(IReceiveContext<TrackStackTestCommand> context, CancellationToken cancellationToken)
-        {
-            throw new NotImplementedException();
-        }
+        throw new NotImplementedException();
     }
 }

@@ -15,20 +15,25 @@ namespace Mediator.Net.Test.TestRequestHandlers
     {
         private IMediator _mediator;
         private GetGuidResponse _result;
+        
         Task GivenAMediatorAndTwoMiddlewares()
         {
             ClearBinding();
+            
             var builder = new MediatorBuilder();
+            
             _mediator = builder.RegisterHandlers(() =>
                 {
                     var binding = new List<MessageBinding>()
                     {
                         new MessageBinding(typeof(GetGuidRequest), typeof(GetGuidRequestHandler))
                     };
+                    
                     return binding;
                 })
                 .ConfigureGlobalReceivePipe(x => x.UseChangeRequestResultMiddleware())
                 .Build();
+            
             return Task.CompletedTask;
         }
 
@@ -40,6 +45,7 @@ namespace Mediator.Net.Test.TestRequestHandlers
         Task ThenTheResultShouldBeReturn()
         {
             _result.ToBeSetByMiddleware.ShouldBe("i am from middleware");
+            
             return Task.CompletedTask;
         }
         

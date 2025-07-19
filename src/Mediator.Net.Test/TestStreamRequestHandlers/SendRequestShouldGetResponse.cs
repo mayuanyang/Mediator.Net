@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using Mediator.Net.Binding;
 using Mediator.Net.TestUtil.Handlers.RequestHandlers;
@@ -13,14 +12,13 @@ using Xunit.Abstractions;
 
 namespace Mediator.Net.Test.TestStreamRequestHandlers
 {
-    
     public class SendRequestShouldGetMultipleResponse : TestBase
     {
         private readonly ITestOutputHelper _testOutputHelper;
+        private readonly Guid _guid = Guid.NewGuid();
 
         private IMediator _mediator;
         private IAsyncEnumerable<GetGuidResponse> _result;
-        private readonly Guid _guid = Guid.NewGuid();
 
         public SendRequestShouldGetMultipleResponse(ITestOutputHelper testOutputHelper)
         {
@@ -30,13 +28,16 @@ namespace Mediator.Net.Test.TestStreamRequestHandlers
         void GivenAMediatorAndTwoMiddlewares()
         {
             ClearBinding();
+            
             var builder = new MediatorBuilder();
+            
             _mediator = builder.RegisterHandlers(() =>
                 {
                     var binding = new List<MessageBinding>()
                     {
                         new MessageBinding(typeof(GetGuidRequest), typeof(GetMultipleGuidStreamRequestHandler))
                     };
+                    
                     return binding;
                 })
                 .ConfigureCommandReceivePipe(x =>
@@ -49,8 +50,6 @@ namespace Mediator.Net.Test.TestStreamRequestHandlers
                     x.UseConsoleLogger3();
                 })
             .Build();
-
-
         }
 
         Task WhenARequestIsSent()
@@ -63,15 +62,17 @@ namespace Mediator.Net.Test.TestStreamRequestHandlers
         async Task ThenTheResultShouldBeReturn()
         {
             var counter = 0;
+            
             await foreach (var r in _result)
             {
                 r.Index.ShouldBe(counter);
+                
                 _testOutputHelper.WriteLine(counter.ToString());
+                
                 counter++;
             }
             
             counter.ShouldBe(5);
-            
         }
 
         [Fact]

@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Mediator.Net.Binding;
-using Mediator.Net.TestUtil.Handlers.CommandHandlers;
 using Mediator.Net.TestUtil.Handlers.RequestHandlers;
 using Mediator.Net.TestUtil.Messages;
 using Mediator.Net.TestUtil.Middlewares;
@@ -13,7 +12,6 @@ namespace Mediator.Net.Test.TestRequestHandlers
 {
     public class TestUnifiedResponse: TestBase
     {
-        
         [Theory]
         [InlineData("RequestPipe")]
         [InlineData("GlobalPipe")]
@@ -21,6 +19,7 @@ namespace Mediator.Net.Test.TestRequestHandlers
         {
             var builder = SetupMediatorBuilderWithMiddleware(whichPipe);
             var mediator = SetupCommandMediatorWithUnifiedResultMiddleware(builder);
+            
             var response = await 
                 mediator.RequestAsync<GetGuidRequest, UnifiedResponse>(
                     new GetGuidRequest(Guid.Empty));
@@ -33,6 +32,7 @@ namespace Mediator.Net.Test.TestRequestHandlers
         MediatorBuilder SetupMediatorBuilderWithMiddleware(string whichPipe)
         {
             var builder = new MediatorBuilder();
+            
             switch (whichPipe)
             {
                 case "RequestPipe":
@@ -54,6 +54,7 @@ namespace Mediator.Net.Test.TestRequestHandlers
                 {
                     new MessageBinding(typeof(GetGuidRequest), typeof(UnifiedResponseRequesttHandler)),
                 };
+                
                 return binding;
             }).Build();
         }

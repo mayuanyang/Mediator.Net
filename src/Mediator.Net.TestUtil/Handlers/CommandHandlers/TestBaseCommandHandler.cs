@@ -6,16 +6,16 @@ using Mediator.Net.Contracts;
 using Mediator.Net.TestUtil.Messages;
 using Mediator.Net.TestUtil.TestUtils;
 
-namespace Mediator.Net.TestUtil.Handlers.CommandHandlers
+namespace Mediator.Net.TestUtil.Handlers.CommandHandlers;
+
+public class TestBaseCommandHandler : ICommandHandler<TestBaseCommand>
 {
-    public class TestBaseCommandHandler : ICommandHandler<TestBaseCommand>
+    public Task Handle(IReceiveContext<TestBaseCommand> context, CancellationToken cancellationToken)
     {
-        
-        public Task Handle(IReceiveContext<TestBaseCommand> context, CancellationToken cancellationToken)
-        {
-            Console.WriteLine(context.Message.Id);
-            RubishBox.Rublish.Add(nameof(TestBaseCommandHandler));
-            return Task.FromResult(0);
-        }
+        Console.WriteLine(context.Message.Id);
+            
+        RubishBox.Rublish.Add(nameof(TestBaseCommandHandler));
+            
+        return Task.FromResult(0);
     }
 }

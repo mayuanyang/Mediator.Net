@@ -5,19 +5,18 @@ using Mediator.Net.Contracts;
 using Mediator.Net.TestUtil.Messages;
 using Mediator.Net.TestUtil.TestUtils;
 
-namespace Mediator.Net.TestUtil.Handlers.CommandHandlers
+namespace Mediator.Net.TestUtil.Handlers.CommandHandlers;
+
+public class TestBaseCommandUseMetadataHandler : ICommandHandler<TestBaseCommand>
 {
-    public class TestBaseCommandUseMetadataHandler : ICommandHandler<TestBaseCommand>
+    public async Task Handle(IReceiveContext<TestBaseCommand> context, CancellationToken cancellationToken)
     {
-        public async Task Handle(IReceiveContext<TestBaseCommand> context, CancellationToken cancellationToken)
-        {
-            var userName = context.MetaData["UserName"];
-            RubishBox.Rublish.Add(userName);
+        var userName = context.MetaData["UserName"];
+        RubishBox.Rublish.Add(userName);
 
-            var password = context.MetaData["Password"];
-            RubishBox.Rublish.Add(password);
+        var password = context.MetaData["Password"];
+        RubishBox.Rublish.Add(password);
 
-            await Task.FromResult(0);
-        }
+        await Task.FromResult(0);
     }
 }

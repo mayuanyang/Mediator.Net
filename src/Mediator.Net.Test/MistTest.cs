@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Xunit;
@@ -29,6 +28,7 @@ namespace Mediator.Net.Test
             for (int i = 1; i <= 10; i++)
             {
                 await Task.Delay(1000);//Simulate waiting for data to come through. 
+                
                 yield return i;
             }
         }

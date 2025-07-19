@@ -14,23 +14,26 @@ using Xunit;
 
 namespace Mediator.Net.Test.TestPipeline
 {
-    
     public class MediatorSendsCommandAndRequestShouldUseDifferentPipe : TestBase
     {
         private IMediator _mediator;
         private GetGuidResponse _result;
         private Guid _id = Guid.NewGuid();
+        
         void GivenAMediatorAndTwoMiddlewares()
         {
             ClearBinding();
+            
            var builder = new MediatorBuilder();
+           
             _mediator = builder.RegisterHandlers(() =>
                 {
-                    var binding = new List<MessageBinding>()
+                    var binding = new List<MessageBinding>
                     {
                         new MessageBinding(typeof(TestBaseCommand), typeof(TestBaseCommandHandler)),
                         new MessageBinding(typeof(GetGuidRequest), typeof(GetGuidRequestHandler))
                     };
+                    
                     return binding;
                 })
                 .ConfigureGlobalReceivePipe(x =>
@@ -46,13 +49,12 @@ namespace Mediator.Net.Test.TestPipeline
                     x.UseConsoleLogger3();
                 })
             .Build();
-
-
         }
 
         async Task WhenACommandAndARequestAreSent()
         {
             await _mediator.SendAsync(new TestBaseCommand(Guid.NewGuid()));
+            
             _result = await _mediator.RequestAsync<GetGuidRequest, GetGuidResponse>(new GetGuidRequest(_id));
         }
 
@@ -64,6 +66,7 @@ namespace Mediator.Net.Test.TestPipeline
         void AndTheRequestShouldBeHandled()
         {
             _result.Id.ShouldBe(_id);
+            
             RubishBox.Rublish.Count.ShouldBe(6);
             RubishBox.Rublish.Contains(nameof(ConsoleLog1.UseConsoleLogger1)).ShouldBeTrue();
             RubishBox.Rublish.Contains(nameof(ConsoleLog2.UseConsoleLogger2)).ShouldBeTrue();

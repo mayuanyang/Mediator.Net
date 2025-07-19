@@ -2,10 +2,9 @@
 using Xunit;
 
 [assembly: CollectionBehavior(DisableTestParallelization = true)]
-namespace Mediator.Net.TestUtil
+namespace Mediator.Net.TestUtil;
+
+public class TestUtilAssembly
 {
-    public class TestUtilAssembly
-    {
-        public static Assembly Assembly => typeof(TestUtilAssembly).GetTypeInfo().Assembly;
-    }
+    public static Assembly Assembly => typeof(TestUtilAssembly).GetTypeInfo().Assembly;
 }

@@ -1,10 +1,8 @@
-﻿namespace Mediator.Net.TestUtil.Services
+﻿namespace Mediator.Net.TestUtil.Services;
+
+class DummyTransaction
 {
-    class DummyTransaction
+    public void Commit()
     {
-        public void Commit()
-        {
-            
-        }
     }
 }

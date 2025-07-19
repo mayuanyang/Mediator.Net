@@ -20,14 +20,17 @@ namespace Mediator.Net.MicrosoftDependencyInjection.Test.Tests
         void GivenAContainer()
         {
             var mediaBuilder = new MediatorBuilder();
+            
             mediaBuilder.RegisterUnduplicatedHandlers()
                 .ConfigureCommandReceivePipe(x =>
                 {
                     x.UseSimpleMiddleware();
                 });
+            
             _container = new ServiceCollection()
                 .AddTransient<SimpleService>()
                 .AddTransient<AnotherSimpleService>();
+            
             _container.RegisterMediator(mediaBuilder);
         }
 
@@ -35,6 +38,7 @@ namespace Mediator.Net.MicrosoftDependencyInjection.Test.Tests
         {
             _mediator = _container.BuildServiceProvider().GetService<IMediator>();
             _task = _mediator.PublishAsync(new SimpleEvent(Guid.NewGuid()));
+            
             return _task;
         }
 

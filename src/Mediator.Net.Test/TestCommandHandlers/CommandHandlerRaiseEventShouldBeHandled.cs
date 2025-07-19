@@ -13,7 +13,6 @@ using Xunit;
 
 namespace Mediator.Net.Test.TestCommandHandlers
 {
-    
     public class CommandHandlerRaiseEventShouldBeHandled : TestBase
     {
         private IMediator _mediator;
@@ -22,9 +21,11 @@ namespace Mediator.Net.Test.TestCommandHandlers
         {
             ClearBinding();
         }
+        
         void GivenAMediator()
         {
             var builder = new MediatorBuilder();
+            
             _mediator = builder.RegisterHandlers(() =>
             {
                 var binding = new List<MessageBinding>
@@ -32,6 +33,7 @@ namespace Mediator.Net.Test.TestCommandHandlers
                     new MessageBinding(typeof(TestBaseCommand), typeof(TestBaseCommandHandlerRaiseEvent)),
                     new MessageBinding(typeof(TestEvent), typeof(TestEventHandler))
                 };
+                
                 return binding;
             })
             .ConfigurePublishPipe(x =>
@@ -45,8 +47,7 @@ namespace Mediator.Net.Test.TestCommandHandlers
         {
            await _mediator.SendAsync(new TestBaseCommand(Guid.NewGuid()));
         }
-
-     
+        
         void ThenItShouldPutSomeRubishIntoRublishBox()
         {
             RubishBox.Rublish.Contains(nameof(DummySave.UseDummySave)).ShouldBeTrue();

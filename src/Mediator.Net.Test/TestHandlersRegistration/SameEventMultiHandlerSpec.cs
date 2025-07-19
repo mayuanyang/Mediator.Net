@@ -1,5 +1,4 @@
 ﻿using System.Linq;
-using Mediator.Net.Binding;
 using Mediator.Net.TestUtil;
 using Mediator.Net.TestUtil.Messages;
 using Shouldly;
@@ -8,10 +7,10 @@ using Xunit;
 
 namespace Mediator.Net.Test.TestHandlersRegistration
 {
-    
     public class SameEventMultiHandlerSpec : TestBase
     {
         private MediatorBuilder _builder;
+        
         void GivenAnAssemblyWithMultipleHandlersForTheSameEvent()
         {
             ClearBinding();
@@ -20,6 +19,7 @@ namespace Mediator.Net.Test.TestHandlersRegistration
         void WhenScanRegistrationIsExecuted()
         {
             _builder = new MediatorBuilder();
+            
             _builder.RegisterUnduplicatedHandlers().Build();
         }
 

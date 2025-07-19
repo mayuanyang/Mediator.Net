@@ -10,5 +10,4 @@ public class ParentEvent: IEvent
 
 public class ChildEvent : ParentEvent
 {
-    
 }

@@ -11,23 +11,23 @@ using Xunit;
 
 namespace Mediator.Net.Test.TestCommandHandlers
 {
-    
     public class AsyncCommandHandlerShouldWork : TestBase
     {
-
         private IMediator _mediator;
 
         public AsyncCommandHandlerShouldWork()
         {
             ClearBinding();
         }
+        
         void GivenAMediator()
         {
-            
             var builder = new MediatorBuilder();
+            
             _mediator = builder.RegisterHandlers(() =>
             {
                 var binding = new List<MessageBinding> { new MessageBinding(typeof(TestBaseCommand), typeof(AsyncTestBaseCommandHandler)) };
+                
                 return binding;
             })
             .Build();

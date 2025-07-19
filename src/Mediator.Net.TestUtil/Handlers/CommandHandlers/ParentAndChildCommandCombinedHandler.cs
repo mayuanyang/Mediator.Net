@@ -12,12 +12,14 @@ public class ParentAndChildCommandCombinedHandler : ICommandHandler<ParentComman
     public Task Handle(IReceiveContext<ParentCommand> context, CancellationToken cancellationToken)
     {
         RubishBox.Rublish.Add(context.Message.Id);
+        
         return Task.CompletedTask;
     }
 
     public Task Handle(IReceiveContext<ChildCommand> context, CancellationToken cancellationToken)
     {
         RubishBox.Rublish.Add(context.Message.Id);
+        
         return Task.WhenAll();
     }
 }

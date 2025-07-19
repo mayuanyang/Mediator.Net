@@ -1,20 +1,18 @@
 ﻿using System;
 using Mediator.Net.Contracts;
 
-namespace Mediator.Net.TestUtil.Messages
+namespace Mediator.Net.TestUtil.Messages;
+
+public class SimpleEvent : IEvent
 {
-    public class SimpleEvent : IEvent
-    {
-        public Guid Id { get; }
+    public Guid Id { get; }
 
-        public SimpleEvent(Guid id)
-        {
-            Id = id;
-        }
-    }
-
-    public class SimpleEvent2 : IEvent
+    public SimpleEvent(Guid id)
     {
-        
+        Id = id;
     }
+}
+
+public class SimpleEvent2 : IEvent
+{
 }

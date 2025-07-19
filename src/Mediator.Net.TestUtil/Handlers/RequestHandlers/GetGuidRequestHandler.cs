@@ -7,29 +7,31 @@ using Mediator.Net.TestUtil.Messages;
 using Mediator.Net.TestUtil.Middlewares;
 using Mediator.Net.TestUtil.TestUtils;
 
-namespace Mediator.Net.TestUtil.Handlers.RequestHandlers
+namespace Mediator.Net.TestUtil.Handlers.RequestHandlers;
+
+public class GetGuidRequestHandler : IRequestHandler<GetGuidRequest, GetGuidResponse>
 {
-    public class GetGuidRequestHandler : IRequestHandler<GetGuidRequest, GetGuidResponse>
+    public Task<GetGuidResponse> Handle(IReceiveContext<GetGuidRequest> context, CancellationToken cancellationToken)
     {
-        public Task<GetGuidResponse> Handle(IReceiveContext<GetGuidRequest> context, CancellationToken cancellationToken)
-        {
-            TokenRecorder.Recorder.Add(cancellationToken.GetHashCode());
-            RubishBox.Rublish.Add(nameof(GetGuidRequestHandler));
-            Console.WriteLine(context.Message.Id);
-            var response = new GetGuidResponse(context.Message.Id);
-            return Task.FromResult(response);
-        }
+        TokenRecorder.Recorder.Add(cancellationToken.GetHashCode());
+        RubishBox.Rublish.Add(nameof(GetGuidRequestHandler));
+        
+        Console.WriteLine(context.Message.Id);
+        
+        var response = new GetGuidResponse(context.Message.Id);
+        
+        return Task.FromResult(response);
     }
+}
     
-    public class UnifiedResponseRequesttHandler : IRequestHandler<GetGuidRequest, UnifiedResponse>
+public class UnifiedResponseRequesttHandler : IRequestHandler<GetGuidRequest, UnifiedResponse>
+{
+    public Task<UnifiedResponse> Handle(IReceiveContext<GetGuidRequest> context, CancellationToken cancellationToken)
     {
-        public Task<UnifiedResponse> Handle(IReceiveContext<GetGuidRequest> context, CancellationToken cancellationToken)
+        throw new BusinessException()
         {
-            throw new BusinessException()
-            {
-                Code = 654321,
-                Error = "112233"
-            };
-        }
+            Code = 654321,
+            Error = "112233"
+        };
     }
 }

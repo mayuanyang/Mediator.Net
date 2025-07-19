@@ -21,6 +21,7 @@ namespace Mediator.Net.Test.TestCommandHandlers
             var childId = Guid.NewGuid();
 
             await mediator.SendAsync(new ChildCommand(childId));
+            
             RubishBox.Rublish.Single(x => (Guid)x == childId);
         }
 
@@ -32,6 +33,7 @@ namespace Mediator.Net.Test.TestCommandHandlers
             var parentId = Guid.NewGuid();
 
             await mediator.SendAsync(new ParentCommand(parentId));
+            
             RubishBox.Rublish.Single(x => (Guid)x == parentId);
         }
 
@@ -59,9 +61,8 @@ namespace Mediator.Net.Test.TestCommandHandlers
                 var binding = new List<MessageBinding>
                 {
                     new MessageBinding(typeof(ParentCommand), withResponse ? typeof(ParentAndChildCommandCombinedWithResponseHandler) : typeof(ParentAndChildCommandCombinedHandler)),
-                    new MessageBinding(typeof(ChildCommand), withResponse ? typeof(ParentAndChildCommandCombinedWithResponseHandler) : typeof(ParentAndChildCommandCombinedHandler)),
+                    new MessageBinding(typeof(ChildCommand), withResponse ? typeof(ParentAndChildCommandCombinedWithResponseHandler) : typeof(ParentAndChildCommandCombinedHandler))
                 };
-
 
                 return binding;
             }).Build();

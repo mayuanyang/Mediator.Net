@@ -1,5 +1,4 @@
-﻿using System.ComponentModel;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using Mediator.Net.TestUtil;
 using Mediator.Net.TestUtil.Middlewares;
 using Microsoft.Extensions.DependencyInjection;
@@ -17,11 +16,13 @@ namespace Mediator.Net.MicrosoftDependencyInjection.Test.Tests
         void GivenAContainer()
         {
             var mediaBuilder = new MediatorBuilder();
+            
             mediaBuilder.RegisterUnduplicatedHandlers()
                 .ConfigureCommandReceivePipe(x =>
                 {
                     x.UseSimpleMiddleware();
                 });
+            
             _container = new ServiceCollection();
            
             _container.RegisterMediator(mediaBuilder);
@@ -30,6 +31,7 @@ namespace Mediator.Net.MicrosoftDependencyInjection.Test.Tests
         Task WhenTryToResolveTheInterfaceType()
         {
             _mediator = _container.BuildServiceProvider().GetService<IMediator>();
+            
             return Task.FromResult(0);
         }
 

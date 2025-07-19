@@ -1,5 +1,4 @@
-﻿using Mediator.Net.Binding;
-using Xunit;
+﻿using Xunit;
 
 namespace Mediator.Net.StructureMap.Test
 {

@@ -13,18 +13,20 @@ using Xunit;
 
 namespace Mediator.Net.Test.TestPipeline
 {
-    
     public class GlobalPipe2MiddlewaresFirstOneThrowExAfterConnect : TestBase
     {
         private IMediator _mediator;
         private Guid _id = Guid.NewGuid();
+        
         void GivenAMediatorWithGlobalPipeWith2Middlewares()
         {
             ClearBinding();
+            
            var builder = new MediatorBuilder();
+           
             _mediator = builder.RegisterHandlers(() =>
                 {
-                    var binding = new List<MessageBinding>()
+                    var binding = new List<MessageBinding>
                     {
                         new MessageBinding(typeof(TestBaseCommand), typeof(TestBaseCommandHandler))
                     };
@@ -55,7 +57,6 @@ namespace Mediator.Net.Test.TestPipeline
         {
             RubishBox.Rublish.Where(x => x is Exception).ToList().Count.ShouldBe(1);
         }
-
     
         [Fact]
         public void Run()

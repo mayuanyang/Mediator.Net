@@ -1,12 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace Mediator.Net.TestUtil.TestUtils
-{
-    public static class RubishBox
-    {
-        [ThreadStatic] static IList<object> _rubish;
+namespace Mediator.Net.TestUtil.TestUtils;
 
-        public static IList<object> Rublish => _rubish ?? (_rubish = new List<object>());
-    }
+public static class RubishBox
+{
+    [ThreadStatic] static IList<object> _rubish;
+
+    public static IList<object> Rublish => _rubish ?? (_rubish = new List<object>());
 }

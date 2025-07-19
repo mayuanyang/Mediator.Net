@@ -13,21 +13,24 @@ using Xunit;
 
 namespace Mediator.Net.Test.TestPipeline
 {
-    
     public class GlobalPipeConnectToCommandPipeHandlerThrowException : TestBase
     {
         private IMediator _mediator;
         private Guid _id = Guid.NewGuid();
+        
         void GivenAMediatorWithGlobalAndCommandPipeWithMiddlewares()
         {
             ClearBinding();
+            
            var builder = new MediatorBuilder();
+           
             _mediator = builder.RegisterHandlers(() =>
                 {
-                    var binding = new List<MessageBinding>()
+                    var binding = new List<MessageBinding>
                     {
                         new MessageBinding(typeof(TestBaseCommand), typeof(TestBaseCommandHandlerThrowException)),
                     };
+                    
                     return binding;
                 })
                 .ConfigureGlobalReceivePipe(x =>
@@ -57,7 +60,6 @@ namespace Mediator.Net.Test.TestPipeline
         {
             RubishBox.Rublish.Where(x => x is Exception).ToList().Count.ShouldBe(2);
         }
-
     
         [Fact]
         public void Run()

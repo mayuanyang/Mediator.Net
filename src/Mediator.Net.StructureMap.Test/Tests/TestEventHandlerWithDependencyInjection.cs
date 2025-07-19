@@ -19,12 +19,15 @@ namespace Mediator.Net.StructureMap.Test.Tests
         void GivenAContainer()
         {
             var mediaBuilder = new MediatorBuilder();
+            
             mediaBuilder.RegisterUnduplicatedHandlers()
                 .ConfigureCommandReceivePipe(x =>
                 {
                     x.UseSimpleMiddleware();
                 });
+            
             _container = new Container();
+            
             _container.Configure(mediaBuilder);
         }
 
@@ -32,6 +35,7 @@ namespace Mediator.Net.StructureMap.Test.Tests
         {
             _mediator = _container.GetInstance<IMediator>();
             _task = _mediator.PublishAsync(new SimpleEvent(Guid.NewGuid()));
+            
             return _task;
         }
 

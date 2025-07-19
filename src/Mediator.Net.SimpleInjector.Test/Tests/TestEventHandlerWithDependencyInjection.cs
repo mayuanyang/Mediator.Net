@@ -1,8 +1,6 @@
 ﻿using System;
-using System.Linq;
 using System.Threading.Tasks;
 using Mediator.Net.TestUtil;
-using Mediator.Net.TestUtil.Handlers.RequestHandlers;
 using Mediator.Net.TestUtil.Messages;
 using Mediator.Net.TestUtil.Middlewares;
 using Shouldly;
@@ -13,7 +11,6 @@ using Xunit;
 
 namespace Mediator.Net.SimpleInjector.Test.Tests
 {
-
     public class TestEventHandlerWithDependencyInjection : TestBase
     {
         private Container _container = null;
@@ -31,6 +28,7 @@ namespace Mediator.Net.SimpleInjector.Test.Tests
             _container = new Container();
             _container.Options.AllowOverridingRegistrations = true;
             _container.Options.DefaultScopedLifestyle = new LifetimeScopeLifestyle();
+            
             _container.RegisterMediator(mediaBuilder);
         }
 

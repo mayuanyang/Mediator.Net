@@ -12,12 +12,14 @@ public class ParentAndChildCommandCombinedWithResponseHandler : ICommandHandler<
     public Task<InheritanceCombinedResponse> Handle(IReceiveContext<ParentCommand> context, CancellationToken cancellationToken)
     {
         RubishBox.Rublish.Add(context.Message.Id);
+        
         return Task.FromResult<InheritanceCombinedResponse>(new InheritanceCombinedResponse() { Id = context.Message.Id});
     }
 
     public Task<InheritanceCombinedResponse> Handle(IReceiveContext<ChildCommand> context, CancellationToken cancellationToken)
     {
         RubishBox.Rublish.Add(context.Message.Id);
+        
         return Task.FromResult<InheritanceCombinedResponse>(new InheritanceCombinedResponse() { Id = context.Message.Id});
     }
 }

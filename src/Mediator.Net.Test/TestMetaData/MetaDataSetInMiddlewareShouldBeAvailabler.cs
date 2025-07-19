@@ -12,17 +12,20 @@ using Xunit;
 
 namespace Mediator.Net.Test.TestMetaData
 {
-    
     public class MetaDataSetInMiddlewareShouldBeAvailable : TestBase
     {
         private IMediator _mediator;
+        
         void GivenAMediator()
         {
             ClearBinding();
+            
             var builder = new MediatorBuilder();
+            
             _mediator = builder.RegisterHandlers(() =>
             {
                 var binding = new List<MessageBinding> { new MessageBinding(typeof(TestBaseCommand), typeof(TestBaseCommandUseMetadataHandler)) };
+                
                 return binding;
             })
             .ConfigureGlobalReceivePipe(x =>
@@ -34,7 +37,6 @@ namespace Mediator.Net.Test.TestMetaData
                     x.UseSecurityInfo2();
                 })
             .Build();
-
         }
 
         async Task WhenACommandIsSent()

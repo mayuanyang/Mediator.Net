@@ -1,12 +1,11 @@
 ﻿using System;
 
-namespace Mediator.Net.TestUtil.Services
+namespace Mediator.Net.TestUtil.Services;
+
+public class AnotherSimpleService
 {
-    public class AnotherSimpleService
+    public void DoAnotherWork()
     {
-        public void DoAnotherWork()
-        {
-            Console.WriteLine("Another job is done");
-        }
+        Console.WriteLine("Another job is done");
     }
 }
