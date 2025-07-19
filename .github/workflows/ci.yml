@@ -18,6 +18,7 @@ jobs:
             3.1.x
             5.0.x
             6.0.x
+            7.0.x
       - name: Install dependencies
         run: dotnet restore Mediator.Net.sln
       - name: Build
@@ -30,4 +31,8 @@ jobs:
           dotnet test "src\Mediator.Net.SimpleInjector.Test\Mediator.Net.SimpleInjector.Test.csproj" -c Release --verbosity normal --collect:"XPlat Code Coverage" --results-directory ./coverage
           dotnet test "src\Mediator.Net.MicrosoftDependencyInjection.Test\Mediator.Net.MicrosoftDependencyInjection.Test.csproj" -c Release --verbosity normal --collect:"XPlat Code Coverage" --results-directory ./coverage
           dotnet test "src\Mediator.Net.WebApiSample.Test\Mediator.Net.WebApiSample.Test.csproj" -c Release --verbosity normal --collect:"XPlat Code Coverage" --results-directory ./coverage
-
+      - name: Upload coverage to Codecov
+        uses: codecov/codecov-action@v2
+        with:
+          directory: ./coverage/
+          verbose: true
