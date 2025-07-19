@@ -3,11 +3,10 @@ using System.Threading.Tasks;
 using Mediator.Net.Context;
 using Mediator.Net.Contracts;
 
-namespace Mediator.Net.Pipeline
+namespace Mediator.Net.Pipeline;
+
+public interface IRequestReceivePipe<TContext> : IPipe<TContext>
+    where TContext : IContext<IRequest>
 {
-    public interface IRequestReceivePipe<TContext> : IPipe<TContext>
-        where TContext : IContext<IRequest>
-    {
-        new Task<object> Connect(TContext context, CancellationToken cancellationToken);
-    }
+    new Task<object> Connect(TContext context, CancellationToken cancellationToken);
 }

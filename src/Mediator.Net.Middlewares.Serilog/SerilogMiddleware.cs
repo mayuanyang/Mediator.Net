@@ -20,6 +20,7 @@ namespace Mediator.Net.Middlewares.Serilog
             {
                 throw new DependencyScopeNotConfiguredException($"{nameof(ILogger)} is not provided and IDependencyScope is not configured, Please ensure {nameof(ILogger)} is registered properly if you are using IoC container, otherwise please pass {nameof(ILogger)} as parameter");
             }
+            
             logger = logger ?? configurator.DependencyScope.Resolve<ILogger>();
             
             configurator.AddPipeSpecification(new SerilogMiddlewareSpecification<TContext>(logger, logAsLevel, shouldExecute));

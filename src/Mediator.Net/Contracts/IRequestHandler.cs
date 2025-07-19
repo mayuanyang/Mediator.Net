@@ -2,12 +2,11 @@
 using System.Threading.Tasks;
 using Mediator.Net.Context;
 
-namespace Mediator.Net.Contracts
+namespace Mediator.Net.Contracts;
+
+public interface IRequestHandler<in TRequest,TResponse>
+    where TRequest : class, IRequest
+    where TResponse : class , IResponse
 {
-    public interface IRequestHandler<in TRequest,TResponse>
-        where TRequest : class, IRequest
-        where TResponse : class , IResponse
-    {
-        Task<TResponse> Handle(IReceiveContext<TRequest> context, CancellationToken cancellationToken);
-    }
+    Task<TResponse> Handle(IReceiveContext<TRequest> context, CancellationToken cancellationToken);
 }

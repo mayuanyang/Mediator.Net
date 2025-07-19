@@ -1,6 +1,5 @@
-﻿namespace Mediator.Net.Contracts
+﻿namespace Mediator.Net.Contracts;
+
+public interface IResponse
 {
-    public interface IResponse
-    {
-    }
 }

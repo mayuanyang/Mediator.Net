@@ -1,12 +1,10 @@
 ﻿using System;
 
-namespace Mediator.Net
+namespace Mediator.Net;
+
+public class DependencyScopeNotConfiguredException : Exception
 {
-    public class DependencyScopeNotConfiguredException : Exception
+    public DependencyScopeNotConfiguredException(string message) : base(message)
     {
-        public DependencyScopeNotConfiguredException(string message) : base(message)
-        {
-            
-        }
     }
 }
