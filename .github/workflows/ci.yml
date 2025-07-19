@@ -9,54 +9,25 @@ jobs:
       DOTNET_CLI_TELEMETRY_OPTOUT: 1
       DOTNET_SKIP_FIRST_TIME_EXPERIENCE: 1
       NUGET_XMLDOC_MODE: skip
-
     steps:
-      - uses: actions/checkout@v4   # Updated to latest checkout action
-
-      - name: Setup .NET SDKs
-        uses: actions/setup-dotnet@v3   # Updated to v3
+      - uses: actions/checkout@v4
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v3
         with:
           dotnet-version: |
-            6.0.x   # Primary version (you can add more like '7.0.x' or '8.0.x')
-            7.0.x   # Optional, for backward compatibility
-            8.1.x   # Optional, for backward compatibility
-
-      - name: Install OpenSSL (for Linux)  
-        run: sudo apt-get update && sudo apt-get install -y openssl libssl-dev
-
-      - name: Restore dependencies
+            3.1.x
+            5.0.x
+            6.0.x
+      - name: Install dependencies
         run: dotnet restore Mediator.Net.sln
-
       - name: Build
         run: dotnet build --configuration Release --no-restore
-
-      - name: Run Tests with Coverage  
+      - name: Test
         run: |
-          projects=(
-            "src/Mediator.Net.Test/Mediator.Net.Test.csproj"
-            "src/Mediator.Net.Autofac.Test/Mediator.Net.Autofac.Test.csproj"
-            "src/Mediator.Net.StructureMap.Test/Mediator.Net.StructureMap.Test.csproj"
-            "src/Mediator.Net.SimpleInjector.Test/Mediator.Net.SimpleInjector.Test.csproj"
-            "src/Mediator.Net.MicrosoftDependencyInjection.Test/Mediator.Net.MicrosoftDependencyInjection.Test.csproj"
-            "src/Mediator.Net.WebApiSample.Test/Mediator.Net.WebApiSample.Test.csproj"
-          )
-          
-          for project in "${projects[@]}"; do
-            dotnet test "$project" --configuration Release --verbosity normal \
-              --collect:"XPlat Code Coverage" \
-              --results-directory ./coverage \
-              --logger trx || echo "Test failed for $project; continuing..."
-          done
-        
-        # Continue on error to ensure all tests run even if one fails
-        continue-on-error: true  
+          dotnet test "src\Mediator.Net.Test\Mediator.Net.Test.csproj" -c Debug --verbosity normal --collect:"XPlat Code Coverage" --results-directory ./coverage
+          dotnet test "src\Mediator.Net.Autofac.Test\Mediator.Net.Autofac.Test.csproj" -c Release --verbosity normal --collect:"XPlat Code Coverage" --results-directory ./coverage
+          dotnet test "src\Mediator.Net.StructureMap.Test\Mediator.Net.StructureMap.Test.csproj" -c Release --verbosity normal --collect:"XPlat Code Coverage" --results-directory ./coverage
+          dotnet test "src\Mediator.Net.SimpleInjector.Test\Mediator.Net.SimpleInjector.Test.csproj" -c Release --verbosity normal --collect:"XPlat Code Coverage" --results-directory ./coverage
+          dotnet test "src\Mediator.Net.MicrosoftDependencyInjection.Test\Mediator.Net.MicrosoftDependencyInjection.Test.csproj" -c Release --verbosity normal --collect:"XPlat Code Coverage" --results-directory ./coverage
+          dotnet test "src\Mediator.Net.WebApiSample.Test\Mediator.Net.WebApiSample.Test.csproj" -c Release --verbosity normal --collect:"XPlat Code Coverage" --results-directory ./coverage
 
-      # Optional (if you want to publish test results)
-      - name: Publish Test Results  
-        if: always()
-        uses: actions/upload-artifact@v3
-        with:
-          name: test-results
-          path: |
-            **/*.trx  
-            coverage/**/*
