@@ -15,5 +15,9 @@
     <ProjectReference Include="..\Mediator.Net.TestUtil\Mediator.Net.TestUtil.csproj" />
     <ProjectReference Include="..\Mediator.Net\Mediator.Net.csproj" />
   </ItemGroup>
+  
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="9.0.7" />
+  </ItemGroup>
 
 </Project>
