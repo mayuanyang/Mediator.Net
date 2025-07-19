@@ -29,12 +29,15 @@ jobs:
         id: gitversion
         uses: gittools/actions/gitversion/execute@v0.9.13
       - name: Setup .NET Core
-        uses: actions/setup-dotnet@v2
+        uses: actions/setup-dotnet@v3
         with:
           dotnet-version: |
             3.1.x
             5.0.x
             6.0.x
+            7.0.x
+            8.0.x
+            9.0.x
       - name: Install dependencies
         run: dotnet restore Mediator.Net.sln
       - name: Build
@@ -43,9 +46,6 @@ jobs:
         run: |
           dotnet pack "src\Mediator.Net" -c Release --no-build -o artifacts -p:PackageVersion=`echo ${{ steps.gitversion.outputs.fullSemVer }}|sed 's^+^-^g'`
           dotnet pack "src\Mediator.Net.Autofac" -c Release --no-build -o artifacts -p:PackageVersion=`echo ${{ steps.gitversion.outputs.fullSemVer }}|sed 's^+^-^g'`
-          dotnet pack "src\Mediator.Net.StructureMap" -c Release --no-build -o artifacts -p:PackageVersion=`echo ${{ steps.gitversion.outputs.fullSemVer }}|sed 's^+^-^g'`
-          dotnet pack "src\Mediator.Net.Ninject" -c Release --no-build -o artifacts -p:PackageVersion=`echo ${{ steps.gitversion.outputs.fullSemVer }}|sed 's^+^-^g'`
-          dotnet pack "src\Mediator.Net.SimpleInjector" -c Release --no-build -o artifacts -p:PackageVersion=`echo ${{ steps.gitversion.outputs.fullSemVer }}|sed 's^+^-^g'`
           dotnet pack "src\Mediator.Net.Middlewares.Serilog" -c Release --no-build -o artifacts -p:PackageVersion=`echo ${{ steps.gitversion.outputs.fullSemVer }}|sed 's^+^-^g'`
           dotnet pack "src\Mediator.Net.TestUtil" -c Release --no-build -o artifacts -p:PackageVersion=`echo ${{ steps.gitversion.outputs.fullSemVer }}|sed 's^+^-^g'`
           dotnet pack "src\Mediator.Net.MicrosoftDependencyInjection" -c Release --no-build -o artifacts -p:PackageVersion=`echo ${{ steps.gitversion.outputs.fullSemVer }}|sed 's^+^-^g'`
