@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
+using System.Threading.Tasks;
 using Mediator.Net.Binding;
 using Mediator.Net.TestUtil.Handlers.CommandHandlers;
 using Mediator.Net.TestUtil.Handlers.EventHandlers;
@@ -73,24 +74,24 @@ namespace Mediator.Net.Test.Cancellation
         }
 
         [Fact]
-        public void TokenIsPassWhenAEventIsSent()
+        public async Task TokenIsPassWhenAEventIsSent()
         {
             var source = new CancellationTokenSource();
             var token = source.Token;
 
-            _mediator.PublishAsync(new TestEvent(Guid.NewGuid()), token).Wait();
+            await _mediator.PublishAsync(new TestEvent(Guid.NewGuid()), token);
             
             TokenRecorder.Recorder.Any(hashcode => hashcode != token.GetHashCode()).ShouldBe(false);
             TokenRecorder.Recorder.Count.ShouldBe(7);
         }
 
         [Fact]
-        public void TokenIsPassWhenARequestIsSent()
+        public async Task TokenIsPassWhenARequestIsSent()
         {
             var source = new CancellationTokenSource();
             var token = source.Token;
 
-            _mediator.RequestAsync<GetGuidRequest, GetGuidResponse>(new GetGuidRequest(Guid.NewGuid()), token).Wait();
+            await _mediator.RequestAsync<GetGuidRequest, GetGuidResponse>(new GetGuidRequest(Guid.NewGuid()), token);
             
             TokenRecorder.Recorder.Any(hashcode => hashcode != token.GetHashCode()).ShouldBe(false);
             TokenRecorder.Recorder.Count.ShouldBe(7);

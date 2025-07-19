@@ -27,6 +27,10 @@ public class Startup
         ConfigureMediator(services);
         
         services.AddMvc(options => options.EnableEndpointRouting = false);
+        
+        services.AddControllers()
+            .AddNewtonsoftJson(); // Replace System.Text.Json
+
     }
 
     // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
