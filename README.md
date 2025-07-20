@@ -13,6 +13,41 @@ A powerful and flexible mediator implementation for .NET that enables clean arch
   <img src="https://cloud.githubusercontent.com/assets/3387099/24353370/97f573f0-1330-11e7-890c-85855628a575.png" alt="Mediator.Net Logo" width="200"/>
 </p>
 
+## 📋 Table of Contents
+
+- [Features](#-features)
+- [Installation](#-installation)
+- [Quick Start](#-quick-start)
+  - [Basic Setup](#basic-setup)
+  - [Define Messages and Handlers](#define-messages-and-handlers)
+- [Usage Examples](#-usage-examples)
+  - [Sending Commands](#sending-commands)
+  - [Handling Requests](#handling-requests)
+  - [Publishing Events](#publishing-events)
+  - [Streaming Responses](#streaming-responses)
+- [Handler Registration](#-handler-registration)
+  - [Assembly Scanning (Recommended)](#assembly-scanning-recommended)
+  - [Explicit Registration](#explicit-registration)
+- [Pipeline & Middleware](#-pipeline--middleware)
+  - [Pipeline Types](#pipeline-types)
+  - [Creating Custom Middleware](#creating-custom-middleware)
+  - [Configuring Pipelines](#configuring-pipelines)
+- [Dependency Injection Integration](#️-dependency-injection-integration)
+  - [Microsoft.Extensions.DependencyInjection](#microsoftextensionsdependencyinjection)
+  - [Autofac](#autofac)
+  - [Other Supported Containers](#other-supported-containers)
+- [Official Middleware Packages](#-official-middleware-packages)
+  - [Serilog Logging](#serilog-logging)
+  - [Unit of Work](#unit-of-work)
+  - [EventStore Integration](#eventstore-integration)
+- [Advanced Features](#-advanced-features)
+  - [Context Services](#context-services)
+  - [Publishing Events from Handlers](#publishing-events-from-handlers)
+- [Documentation](#-documentation)
+- [Contributing](#-contributing)
+- [License](#-license)
+- [Support](#️-support)
+
 ## 🚀 Features
 
 - **Command/Query Separation**: Clear separation between commands, queries, and events
