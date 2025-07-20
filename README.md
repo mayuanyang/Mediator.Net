@@ -13,6 +13,11 @@ A powerful and flexible mediator implementation for .NET that enables clean arch
   <img src="https://cloud.githubusercontent.com/assets/3387099/24353370/97f573f0-1330-11e7-890c-85855628a575.png" alt="Mediator.Net Logo" width="200"/>
 </p>
 
+## 🌐 Languages
+
+- [English](README.md) (Current)
+- [中文](README_zh.md)
+
 ## 📋 Table of Contents
 
 - [Features](#-features)
