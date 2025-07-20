@@ -1,436 +1,397 @@
-[![Mediator.Net on Stack Overflow](https://img.shields.io/badge/stack%20overflow-Mediator.Net-yellowgreen.svg)](http://stackoverflow.com/questions/tagged/memdiator.net)
-
-![Build status](https://ci.appveyor.com/api/projects/status/j42okw862yjgdeo9?svg=true)
-![example workflow](https://github.com/mayuanyang/Mediator.Net/actions/workflows/ci.yml/badge.svg)
-![example workflow](https://github.com/mayuanyang/Mediator.Net/actions/workflows/release.yml/badge.svg)
-[![codecov](https://codecov.io/gh/mayuanyang/Mediator.Net/branch/master/graph/badge.svg?token=MuQkMlLAcG)](https://codecov.io/gh/mayuanyang/Mediator.Net)
-
 # Mediator.Net
 
-A mediator project for .NET
+[![Stack Overflow](https://img.shields.io/badge/stack%20overflow-Mediator.Net-yellowgreen.svg)](http://stackoverflow.com/questions/tagged/memdiator.net)
+[![Build Status](https://ci.appveyor.com/api/projects/status/j42okw862yjgdeo9?svg=true)](https://ci.appveyor.com/project/mayuanyang/mediator-net)
+[![CI](https://github.com/mayuanyang/Mediator.Net/actions/workflows/ci.yml/badge.svg)](https://github.com/mayuanyang/Mediator.Net/actions/workflows/ci.yml)
+[![Release](https://github.com/mayuanyang/Mediator.Net/actions/workflows/release.yml/badge.svg)](https://github.com/mayuanyang/Mediator.Net/actions/workflows/release.yml)
+[![codecov](https://codecov.io/gh/mayuanyang/Mediator.Net/branch/master/graph/badge.svg?token=MuQkMlLAcG)](https://codecov.io/gh/mayuanyang/Mediator.Net)
+[![NuGet](https://img.shields.io/nuget/v/Mediator.Net.svg)](https://www.nuget.org/packages/Mediator.Net/)
 
-![logo_sm](https://cloud.githubusercontent.com/assets/3387099/24353370/97f573f0-1330-11e7-890c-85855628a575.png)
+A powerful and flexible mediator implementation for .NET that enables clean architecture by decoupling request/response handling through the mediator pattern.
 
-## Get Packages
+<p align="center">
+  <img src="https://cloud.githubusercontent.com/assets/3387099/24353370/97f573f0-1330-11e7-890c-85855628a575.png" alt="Mediator.Net Logo" width="200"/>
+</p>
 
-You can get Mediator.Net by [grabbing the latest NuGet packages](https://www.nuget.org/packages/Mediator.Net/).
+## 🚀 Features
 
-## Get Started
+- **Command/Query Separation**: Clear separation between commands, queries, and events
+- **Pipeline Support**: Extensible middleware pipeline for cross-cutting concerns
+- **Streaming Support**: Handle multiple responses with `IAsyncEnumerable`
+- **Dependency Injection**: Built-in support for popular IoC containers
+- **Event Publishing**: Publish events from within handlers
+- **Flexible Registration**: Both explicit and assembly scanning registration
+- **Middleware Ecosystem**: Rich collection of pre-built middlewares
 
-Install the nuget package Mediator.Net
+## 📦 Installation
 
-```C#
+Install the main package via NuGet:
+
+```bash
 Install-Package Mediator.Net
 ```
 
-## Simple usage
+Or via .NET CLI:
 
-```C#
-// Setup a mediator builder
+```bash
+dotnet add package Mediator.Net
+```
+
+## 🏁 Quick Start
+
+### Basic Setup
+
+```csharp
+// Create and configure mediator
 var mediaBuilder = new MediatorBuilder();
-var mediator = mediaBuilder.RegisterHandlers(typeof(this).Assembly).Build();
+var mediator = mediaBuilder.RegisterHandlers(typeof(Program).Assembly).Build();
 ```
 
-### Sending a command with no response
+### Define Messages and Handlers
 
-```C#
-await _mediator.SendAsync(new TestBaseCommand(Guid.NewGuid()));
-```
-
-### Sending a command with response
-
-```C#
-var pong = await _mediator.SendAsync<Ping, Pong>(new Ping());
-```
-
-### Sending request with response
-
-```C#
-var result = await _mediator.RequestAsync<GetGuidRequest, GetGuidResponse>(new GetGuidRequest(_guid));
-```
-
-### Publishing an event
-
-```C#
-await _mediator.Publish(new OrderPlacedEvent);
-```
-
-### Publishing an event as the result of a command
-
-Inside a command handler.Handle method, a IReceiveContext<T> expose a method of Publish
-
-```C#
-public async Task Handle(IReceiveContext<DerivedTestBaseCommand> context, CancellationToken cancellationToken)
+```csharp
+// Command (no response)
+public class CreateUserCommand : ICommand
 {
-    // Do you work
-    await context.Publish(new OrderPlacedEvent());
+    public string Name { get; set; }
+    public string Email { get; set; }
+}
+
+public class CreateUserCommandHandler : ICommandHandler<CreateUserCommand>
+{
+    public async Task Handle(IReceiveContext<CreateUserCommand> context, CancellationToken cancellationToken)
+    {
+        // Handle the command
+        var user = new User(context.Message.Name, context.Message.Email);
+        // Save user...
+        
+        // Publish an event
+        await context.Publish(new UserCreatedEvent { UserId = user.Id });
+    }
+}
+
+// Request/Response
+public class GetUserQuery : IRequest<UserDto>
+{
+    public int UserId { get; set; }
+}
+
+public class GetUserQueryHandler : IRequestHandler<GetUserQuery, UserDto>
+{
+    public async Task<UserDto> Handle(IReceiveContext<GetUserQuery> context, CancellationToken cancellationToken)
+    {
+        // Handle the query and return response
+        return new UserDto { Id = context.Message.UserId, Name = "John Doe" };
+    }
+}
+
+// Event
+public class UserCreatedEvent : IEvent
+{
+    public int UserId { get; set; }
+}
+
+public class UserCreatedEventHandler : IEventHandler<UserCreatedEvent>
+{
+    public async Task Handle(IReceiveContext<UserCreatedEvent> context, CancellationToken cancellationToken)
+    {
+        // Handle the event
+        Console.WriteLine($"User {context.Message.UserId} was created!");
+    }
 }
 ```
 
-### Create stream of responses
+## 📋 Usage Examples
 
-Sometimes you might want to get multiple responses by one request or command, you can do that by using the `CreateStream` method
+### Sending Commands
 
-```C#
-// Define a StreamHandler by implementing the IStreamRequestHandler or IStreamCommandHandler interfaces for IRequest and ICommand
-public class GetMultipleGuidStreamRequestHandler : IStreamRequestHandler<GetGuidRequest, GetGuidResponse>
+```csharp
+// Command with no response
+await mediator.SendAsync(new CreateUserCommand 
+{ 
+    Name = "John Doe", 
+    Email = "john@example.com" 
+});
+
+// Command with response
+var result = await mediator.SendAsync<CreateUserCommand, CreateUserResponse>(
+    new CreateUserCommand { Name = "Jane Doe", Email = "jane@example.com" });
+```
+
+### Handling Requests
+
+```csharp
+// Request with response
+var user = await mediator.RequestAsync<GetUserQuery, UserDto>(
+    new GetUserQuery { UserId = 123 });
+```
+
+### Publishing Events
+
+```csharp
+// Publish event to all handlers
+await mediator.Publish(new UserCreatedEvent { UserId = 123 });
+```
+
+### Streaming Responses
+
+Create handlers that return multiple responses:
+
+```csharp
+public class GetMultipleUsersStreamHandler : IStreamRequestHandler<GetUsersQuery, UserDto>
 {
-    public async IAsyncEnumerable<GetGuidResponse> Handle(IReceiveContext<GetGuidRequest> context, [EnumeratorCancellation] CancellationToken cancellationToken)
+    public async IAsyncEnumerable<UserDto> Handle(
+        IReceiveContext<GetUsersQuery> context, 
+        [EnumeratorCancellation] CancellationToken cancellationToken)
     {
-        for (var i = 0; i < 5; i++)
+        for (var i = 0; i < 10; i++)
         {
             await Task.Delay(100, cancellationToken);
-            yield return await Task.FromResult(new GetGuidResponse(Guid.NewGuid() ){Index = i});
+            yield return new UserDto { Id = i, Name = $"User {i}" };
         }
     }
 }
 
-// You can now get multiple responses back by using this
-IAsyncEnumerable<GetGuiResponse> result = mediator.CreateStream<GetGuidRequest, GetGuidResponse>(new GetGuidRequest(_guid));
-
-await foreach (var r in result)
+// Consume the stream
+await foreach (var user in mediator.CreateStream<GetUsersQuery, UserDto>(new GetUsersQuery()))
 {
-  Console.WriteLine(r.Id.ToString());
-}
-
-```
-
-How about EventHandler?
-What would be the use cases of a stream of events? So it is currently not supported
-
-How about middleware?
-You can use middleware as normal, keep in mind that middleware will only get invoked once for each IRequest or ICommand thought that multiple responses might return
-
-### Handling message from handler
-
-Once a message is sent, it will reach its handlers, you can only have one handler for ICommand and IRequest and can have multi handlers for IEvent. ReceiveContext<T> will be delivered to the handler.
-
-```C#
-class TestBaseCommandHandler : ICommandHandler<TestBaseCommand>
-{
-    public Task Handle(ReceiveContext<TestBaseCommand> context)
-    {
-        Console.WriteLine(context.Message.Id);
-        return Task.FromResult(0);
-    }
-}
-
-// Or in async
-class AsyncTestBaseCommandHandler : ICommandHandler<TestBaseCommand>
-{
-    public async Task Handle(ReceiveContext<TestBaseCommand> context)
-    {
-        Console.WriteLine(context.Message.Id);
-        await Task.FromResult(0);
-    }
+    Console.WriteLine($"Received: {user.Name}");
 }
 ```
 
-## Handler Registration
+## 🔧 Handler Registration
 
-### Handlers explicit registration
+### Assembly Scanning (Recommended)
 
-```C#
-var mediator = builder.RegisterHandlers(() =>
-{
-    var binding = new List<MessageBinding>
+```csharp
+var mediator = new MediatorBuilder()
+    .RegisterHandlers(typeof(Program).Assembly)
+    .Build();
+```
+
+### Explicit Registration
+
+```csharp
+var mediator = new MediatorBuilder()
+    .RegisterHandlers(() => new List<MessageBinding>
     {
-        new MessageBinding(typeof(TestBaseCommand), typeof(TestBaseCommandHandler)),
-        new MessageBinding(typeof(DerivedTestBaseCommand), typeof(DerivedTestBaseCommandHandler))
-    };
-    return binding;
-}).Build();
+        new MessageBinding(typeof(CreateUserCommand), typeof(CreateUserCommandHandler)),
+        new MessageBinding(typeof(GetUserQuery), typeof(GetUserQueryHandler)),
+        new MessageBinding(typeof(UserCreatedEvent), typeof(UserCreatedEventHandler))
+    })
+    .Build();
 ```
 
-### Scan registration
+## 🔄 Pipeline & Middleware
 
-```C#
-var mediaBuilder = new MediatorBuilder();
-var mediator = mediaBuilder.RegisterHandlers(typeof(this).Assembly).Build();
-```
+Mediator.Net supports five types of pipelines for different scenarios:
 
-### Using pipelines
+![Pipeline Architecture](https://cloud.githubusercontent.com/assets/3387099/21959127/9a065420-db09-11e6-8dbc-ca0069894e1c.png)
 
-There are 5 different type of pipelines you can use
-![image](https://cloud.githubusercontent.com/assets/3387099/21959127/9a065420-db09-11e6-8dbc-ca0069894e1c.png)
+### Pipeline Types
 
-#### GlobalReceivePipeline
+| Pipeline | Description | Triggers For |
+|----------|-------------|--------------|
+| **GlobalReceivePipeline** | Executes for all messages | Commands, Requests, Events |
+| **CommandReceivePipeline** | Executes only for commands | ICommand |
+| **RequestReceivePipeline** | Executes only for requests | IRequest |
+| **EventReceivePipeline** | Executes only for events | IEvent |
+| **PublishPipeline** | Executes when events are published | IEvent (outgoing) |
 
-This pipeline will be triggered whenever a message is sent, published or requested before it reaches the next pipeline and handler
+### Creating Custom Middleware
 
-#### CommandReceivePipeline
+#### 1. Create Middleware Extension
 
-This pipeline will be triggered just after the `GlobalReceivePipeline` and before it reaches its command handler, this pipeline will only be used for `ICommand`
-
-#### EventReceivePipeline
-
-This pipeline will be triggered just after the `GlobalReceivePipeline` and before it reaches its event handler/handlers, this pipeline will only be used for `IEvent`
-
-#### RequestReceivePipeline
-
-This pipeline will be triggered just after the `GlobalReceivePipeline` and before it reaches its request handler, this pipeline will only be used for `IRequest`
-
-#### PublishPipeline
-
-This pipeline will be triggered when an `IEvent` is published inside your handler, this pipeline will only be used for `IEvent` and is usually being used as outgoing interceptor
-
-### Setting up middlewares
-
-The most powerful thing for the pipelines above is you can add as many middlewares as you want.
-Follow the following steps to setup a middleware
-
-- Add a static class for your middleware
-- Add a public static extension method in that class you just added, usually follow the UseXxxx naming convention
-- Add another class for your middleware's specification, note that this is the implementation of your middleware
-
-You might need some dependencies in your middleware, there are two ways to do it
-
-- Pass them in explicitly
-- Let the IoC container to resolve it for you (if you are using IoC)
-
-Here is a sample middleware
-
-## Middleware class
-
-```C#
-public static class SerilogMiddleware
+```csharp
+public static class LoggingMiddleware
 {
-    public static void UseSerilog<TContext>(this IPipeConfigurator<TContext> configurator, LogEventLevel logAsLevel, ILogger logger = null)
+    public static void UseLogging<TContext>(
+        this IPipeConfigurator<TContext> configurator, 
+        ILogger logger = null)
         where TContext : IContext<IMessage>
     {
-        if (logger == null && configurator.DependencyScope == null)
-        {
-            throw new DependencyScopeNotConfiguredException($"{nameof(ILogger)} is not provided and IDependencyScope is not configured, Please ensure {nameof(ILogger)} is registered properly if you are using IoC container, otherwise please pass {nameof(ILogger)} as parameter");
-        }
-        logger = logger ?? configurator.DependencyScope.Resolve<ILogger>();
-
-        configurator.AddPipeSpecification(new SerilogMiddlewareSpecification<TContext>(logger, logAsLevel));
+        logger ??= configurator.DependencyScope?.Resolve<ILogger>();
+        configurator.AddPipeSpecification(new LoggingMiddlewareSpecification<TContext>(logger));
     }
 }
 ```
 
-## Specification class
+#### 2. Create Middleware Specification
 
-```C#
-class SerilogMiddlewareSpecification<TContext> : IPipeSpecification<TContext> where TContext : IContext<IMessage>
-    {
-        private readonly ILogger _logger;
-        private readonly Func<bool> _shouldExecute;
-        private readonly LogEventLevel _level;
-
-        public SerilogMiddlewareSpecification(ILogger logger, LogEventLevel level, Func<bool> shouldExecute )
-        {
-            _logger = logger;
-            _level = level;
-            _shouldExecute = shouldExecute;
-        }
-        public bool ShouldExecute(TContext context, CancellationToken cancellationToken)
-        {
-            if (_shouldExecute == null)
-            {
-                return true;
-            }
-            return _shouldExecute.Invoke();
-        }
-
-        public Task BeforeExecute(TContext context, CancellationToken cancellationToken)
-        {
-            return Task.FromResult(0);
-        }
-
-        public Task Execute(TContext context, CancellationToken cancellationToken)
-        {
-            if (ShouldExecute(context, cancellationToken))
-            {
-                switch (_level)
-                {
-                    case LogEventLevel.Error:
-                        _logger.Error("Receive message {@Message}", context.Message);
-                        break;
-                    case LogEventLevel.Debug:
-                        _logger.Debug("Receive message {@Message}", context.Message);
-                        break;
-                    case LogEventLevel.Fatal:
-                        _logger.Fatal("Receive message {@Message}", context.Message);
-                        break;
-                    case LogEventLevel.Information:
-                        _logger.Information("Receive message {@Message}", context.Message);
-                        break;
-                    case LogEventLevel.Verbose:
-                        _logger.Verbose("Receive message {@Message}", context.Message);
-                        break;
-                    case LogEventLevel.Warning:
-                        _logger.Verbose("Receive message {@Message}", context.Message);
-                        break;
-                    default:
-                        throw new ArgumentOutOfRangeException();
-                }
-            }
-            return Task.FromResult(0);
-        }
-
-        public Task AfterExecute(TContext context, CancellationToken cancellationToken)
-        {
-            return Task.FromResult(0);
-        }
-
-        public void OnException(Exception ex, TContext context)
-        {
-            throw ex;
-        }
-    }
-```
-
-### To hook up middlewares into pipelines
-
-```C#
-var builder = new MediatorBuilder();
-_mediator = builder.RegisterHandlers(() =>
-    {
-        return new List<MessageBinding>()
-        {
-            new MessageBinding(typeof(TestBaseCommand), typeof(TestBaseCommandHandlerRaiseEvent)),
-            new MessageBinding(typeof(TestEvent), typeof(TestEventHandler)),
-            new MessageBinding(typeof(GetGuidRequest), typeof(GetGuidRequestHandler))
-        };
-    })
-    .ConfigureGlobalReceivePipe(x =>
-    {
-        x.UseDummySave();
-    })
-    .ConfigureCommandReceivePipe(x =>
-    {
-        x.UseConsoleLogger1();
-    })
-    .ConfigureEventReceivePipe(x =>
-    {
-        x.UseConsoleLogger2();
-    })
-    .ConfigureRequestPipe(x =>
-    {
-        x.UseConsoleLogger3();
-    })
-    .ConfigurePublishPipe(x =>
-    {
-        x.UseConsoleLogger4();
-    })
-.Build();
-```
-
-### ReceiveContext in Handlers
-
-As you might already noticed, mediator will deliver ReceiveContext<T> to the handler and it has a property `Message` which is the original message sent, in some cases you might have one event being handled in multiple handlers and you might want to share something between, `ReceiveContext` would is good place that to register your service or instance. For example you can make a middleware and register the service from there.
-
-#### Register DummyTransaction from middleware
-
-```C#
-public class SimpleMiddlewareSpecification<TContext> : IPipeSpecification<TContext>
+```csharp
+public class LoggingMiddlewareSpecification<TContext> : IPipeSpecification<TContext> 
     where TContext : IContext<IMessage>
 {
-    public bool ShouldExecute(TContext context)
+    private readonly ILogger _logger;
+
+    public LoggingMiddlewareSpecification(ILogger logger)
     {
-        return true;
+        _logger = logger;
     }
 
-    public Task BeforeExecute(TContext context)
+    public bool ShouldExecute(TContext context, CancellationToken cancellationToken) => true;
+
+    public Task BeforeExecute(TContext context, CancellationToken cancellationToken)
     {
-        return Task.FromResult(0);
+        _logger.LogInformation("Processing message: {MessageType}", context.Message.GetType().Name);
+        return Task.CompletedTask;
     }
 
-    public Task Execute(TContext context)
+    public Task Execute(TContext context, CancellationToken cancellationToken)
     {
-        if (ShouldExecute(context))
-        {
-            context.RegisterService(new DummyTransaction());
-        }
-        return Task.FromResult(0);
+        return Task.CompletedTask;
     }
 
-    public Task AfterExecute(TContext context)
+    public Task AfterExecute(TContext context, CancellationToken cancellationToken)
     {
-        return Task.FromResult(0);
+        _logger.LogInformation("Completed processing: {MessageType}", context.Message.GetType().Name);
+        return Task.CompletedTask;
+    }
+
+    public void OnException(Exception ex, TContext context)
+    {
+        _logger.LogError(ex, "Error processing message: {MessageType}", context.Message.GetType().Name);
+        throw ex;
     }
 }
 ```
 
-#### Get the DummyTransaction registered in the middleware from the handler
+### Configuring Pipelines
 
-```C#
-public Task Handle(ReceiveContext<SimpleCommand> context)
+```csharp
+var mediator = new MediatorBuilder()
+    .RegisterHandlers(typeof(Program).Assembly)
+    .ConfigureGlobalReceivePipe(x => x.UseLogging())
+    .ConfigureCommandReceivePipe(x => x.UseValidation())
+    .ConfigureRequestPipe(x => x.UseCaching())
+    .ConfigureEventReceivePipe(x => x.UseEventStore())
+    .ConfigurePublishPipe(x => x.UseOutboxPattern())
+    .Build();
+```
+
+## 🏗️ Dependency Injection Integration
+
+### Microsoft.Extensions.DependencyInjection
+
+```bash
+Install-Package Mediator.Net.MicrosoftDependencyInjection
+```
+
+```csharp
+services.AddMediator(builder => 
 {
-    _simpleService.DoWork();
-    if (context.TryGetService(out DummyTransaction transaction))
-    {
-        transaction.Commit();
-    }
-    return Task.FromResult(0);
-}
+    builder.RegisterHandlers(typeof(Program).Assembly);
+});
 ```
 
-### Using dependency injection(IoC) frameworks
+### Autofac
 
-#### Autofac
-
-Install the nuget package Mediator.Net.Autofac
-
-```C#
+```bash
 Install-Package Mediator.Net.Autofac
 ```
 
-An extension method RegisterMediator for ContainerBuilder from Autofac is used to register the builder
+```csharp
+var builder = new ContainerBuilder();
+var mediatorBuilder = new MediatorBuilder()
+    .RegisterHandlers(typeof(Program).Assembly);
 
-The super simple use case
-
-```C#
-var mediaBuilder = new MediatorBuilder();
-mediaBuilder.RegisterHandlers(typeof(TestContainer).Assembly);
-var containerBuilder = new ContainerBuilder();
-containerBuilder.RegisterMediator(mediaBuilder);
- _container = containerBuilder.Build();
+builder.RegisterMediator(mediatorBuilder);
+var container = builder.Build();
 ```
 
-You can also setup middlewares for each pipe before register it
+### Other Supported Containers
 
-```C#
-var mediaBuilder = new MediatorBuilder();
-mediaBuilder.RegisterHandlers(typeof(TestContainer).Assembly)
-    .ConfigureCommandReceivePipe(x =>
-    {
-        x.UseSimpleMiddleware();
-    });
-var containerBuilder = new ContainerBuilder();
-containerBuilder.RegisterMediator(mediaBuilder);
-_container = containerBuilder.Build();
-```
+- **SimpleInjector**: `Mediator.Net.SimpleInjector`
+- **StructureMap**: `Mediator.Net.StructureMap`
+- **Ninject**: `Mediator.Net.Ninject`
 
+## 🔌 Official Middleware Packages
 
+### Serilog Logging
 
-## Middlewares
-
-One of the key feature for Mediator.Net is you can plug as many middlewares as you like, we have implemented some common one as below
-
-### Mediator.Net.Middlewares.UnitOfWork
-
-```
-Install-Package Mediator.Net.Middlewares.UnitOfWork
-```
-
-This middleware provide a CommittableTransaction inside the context, handlers can enlist the transaction if it requires UnitOfWork
-[Mediator.Net.Middlewares.UnitOfWork](https://github.com/mayuanyang/Mediator.Net.Middlewares.UnitOfWork) - Middleware for Mediator.Net to support unit of work.
-
-### Mediator.Net.Middlewares.Serilog
-
-```
+```bash
 Install-Package Mediator.Net.Middlewares.Serilog
 ```
 
-This middleware logs every message by using Serilog
-
-### Mediator.Net.Middlewares.EventStore
-
+```csharp
+.ConfigureGlobalReceivePipe(x => x.UseSerilog(LogEventLevel.Information))
 ```
+
+### Unit of Work
+
+```bash
+Install-Package Mediator.Net.Middlewares.UnitOfWork
+```
+
+Provides `CommittableTransaction` support for transactional operations.
+
+### EventStore Integration
+
+```bash
 Install-Package Mediator.Net.Middlewares.EventStore
 ```
 
-Middleware for Mediator.Net to write events to GetEventStore, it is a Middleware for Mediator.Net that plugs into the publish pipeline
-[Mediator.Net.Middlewares.UnitOfWork](https://github.com/mayuanyang/Mediator.Net.Middlewares.EventStore) - Middleware for Mediator.Net to persist event to EventStore.
+Automatically persists events to EventStore.
+
+## 🎯 Advanced Features
+
+### Context Services
+
+Share services between middleware and handlers:
+
+```csharp
+// In middleware
+public Task Execute(TContext context, CancellationToken cancellationToken)
+{
+    context.RegisterService(new AuditInfo { Timestamp = DateTime.UtcNow });
+    return Task.CompletedTask;
+}
+
+// In handler
+public async Task Handle(IReceiveContext<MyCommand> context, CancellationToken cancellationToken)
+{
+    if (context.TryGetService(out AuditInfo auditInfo))
+    {
+        // Use the audit info
+    }
+}
+```
+
+### Publishing Events from Handlers
+
+```csharp
+public async Task Handle(IReceiveContext<CreateOrderCommand> context, CancellationToken cancellationToken)
+{
+    // Process the command
+    var order = new Order(context.Message.CustomerId);
+    
+    // Publish domain event
+    await context.Publish(new OrderCreatedEvent 
+    { 
+        OrderId = order.Id, 
+        CustomerId = order.CustomerId 
+    });
+}
+```
+
+## 📚 Documentation
+
+For more detailed documentation, examples, and advanced scenarios, visit our [Wiki](https://github.com/mayuanyang/Mediator.Net/wiki).
+
+## 🤝 Contributing
+
+We welcome contributions! Please see our [Contributing Guide](CONTRIBUTING.md) for details.
+
+## 📄 License
+
+This project is licensed under the MIT License - see the [LICENSE.txt](LICENSE.txt) file for details.
+
+## 🙋‍♂️ Support
+
+- 📖 [Documentation](https://github.com/mayuanyang/Mediator.Net/wiki)
+- 💬 [Stack Overflow](http://stackoverflow.com/questions/tagged/memdiator.net) (use the `mediator.net` tag)
+- 🐛 [Issues](https://github.com/mayuanyang/Mediator.Net/issues)
+
+---
+
+⭐ If you find this project useful, please give it a star!
