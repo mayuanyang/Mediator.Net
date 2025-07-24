@@ -1,96 +1,91 @@
 # Mediator.Net
 
 [![Stack Overflow](https://img.shields.io/badge/stack%20overflow-Mediator.Net-yellowgreen.svg)](http://stackoverflow.com/questions/tagged/memdiator.net)
-[![Build Status](https://ci.appveyor.com/api/projects/status/j42okw862yjgdeo9?svg=true)](https://ci.appveyor.com/project/mayuanyang/mediator-net)
+[![构建状态](https://ci.appveyor.com/api/projects/status/j42okw862yjgdeo9?svg=true)](https://ci.appveyor.com/project/mayuanyang/mediator-net)
 [![CI](https://github.com/mayuanyang/Mediator.Net/actions/workflows/ci.yml/badge.svg)](https://github.com/mayuanyang/Mediator.Net/actions/workflows/ci.yml)
 [![Release](https://github.com/mayuanyang/Mediator.Net/actions/workflows/release.yml/badge.svg)](https://github.com/mayuanyang/Mediator.Net/actions/workflows/release.yml)
 [![codecov](https://codecov.io/gh/mayuanyang/Mediator.Net/branch/master/graph/badge.svg?token=MuQkMlLAcG)](https://codecov.io/gh/mayuanyang/Mediator.Net)
 [![NuGet](https://img.shields.io/nuget/v/Mediator.Net.svg)](https://www.nuget.org/packages/Mediator.Net/)
 
-A powerful and flexible mediator implementation for .NET that enables clean architecture by decoupling request/response handling through the mediator pattern.
+一个强大而灵活的 .NET 中介者模式实现，通过解耦请求/响应处理来实现清洁架构。
 
 <p align="center">
   <img src="https://cloud.githubusercontent.com/assets/3387099/24353370/97f573f0-1330-11e7-890c-85855628a575.png" alt="Mediator.Net Logo" width="200"/>
 </p>
 
-## 🌐 Languages
+## 📋 目录
 
-- [English](README.md) (Current)
-- [中文](README_zh.md)
-
-## 📋 Table of Contents
-
-- [Features](#-features)
-- [Installation](#-installation)
-- [Quick Start](#-quick-start)
-  - [Basic Setup](#basic-setup)
-  - [Define Messages and Handlers](#define-messages-and-handlers)
-- [Usage Examples](#-usage-examples)
-  - [Sending Commands](#sending-commands)
-  - [Handling Requests](#handling-requests)
-  - [Publishing Events](#publishing-events)
-  - [Streaming Responses](#streaming-responses)
-- [Handler Registration](#-handler-registration)
-  - [Assembly Scanning (Recommended)](#assembly-scanning-recommended)
-  - [Explicit Registration](#explicit-registration)
-- [Pipeline & Middleware](#-pipeline--middleware)
-  - [Pipeline Types](#pipeline-types)
-  - [Creating Custom Middleware](#creating-custom-middleware)
-  - [Configuring Pipelines](#configuring-pipelines)
-- [Dependency Injection Integration](#️-dependency-injection-integration)
+- [特性](#-特性)
+- [安装](#-安装)
+- [快速开始](#-快速开始)
+  - [基本设置](#基本设置)
+  - [定义消息和处理器](#定义消息和处理器)
+- [使用示例](#-使用示例)
+  - [发送命令](#发送命令)
+  - [处理请求](#处理请求)
+  - [发布事件](#发布事件)
+  - [流式响应](#流式响应)
+- [处理器注册](#-处理器注册)
+  - [程序集扫描（推荐）](#程序集扫描推荐)
+  - [显式注册](#显式注册)
+- [管道和中间件](#-管道和中间件)
+  - [管道类型](#管道类型)
+  - [创建自定义中间件](#创建自定义中间件)
+  - [配置管道](#配置管道)
+- [依赖注入集成](#️-依赖注入集成)
   - [Microsoft.Extensions.DependencyInjection](#microsoftextensionsdependencyinjection)
   - [Autofac](#autofac)
-  - [Other Supported Containers](#other-supported-containers)
-- [Official Middleware Packages](#-official-middleware-packages)
-  - [Serilog Logging](#serilog-logging)
-  - [Unit of Work](#unit-of-work)
-  - [EventStore Integration](#eventstore-integration)
-- [Advanced Features](#-advanced-features)
-  - [Context Services](#context-services)
-  - [Publishing Events from Handlers](#publishing-events-from-handlers)
-- [Documentation](#-documentation)
-- [Contributing](#-contributing)
-- [License](#-license)
-- [Support](#️-support)
+  - [其他支持的容器](#其他支持的容器)
+- [官方中间件包](#-官方中间件包)
+  - [Serilog 日志](#serilog-日志)
+  - [工作单元](#工作单元)
+  - [EventStore 集成](#eventstore-集成)
+- [高级特性](#-高级特性)
+  - [上下文服务](#上下文服务)
+  - [从处理器发布事件](#从处理器发布事件)
+- [文档](#-文档)
+- [贡献](#-贡献)
+- [许可证](#-许可证)
+- [支持](#️-支持)
 
-## 🚀 Features
+## 🚀 特性
 
-- **Command/Query Separation**: Clear separation between commands, queries, and events
-- **Pipeline Support**: Extensible middleware pipeline for cross-cutting concerns
-- **Streaming Support**: Handle multiple responses with `IAsyncEnumerable`
-- **Dependency Injection**: Built-in support for popular IoC containers
-- **Event Publishing**: Publish events from within handlers
-- **Flexible Registration**: Both explicit and assembly scanning registration
-- **Middleware Ecosystem**: Rich collection of pre-built middlewares
+- **命令/查询分离**：命令、查询和事件的清晰分离
+- **管道支持**：用于横切关注点的可扩展中间件管道
+- **流式支持**：使用 `IAsyncEnumerable` 处理多个响应
+- **依赖注入**：内置支持流行的 IoC 容器
+- **事件发布**：从处理器内部发布事件
+- **灵活注册**：支持显式注册和程序集扫描注册
+- **中间件生态系统**：丰富的预构建中间件集合
 
-## 📦 Installation
+## 📦 安装
 
-Install the main package via NuGet:
+通过 NuGet 安装主包：
 
 ```bash
 Install-Package Mediator.Net
 ```
 
-Or via .NET CLI:
+或通过 .NET CLI：
 
 ```bash
 dotnet add package Mediator.Net
 ```
 
-## 🏁 Quick Start
+## 🏁 快速开始
 
-### Basic Setup
+### 基本设置
 
 ```csharp
-// Create and configure mediator
+// 创建和配置中介者
 var mediaBuilder = new MediatorBuilder();
 var mediator = mediaBuilder.RegisterHandlers(typeof(Program).Assembly).Build();
 ```
 
-### Define Messages and Handlers
+### 定义消息和处理器
 
 ```csharp
-// Command (no response)
+// 命令（无响应）
 public class CreateUserCommand : ICommand
 {
     public string Name { get; set; }
@@ -101,16 +96,16 @@ public class CreateUserCommandHandler : ICommandHandler<CreateUserCommand>
 {
     public async Task Handle(IReceiveContext<CreateUserCommand> context, CancellationToken cancellationToken)
     {
-        // Handle the command
+        // 处理命令
         var user = new User(context.Message.Name, context.Message.Email);
-        // Save user...
+        // 保存用户...
         
-        // Publish an event
+        // 发布事件
         await context.Publish(new UserCreatedEvent { UserId = user.Id });
     }
 }
 
-// Request/Response
+// 请求/响应
 public class GetUserQuery : IRequest<UserDto>
 {
     public int UserId { get; set; }
@@ -120,12 +115,12 @@ public class GetUserQueryHandler : IRequestHandler<GetUserQuery, UserDto>
 {
     public async Task<UserDto> Handle(IReceiveContext<GetUserQuery> context, CancellationToken cancellationToken)
     {
-        // Handle the query and return response
-        return new UserDto { Id = context.Message.UserId, Name = "John Doe" };
+        // 处理查询并返回响应
+        return new UserDto { Id = context.Message.UserId, Name = "张三" };
     }
 }
 
-// Event
+// 事件
 public class UserCreatedEvent : IEvent
 {
     public int UserId { get; set; }
@@ -135,47 +130,47 @@ public class UserCreatedEventHandler : IEventHandler<UserCreatedEvent>
 {
     public async Task Handle(IReceiveContext<UserCreatedEvent> context, CancellationToken cancellationToken)
     {
-        // Handle the event
-        Console.WriteLine($"User {context.Message.UserId} was created!");
+        // 处理事件
+        Console.WriteLine($"用户 {context.Message.UserId} 已创建！");
     }
 }
 ```
 
-## 📋 Usage Examples
+## 📋 使用示例
 
-### Sending Commands
+### 发送命令
 
 ```csharp
-// Command with no response
+// 无响应的命令
 await mediator.SendAsync(new CreateUserCommand 
 { 
-    Name = "John Doe", 
-    Email = "john@example.com" 
+    Name = "张三", 
+    Email = "zhangsan@example.com" 
 });
 
-// Command with response
+// 有响应的命令
 var result = await mediator.SendAsync<CreateUserCommand, CreateUserResponse>(
-    new CreateUserCommand { Name = "Jane Doe", Email = "jane@example.com" });
+    new CreateUserCommand { Name = "李四", Email = "lisi@example.com" });
 ```
 
-### Handling Requests
+### 处理请求
 
 ```csharp
-// Request with response
+// 有响应的请求
 var user = await mediator.RequestAsync<GetUserQuery, UserDto>(
     new GetUserQuery { UserId = 123 });
 ```
 
-### Publishing Events
+### 发布事件
 
 ```csharp
-// Publish event to all handlers
+// 向所有处理器发布事件
 await mediator.Publish(new UserCreatedEvent { UserId = 123 });
 ```
 
-### Streaming Responses
+### 流式响应
 
-Create handlers that return multiple responses:
+创建返回多个响应的处理器：
 
 ```csharp
 public class GetMultipleUsersStreamHandler : IStreamRequestHandler<GetUsersQuery, UserDto>
@@ -187,21 +182,21 @@ public class GetMultipleUsersStreamHandler : IStreamRequestHandler<GetUsersQuery
         for (var i = 0; i < 10; i++)
         {
             await Task.Delay(100, cancellationToken);
-            yield return new UserDto { Id = i, Name = $"User {i}" };
+            yield return new UserDto { Id = i, Name = $"用户 {i}" };
         }
     }
 }
 
-// Consume the stream
+// 消费流
 await foreach (var user in mediator.CreateStream<GetUsersQuery, UserDto>(new GetUsersQuery()))
 {
-    Console.WriteLine($"Received: {user.Name}");
+    Console.WriteLine($"接收到：{user.Name}");
 }
 ```
 
-## 🔧 Handler Registration
+## 🔧 处理器注册
 
-### Assembly Scanning (Recommended)
+### 程序集扫描（推荐）
 
 ```csharp
 var mediator = new MediatorBuilder()
@@ -209,7 +204,7 @@ var mediator = new MediatorBuilder()
     .Build();
 ```
 
-### Explicit Registration
+### 显式注册
 
 ```csharp
 var mediator = new MediatorBuilder()
@@ -222,25 +217,25 @@ var mediator = new MediatorBuilder()
     .Build();
 ```
 
-## 🔄 Pipeline & Middleware
+## 🔄 管道和中间件
 
-Mediator.Net supports five types of pipelines for different scenarios:
+Mediator.Net 支持五种不同场景的管道类型：
 
-![Pipeline Architecture](https://cloud.githubusercontent.com/assets/3387099/21959127/9a065420-db09-11e6-8dbc-ca0069894e1c.png)
+![管道架构](https://cloud.githubusercontent.com/assets/3387099/21959127/9a065420-db09-11e6-8dbc-ca0069894e1c.png)
 
-### Pipeline Types
+### 管道类型
 
-| Pipeline | Description | Triggers For |
+| 管道 | 描述 | 触发对象 |
 |----------|-------------|--------------|
-| **GlobalReceivePipeline** | Executes for all messages | Commands, Requests, Events |
-| **CommandReceivePipeline** | Executes only for commands | ICommand |
-| **RequestReceivePipeline** | Executes only for requests | IRequest |
-| **EventReceivePipeline** | Executes only for events | IEvent |
-| **PublishPipeline** | Executes when events are published | IEvent (outgoing) |
+| **GlobalReceivePipeline** | 对所有消息执行 | 命令、请求、事件 |
+| **CommandReceivePipeline** | 仅对命令执行 | ICommand |
+| **RequestReceivePipeline** | 仅对请求执行 | IRequest |
+| **EventReceivePipeline** | 仅对事件执行 | IEvent |
+| **PublishPipeline** | 当事件被发布时执行 | IEvent（出站） |
 
-### Creating Custom Middleware
+### 创建自定义中间件
 
-#### 1. Create Middleware Extension
+#### 1. 创建中间件扩展
 
 ```csharp
 public static class LoggingMiddleware
@@ -256,7 +251,7 @@ public static class LoggingMiddleware
 }
 ```
 
-#### 2. Create Middleware Specification
+#### 2. 创建中间件规范
 
 ```csharp
 public class LoggingMiddlewareSpecification<TContext> : IPipeSpecification<TContext> 
@@ -273,7 +268,7 @@ public class LoggingMiddlewareSpecification<TContext> : IPipeSpecification<TCont
 
     public Task BeforeExecute(TContext context, CancellationToken cancellationToken)
     {
-        _logger.LogInformation("Processing message: {MessageType}", context.Message.GetType().Name);
+        _logger.LogInformation("正在处理消息：{MessageType}", context.Message.GetType().Name);
         return Task.CompletedTask;
     }
 
@@ -284,19 +279,19 @@ public class LoggingMiddlewareSpecification<TContext> : IPipeSpecification<TCont
 
     public Task AfterExecute(TContext context, CancellationToken cancellationToken)
     {
-        _logger.LogInformation("Completed processing: {MessageType}", context.Message.GetType().Name);
+        _logger.LogInformation("完成处理：{MessageType}", context.Message.GetType().Name);
         return Task.CompletedTask;
     }
 
     public void OnException(Exception ex, TContext context)
     {
-        _logger.LogError(ex, "Error processing message: {MessageType}", context.Message.GetType().Name);
+        _logger.LogError(ex, "处理消息时出错：{MessageType}", context.Message.GetType().Name);
         throw ex;
     }
 }
 ```
 
-### Configuring Pipelines
+### 配置管道
 
 ```csharp
 var mediator = new MediatorBuilder()
@@ -309,7 +304,7 @@ var mediator = new MediatorBuilder()
     .Build();
 ```
 
-## 🏗️ Dependency Injection Integration
+## 🏗️ 依赖注入集成
 
 ### Microsoft.Extensions.DependencyInjection
 
@@ -339,15 +334,15 @@ builder.RegisterMediator(mediatorBuilder);
 var container = builder.Build();
 ```
 
-### Other Supported Containers
+### 其他支持的容器
 
-- **SimpleInjector**: `Mediator.Net.SimpleInjector`
-- **StructureMap**: `Mediator.Net.StructureMap`
-- **Ninject**: `Mediator.Net.Ninject`
+- **SimpleInjector**：`Mediator.Net.SimpleInjector`
+- **StructureMap**：`Mediator.Net.StructureMap`
+- **Ninject**：`Mediator.Net.Ninject`
 
-## 🔌 Official Middleware Packages
+## 🔌 官方中间件包
 
-### Serilog Logging
+### Serilog 日志
 
 ```bash
 Install-Package Mediator.Net.Middlewares.Serilog
@@ -357,55 +352,55 @@ Install-Package Mediator.Net.Middlewares.Serilog
 .ConfigureGlobalReceivePipe(x => x.UseSerilog(LogEventLevel.Information))
 ```
 
-### Unit of Work
+### 工作单元
 
 ```bash
 Install-Package Mediator.Net.Middlewares.UnitOfWork
 ```
 
-Provides `CommittableTransaction` support for transactional operations.
+为事务操作提供 `CommittableTransaction` 支持。
 
-### EventStore Integration
+### EventStore 集成
 
 ```bash
 Install-Package Mediator.Net.Middlewares.EventStore
 ```
 
-Automatically persists events to EventStore.
+自动将事件持久化到 EventStore。
 
-## 🎯 Advanced Features
+## 🎯 高级特性
 
-### Context Services
+### 上下文服务
 
-Share services between middleware and handlers:
+在中间件和处理器之间共享服务：
 
 ```csharp
-// In middleware
+// 在中间件中
 public Task Execute(TContext context, CancellationToken cancellationToken)
 {
     context.RegisterService(new AuditInfo { Timestamp = DateTime.UtcNow });
     return Task.CompletedTask;
 }
 
-// In handler
+// 在处理器中
 public async Task Handle(IReceiveContext<MyCommand> context, CancellationToken cancellationToken)
 {
     if (context.TryGetService(out AuditInfo auditInfo))
     {
-        // Use the audit info
+        // 使用审计信息
     }
 }
 ```
 
-### Publishing Events from Handlers
+### 从处理器发布事件
 
 ```csharp
 public async Task Handle(IReceiveContext<CreateOrderCommand> context, CancellationToken cancellationToken)
 {
-    // Process the command
+    // 处理命令
     var order = new Order(context.Message.CustomerId);
     
-    // Publish domain event
+    // 发布领域事件
     await context.Publish(new OrderCreatedEvent 
     { 
         OrderId = order.Id, 
@@ -414,24 +409,24 @@ public async Task Handle(IReceiveContext<CreateOrderCommand> context, Cancellati
 }
 ```
 
-## 📚 Documentation
+## 📚 文档
 
-For more detailed documentation, examples, and advanced scenarios, visit our [Wiki](https://github.com/mayuanyang/Mediator.Net/wiki).
+更详细的文档、示例和高级场景，请访问我们的 [Wiki](https://github.com/mayuanyang/Mediator.Net/wiki)。
 
-## 🤝 Contributing
+## 🤝 贡献
 
-We welcome contributions! Please see our [Contributing Guide](CONTRIBUTING.md) for details.
+我们欢迎贡献！请查看我们的[贡献指南](CONTRIBUTING.md)了解详情。
 
-## 📄 License
+## 📄 许可证
 
-This project is licensed under the MIT License - see the [LICENSE.txt](LICENSE.txt) file for details.
+本项目采用 MIT 许可证 - 详情请参阅 [LICENSE.txt](LICENSE.txt) 文件。
 
-## 🙋‍♂️ Support
+## 🙋‍♂️ 支持
 
-- 📖 [Documentation](https://github.com/mayuanyang/Mediator.Net/wiki)
-- 💬 [Stack Overflow](http://stackoverflow.com/questions/tagged/memdiator.net) (use the `mediator.net` tag)
-- 🐛 [Issues](https://github.com/mayuanyang/Mediator.Net/issues)
+- 📖 [文档](https://github.com/mayuanyang/Mediator.Net/wiki)
+- 💬 [Stack Overflow](http://stackoverflow.com/questions/tagged/memdiator.net)（使用 `mediator.net` 标签）
+- 🐛 [问题反馈](https://github.com/mayuanyang/Mediator.Net/issues)
 
 ---
 
-⭐ If you find this project useful, please give it a star!
+⭐ 如果您觉得这个项目有用，请给它一个星标！
