@@ -184,4 +184,12 @@ public class Mediator : IMediator
     {
         _scope?.Dispose();
     }
+
+    public async ValueTask DisposeAsync()
+    {
+        if (_scope is IAsyncDisposable asyncScope)
+            await asyncScope.DisposeAsync().ConfigureAwait(false);
+        else
+            _scope?.Dispose();
+    }
 }

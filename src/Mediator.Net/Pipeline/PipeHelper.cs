@@ -47,7 +47,9 @@ public static class PipeHelper
         
         if (!task.GetType().GetTypeInfo().IsGenericType)
         {
-            throw new Exception("A task without a result is returned");
+            throw new InvalidOperationException(
+                "A non-generic Task was returned where a result was expected. " +
+                "Ensure your handler returns Task<TResponse>, not Task.");
         }
         
         var result = task.GetType().GetRuntimeProperty("Result").GetMethod;

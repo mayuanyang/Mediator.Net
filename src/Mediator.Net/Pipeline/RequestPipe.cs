@@ -101,12 +101,12 @@ class RequestPipe<TContext> : IRequestReceivePipe<TContext>
     {
         var handlers = PipeHelper.GetHandlerBindings(context, true, _messageHandlerRegistry);
 
-        if (handlers.Count() > 1)
+        if (handlers.Count > 1)
         {
             throw new MoreThanOneHandlerException(context.Message.GetType());
         }
 
-        var binding = handlers.Single();
+        var binding = handlers[0];
 
         var handlerType = binding.HandlerType;
         var messageType = context.Message.GetType();
@@ -132,8 +132,8 @@ class RequestPipe<TContext> : IRequestReceivePipe<TContext>
             case IAsyncEnumerable<object> list:
             {
                 await foreach (var r in list)
-                    return Task.FromResult(r);
-                
+                    return r;
+
                 break;
             }
         }
@@ -147,12 +147,12 @@ class RequestPipe<TContext> : IRequestReceivePipe<TContext>
     {
         var handlers = PipeHelper.GetHandlerBindings(context, true, _messageHandlerRegistry);
 
-        if (handlers.Count() > 1)
+        if (handlers.Count > 1)
         {
             throw new MoreThanOneHandlerException(context.Message.GetType());
         }
 
-        var binding = handlers.Single();
+        var binding = handlers[0];
 
         var handlerType = binding.HandlerType;
         var messageType = context.Message.GetType();

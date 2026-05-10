@@ -98,12 +98,12 @@ public class CommandReceivePipe<TContext> : ICommandReceivePipe<TContext>
     {
         var handlers = PipeHelper.GetHandlerBindings(context, true, _messageHandlerRegistry);
 
-        if (handlers.Count() > 1)
+        if (handlers.Count > 1)
         {
             throw new MoreThanOneHandlerException(context.Message.GetType());
         }
 
-        var binding = handlers.Single();
+        var binding = handlers[0];
 
         var handlerType = binding.HandlerType;
         var messageType = context.Message.GetType();
@@ -129,12 +129,12 @@ public class CommandReceivePipe<TContext> : ICommandReceivePipe<TContext>
     {
         var handlers = PipeHelper.GetHandlerBindings(context, true, _messageHandlerRegistry);
 
-        if (handlers.Count() > 1)
+        if (handlers.Count > 1)
         {
             throw new MoreThanOneHandlerException(context.Message.GetType());
         }
 
-        var binding = handlers.Single();
+        var binding = handlers[0];
 
         var handlerType = binding.HandlerType;
         var messageType = context.Message.GetType();

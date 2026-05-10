@@ -1,15 +1,15 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.Linq;
 using Mediator.Net.Context;
 using Mediator.Net.Contracts;
 
 namespace Mediator.Net.Pipeline
 {
-    class GlobalRececivePipeConfigurator : IGlobalReceivePipeConfigurator
+    class GlobalReceivePipeConfigurator : IGlobalReceivePipeConfigurator
     {
         private readonly IList<IPipeSpecification<IReceiveContext<IMessage>>> _specifications;
-        
-        public GlobalRececivePipeConfigurator(IDependencyScope dependencyScope)
+
+        public GlobalReceivePipeConfigurator(IDependencyScope dependencyScope)
         {
             DependencyScope = dependencyScope;
             _specifications = new List<IPipeSpecification<IReceiveContext<IMessage>>>();
@@ -33,8 +33,8 @@ namespace Mediator.Net.Pipeline
             {
                 for (int i = _specifications.Count - 1; i >= 0; i--)
                 {
-                    current = i == _specifications.Count - 1 
-                        ? new GlobalReceivePipe<IReceiveContext<IMessage>>(_specifications[i], null) 
+                    current = i == _specifications.Count - 1
+                        ? new GlobalReceivePipe<IReceiveContext<IMessage>>(_specifications[i], null)
                         : new GlobalReceivePipe<IReceiveContext<IMessage>>(_specifications[i], current);
                 }
                 return current;

@@ -7,7 +7,7 @@ using Mediator.Net.Contracts;
 
 namespace Mediator.Net;
 
-public interface IMediator : IDisposable
+public interface IMediator : IDisposable, IAsyncDisposable
 {
     Task SendAsync<TMessage>(TMessage cmd, CancellationToken cancellationToken = default)
         where TMessage : ICommand;

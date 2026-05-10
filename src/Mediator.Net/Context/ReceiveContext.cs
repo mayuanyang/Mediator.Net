@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
 using Mediator.Net.Contracts;
@@ -51,7 +50,7 @@ public class ReceiveContext<TMessage> : IReceiveContext<TMessage>
     {
         get
         {
-            _metaData = _metaData ?? new Dictionary<string, object>();
+            _metaData ??= new Dictionary<string, object>();
             return _metaData;
         }
     }
@@ -66,11 +65,7 @@ public class ReceiveContext<TMessage> : IReceiveContext<TMessage>
             
             if (TryGetService(out IPublishPipe<IPublishContext<IEvent>> publishPipe))
             {
-                var sendMethod = publishPipe.GetType().GetRuntimeMethods().Single(x => x.Name == "Connect");
-                
-                var task = (Task) sendMethod.Invoke(publishPipe, new object[] {publishContext, cancellationToken});
-                
-                await task.ConfigureAwait(false);
+                await publishPipe.Connect(publishContext, cancellationToken).ConfigureAwait(false);
             }
             else
             {
