@@ -17,25 +17,21 @@ jobs:
       DOTNET_SKIP_FIRST_TIME_EXPERIENCE: 1
       NUGET_XMLDOC_MODE: skip
     steps:
-      - name: Install GitVersion
-        uses: gittools/actions/gitversion/setup@v0.9.13
-        with:
-          versionSpec: "5.x"
       - name: Checkout source
-        uses: actions/checkout@v2
+        uses: actions/checkout@v6
         with:
           fetch-depth: 0
+      - name: Install GitVersion
+        uses: gittools/actions/gitversion/setup@v4.5.0
+        with:
+          versionSpec: "5.x"
       - name: Determine Version
         id: gitversion
-        uses: gittools/actions/gitversion/execute@v0.9.13
-      - name: Setup .NET Core
-        uses: actions/setup-dotnet@v3
+        uses: gittools/actions/gitversion/execute@v4.5.0
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v5
         with:
           dotnet-version: |
-            3.1.x
-            5.0.x
-            6.0.x
-            7.0.x
             8.0.x
             9.0.x
       - name: Install dependencies
