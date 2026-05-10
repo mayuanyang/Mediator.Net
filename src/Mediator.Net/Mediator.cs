@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Runtime.CompilerServices;
 using System.Threading;
 using System.Threading.Tasks;
 using Mediator.Net.Context;
@@ -109,7 +108,7 @@ public class Mediator : IMediator
         return (TResponse)(receiveContext.Result ?? result);
     }
     
-    private IAsyncEnumerable<TResponse> CreateStreamInternal<TMessage, TResponse>(IReceiveContext<TMessage> customReceiveContext, [EnumeratorCancellation] CancellationToken cancellationToken)
+    private IAsyncEnumerable<TResponse> CreateStreamInternal<TMessage, TResponse>(IReceiveContext<TMessage> customReceiveContext, CancellationToken cancellationToken)
         where TMessage : IMessage
     {
         RegisterServiceIfRequired(customReceiveContext);
@@ -117,7 +116,7 @@ public class Mediator : IMediator
         return _globalPipe.ConnectStream<TResponse>((IReceiveContext<IMessage>)customReceiveContext, cancellationToken);
     }
     
-    private IAsyncEnumerable<TResponse> CreateStreamInternal<TMessage, TResponse>(TMessage msg, [EnumeratorCancellation] CancellationToken cancellationToken)
+    private IAsyncEnumerable<TResponse> CreateStreamInternal<TMessage, TResponse>(TMessage msg, CancellationToken cancellationToken)
         where TMessage : IMessage
     {
         if (msg is IEvent)
@@ -183,5 +182,13 @@ public class Mediator : IMediator
     public void Dispose()
     {
         _scope?.Dispose();
+    }
+
+    public async ValueTask DisposeAsync()
+    {
+        if (_scope is IAsyncDisposable asyncScope)
+            await asyncScope.DisposeAsync().ConfigureAwait(false);
+        else
+            _scope?.Dispose();
     }
 }
