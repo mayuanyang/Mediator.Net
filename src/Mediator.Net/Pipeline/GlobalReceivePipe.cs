@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Reflection;
+using System.Runtime.CompilerServices;
 using System.Threading;
 using System.Threading.Tasks;
 using Mediator.Net.Context;
@@ -12,7 +13,7 @@ public class GlobalReceivePipe<TContext> : IGlobalReceivePipe<TContext> where TC
 {
     private readonly IPipeSpecification<TContext> _specification;
     
-    public async IAsyncEnumerable<TResponse> ConnectStream<TResponse>(TContext context, CancellationToken cancellationToken)
+    public async IAsyncEnumerable<TResponse> ConnectStream<TResponse>(TContext context, [EnumeratorCancellation] CancellationToken cancellationToken)
     {
         IAsyncEnumerable<TResponse> result = null;
         try

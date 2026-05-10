@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 using System.Threading;
 using System.Threading.Tasks;
 using Mediator.Net.Context;
@@ -9,7 +10,7 @@ namespace Mediator.Net.TestUtil.Handlers.CommandHandlers;
 
 public class TestCommandWithResponseStreamHandler : IStreamCommandHandler<TestCommandWithResponse, TestCommandResponse>
 {
-    public async IAsyncEnumerable<TestCommandResponse> Handle(IReceiveContext<TestCommandWithResponse> context, CancellationToken cancellationToken)
+    public async IAsyncEnumerable<TestCommandResponse> Handle(IReceiveContext<TestCommandWithResponse> context, [EnumeratorCancellation] CancellationToken cancellationToken)
     {
         for (int i = 0; i < 5; i++)
         {

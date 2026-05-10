@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using System.Runtime.CompilerServices;
 using System.Threading;
 using System.Threading.Tasks;
 using Mediator.Net.Binding;
@@ -55,7 +56,7 @@ public class CommandReceivePipe<TContext> : ICommandReceivePipe<TContext>
         return context.Result ?? result;
     }
 
-    public async IAsyncEnumerable<TResponse> ConnectStream<TResponse>(TContext context, CancellationToken cancellationToken)
+    public async IAsyncEnumerable<TResponse> ConnectStream<TResponse>(TContext context, [EnumeratorCancellation] CancellationToken cancellationToken)
     {
         IAsyncEnumerable<TResponse> result = null;
         
